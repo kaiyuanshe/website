@@ -130,6 +130,9 @@ body {
   transition: all var(--transition-normal);
   border: 1px solid var(--glass-border);
   min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .navbar__inner:hover {
@@ -143,6 +146,57 @@ body {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Navigation Items Container */
+.navbar__items {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navbar__items--center {
+  flex: 1;
+  justify-content: center;
+  margin: 0 2rem;
+}
+
+.navbar__items--right {
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+/* Force center alignment for navigation */
+.navbar .navbar__inner .navbar__items:not(.navbar__items--right) {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Ensure proper spacing */
+.navbar .navbar__brand {
+  min-width: 200px;
+}
+
+.navbar .navbar__items--right {
+  min-width: 200px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Better responsive behavior */
+@media (max-width: 996px) {
+  .navbar .navbar__inner {
+    justify-content: center;
+  }
+  
+  .navbar .navbar__brand,
+  .navbar .navbar__items--right {
+    min-width: auto;
+  }
 }
 
 .navbar__title {
@@ -157,6 +211,11 @@ body {
 }
 
 /* Navigation Items */
+.navbar__item {
+  display: flex;
+  align-items: center;
+}
+
 .navbar__link {
   color: #4b5563 !important;
   font-weight: 500 !important;
@@ -164,6 +223,7 @@ body {
   padding: 0.5rem 0.75rem !important;
   border-radius: var(--radius-md) !important;
   position: relative;
+  white-space: nowrap;
 }
 
 .navbar__link:hover {
