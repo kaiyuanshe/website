@@ -94,56 +94,56 @@ function ProjectsShowcase() {
     {
       name: '开源社官网',
       description: '开源社官方网站，提供最新的社区动态、活动信息和资源分享',
-      imageUrl: 'https://placehold.co/64x64/6E54FF/white?text=OS',
+      imageUrl: 'https://placehold.co/64x64/6E54FF/white?text=KYS',
       category: '平台',
       link: 'https://kaiyuanshe.cn/'
     },
     {
       name: 'OpenBuild',
       description: '一个围绕开源和 Web3 的全球开发者社区，为开发者提供学习和合作平台',
-      imageUrl: 'https://placehold.co/64x64/6366F1/white?text=OB',
+      imageUrl: 'https://placehold.co/64x64/6366F1/white?text=BUILD',
       category: '社区',
       link: 'https://openbuild.xyz/'
     },
     {
       name: '开源社投',
       description: '开源科技创业的投资促进和项目孵化平台',
-      imageUrl: 'https://placehold.co/64x64/8b73ff/white?text=投',
+      imageUrl: 'https://placehold.co/64x64/8b73ff/white?text=INVEST',
       category: '投资',
       link: '#'
     },
     {
       name: 'COSCon',
       description: '中国开源年会，中国最大的开源技术大会',
-      imageUrl: 'https://placehold.co/64x64/a293ff/white?text=CC',
+      imageUrl: 'https://placehold.co/64x64/a293ff/white?text=CONF',
       category: '会议',
       link: 'https://coscon.kaiyuanshe.cn/'
     },
     {
       name: '开源之夏',
       description: '面向高校学生的暑期开源活动，帮助学生走进开源世界',
-      imageUrl: 'https://placehold.co/64x64/c4b5fd/white?text=夏',
+      imageUrl: 'https://placehold.co/64x64/c4b5fd/white?text=SUMMER',
       category: '教育',
       link: 'https://summer-ospp.ac.cn/'
     },
     {
       name: '开源指南',
       description: '为开源新手提供全面的开源入门指南和最佳实践',
-      imageUrl: 'https://placehold.co/64x64/5b47d1/white?text=指',
+      imageUrl: 'https://placehold.co/64x64/5b47d1/white?text=GUIDE',
       category: '指南',
       link: '#'
     },
     {
       name: 'Apache 中文社区',
       description: '中国 Apache 软件基金会的中文社区，推广 Apache 项目',
-      imageUrl: 'https://placehold.co/64x64/4338ca/white?text=AP',
+      imageUrl: 'https://placehold.co/64x64/4338ca/white?text=APACHE',
       category: '社区',
       link: 'https://apache.org/'
     },
     {
       name: '开源电子书',
       description: '整理和翻译各种开源相关的书籍和文档',
-      imageUrl: 'https://placehold.co/64x64/3730a3/white?text=书',
+      imageUrl: 'https://placehold.co/64x64/3730a3/white?text=BOOK',
       category: '文档',
       link: '#'
     }
@@ -199,7 +199,7 @@ function LatestActivities() {
       date: '2024年7-9月',
       location: '线上',
       status: '已结束',
-      image: 'https://placehold.co/400x200/6366F1/ffffff?text=开源之夏',
+      image: 'https://placehold.co/400x200/6366F1/ffffff?text=Summer+OSS',
       link: 'https://summer-ospp.ac.cn/'
     },
     {
@@ -258,7 +258,7 @@ function LatestNews() {
       excerpt: '2024年12月，开源社迎来了成立十周年的里程碑，举办了盛大的庆典活动...',
       date: '2024-12-15',
       author: '开源社',
-      image: 'https://placehold.co/300x150/6E54FF/ffffff?text=十周年',
+      image: 'https://placehold.co/300x150/6E54FF/ffffff?text=10th+Anniversary',
       link: '#'
     },
     {
@@ -266,7 +266,7 @@ function LatestNews() {
       excerpt: '这份报告全面分析了中国开源生态的发展现状，展现了中国开源力量的崛起...',
       date: '2024-11-20',
       author: '开源年度报告项目组',
-      image: 'https://placehold.co/300x150/6366F1/ffffff?text=2024报告',
+      image: 'https://placehold.co/300x150/6366F1/ffffff?text=2024+Report',
       link: '#'
     },
     {
