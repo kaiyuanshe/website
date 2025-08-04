@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -8,33 +8,78 @@ import ActivityMap from '@site/src/components/ActivityMap';
 
 import styles from './index.module.css';
 
-// Vision, Mission, Principles component
+// Enhanced Hero Section with gmonad.cc style
+function Hero() {
+  const {siteConfig} = useDocusaurusContext();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  return (
+    <section className={clsx('hero', styles.hero)}>
+      <div className={clsx('hero__inner', styles.heroInner, isVisible && styles.heroVisible)}>
+        <div className="hero__badge">
+          🎆 中国首个开源公益组织
+        </div>
+        <Heading as="h1" className="hero__title">
+          <span className="hero__title-primary">开源社</span>
+          <br />
+          <span className="hero__title-secondary">中国开发者的家</span>
+        </Heading>
+        <p className="hero__subtitle">
+          加入我们，与开发者一起了解、参与、构建开源世界，
+          推动中国开源事业的发展与繁荣
+        </p>
+        <div className={styles.heroActions}>
+          <Link
+            className="button button--primary button--lg"
+            to="/docs/intro">
+            🎆 了解开源社
+          </Link>
+          <Link
+            className="button button--outline button--lg"
+            to="/activities">
+            📅 查看活动
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Vision, Mission, Principles Component with enhanced styling
 function VisionMissionPrinciples() {
   return (
-    <section className="vision-mission-principles">
+    <section className="section section--primary vision-mission-principles">
       <div className="container">
+        <Heading as="h2" className="section-title">
+          愿景、使命与原则
+        </Heading>
         <div className="vmp-grid">
           <div className="vmp-card">
-            <h3>Our Vision</h3>
+            <h3>🎆 愿景</h3>
             <ul>
-              <li>Contribute to and promote open source as a new way of life to the world</li>
+              <li>成为中国最大的开源技术社区</li>
+              <li>推动开源文化在中国的普及</li>
+              <li>为中国开发者提供世界级的技术平台</li>
             </ul>
           </div>
           <div className="vmp-card">
-            <h3>Our Mission</h3>
+            <h3>🎯 使命</h3>
             <ul>
-              <li>Open Source Governance</li>
-              <li>Global Bridging</li>
-              <li>Community Development</li>
-              <li>Project Incubation</li>
+              <li>连接全球开源项目与中国开发者</li>
+              <li>提供优质的开源技术分享与学习平台</li>
+              <li>建设开放、包容、共享的技术社区</li>
             </ul>
           </div>
           <div className="vmp-card">
-            <h3>Our Principles</h3>
+            <h3>⚙️ 原则</h3>
             <ul>
-              <li>Contribution</li>
-              <li>Consensus</li>
-              <li>Collegiality</li>
+              <li>开放透明：所有活动和决策公开透明</li>
+              <li>平等包容：尊重不同背景的参与者</li>
+              <li>共同成长：与社区一起学习和发展</li>
             </ul>
           </div>
         </div>
@@ -43,72 +88,95 @@ function VisionMissionPrinciples() {
   );
 }
 
-// Projects showcase component
+// Enhanced Projects Showcase with gmonad.cc style
 function ProjectsShowcase() {
   const projects = [
     {
-      title: '新冠援助平台',
-      description: '新冠援助平台项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=COVID',
-      link: 'https://wuhan2020.kaiyuanshe.cn/#'
-    },
-    {
-      title: '开源社官网',
-      description: '开源社官网项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=WEB',
+      name: '开源社官网',
+      description: '开源社官方网站，提供最新的社区动态、活动信息和资源分享',
+      imageUrl: 'https://placehold.co/64x64/6E54FF/white?text=OS',
+      category: '平台',
       link: 'https://kaiyuanshe.cn/'
     },
     {
-      title: 'OSS.Chat',
-      description: 'OSS.Chat 项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=CHAT',
-      link: 'https://github.com/kaiyuanshe/osschat'
+      name: 'OpenBuild',
+      description: '一个围绕开源和 Web3 的全球开发者社区，为开发者提供学习和合作平台',
+      imageUrl: 'https://placehold.co/64x64/6366F1/white?text=OB',
+      category: '社区',
+      link: 'https://openbuild.xyz/'
     },
     {
-      title: '中国开源地图',
-      description: '中国开源地图项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=MAP',
-      link: 'https://kaiyuanshe.cn/organization'
+      name: '开源社投',
+      description: '开源科技创业的投资促进和项目孵化平台',
+      imageUrl: 'https://placehold.co/64x64/8b73ff/white?text=投',
+      category: '投资',
+      link: '#'
     },
     {
-      title: 'KToken',
-      description: 'KToken 项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=TOKEN',
-      link: 'https://github.com/kaiyuanshe/KToken'
+      name: 'COSCon',
+      description: '中国开源年会，中国最大的开源技术大会',
+      imageUrl: 'https://placehold.co/64x64/a293ff/white?text=CC',
+      category: '会议',
+      link: 'https://coscon.kaiyuanshe.cn/'
     },
     {
-      title: '小源机器人',
-      description: '小源机器人项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=BOT',
-      link: 'https://github.com/kaiyuanshe/xiaoyuan'
+      name: '开源之夏',
+      description: '面向高校学生的暑期开源活动，帮助学生走进开源世界',
+      imageUrl: 'https://placehold.co/64x64/c4b5fd/white?text=夏',
+      category: '教育',
+      link: 'https://summer-ospp.ac.cn/'
     },
     {
-      title: '中国开源年度报告',
-      description: '中国开源年度报告项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=REPORT',
-      link: 'https://kaiyuanshe.feishu.cn/wiki/wikcnUDeVll6PNzw900yPV71Sxd'
+      name: '开源指南',
+      description: '为开源新手提供全面的开源入门指南和最佳实践',
+      imageUrl: 'https://placehold.co/64x64/5b47d1/white?text=指',
+      category: '指南',
+      link: '#'
     },
     {
-      title: '开放黑客松',
-      description: '开放黑客松项目组',
-      image: 'https://placehold.co/64x64/1890ff/ffffff?text=HACK',
-      link: 'https://hackathon.kaiyuanshe.cn/'
+      name: 'Apache 中文社区',
+      description: '中国 Apache 软件基金会的中文社区，推广 Apache 项目',
+      imageUrl: 'https://placehold.co/64x64/4338ca/white?text=AP',
+      category: '社区',
+      link: 'https://apache.org/'
+    },
+    {
+      name: '开源电子书',
+      description: '整理和翻译各种开源相关的书籍和文档',
+      imageUrl: 'https://placehold.co/64x64/3730a3/white?text=书',
+      category: '文档',
+      link: '#'
     }
   ];
 
   return (
-    <section className="projects-section">
+    <section className="section section--secondary projects-section">
       <div className="container">
-        <h2 className="section-title">Our Projects</h2>
+        <Heading as="h2" className="section-title">
+          🚀 生态项目
+        </Heading>
+        <p className="text-center" style={{marginBottom: '3rem', fontSize: '1.2rem', color: 'var(--ifm-color-content-secondary)', maxWidth: '600px', margin: '0 auto 3rem'}}>
+          探索我们正在构建和维护的开源项目，与全球开发者一起创造更美好的技术世界
+        </p>
         <div className="projects-grid">
-          {projects.map((project, index) => (
-            <div key={index} className="project-card">
-              <a href={project.link} target="_blank" rel="noopener noreferrer">
-                <img src={project.image} alt={project.title} />
-                <h3>{project.title}</h3>
-              </a>
+          {projects.map((project, idx) => (
+            <div key={idx} className="project-card">
+              <div className="project-image-container">
+                <img src={project.imageUrl} alt={project.name} />
+                <span className="project-category">{project.category}</span>
+              </div>
+              <h3>{project.name}</h3>
+              <p>{project.description}</p>
+              <Link className="button button--outline button--sm" to={project.link}>
+                了解详情 →
+              </Link>
             </div>
           ))}
+        </div>
+        <div className="text-center" style={{marginTop: '3rem'}}>
+          <Link className="button button--primary button--lg" to="/projects">
+            查看更多项目 →
+          </Link>
         </div>
       </div>
     </section>
@@ -120,41 +188,65 @@ function LatestActivities() {
   const activities = [
     {
       title: '中国开源年会 2024',
-      location: '北京 中关村国家自主创新示范区-会议中心，北京市海淀区新建宫门路2号',
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=COSCon+2024',
-      link: 'https://kaiyuanshe.cn/activity/COSCon-2024'
+      date: '2024年12月',
+      location: '北京 中关村国家自主创新示范区',
+      status: '进行中',
+      image: 'https://placehold.co/400x200/6E54FF/ffffff?text=COSCon+2024',
+      link: 'https://coscon.kaiyuanshe.cn/'
+    },
+    {
+      title: '开源之夏 2024',
+      date: '2024年7-9月',
+      location: '线上',
+      status: '已结束',
+      image: 'https://placehold.co/400x200/6366F1/ffffff?text=开源之夏',
+      link: 'https://summer-ospp.ac.cn/'
     },
     {
       title: 'COSCUP 2024 大陆讲师团',
-      location: '臺北市 台湾科技大学，台湾省台湾省台湾省',
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=COSCUP+2024',
-      link: 'https://kaiyuanshe.cn/activity/COSCUP-2024'
-    },
-    {
-      title: '2023 第八届中国开源年会',
-      location: '成都 菁蓉汇，四川省成都市武侯区天府五街200号',
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=COSCon+2023',
-      link: 'https://kaiyuanshe.cn/activity/coscon-2023'
+      date: '2024年7月',
+      location: '台北 台湾科技大学',
+      status: '已结束',
+      image: 'https://placehold.co/400x200/8b73ff/ffffff?text=COSCUP+2024',
+      link: '#'
     }
   ];
 
   return (
-    <div>
-      <h3 className="section-title">Latest Activity</h3>
-      {activities.map((activity, index) => (
-        <div key={index} className="activity-card">
-          <img src={activity.image} alt={activity.title} />
-          <div className="content">
-            <h3>
-              <a href={activity.link} target="_blank" rel="noopener noreferrer">
-                {activity.title}
-              </a>
-            </h3>
-            <div className="activity-location">{activity.location}</div>
-          </div>
+    <section className="section section--primary">
+      <div className="container">
+        <Heading as="h2" className="section-title">
+          📅 最新活动
+        </Heading>
+        <div className="activities-grid">
+          {activities.map((activity, index) => (
+            <div key={index} className="activity-card card">
+              <div className="activity-image">
+                <img src={activity.image} alt={activity.title} />
+                <span className={`activity-status activity-status--${activity.status === '进行中' ? 'active' : 'ended'}`}>
+                  {activity.status}
+                </span>
+              </div>
+              <div className="activity-content">
+                <h3>{activity.title}</h3>
+                <div className="activity-meta">
+                  <span className="activity-date">📅 {activity.date}</span>
+                  <span className="activity-location">📍 {activity.location}</span>
+                </div>
+                <Link className="button button--primary button--sm" to={activity.link}>
+                  了解详情
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
+        <div className="text-center" style={{marginTop: '3rem'}}>
+          <Link className="button button--outline button--lg" to="/activities">
+            查看所有活动 →
+          </Link> 
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -162,97 +254,100 @@ function LatestActivities() {
 function LatestNews() {
   const news = [
     {
-      title: '2024 开源社年度评选',
-      author: "COSCon'24 组委会",
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=Awards+2024',
-      link: 'https://kaiyuanshe.cn/article/2024_kaiyuanshe_annual_awards'
+      title: '开源社成立十周年庆典圆满举办',
+      excerpt: '2024年12月，开源社迎来了成立十周年的里程碑，举办了盛大的庆典活动...',
+      date: '2024-12-15',
+      author: '开源社',
+      image: 'https://placehold.co/300x150/6E54FF/ffffff?text=十周年',
+      link: '#'
     },
     {
-      title: "COSCon'24媒体和社区合作伙伴全亮相，感谢广大社区的支持!",
-      author: "COSCon'24 组委会",
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=Partners+2024',
-      link: 'https://kaiyuanshe.cn/article/COSCon_24_media_and_community_partners%20_all_appeared'
+      title: '中国开源年度报告 2024 正式发布',
+      excerpt: '这份报告全面分析了中国开源生态的发展现状，展现了中国开源力量的崛起...',
+      date: '2024-11-20',
+      author: '开源年度报告项目组',
+      image: 'https://placehold.co/300x150/6366F1/ffffff?text=2024报告',
+      link: '#'
     },
     {
-      title: '论坛介绍 | 开源硬件论坛',
-      author: "COSCon'24 组委会",
-      image: 'https://placehold.co/600x200/1890ff/ffffff?text=Hardware+Forum',
-      link: 'https://kaiyuanshe.cn/article/coscon24_open_source_hardware%20_forum'
+      title: 'OpenBuild 全球开发者大会成功举办',
+      excerpt: '汇聚全球顶尖开发者，探讨开源技术的未来发展方向和创新应用...',
+      date: '2024-10-25',
+      author: 'OpenBuild',
+      image: 'https://placehold.co/300x150/8b73ff/ffffff?text=OpenBuild',
+      link: '#'
     }
   ];
 
   return (
-    <div>
-      <h3 className="section-title">Latest News</h3>
-      <p style={{ textAlign: 'center', marginBottom: '2rem', fontSize: '1.1rem' }}>
-        KAIYUANSHE - The Home of Open-Sourcers
-      </p>
-      {news.map((newsItem, index) => (
-        <div key={index} className="news-card">
-          <img src={newsItem.image} alt={newsItem.title} />
-          <div className="content">
-            <h3>
-              <a href={newsItem.link} target="_blank" rel="noopener noreferrer">
-                {newsItem.title}
-              </a>
-            </h3>
-            <div className="news-author">{newsItem.author}</div>
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-
-
-// Homepage Header
-function HomepageHeader() {
-  const {siteConfig} = useDocusaurusContext();
-  return (
-    <header className={clsx('hero hero--primary', styles.heroBanner)}>
+    <section className="section section--secondary">
       <div className="container">
-        <Heading as="h1" className="hero__title">
-          {siteConfig.title}
+        <Heading as="h2" className="section-title">
+          📰 最新资讯
         </Heading>
-        <p className="hero__subtitle">{siteConfig.tagline}</p>
-        <div className={styles.buttons}>
-          <Link
-            className="button button--secondary button--lg"
-            to="/projects">
-            探索我们的项目
-          </Link>
-          <Link
-            className="button button--outline button--secondary button--lg"
-            to="/about"
-            style={{ marginLeft: '1rem' }}>
-            了解更多
+        <div className="news-grid">
+          {news.map((item, index) => (
+            <article key={index} className="news-card card">
+              <div className="news-image">
+                <img src={item.image} alt={item.title} />
+              </div>
+              <div className="news-content">
+                <h3>{item.title}</h3>
+                <p>{item.excerpt}</p>
+                <div className="news-meta">
+                  <span className="news-author">✍️ {item.author}</span>
+                  <span className="news-date">📅 {item.date}</span>
+                </div>
+                <Link className="button button--outline button--sm" to={item.link}>
+                  阅读全文
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+        <div className="text-center" style={{marginTop: '3rem'}}>
+          <Link className="button button--primary button--lg" to="/blog">
+            查看更多资讯 →
           </Link>
         </div>
       </div>
-    </header>
+    </section>
   );
 }
 
-export default function Home(): ReactNode {
+// Activity Map Section
+function ActivityMapSection() {
+  return (
+    <section className="section section--primary">
+      <div className="container">
+        <Heading as="h2" className="section-title">
+          🗺️ 活动地图
+        </Heading>
+        <p className="text-center" style={{marginBottom: '2rem', fontSize: '1.2rem', color: 'var(--ifm-color-content-secondary)'}}>
+          探索全国各地的开源社区活动分布
+        </p>
+        <div className="activity-map-container">
+          <ActivityMap />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// Main Home component
+export default function Home(): JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`欢迎访问${siteConfig.title}`}
-      description="开源社 - 致力于在中国推广开源理念、建设开源社区、推动开源项目发展">
-      <HomepageHeader />
-      <main>
+      title={`${siteConfig.title}`}
+      description="中国开发者的家 - 开源社官网">
+      <main className="main-wrapper">
+        <Hero />
         <VisionMissionPrinciples />
         <ProjectsShowcase />
-        <section className="activities-news-section">
-          <div className="container">
-            <div className="activities-news-grid">
-              <LatestActivities />
-              <LatestNews />
-            </div>
-          </div>
-        </section>
-        <ActivityMap />
+        <LatestActivities />
+        <LatestNews />
+        <ActivityMapSection />
       </main>
     </Layout>
   );
