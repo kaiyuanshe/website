@@ -117,10 +117,12 @@ body {
   position: fixed !important;
   padding: 0.75rem 1rem 0 !important;
   z-index: 101 !important;
+  left: 0;
+  right: 0;
 }
 
 .navbar__inner {
-  max-width: var(--container-max-width);
+  max-width: 1200px;
   margin: 0 auto;
   padding: 1rem 2rem;
   background: var(--glass-bg);
@@ -130,9 +132,11 @@ body {
   transition: all var(--transition-normal);
   border: 1px solid var(--glass-border);
   min-height: 72px;
-  display: flex;
+  /* 使用简单的两栏布局：Logo居左，导航居右 */
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .navbar__inner:hover {
@@ -141,7 +145,7 @@ body {
   transform: translateY(-1px);
 }
 
-/* Enhanced Logo */
+/* 左侧Logo品牌区域 */
 .navbar__brand {
   display: flex;
   align-items: center;
@@ -149,53 +153,33 @@ body {
   flex-shrink: 0;
 }
 
-/* Navigation Items Container */
+/* 右侧导航容器 - 包含所有导航项和右侧按钮 */
 .navbar__items {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
 
-.navbar__items--center {
-  flex: 1;
-  justify-content: center;
-  margin: 0 2rem;
-}
-
+/* 右侧按钮组（GitHub等） */
 .navbar__items--right {
-  justify-content: flex-end;
-  flex-shrink: 0;
+  margin-left: 1rem;
+  border-left: 1px solid var(--glass-border);
+  padding-left: 1rem;
 }
 
-/* Force center alignment for navigation */
-.navbar .navbar__inner .navbar__items:not(.navbar__items--right) {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-}
-
-/* Ensure proper spacing */
-.navbar .navbar__brand {
-  min-width: 200px;
-}
-
-.navbar .navbar__items--right {
-  min-width: 200px;
-  display: flex;
-  justify-content: flex-end;
-}
-
-/* Better responsive behavior */
+/* 响应式设计 */
 @media (max-width: 996px) {
-  .navbar .navbar__inner {
-    justify-content: center;
+  .navbar__inner {
+    padding: 1rem 1rem;
   }
   
-  .navbar .navbar__brand,
-  .navbar .navbar__items--right {
-    min-width: auto;
+  .navbar__items {
+    gap: 1rem;
+  }
+  
+  .navbar__items--right {
+    margin-left: 0.5rem;
+    padding-left: 0.5rem;
   }
 }
 
