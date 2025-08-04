@@ -129,28 +129,34 @@ npm run serve
 
 ## 🚀 部署指南
 
-### GitHub Pages 部署 (推荐)
+### ✅ 当前部署状态
 
-#### 🔧 快速部署
+🎉 **代码推送完成**: 所有网站文件已成功推送到 https://github.com/kaiyuanshe/website
 
-**首次部署**: 如果 `https://github.com/kaiyuanshe/website` 仓库还不存在，请先查看 [SETUP_GITHUB_REPOSITORY.md](./SETUP_GITHUB_REPOSITORY.md) 创建仓库。
+### ⚠️ GitHub Actions 权限解决方案
 
-项目已配置 GitHub Actions 自动部署，只需要：
+由于GitHub安全限制，工作流文件需要通过网页界面手动添加：
 
-1. **创建仓库** `kaiyuanshe/website` (如果还没有)
-2. **推送代码**到 GitHub 仓库
-3. **启用 GitHub Pages**：
-   - 前往 `Settings` → `Pages`
-   - Source 选择 `GitHub Actions`
-4. **自动部署**: 推送到 `main` 分支即可自动部署
+**📖 详细设置指南**: 请查看 [`WORKFLOW_SETUP_GUIDE.md`](./WORKFLOW_SETUP_GUIDE.md)
 
-#### 📜 使用部署脚本
+**🚀 快速操作**:
+1. 访问 https://github.com/kaiyuanshe/website
+2. 通过"Add file"创建 `.github/workflows/deploy.yml`
+3. 通过"Add file"创建 `.github/workflows/deploy-manual.yml`
+4. 在 Settings → Pages 中启用"GitHub Actions"
+5. 等待自动部署完成
+
+**📍 部署地址**:
+- 主域名: https://kaiyuanshe.cn (需配置CNAME)
+- GitHub地址: https://kaiyuanshe.github.io/website/
+
+### 🔄 后续更新流程
+
+工作流设置完成后，任何代码更新都会自动部署：
 ```bash
-# Linux/Mac
-./scripts/deploy-github-pages.sh
-
-# Windows
-scripts\deploy-github-pages.bat
+git add .
+git commit -m "更新网站内容"
+git push origin master  # 自动触发重新部署
 ```
 
 #### ⚙️ 自定义域名配置
