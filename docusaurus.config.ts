@@ -20,10 +20,10 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://kaiyuanshe.cn', // 生产环境域名
+  url: 'https://kaiyuanshe.github.io', // 生产环境域名
   // Set the /<baseUrl>/ pathname under which your site is served 
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/', // 如果使用自定义域名则为 '/'，如果使用 github.io 则改为 '/website/'
+  baseUrl: '/website', // 如果使用自定义域名则为 '/'，如果使用 github.io 则改为 '/website/'
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
