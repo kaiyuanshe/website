@@ -1,0 +1,127 @@
+.loginPage {
+  height: 100vh;
+  margin: 0;
+  font-family: 'Helvetica Neue', sans-serif;
+  background: linear-gradient(135deg, #f3e8ff, #e0eaff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #333;
+}
+
+.container {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.1);
+  width: 23.5rem;
+}
+
+.title {
+  text-align: center;
+  background: linear-gradient(90deg, var(--primary), var(--primary-400));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.link {
+  text-align: center;
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.link a {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.switchLink {
+  color: var(--primary) !important;
+  text-decoration: none;
+  cursor: pointer;
+  margin-left: 0.25rem;
+  transition: all 0.3s ease;
+}
+
+.switchLink:hover {
+  color: var(--primary-400) !important;
+  text-decoration: underline;
+}
+
+.loginButton {
+  width: 100%;
+  background: linear-gradient(to right, var(--primary), var(--primary-400));
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.loginButton:hover {
+  background: linear-gradient(to right, var(--primary), var(--primary-400)) !important;
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.googleLoginButton:hover {
+  border-color: var(--primary) !important;
+  color: var(--primary) !important;
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.verificationInfo {
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+.verificationInput {
+  letter-spacing: 2px;
+  text-align: center;
+}
+
+.resendSection {
+  text-align: center;
+  margin-top: 12px;
+}
+
+.countdownText {
+  color: #999;
+}
+
+.resendLink {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.backLink {
+  color: #999;
+  cursor: pointer;
+}
+
+.divider {
+  margin: 16px 0;
+  text-align: center;
+  position: relative;
+}
+
+.dividerLine {
+  height: 1px;
+  background-color: #d9d9d9;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
+
+.dividerText {
+  background-color: #fff;
+  padding: 0 12px;
+  color: #999;
+  font-size: 14px;
+}

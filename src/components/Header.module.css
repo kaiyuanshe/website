@@ -1,0 +1,817 @@
+/* ===== 主导航栏样式 ===== */
+.header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ===== Logo 样式 ===== */
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ===== 导航菜单样式 ===== */
+.nav {
+  display: none;
+  align-items: center;
+  margin-left: 1.8rem;
+  gap: 0.75rem;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.navDropdownContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.75rem 1rem;
+  color: #4b5563;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.navItem:hover,
+.navItemActive {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.navIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform 0.2s ease;
+}
+
+.navIconActive {
+  transform: rotate(180deg);
+}
+
+.navDropdownMenu {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  background: white;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+/* 下拉菜单布局 */
+.dropdownLayout {
+  display: flex;
+  min-height: 350px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* 左侧菜单区域 */
+.dropdownLeft {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  background: white;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.5rem;
+  align-items: start;
+}
+
+/* 关于我们菜单的三列布局 */
+.dropdownLeftTwoColumn {
+  flex: 1;
+  padding: 1.5rem 2rem;
+  background: white;
+  display: flex;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.aboutColumn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navDropdownItem {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #374151;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  margin-bottom: 0.25rem;
+  background: transparent;
+  border-radius: 6px;
+  border: none;
+}
+
+.navDropdownItem:last-child {
+  border-bottom: none;
+}
+
+.navDropdownItem:hover {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.dropdownItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.dropdownItemTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: inherit;
+  margin-bottom: 0.25rem;
+}
+
+.dropdownItemDesc {
+  font-size: 0.9rem;
+  color: #6b7280;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+/* ===== 右侧操作区样式 ===== */
+.headerActions {
+  display: none;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* 登录按钮样式 */
+.loginButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--primary-700);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.loginButton:hover {
+  background-color: var(--primary-800);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.25);
+}
+
+/* ===== 用户菜单样式 ===== */
+.userMenu {
+  position: relative;
+}
+
+.userContainer {
+  cursor: pointer;
+}
+
+.userAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+.userName {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.userMenuIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  transition: transform 0.2s ease;
+}
+
+.userMenuIconOpen {
+  transform: rotate(180deg);
+}
+
+.userDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 280px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.userDropdownHeader {
+  padding: 1rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.userInfoName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.userInfoEmail {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.userDropdownDivider {
+  height: 1px;
+  background: #e5e7eb;
+}
+
+.userDropdownActions {
+  padding: 0.5rem;
+}
+
+.userDropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.userDropdownItem:hover {
+  background: rgba(107, 114, 128, 0.05);
+  color: #1f2937;
+}
+
+.userDropdownIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+/* ===== 移动端用户区域样式 ===== */
+.mobileUserSection {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mobileUserInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.mobileUserAvatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.mobileUserIcon {
+  width: 2rem;
+  height: 2rem;
+  color: #6b7280;
+}
+
+.mobileUserDetails {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.mobileUserName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.mobileUserEmail {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.mobileUserActions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobileUserAction {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  color: #374151;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobileUserAction:hover {
+  background: rgba(107, 114, 128, 0.05);
+  border-color: #9ca3af;
+  color: #1f2937;
+}
+
+.searchButton {
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.searchButton:hover {
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.searchIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #6b7280;
+}
+
+/* ===== 搜索容器和功能样式 ===== */
+.searchContainer {
+  position: relative;
+}
+
+.searchBox {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 400px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 0.5rem;
+  overflow: hidden;
+}
+
+.searchInputContainer {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #f3f4f6;
+  gap: 0.75rem;
+}
+
+.searchInputIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #9ca3af;
+  flex-shrink: 0;
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background: transparent;
+}
+
+.searchInput::placeholder {
+  color: #9ca3af;
+}
+
+.searchCloseButton {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.searchCloseButton:hover {
+  background: rgba(107, 114, 128, 0.1);
+}
+
+.searchCloseIcon {
+  width: 1rem;
+  height: 1rem;
+  color: #6b7280;
+}
+
+/* ===== 搜索结果样式 ===== */
+.searchResults {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.searchResultsHeader {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f9fafb;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.searchResultItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.2s ease;
+  gap: 1rem;
+}
+
+.searchResultItem:hover {
+  background: rgba(37, 99, 235, 0.05);
+}
+
+.searchResultItem:last-child {
+  border-bottom: none;
+}
+
+.searchResultContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.searchResultTitle {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.searchResultParent {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #6b7280;
+  background: #f3f4f6;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+
+.searchResultDesc {
+  font-size: 0.75rem;
+  color: #6b7280;
+  line-height: 1.4;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.searchResultScore {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.searchNoResults {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+/* ===== 移动端导航样式 ===== */
+.mobileNav {
+  display: flex;
+  align-items: center;
+}
+
+.mobileMenuButton {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mobileMenuButton:hover {
+  background: rgba(107, 114, 128, 0.05);
+  border-color: #9ca3af;
+}
+
+.mobileMenuIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #4b5563;
+}
+
+/* ===== 移动端菜单样式 ===== */
+.mobileMenu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+}
+
+.mobileMenuOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mobileMenuContent {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  background: white;
+  box-shadow: -10px 0 25px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobileMenuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.mobileMenuTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+}
+
+.mobileMenuClose {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.mobileMenuBody {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.mobileMenuSection {
+  margin-bottom: 2rem;
+}
+
+.mobileMenuSectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.mobileMenuItems {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobileMenuItem {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #4b5563;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.mobileMenuItem:hover {
+  color: #2563eb;
+  background: rgba(37, 99, 235, 0.05);
+}
+
+/* 移动端登录按钮样式 */
+.mobileLoginButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-700);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.mobileLoginButton:hover {
+  background-color: var(--primary-800);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(30, 58, 138, 0.25);
+}
+
+/* ===== 响应式设计 ===== */
+@media (min-width: 768px) {
+  .nav {
+    display: flex;
+  }
+
+  .headerActions {
+    display: flex;
+  }
+
+  .mobileNav {
+    display: none;
+  }
+}
+
+@media (max-width: 1200px) {
+  .dropdownLeft {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 1024px) {
+  .dropdownLayout {
+    min-height: 300px;
+    padding: 0 0.75rem;
+  }
+
+  .dropdownLeft {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    padding: 1rem;
+    gap: 0.25rem;
+  }
+
+  .dropdownLeftTwoColumn {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .navDropdownItem {
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 0.125rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .dropdownLeft {
+    grid-template-columns: 1fr;
+  }
+
+  .dropdownLeftTwoColumn {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .aboutColumn {
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .navDropdownMenu {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .headerContent {
+    height: 64px;
+    padding: 0 0.75rem;
+  }
+
+  .navDropdownMenu {
+    top: 64px;
+  }
+}
+
+/* ===== 搜索功能响应式样式 ===== */
+@media (max-width: 768px) {
+  .searchBox {
+    width: 320px;
+    right: -1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mobileMenuContent {
+    width: 280px;
+  }
+
+  .searchBox {
+    width: 280px;
+    right: -2rem;
+  }
+
+  .searchResultTitle {
+    font-size: 0.8125rem;
+  }
+
+  .searchResultDesc {
+    font-size: 0.6875rem;
+  }
+}

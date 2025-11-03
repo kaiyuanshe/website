@@ -1,0 +1,75 @@
+.groupedMembers {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.sectionTitle {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0 0 48px 0;
+  line-height: 1.2;
+}
+
+.groupSection {
+  margin-bottom: 48px;
+}
+
+.groupDivider {
+  margin: 32px 0 24px 0;
+}
+
+.groupTitle {
+  font-size: 22px;
+  font-weight: 500;
+  color: #4a5568;
+  margin: 0;
+  padding: 8px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.groupTitle:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  .sectionTitle {
+    font-size: 24px;
+    margin-bottom: 32px;
+  }
+  
+  .groupTitle {
+    font-size: 18px;
+    padding: 6px 16px;
+    border-radius: 16px;
+  }
+  
+  .groupSection {
+    margin-bottom: 32px;
+  }
+  
+  .groupDivider {
+    margin: 24px 0 16px 0;
+  }
+}

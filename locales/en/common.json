@@ -1,0 +1,197 @@
+{
+  "navigation": {
+    "about_us": "About Us",
+    "about": "About Us",
+    "annual_report": "Annual Report",
+    "merchandise": "Merchandise Store",
+    "partners": "Partners",
+    "forum": "Community Forum",
+    "mobile_menu": "Navigation Menu",
+    "governance": {
+      "title": "Governance",
+      "governance_overview": "Governance Overview",
+      "board": "Board of Directors",
+      "advisory": "Advisory Committee",
+      "legal": "Legal Advisory Committee",
+      "kcc": "KaiYuanShe City Community (KCC)",
+      "formal_members": "Formal Members",
+      "election": "Election",
+      "calendar": "Meeting Calendar",
+      "suggestion_box": "Suggestion Box",
+      "proposal_library": "Proposal Library"
+    },
+    "honors": {
+      "title": "Honors",
+      "open_source_star": "Open Source Star",
+      "annual_volunteer": "Annual Outstanding Volunteer",
+      "coscon_star": "COSCon Star",
+      "community_cooperation_star": "Community Cooperation Star",
+      "china_open_source_pioneer": "China Open Source Pioneer",
+      "china_open_source_power_list": "China Open Source Power List"
+    },
+    "knowledge": {
+      "title": "Knowledge",
+      "open_source_library": "Open Source Library",
+      "cosc": "China Open Source Conference (COSC)",
+      "kcc_library": "KaiYuanShe City Community (KCC)",
+      "reading_club": "Open Source Reading Club",
+      "original_articles": "Original Articles",
+      "translation_articles": "Translation Articles",
+      "all_articles": "All Articles",
+      "archived_articles": "Archived Articles",
+      "china_open_source_annual_report": "China Open Source Annual Report",
+      "china_open_source_map": "China Open Source Map",
+      "china_public_welfare_map": "China Public Welfare Map"
+    },
+    "activities": {
+      "title": "Activities",
+      "wonderful_activities": "Wonderful Activities",
+      "hosted_activities": "Hosted Activities",
+      "activity_calendar": "Activity Calendar",
+      "coscon_activities": "Open Source Conference",
+      "open_source_projects": "Open Source Projects",
+      "open_source_toolbox": "Open Source Toolbox",
+      "open_hackathon_platform": "Open Hackathon Platform",
+      "xiaoyuan_qa_bot": "XiaoYuan Q&A Bot"
+    }
+  },
+  "language": {
+    "switch": "Switch Language",
+    "traditional_chinese": "繁體中文",
+    "simplified_chinese": "简体中文",
+    "english": "English"
+  },
+  "homepage": {
+    "hero": {
+      "title": "KaiYuanShe",
+      "subtitle": "Rooted in China, contributing globally.",
+      "heroHighlight": "Rooted in China, contributing globally,",
+      "heroSubtext": "promoting open source"
+    },
+    "events": {
+      "title": "Community Events",
+      "description": "Discover exciting events, connect with more open source",
+      "status": {
+        "notStarted": "Not Started",
+        "inProgress": "In Progress", 
+        "ended": "Ended"
+      },
+      "mode": {
+        "online": "Online Event",
+        "offline": "Offline Event"
+      },
+      "learnMore": "Learn More",
+      "viewMore": "View More Events"
+    },
+    "articles": {
+      "title": "Featured Articles",
+      "description": "In-depth articles, inspiring thoughts, empowering growth",
+      "categories": {
+        "original": "Original",
+        "translation": "Translation", 
+        "archive": "Archive"
+      },
+      "readArticle": "Read Article",
+      "viewMore": "View More Articles",
+      "readingTime": "minute read",
+      "unknownAuthor": "Unknown Author",
+      "unpublished": "Unpublished"
+    },
+    "mission": {
+      "title": "Our Mission",
+      "blockNumber01": "01",
+      "blockNumber02": "02", 
+      "blockNumber03": "03",
+      "ourMission": "Our Mission",
+      "ourPrinciples": "Our Principles",
+      "ourProjects": "Our Projects",
+      "missions": {
+        "governance": {
+          "title": "Open Source Governance",
+          "description": "Promoting standardized governance and sustainable development of open source projects"
+        },
+        "bridge": {
+          "title": "International Bridge",
+          "description": "Building communication bridges between China and global open source communities"
+        },
+        "community": {
+          "title": "Community Development",
+          "description": "Cultivating healthy open source community ecosystem and culture"
+        },
+        "incubation": {
+          "title": "Project Incubation",
+          "description": "Incubating excellent open source projects and innovative technologies"
+        }
+      },
+      "principles": {
+        "contribution": {
+          "title": "Contribution",
+          "description": "Making valuable contributions to open source projects through code, documentation, design, and other means"
+        },
+        "consensus": {
+          "title": "Consensus",
+          "description": "Establishing common vision, values, and development goals within the community"
+        },
+        "governance": {
+          "title": "Co-governance",
+          "description": "Establishing transparent and democratic community governance mechanisms and decision-making processes"
+        }
+      },
+      "projects": {
+        "covidPlatform": {
+          "title": "COVID Aid Platform",
+          "description": "Open source aid and coordination platform during the pandemic"
+        },
+        "officialWebsite": {
+          "title": "KaiYuanShe Official Website",
+          "description": "Official portal and information center of the open source community"
+        },
+        "ossChat": {
+          "title": "OSS.Chat",
+          "description": "Intelligent dialogue and collaboration platform for open source projects"
+        },
+        "chinaMap": {
+          "title": "China Open Source Map",
+          "description": "Panoramic display of China's open source projects and community distribution"
+        },
+        "kToken": {
+          "title": "KToken",
+          "description": "Blockchain-based open source contribution incentive system"
+        },
+        "xiaoyuanBot": {
+          "title": "Xiaoyuan Bot",
+          "description": "Intelligent community service and interaction robot"
+        },
+        "annualReport": {
+          "title": "China Open Source Annual Report",
+          "description": "Authoritative analysis report on China's open source development trends"
+        },
+        "hackathon": {
+          "title": "Open Hackathon",
+          "description": "Open source competition platform promoting innovation and cooperation"
+        }
+      }
+    },
+    "introduction": {
+      "title": "About KaiYuanShe",
+      "paragraph1": "KaiYuanShe was established in 2014 as an open source community composed of individual volunteers who contribute to the open source cause, organized around the principles of \"Contribution, Consensus, and Co-governance\". KaiYuanShe consistently maintains the philosophy of \"vendor neutrality, public welfare, and non-profit\", with the vision of \"rooted in China, contributing globally, promoting open source as a lifestyle of the new era\", and the mission of \"open source governance, international integration, community development, and project incubation\", aiming to co-create a healthy and sustainable open source ecosystem.",
+      "paragraph2": "KaiYuanShe actively collaborates with open source supporting communities, universities, enterprises, and relevant government units, and is also the first member of the global open source license certification organization - OSI in China.",
+      "paragraph3": "Since 2016, KaiYuanShe has continuously organized the China Open Source Conference (COSCon), continuously published the \"China Open Source Annual Report\", and jointly launched the \"China Open Source Pioneer List\", \"China Open Source Power List\", etc., generating widespread influence both domestically and internationally."
+    },
+    "cta": {
+      "title": "Join KaiYuanShe · Witness Your Open Source Growth Journey",
+      "description": "Whether you are a developer passionate about open source or already committed to open source, KaiYuanShe provides you with the most comprehensive resources and platform.",
+      "followGithub": "Follow GitHub",
+      "followWeChat": "Follow WeChat",
+      "followX": "Follow X"
+    }
+  },
+  "footer": {
+    "title": "KaiYuanShe",
+    "description": "KaiYuanShe is a one-stop plaza that aggregates open source events, communities, articles, and developer data.",
+    "copyright": "&copy; 2025 KaiYuanShe. All rights reserved"
+  },
+  "errors": {
+    "fetchDapps": "Failed to get DApps list:"
+  }
+}

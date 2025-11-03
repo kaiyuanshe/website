@@ -1,0 +1,197 @@
+{
+  "navigation": {
+    "about_us": "关于我们",
+    "about": "关于我们",
+    "annual_report": "年度报告",
+    "merchandise": "周边商店",
+    "partners": "合作伙伴",
+    "forum": "社区论坛",
+    "mobile_menu": "导航菜单",
+    "governance": {
+      "title": "社区治理",
+      "governance_overview": "组织架构全景图",
+      "board": "理事会",
+      "advisory": "顾问委员会",
+      "legal": "法律咨询委员会",
+      "kcc": "开源社城市社区(KCC)",
+      "formal_members": "正式成员",
+      "election": "换届选举",
+      "calendar": "会议日历",
+      "suggestion_box": "意见箱",
+      "proposal_library": "提案库"
+    },
+    "honors": {
+      "title": "社区荣誉",
+      "open_source_star": "开源之星",
+      "annual_volunteer": "年度优秀志愿者",
+      "coscon_star": "COSCon 之星",
+      "community_cooperation_star": "社区合作之星",
+      "china_open_source_pioneer": "中国开源先锋",
+      "china_open_source_power_list": "中国开源码力榜"
+    },
+    "knowledge": {
+      "title": "知识资源",
+      "open_source_library": "开源文库",
+      "cosc": "中国开源年会(COSC)",
+      "kcc_library": "开源社城市社区(KCC)",
+      "reading_club": "开源读书会",
+      "original_articles": "原创文章",
+      "translation_articles": "翻译文章",
+      "all_articles": "全部文章",
+      "archived_articles": "归档文章",
+      "china_open_source_annual_report": "中国开源年度报告",
+      "china_open_source_map": "中国开源地图",
+      "china_public_welfare_map": "中国公益地图"
+    },
+    "activities": {
+      "title": "活动与项目",
+      "wonderful_activities": "精彩活动",
+      "hosted_activities": "主办活动",
+      "activity_calendar": "活动日历",
+      "coscon_activities": "开源年会",
+      "open_source_projects": "开源项目",
+      "open_source_toolbox": "开源百宝箱",
+      "open_hackathon_platform": "开放黑客松平台",
+      "xiaoyuan_qa_bot": "小源问答机器人"
+    }
+  },
+  "language": {
+    "switch": "切换语言",
+    "traditional_chinese": "繁體中文",
+    "simplified_chinese": "简体中文",
+    "english": "English"
+  },
+  "homepage": {
+    "hero": {
+      "title": "开源社",
+      "subtitle": "立足中国，贡献全球，推动开源成为新时代生活方式",
+      "heroHighlight": "立足中国，贡献全球，",
+      "heroSubtext": "推动开源成为新时代生活方式。"
+    },
+    "events": {
+      "title": "社区活动",
+      "description": "发现精彩活动，链接更多开源",
+      "status": {
+        "notStarted": "未开始",
+        "inProgress": "进行中", 
+        "ended": "已结束"
+      },
+      "mode": {
+        "online": "线上活动",
+        "offline": "线下活动"
+      },
+      "learnMore": "了解详情",
+      "viewMore": "查看更多活动"
+    },
+    "articles": {
+      "title": "精彩文章",
+      "description": "深度好文，启发思考，助力成长",
+      "categories": {
+        "original": "原创",
+        "translation": "翻译", 
+        "archive": "归档"
+      },
+      "readArticle": "阅读文章",
+      "viewMore": "查看更多文章",
+      "readingTime": "分钟阅读",
+      "unknownAuthor": "未知作者",
+      "unpublished": "未发布"
+    },
+    "mission": {
+      "title": "我们的使命",
+      "blockNumber01": "01",
+      "blockNumber02": "02", 
+      "blockNumber03": "03",
+      "ourMission": "我们的使命",
+      "ourPrinciples": "我们的原则",
+      "ourProjects": "我们的项目",
+      "missions": {
+        "governance": {
+          "title": "开源治理",
+          "description": "推动开源项目的规范化治理与可持续发展"
+        },
+        "bridge": {
+          "title": "国际桥梁",
+          "description": "搭建中国与全球开源社区的沟通桥梁"
+        },
+        "community": {
+          "title": "社区发展",
+          "description": "培育健康的开源社区生态与文化"
+        },
+        "incubation": {
+          "title": "项目孵化",
+          "description": "孵化优秀的开源项目与创新技术"
+        }
+      },
+      "principles": {
+        "contribution": {
+          "title": "贡献",
+          "description": "通过代码、文档、设计等方式为开源项目做出有价值的贡献"
+        },
+        "consensus": {
+          "title": "共识",
+          "description": "在社区中建立共同的愿景、价值观和发展目标"
+        },
+        "governance": {
+          "title": "共治",
+          "description": "建立透明、民主的社区治理机制与决策流程"
+        }
+      },
+      "projects": {
+        "covidPlatform": {
+          "title": "新冠援助平台",
+          "description": "疫情期间的开源援助与协调平台"
+        },
+        "officialWebsite": {
+          "title": "开源社官网",
+          "description": "开源社区的官方门户与信息中心"
+        },
+        "ossChat": {
+          "title": "OSS.Chat",
+          "description": "开源项目智能对话与协作平台"
+        },
+        "chinaMap": {
+          "title": "中国开源地图",
+          "description": "全景展示中国开源项目与社区分布"
+        },
+        "kToken": {
+          "title": "KToken",
+          "description": "基于区块链的开源贡献激励系统"
+        },
+        "xiaoyuanBot": {
+          "title": "小源机器人",
+          "description": "智能化的社区服务与互动机器人"
+        },
+        "annualReport": {
+          "title": "中国开源年度报告",
+          "description": "权威的中国开源发展趋势分析报告"
+        },
+        "hackathon": {
+          "title": "开放黑客松",
+          "description": "促进创新与合作的开源竞赛平台"
+        }
+      }
+    },
+    "introduction": {
+      "title": "关于开源社",
+      "paragraph1": "开源社（英文名称为\"KAIYUANSHE\"）成立于 2014 年，是由志愿贡献于开源事业的个人志愿者，依 \"贡献、共识、共治\" 原则所组成的开源社区。开源社始终维持 \"厂商中立、公益、非营利\" 的理念，以 \"立足中国、贡献全球，推动开源成为新时代的生活方式\" 为愿景，以 \"开源治理、国际接轨、社区发展、项目孵化\" 为使命，旨在共创健康可持续发展的开源生态体系。",
+      "paragraph2": "开源社积极与支持开源的社区、高校、企业以及政府相关单位紧密合作，同时也是全球开源协议认证组织 - OSI 在中国的首个成员。",
+      "paragraph3": "自2016年起连续举办中国开源年会（COSCon），持续发布《中国开源年度报告》，联合发起了\"中国开源先锋榜\"、\"中国开源码力榜\"等，在海内外产生了广泛的影响力。"
+    },
+    "cta": {
+      "title": "加入开源社 · 见证你的开源成长之路",
+      "description": "无论你是热衷于开源的开发者，还是已经投身开源，开源社都为你提供最全面的资源与舞台。",
+      "followGithub": "关注Github",
+      "followWeChat": "关注公众号",
+      "followX": "关注 X"
+    }
+  },
+  "footer": {
+    "title": "开源社",
+    "description": "开源社是一个聚合开源活动、社区、文章和开发者数据的一站式广场。",
+    "copyright": "&copy; 2025 开源社. 保留所有权利"
+  },
+  "errors": {
+    "fetchDapps": "获取 DApps 列表失败:"
+  }
+}
