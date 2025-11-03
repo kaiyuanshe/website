@@ -127,10 +127,9 @@ export default function Header() {
           {
             key: 'open-source-manifesto',
             label: '开源人宣言',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/Oq07wJtvQiykMykQuqMc8Dj0nBe',
+            href: '/governance/open-source-manifesto',
             description: '开源人宣言',
-            group: 'policies',
-            target: '_blank'
+            group: 'policies'
           },
           {
             key: 'annual-report',
