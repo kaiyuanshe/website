@@ -198,7 +198,7 @@ export default function Header() {
           {
             key: 'kcc',
             label: '开源社城市社区（KCC）',
-            href: '/articles?keyword=kcc-library',
+            href: '/community',
             description: '各地开源社城市社区',
             group: 'cooperation'
           },
