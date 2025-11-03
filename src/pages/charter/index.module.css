@@ -166,7 +166,7 @@
 
 .rightsItem::before,
 .dutiesItem::before {
-  content: '▶';
+  content: '◆';
   color: #3498db;
   font-weight: bold;
   margin-right: 0.8rem;
