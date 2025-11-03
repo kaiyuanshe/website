@@ -120,10 +120,9 @@ export default function Header() {
           {
             key: 'code-of-conduct',
             label: '开源社行为守则',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/UCrmwQ0oqilra0ki3tNcP4xonLe',
+            href: '/governance/code-of-conduct',
             description: '社区行为准则和规范',
-            group: 'policies',
-            target: '_blank'
+            group: 'policies'
           },
           {
             key: 'open-source-manifesto',
