@@ -113,10 +113,9 @@ export default function Header() {
           {
             key: 'member-rights',
             label: '正式成员权利与义务',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/wikcn6ksFU0HhNBqnEyTODHagFl',
+            href: '/governance/member-rights',
             description: '正式成员的权利与义务说明',
-            group: 'policies',
-            target: '_blank'
+            group: 'policies'
           },
           {
             key: 'code-of-conduct',
