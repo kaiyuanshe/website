@@ -69,10 +69,10 @@ export default function Header() {
           {
             key: 'charter',
             label: '开源社章程',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/T4s3wEQWqibKDtkiB9icam6znTe',
+            href: '/charter',
             description: '开源社的章程和管理制度',
             group: 'basic',
-            target: '_blank'
+            
           },
 
           {
