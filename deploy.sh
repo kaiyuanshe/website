@@ -17,6 +17,8 @@ mkdir -p $TMP_DIR
 git -C $BASE_DIR reset --hard
 git -C $BASE_DIR pull origin main
 
+sudo chmod +x deploy.sh
+
 # ================= 前端 =================
 echo "📦 构建前端到临时目录..."
 cp -r $BASE_DIR $TMP_DIR/frontend

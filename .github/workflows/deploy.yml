@@ -18,6 +18,5 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            sudo chmod +x /root/website/deploy.sh
             bash /root/website/deploy.sh
 
