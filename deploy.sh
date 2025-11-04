@@ -42,7 +42,7 @@ echo "♻️ 替换后端二进制..."
 mv $TMP_DIR/backend/app $BASE_DIR/kaiyuanshe/app
 
 echo "♻️ 重启后端服务..."
-systemctl restart kaiyuanshe
+sudo systemctl restart kaiyuanshe
 
 # ================= 清 =================
 rm -rf $TMP_DIR
