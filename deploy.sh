@@ -8,7 +8,7 @@ export PATH=$PATH:/usr/local/go/bin
 export GOPROXY=https://goproxy.cn,direct
 
 # ================= 配置 =================
-BASE_DIR=/root/kaiyuanshe
+BASE_DIR=/root/website
 TMP_DIR=/tmp/deploy_$(date +%s)
 
 mkdir -p $TMP_DIR
