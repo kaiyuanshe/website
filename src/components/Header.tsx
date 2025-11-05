@@ -392,10 +392,9 @@ export default function Header() {
           {
             key: 'join-us',
             label: '如何加入我们',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/NVExwJkvFiMbnwkhuW1ciUYineg',
+            href: '/join-us',
             description: '了解如何加入开源社',
-            group: 'brand',
-            target: '_blank'
+            group: 'brand'
           }
         ]
       }
