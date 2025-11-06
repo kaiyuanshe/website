@@ -137,10 +137,9 @@ export default function Header() {
           {
             key: 'annual-report',
             label: '开源社年度报告',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/U2S7wudEUisLdnkqUadczo1SnSc',
+            href: '/annual-reports',
             description: '查看开源社的年度工作报告和成果',
-            group: 'policies',
-            target: '_blank'
+            group: 'policies'
           }
         ]
       },

@@ -1,0 +1,428 @@
+.container {
+  min-height: 100vh;
+  background: #fafbfc;
+}
+
+/* 加载和错误状态 */
+.loading,
+.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 40px 20px;
+}
+
+.loading p {
+  margin-top: 16px;
+  color: #6b7280;
+  font-size: 1.1rem;
+}
+
+/* 导航栏 */
+.navigation {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.backButton {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.backButton:hover {
+  color: #374151;
+}
+
+/* 报告头部 */
+.header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 0;
+  position: relative;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('/images/pattern.svg') repeat;
+  opacity: 0.1;
+}
+
+.headerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.headerLeft {
+  flex: 1;
+}
+
+.reportMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  margin-bottom: 24px;
+  opacity: 0.9;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 0 0 20px 0;
+  line-height: 1.2;
+  background: linear-gradient(45deg, #fff, #e0e7ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.description {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  opacity: 0.9;
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.headerRight {
+  flex-shrink: 0;
+}
+
+.coverImageContainer {
+  position: relative;
+  width: 280px;
+  height: 360px;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.coverImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 主要内容区域 */
+.content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.tabs {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* 内容标签页 */
+.contentTab {
+  padding: 40px;
+  line-height: 1.8;
+}
+
+.markdownContent {
+  max-width: 800px;
+  margin: 0 auto;
+  color: #374151;
+  font-size: 1.05rem;
+}
+
+.markdownContent h3 {
+  color: #1f2937;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 32px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.markdownContent strong {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.markdownContent p {
+  margin-bottom: 16px;
+}
+
+/* PDF标签页 */
+.pdfTab {
+  padding: 40px;
+}
+
+.pdfViewer {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pdfControls {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.pdfPlaceholder {
+  background: #f8fafc;
+  border: 2px dashed #d1d5db;
+  border-radius: 12px;
+  padding: 80px 40px;
+  color: #6b7280;
+}
+
+.pdfIcon {
+  color: #9ca3af;
+  margin-bottom: 16px;
+}
+
+.pdfPlaceholder h3 {
+  color: #374151;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.pdfPlaceholder p {
+  margin-bottom: 8px;
+}
+
+.pdfInfo {
+  font-size: 0.9rem;
+  color: #9ca3af;
+}
+
+/* 报告亮点标签页 */
+.highlightsTab {
+  padding: 40px;
+}
+
+.highlightsList {
+  max-width: 800px;
+  margin: 0 auto;
+  display: grid;
+  gap: 20px;
+}
+
+.highlightCard {
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.highlightCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.highlightContent {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  padding: 8px 0;
+}
+
+.highlightNumber {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.highlightText {
+  flex: 1;
+  color: #374151;
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+/* 响应式设计 */
+@media (max-width: 1024px) {
+  .headerContent {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .coverImageContainer {
+    width: 240px;
+    height: 300px;
+    margin: 0 auto;
+  }
+  
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .content {
+    padding: 40px 16px;
+  }
+  
+  .contentTab,
+  .pdfTab,
+  .highlightsTab {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .reportMeta {
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .title {
+    font-size: 2rem;
+  }
+  
+  .description {
+    font-size: 1.1rem;
+  }
+  
+  .actions {
+    justify-content: center;
+  }
+  
+  .coverImageContainer {
+    width: 200px;
+    height: 260px;
+  }
+  
+  .pdfControls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .pdfPlaceholder {
+    padding: 60px 20px;
+  }
+  
+  .highlightContent {
+    gap: 16px;
+  }
+  
+  .highlightNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+  
+  .highlightText {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 40px 0;
+  }
+  
+  .title {
+    font-size: 1.75rem;
+  }
+  
+  .description {
+    font-size: 1rem;
+  }
+  
+  .backButton {
+    padding: 0 16px;
+  }
+  
+  .content {
+    padding: 20px 12px;
+  }
+  
+  .contentTab,
+  .pdfTab,
+  .highlightsTab {
+    padding: 16px;
+  }
+  
+  .markdownContent {
+    font-size: 1rem;
+  }
+  
+  .markdownContent h3 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Ant Design 样式覆盖 */
+.tabs :global(.ant-tabs-nav) {
+  padding: 0 40px;
+  margin-bottom: 0;
+}
+
+.tabs :global(.ant-tabs-tab) {
+  padding: 16px 24px;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.tabs :global(.ant-tabs-content-holder) {
+  padding: 0;
+}
+
+.highlightCard :global(.ant-card-body) {
+  padding: 20px;
+}
+
+@media (max-width: 768px) {
+  .tabs :global(.ant-tabs-nav) {
+    padding: 0 20px;
+  }
+  
+  .tabs :global(.ant-tabs-tab) {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+}
