@@ -99,7 +99,7 @@ export default function Header() {
 
           {
             key: 'brand-download',
-            label: '品牌标识下载',
+            label: '品牌资源',
             href: '/logo.zip',
             target: '_blank',
             description: '下载开源社品牌标识',
