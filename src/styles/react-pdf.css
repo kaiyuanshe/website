@@ -1,0 +1,33 @@
+/* React PDF 样式 */
+@import 'react-pdf/dist/Page/AnnotationLayer.css';
+@import 'react-pdf/dist/Page/TextLayer.css';
+
+/* 自定义PDF样式 */
+.react-pdf__Page__canvas {
+  max-width: 100%;
+  height: auto !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.react-pdf__Page__textContent {
+  border-radius: 8px;
+}
+
+.react-pdf__Page__annotations {
+  border-radius: 8px;
+}
+
+/* PDF加载状态 */
+.react-pdf__Document {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.react-pdf__Page {
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+}
