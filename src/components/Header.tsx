@@ -192,18 +192,11 @@ export default function Header() {
           {
             key: 'partners',
             label: '合作伙伴',
-            href: '/',
+            href: '/partners',
             description: '赞助伙伴、合作媒体、合作社区',
             group: 'cooperation'
           },
-          {
-            key: 'individual-sponsors',
-            label: '个人赞助（与合作伙伴合并）',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/V8QfwIblXibIjoksERYcL6R6nDh?from=space_search',
-            description: '个人赞助者列表',
-            group: 'cooperation',
-            target: '_blank'
-          },
+         
           {
             key: 'china-oss-report',
             label: '中国开源年度报告',
