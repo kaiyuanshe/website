@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Calendar, FileText, Download, Eye } from 'lucide-react'
 import { Card } from 'antd'
-import { mockReports } from '../../data/annual-reports'
 import styles from './index.module.css'
 
 const { Meta } = Card
@@ -34,7 +33,7 @@ export default function AnnualReportsPage() {
         {/* 报告列表 */}
         <div className={styles.content}>
           <div className={styles.reportsGrid}>
-            {mockReports.map((report) => (
+            {[].map((report) => (
               <Card
                 key={report.id}
                 className={styles.reportCard}
@@ -95,8 +94,6 @@ export default function AnnualReportsPage() {
             ))}
           </div>
         </div>
-
-       
       </div>
     </>
   )

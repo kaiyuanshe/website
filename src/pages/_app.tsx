@@ -1,7 +1,6 @@
 import type { AppProps } from 'next/app';
 import Layout from '../components/Layout';
 import '../styles/globals.css';
-import '../styles/react-pdf.css';
 import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { ConfigProvider, App as AntdApp } from 'antd';
