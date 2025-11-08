@@ -21,10 +21,11 @@
 
 .titleSection {
   text-align: center;
+  margin-bottom: 3rem;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 1rem 0;
@@ -32,10 +33,124 @@
 }
 
 .subtitle {
-  font-size: 1.25rem;
+  font-size: 1rem;
   color: #6b7280;
   margin: 0;
   line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.statsBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 48px;
+  padding: 32px 40px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 -1px 0 rgba(0, 0, 0, 0.05) inset;
+  position: relative;
+  overflow: hidden;
+}
+
+.statsBar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(59, 130, 246, 0.02), 
+    rgba(139, 92, 246, 0.02),
+    rgba(16, 185, 129, 0.02)
+  );
+  pointer-events: none;
+}
+
+.statItem {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  padding: 8px 16px;
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.statItem:hover {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  transform: translateY(-2px);
+}
+
+.statNumber {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 6px;
+  line-height: 1;
+  text-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
+}
+
+.statLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+}
+
+.levelSelect {
+  font-size: 1.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-bottom: 6px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  line-height: 1;
+  position: relative;
+}
+
+.levelSelect:hover {
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  transform: translateY(-2px) scale(1.02);
+  filter: drop-shadow(0 4px 8px rgba(139, 92, 246, 0.2));
+}
+
+.levelSelect svg {
+  color: #8b5cf6;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(139, 92, 246, 0.1));
+}
+
+.levelSelect:hover svg {
+  color: #7c3aed;
+  transform: rotate(180deg);
+}
+
+.partnersSection {
+  width: 100%;
 }
 
 .yearNavigation {
@@ -253,6 +368,26 @@
 
   .subtitle {
     font-size: 1rem;
+    padding: 0 1rem;
+  }
+
+  .statsBar {
+    gap: 24px;
+    padding: 20px 16px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .statNumber {
+    font-size: 2rem;
+  }
+
+  .statLabel {
+    font-size: 0.8rem;
+  }
+
+  .levelSelect {
+    font-size: 2rem;
   }
 
   .yearNavigation {
@@ -298,6 +433,31 @@
 @media (max-width: 480px) {
   .headerContent {
     gap: 2rem;
+  }
+
+  .title {
+    font-size: 1.8rem;
+  }
+
+  .statsBar {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .statItem {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .statNumber {
+    font-size: 1.8rem;
+    margin-bottom: 0;
+  }
+
+  .levelSelect {
+    font-size: 1.8rem;
   }
 
   .yearNavigation {
