@@ -152,14 +152,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   padding: 1.5rem;
   background: white;
   border-radius: 1rem;
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.1);
   width: 180px;
-  height: 180px;
+  min-height: 200px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   margin-bottom: 1rem;
 }
@@ -195,6 +195,21 @@
   transform: scale(1.05);
 }
 
+.partnerTitle {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #374151;
+  text-align: center;
+  line-height: 1.4;
+  max-width: 100%;
+  margin-top: auto;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .partnerTag {
   background: linear-gradient(45deg, #6366f1, #8b5cf6);
   color: white;
@@ -204,7 +219,7 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(99, 102, 241, 0.2);
   text-align: center;
-  margin-top: auto;
+  margin-top: 0.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -255,7 +270,7 @@
 
   .partnerCard {
     width: 140px;
-    height: 140px;
+    min-height: 160px;
     padding: 1rem;
   }
 
@@ -288,7 +303,7 @@
 
   .partnerCard {
     width: 120px;
-    height: 120px;
+    min-height: 140px;
     padding: 0.75rem;
   }
 

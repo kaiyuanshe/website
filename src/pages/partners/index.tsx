@@ -41,6 +41,9 @@ const PartnersPage: React.FC = () => {
           {partner.tag}
         </div>
       )}
+      <div className={styles.partnerTitle}>
+        {partner.title}
+      </div>
     </div>
   )
 
