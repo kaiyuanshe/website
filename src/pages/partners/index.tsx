@@ -47,10 +47,13 @@ const PartnersPage: React.FC = () => {
   const renderPartnerSection = (level: string, partners: Partner[]) => {
     if (!partners || partners.length === 0) return null
     
+    const isHighTierSponsor = level === '战略赞助' || level === '白金赞助'
+    const gridClassName = isHighTierSponsor ? styles.singleRowGrid : styles.partnersGrid
+    
     return (
       <section key={level} className={styles.partnerSection}>
         <h3 className={styles.sectionTitle}>{level}</h3>
-        <div className={styles.partnersGrid}>
+        <div className={gridClassName}>
           {partners.map(renderPartnerCard)}
         </div>
       </section>
@@ -61,15 +64,6 @@ const PartnersPage: React.FC = () => {
 
   return (
     <div className={`${styles.container} nav-t-top`}>
-      <div className={styles.header}>
-        <div className={styles.headerContent}>
-          <div className={styles.titleSection}>
-            <h1 className={styles.title}>合作伙伴</h1>
-            <p className={styles.subtitle}>携手共进，共建开源生态</p>
-          </div>
-        </div>
-      </div>
-
       <div className={styles.content}>
         <div className={styles.partnersContainer}>
           {sortedLevels.map(level => 
