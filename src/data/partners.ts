@@ -617,7 +617,7 @@ export const partnersRawData: Partner[] = [
     year: '2021',
     level: '战略赞助',
     link: 'https://mp.weixin.qq.com/s/KEsFaVKrNr7vQTkyBcvH-w\nhttps://cloud.tencent.com/act/pro/weopen-home',
-    logo: '/logo.png',
+    logo: '/img/partners/tengyuan.png',
     tag: '累计赞助6年'
   },
   {
@@ -627,7 +627,7 @@ export const partnersRawData: Partner[] = [
     year: '2021',
     level: '白金赞助',
     link: '',
-    logo: '/logo.png',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -827,7 +827,7 @@ export const partnersRawData: Partner[] = [
     year: '2020',
     level: '战略赞助',
     link: '',
-    logo: '/logo.png',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -837,7 +837,7 @@ export const partnersRawData: Partner[] = [
     year: '2020',
     level: '战略赞助',
     link: '',
-    logo: '/logo.png',
+    logo: '/img/partners/microsoft.jpg',
     tag: ''
   },
   {

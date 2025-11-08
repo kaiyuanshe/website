@@ -7,35 +7,37 @@ import { Partner, partnersData, levelOrder } from '@/data/partners'
 const PartnersPage: React.FC = () => {
 
   const renderPartnerCard = (partner: Partner) => (
-    <div key={partner.title} className={styles.partnerCard}>
-      {partner.link ? (
-        <a 
-          href={partner.link} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          className={styles.partnerLink}
-        >
+    <div key={partner.title} className={`${styles.partnerCard} ${!partner.tag ? styles.partnerCardNoTag : ''}`}>
+      <div className={styles.partnerLogoContainer}>
+        {partner.link ? (
+          <a 
+            href={partner.link} 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className={styles.partnerLink}
+          >
+            <Image 
+              src={partner.logo} 
+              alt={partner.organization} 
+              title={partner.title}
+              className={styles.partnerLogo}
+              width={100}
+              height={80}
+              style={{ objectFit: 'contain' }}
+            />
+          </a>
+        ) : (
           <Image 
             src={partner.logo} 
             alt={partner.organization} 
             title={partner.title}
             className={styles.partnerLogo}
-            width={120}
-            height={60}
+            width={100}
+            height={80}
             style={{ objectFit: 'contain' }}
           />
-        </a>
-      ) : (
-        <Image 
-          src={partner.logo} 
-          alt={partner.organization} 
-          title={partner.title}
-          className={styles.partnerLogo}
-          width={120}
-          height={60}
-          style={{ objectFit: 'contain' }}
-        />
-      )}
+        )}
+      </div>
       {partner.tag && (
         <div className={styles.partnerTag}>
           {partner.tag}
