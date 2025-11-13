@@ -44,10 +44,11 @@
 }
 
 .navItem {
+ 
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.75rem 1rem;
+  padding:1.5rem 1rem;
   color: #4b5563;
   font-size: 0.95rem;
   font-weight: 600;
@@ -84,6 +85,16 @@
   overflow: hidden;
 }
 
+.navDropdownMenu::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 0;
+  right: 0;
+  height: 10px;
+  background: transparent;
+}
+
 /* 下拉菜单布局 */
 .dropdownLayout {
   display: flex;
@@ -96,7 +107,7 @@
 /* 左侧菜单区域 */
 .dropdownLeft {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 0rem;
   background: white;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -107,7 +118,7 @@
 /* 关于我们菜单的三列布局 */
 .dropdownLeftTwoColumn {
   flex: 1;
-  padding: 1.5rem 2rem;
+  padding: 1.5rem 0rem;
   background: white;
   display: flex;
   gap: 1.5rem;

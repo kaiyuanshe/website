@@ -159,7 +159,7 @@ type CreateArticleRequest struct {
 	Desc       string   `json:"desc" binding:"required"`
 	Content    string   `json:"content" binding:"required"`
 	Category   string   `json:"category" binding:"required"`
-	License    string   `json:"license" binding:"required"`
+	License    string   `json:"license"`
 	SourceLink string   `json:"source_link"`
 	SourceType string   `json:"source_type"`
 	CoverImg   string   `json:"cover_img" binding:"required"`
@@ -188,7 +188,7 @@ type UpdateArticleRequest struct {
 	Desc       string   `json:"desc" binding:"required"`
 	Content    string   `json:"content" binding:"required"`
 	Category   string   `json:"category" binding:"required"`
-	License    string   `json:"license" binding:"required"`
+	License    string   `json:"license"`
 	SourceLink string   `json:"source_link"`
 	CoverImg   string   `json:"cover_img" binding:"required"`
 	Tags       []string `json:"tags"`
@@ -364,4 +364,40 @@ type SpeakerRequest struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Company     string `json:"company"`
+}
+
+// Community
+type CreateCommunityRequest struct {
+	City         string `json:"city" binding:"required"`
+	Intro        string `json:"intro" binding:"required"`
+	Cover        string `json:"cover" binding:"required"`
+	RegisterLink string `json:"register_link" binging:"required"`
+	StartDate    string `json:"start_date" binging:"required"`
+}
+
+type QueryCommunityResponse struct {
+	Communities []models.Community `json:"communities"`
+	Page        int                `json:"page"`
+	PageSize    int                `json:"page_size"`
+	Total       int64              `json:"total"`
+}
+
+type UpdateCommunityRequest struct {
+	City         string `json:"city" binding:"required"`
+	Intro        string `json:"intro" binding:"required"`
+	Cover        string `json:"cover" binding:"required"`
+	RegisterLink string `json:"register_link" binging:"required"`
+	StartDate    string `json:"start_date" binging:"required"`
+}
+
+type CreateMemberRequest struct {
+	Name   string `json:"name" binding:"required"`
+	Avatar string `json:"avatar" binding:"required"`
+	Title  string `json:"title" binding:"required"`
+}
+
+type UpdateMemberRequest struct {
+	Name   string `json:"name" binding:"required"`
+	Avatar string `json:"avatar" binding:"required"`
+	Title  string `json:"title" binding:"required"`
 }

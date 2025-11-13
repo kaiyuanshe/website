@@ -98,11 +98,10 @@ export default function Header() {
           },
 
           {
-            key: 'brand-download',
+            key: 'brand',
             label: '品牌资源',
-            href: '/logo.zip',
-            target: '_blank',
-            description: '下载开源社品牌标识',
+            href: '/brand',
+            description: '开源社品牌资源',
             group: 'brand'
           }
         ]
@@ -137,7 +136,7 @@ export default function Header() {
           {
             key: 'annual-report',
             label: '开源社年度报告',
-            href: '/annual-reports',
+            href: '/kysreports',
             description: '查看开源社的年度工作报告和成果',
             group: 'policies'
           }
@@ -147,6 +146,13 @@ export default function Header() {
         key: 'community-development',
         label: '社区发展',
         children: [
+           {
+            key: 'partners',
+            label: '合作伙伴',
+            href: '/partners',
+            description: '赞助伙伴、合作媒体、合作社区',
+            group: 'recognition'
+          },
           {
             key: 'members',
             label: '正式成员',
@@ -173,7 +179,7 @@ export default function Header() {
             label: 'COSCon之星',
             href: '/community/coscon',
             description: 'COSCon会议之星',
-            group: 'recognition'
+            group: 'cooperation'
           },
           {
             key: 'cooperation-star',
@@ -189,21 +195,14 @@ export default function Header() {
             description: '各地开源社城市社区',
             group: 'cooperation'
           },
-          {
-            key: 'partners',
-            label: '合作伙伴',
-            href: '/partners',
-            description: '赞助伙伴、合作媒体、合作社区',
-            group: 'cooperation'
-          },
+         
          
           {
             key: 'china-oss-report',
             label: '中国开源年度报告',
-            href: 'https://kaiyuanshe.feishu.cn/wiki/wikcnUDeVll6PNzw900yPV71Sxd',
+            href: '/osreports',
             description: '中国开源年度报告',
             group: 'reports',
-            target: '_blank'
           },
           {
             key: 'china-oss-pioneer',
@@ -229,7 +228,7 @@ export default function Header() {
           {
             key: 'coscon',
             label: '中国开源年会',
-            href: '/events',
+            href: '/events/coscon',
             description: '中国最大的开源技术年度盛会',
             group: 'annual'
           },
@@ -270,14 +269,14 @@ export default function Header() {
           {
             key: 'articles',
             label: '博客',
-            href: '/articles',
+            href: '/blogs',
             description: '阅读最新的博客信息',
             group: 'content'
           },
           {
             key: 'notice',
             label: '公告',
-            href: '/',
+            href: '/announcement',
             description: '获取最新公告',
             group: 'brand'
           }
@@ -389,7 +388,7 @@ export default function Header() {
   const handleMouseLeave = useCallback(() => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setActiveDropdown(null)
-    }, 150) // 150ms 延迟
+    }, 200) // 200ms 延迟，给用户更多时间移动到浮窗
   }, [])
 
   // 清理定时器
@@ -590,35 +589,11 @@ export default function Header() {
                     </div>
                   </>
                 ) : item.key === 'governance' ? (
-                  // 社区治理的特殊三列布局
+                  // 社区治理的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'basic')
-                        .map(child => (
-                          <Link
-                            key={child.key}
-                            href={child.href || '/'}
-                            className={styles.navDropdownItem}
-                            onClick={() => setActiveDropdown(null)}
-                            target={child.target}
-                          >
-                            <div className={styles.dropdownItemContent}>
-                              <span className={styles.dropdownItemTitle}>
-                                {child.label}
-                              </span>
-                              {child.description && (
-                                <span className={styles.dropdownItemDesc}>
-                                  {child.description}
-                                </span>
-                              )}
-                            </div>
-                          </Link>
-                        ))}
-                    </div>
-                    <div className={styles.aboutColumn}>
-                      {item.children
-                        ?.filter(child => child.group === 'departments')
                         .map(child => (
                           <Link
                             key={child.key}

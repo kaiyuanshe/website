@@ -13,6 +13,12 @@
   gap: 20px;
 }
 
+@media (min-width: 1300px) {
+  .container {
+    max-width: 1260px;
+  }
+}
+
 @media (min-width: 1800px) {
   .container {
     max-width: 1680px;
@@ -25,6 +31,7 @@
   transform: translateY(-50%);
   z-index: 10;
   background: rgba(255, 255, 255, 0.9);
+  color: #666;
   border: none;
   border-radius: 50%;
   width: 48px;
@@ -80,6 +87,13 @@
   transition: all 0.3s ease;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   position: relative;
+}
+
+@media (min-width: 1300px) {
+  .imageWrapper {
+    width: 300px;
+    height: 200px;
+  }
 }
 
 @media (min-width: 1800px) {

@@ -1857,25 +1857,51 @@ export const levelOrder = [
   '银牌赞助',
   '铜牌赞助',
   '星牌赞助',
-  '亮点赞助',
-  '成员赞助',
-  '战略合作社区',
-  '战略合作媒体',
+  '个人赞助',
+  // '亮点赞助',
+  // '成员赞助',
+  // '战略合作媒体',
   '媒体伙伴',
-  '主办单位',
-  '指导单位',
-  '协办单位',
-  '承办单位',
-  '大会合作单位',
-  '特别支持',
-  '讲师赞助',
-  '国际讲师差旅赞助',
-  '报名平台伙伴',
-  '视频直播伙伴',
-  '网站支持',
-  '元宇宙会场赞助',
-  '个人赞助'
+  '战略合作社区'
+  // '主办单位',
+  // '指导单位',
+  // '协办单位',
+  // '承办单位',
+  // '大会合作单位',
+  // '特别支持',
+  // '讲师赞助',
+  // '国际讲师差旅赞助',
+  // '报名平台伙伴',
+  // '视频直播伙伴',
+  // '网站支持',
+  // '元宇宙会场赞助'
 ]
+
+// Function to organize partners by year
+export const organizePartnersByYear = (
+  data: Partner[]
+): { [year: string]: Partner[] } => {
+  const organized: { [year: string]: Partner[] } = {}
+
+  data.forEach(partner => {
+    const year = partner.year
+    if (!organized[year]) {
+      organized[year] = []
+    }
+    organized[year].push(partner)
+  })
+
+  // Sort years in descending order (newest first)
+  const sortedYears: { [year: string]: Partner[] } = {}
+  Object.keys(organized)
+    .sort((a, b) => parseInt(b) - parseInt(a))
+    .forEach(year => {
+      sortedYears[year] = organized[year]
+    })
+
+  return sortedYears
+}
 
 // Get organized partners data
 export const partnersData = organizePartnersByLevel(partnersRawData)
+export const partnersByYear = organizePartnersByYear(partnersRawData)
