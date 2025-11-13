@@ -67,7 +67,7 @@ export default function Footer() {
     {
       title: '开源活动',
       items: [
-        { label: '中国开源年会', href: '/events' },
+        { label: '中国开源年会', href: '/events/coscon' },
         { label: '社区合作活动', href: '/events' },
         { label: '活动日历', href: '/events/calendar' }
       ]
@@ -135,7 +135,7 @@ export default function Footer() {
                   <LinkedinIcon className={styles.socialIcon} />
                 </Link>
                 <Link
-                  href="https://space.bilibili.com/500938314"
+                  href="https://space.bilibili.com/525037536"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.socialButton}
@@ -184,8 +184,8 @@ export default function Footer() {
               <span style={{ marginRight: '2rem' }}>
                 © 2025 开源社. 保留所有权利
               </span>
-              {/* <span style={{ marginRight: '2rem' }}>沪 ICP 备 19006015 号</span>
-              <span>公安备案 31011202006203 号</span> */}
+              <span style={{ marginRight: '2rem' }}>沪 ICP 备 19006015 号</span>
+              <span>公安备案 31011202006203 号</span>
             </span>
           </p>
         </div>

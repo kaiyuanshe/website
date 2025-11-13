@@ -7,10 +7,10 @@
 
 .backButton {
   position: fixed;
-  top: 100px;
+  top: 120px;
   left: 60px;
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.95);
   border: 1px solid rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(10px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -366,59 +366,255 @@
 
 /* 响应式设计 */
 @media (max-width: 768px) {
+  .container {
+    overflow-x: hidden;
+  }
+  
   .header {
     height: max(200px, 25vh);
     min-height: 200px;
   }
   
+  .headerContent {
+    padding: 20px 4%;
+  }
+  
+  .communityInfo {
+    text-align: center;
+    max-width: 100%;
+  }
+  
+  .communityTitle {
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+  }
+  
   .cityName {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     gap: 6px;
+    text-align: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .statusTag {
+    font-size: 12px;
+    padding: 2px 8px;
   }
   
   .communityIntro {
     font-size: 0.9rem;
     line-height: 1.4;
     margin: 8px 0;
+    padding: 0 10px;
   }
   
   .statsContainer {
-    gap: 16px;
-    padding: 10px 12px;
-    margin: 12px 0;
+    flex-direction: row;
+    gap: 12px;
+    padding: 8px 12px;
+    margin: 12px auto;
+    max-width: 280px;
+  }
+  
+  .stat {
+    gap: 4px;
+    min-width: 0;
+    flex: 1;
   }
   
   .statNumber {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
   
   .statLabel {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    text-align: center;
   }
   
   .content {
-    padding: 40px 4% 30px;
+    padding: 30px 4% 20px;
+    margin-top: -20px;
+    border-radius: 20px 20px 0 0;
+  }
+  
+  .membersSection {
+    max-width: 100%;
   }
   
   .membersGrid {
     grid-template-columns: 1fr;
     gap: 16px;
+    margin-top: 20px;
+  }
+  
+  .memberCard {
+    margin: 0 auto;
+    max-width: 100%;
+    border-radius: 12px;
+  }
+  
+  .memberHeader {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .memberAvatar {
+    width: 50px !important;
+    height: 50px !important;
+    border-width: 2px;
+  }
+  
+  .memberName {
+    font-size: 1.1rem;
+    margin: 0 0 6px 0;
+  }
+  
+  .roleTag {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .memberBio {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 12px;
+  }
+  
+  .memberStats {
+    flex-direction: column;
+    gap: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .memberStat {
+    font-size: 0.8rem;
+  }
+  
+  .projectTags {
+    gap: 4px;
+  }
+  
+  .projectTag {
+    font-size: 0.7rem;
+    padding: 1px 6px;
+  }
+  
+  .memberLinks {
+    gap: 6px;
+    padding-top: 8px;
   }
   
   .backButton {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 80px;
+    left: 15px;
+    z-index: 1001;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .sectionHeader {
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
+    margin-bottom: 20px;
   }
   
   .sectionTitle {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .joinButton {
+    width: 100%;
+    max-width: 200px;
+    margin-top: 8px;
+    height: 36px;
+    font-size: 13px;
+    border-radius: 18px;
+  }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+  .headerContent {
+    padding: 15px 3%;
+  }
+  
+  .cityName {
+    font-size: 1.4rem;
+    line-height: 1.2;
+  }
+  
+  .communityIntro {
+    font-size: 0.85rem;
+    padding: 0 5px;
+  }
+  
+  .statsContainer {
+    max-width: 250px;
+    padding: 6px 8px;
+  }
+  
+  .statNumber {
+    font-size: 1rem;
+  }
+  
+  .statLabel {
+    font-size: 0.7rem;
+  }
+  
+  .content {
+    padding: 25px 3% 15px;
+  }
+  
+  .sectionTitle {
+    font-size: 1.2rem;
+  }
+  
+  .memberCard {
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  
+  .memberHeader {
+    gap: 10px;
+  }
+  
+  .memberAvatar {
+    width: 45px !important;
+    height: 45px !important;
+  }
+  
+  .memberName {
+    font-size: 1rem;
+  }
+  
+  .memberBio {
+    font-size: 0.85rem;
+  }
+  
+  .backButton {
+    top: 70px;
+    left: 10px;
+    padding: 4px 8px;
+    font-size: 11px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .joinButton {
+    height: 32px;
+    font-size: 12px;
   }
 }
 
