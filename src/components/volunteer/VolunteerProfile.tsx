@@ -18,10 +18,6 @@ export default function VolunteerProfile({
 }: VolunteerProfileProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const displayText = recommendation.length > 120 
-    ? recommendation.slice(0, 120) + '...' 
-    : recommendation
-
   return (
     <>
       <Card 
@@ -48,7 +44,7 @@ export default function VolunteerProfile({
             
             <div className={styles.recommendation}>
               <div className={styles.recommendationContent}>
-                <p>{displayText}</p>
+                <p>{recommendation}</p>
               </div>
             </div>
           </div>

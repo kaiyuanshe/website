@@ -379,10 +379,7 @@ export default function COSConStarPage() {
             </Dropdown>
             <div className={styles.statLabel}>年度表彰</div>
           </div>
-          <div className={styles.statItem}>
-            <div className={styles.statNumber}>{totalStars}</div>
-            <div className={styles.statLabel}>历史总数</div>
-          </div>
+         
         </div>
 
         <div className={styles.volunteersSection}>

@@ -129,10 +129,7 @@ export default function CooperationPage() {
             </Dropdown>
             <div className={styles.statLabel}>年度表彰</div>
           </div>
-          <div className={styles.statItem}>
-            <div className={styles.statNumber}>∞</div>
-            <div className={styles.statLabel}>合作精神</div>
-          </div>
+         
         </div>
 
         <div className={styles.volunteersSection}>

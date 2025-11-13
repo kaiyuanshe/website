@@ -224,7 +224,7 @@
     }
     
     .volunteersGrid {
-        grid-template-columns: repeat(auto-fill, 200px);
+        grid-template-columns: 1fr;
         gap: 20px;
         padding: 0 8px;
     }

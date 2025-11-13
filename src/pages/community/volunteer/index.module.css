@@ -234,8 +234,8 @@
     }
     
     .volunteersGrid {
-        columns: 2;
-        column-gap: 20px;
+        columns: 1;
+        column-gap: 0;
         padding: 0 8px;
     }
     

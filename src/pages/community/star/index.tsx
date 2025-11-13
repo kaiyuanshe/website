@@ -148,7 +148,9 @@ export default function StarPage() {
             <div className={styles.statNumber}>{filteredVolunteers.length}</div>
             <div className={styles.statLabel}>开源之星</div>
           </div>
-          <div className={styles.statItem}>
+     
+         
+               <div className={styles.statItem}>
             <Dropdown 
               menu={{ items: yearMenuItems }}
               trigger={['click','hover']}
@@ -159,10 +161,6 @@ export default function StarPage() {
               </div>
             </Dropdown>
             <div className={styles.statLabel}>年度表彰</div>
-          </div>
-          <div className={styles.statItem}>
-            <div className={styles.statNumber}>∞</div>
-            <div className={styles.statLabel}>开源精神</div>
           </div>
         </div>
 
