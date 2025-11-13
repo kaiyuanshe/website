@@ -438,15 +438,19 @@
   }
 
   .statsBar {
-    flex-direction: column;
-    gap: 16px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
   }
 
   .statItem {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 4px;
+    min-width: 80px;
   }
 
   .statNumber {
