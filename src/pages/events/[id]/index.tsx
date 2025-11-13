@@ -1,27 +1,22 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Button, Tag, Avatar, App as AntdApp, Image, Menu } from 'antd'
-import { User } from 'lucide-react'
+import { App as AntdApp, Image, Button } from 'antd'
+import { User, UserPlus, FileText, Upload, Users } from 'lucide-react'
 
-import type { MenuProps } from 'antd'
 import { Tabs } from 'antd'
 import type { TabsProps } from 'antd'
 
 import Link from 'next/link'
 import styles from './index.module.css'
 import { useAuth } from '@/contexts/AuthContext'
-import { getEventById, updateEventPublishStatus, getSessionsByEvent } from '@/pages/api/event'
-import { SiX } from 'react-icons/si'
-import { getRecapByEventId } from '@/pages/api/recap'
+import {
+  getEventById,
+  updateEventPublishStatus,
+  getSessionsByEvent
+} from '@/pages/api/event'
 import { sanitizeMarkdown } from '@/lib/markdown'
 
-type ContentTab =
-  | 'detail'
-  | 'volunteer'
-  | 'giftGallery'
-  | 'openFinance'
-  | 'dataStatistic'
-  | 'otherEvents'
+type ContentTab = 'detail'
 
 // 定义类型
 interface Speaker {
@@ -40,6 +35,7 @@ interface AgendaItem {
 interface Session {
   ID: number
   title: string
+  address: string
   description: string
   producer: string
   volunteer: string
@@ -52,13 +48,10 @@ export default function EventDetailPage() {
   const { id } = router.query
   const rId = Array.isArray(id) ? id[0] : id
 
-  const [activeContentTab, setActiveContentTab] = useState<ContentTab>('detail')
+  const [activeContentTab] = useState<ContentTab>('detail')
   const [sessions, setSessions] = useState<Session[]>([])
   const [sessionsLoading, setSessionsLoading] = useState(false)
 
-  const changeContentTab: MenuProps['onClick'] = e => {
-    setActiveContentTab(e.key as ContentTab)
-  }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [event, setEvent] = useState<any>(null)
@@ -255,26 +248,75 @@ export default function EventDetailPage() {
   const eventStatus = getEventStatus()
   const dateTimeRange = formatDateTimeRange(event.start_time, event.end_time)
 
-  // 渲染当前激活的组件
-  const renderActiveSection = () => {
-    const sectionProps = { event, eventContent, recapContent, sessions, sessionsLoading }
+  if (event?.event_type === 'community') {
+    return (
+      <div className={`${styles.container} nav-t-top`}>
+        {/* ======== 社区活动专属布局 ======== */}
+        <div className={styles.communityLayout}>
+          {/* 活动标题与关键信息 */}
+          <div className={styles.communityHeader}>
+            <h1 className={styles.communityTitle}>{event.title}</h1>
 
-    switch (activeContentTab) {
-      case 'detail':
-        return <DetailSection {...sectionProps} />
-      case 'volunteer':
-        return <VolunteerSection {...sectionProps} />
-      case 'giftGallery':
-        return <GiftGallerySection {...sectionProps} />
-      case 'openFinance':
-        return <OpenFinanceSection {...sectionProps} />
-      case 'dataStatistic':
-        return <DataStatisticSection {...sectionProps} />
-      case 'otherEvents':
-        return <OtherEventsSection {...sectionProps} />
-      default:
-        return <DetailSection {...sectionProps} />
+            <div className={styles.communityMeta}>
+              <span className={styles.metaItem}>📍 {event.location}</span>
+              <span className={styles.metaDivider}>·</span>
+              <span className={styles.metaItem}>
+                🗓️{' '}
+                {new Date(event.start_time).toLocaleDateString('zh-CN', {
+                  month: 'long',
+                  day: 'numeric'
+                })}{' '}
+                —{' '}
+                {new Date(event.end_time).toLocaleDateString('zh-CN', {
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </span>
+            </div>
+          </div>
+
+          {/* 简介 */}
+          <div className="marked-paper">
+            {/* <h2 className={styles.sectionTitle}>{article.title}</h2> */}
+            <div
+              className="prose"
+              dangerouslySetInnerHTML={{ __html: eventContent }}
+            />
+          </div>
+
+          {/* <div className={styles.communityActions}>
+      <Button
+        type="primary"
+        size="large"
+        onClick={() => window.open(event.twitter, '_blank')}
+      >
+        查看详情
+      </Button>
+
+      {event.registration_link && (
+        <Button
+          size="large"
+          onClick={() => window.open(event.registration_link, '_blank')}
+        >
+          立即报名
+        </Button>
+      )}
+    </div> */}
+        </div>
+      </div>
+    )
+  }
+
+  // 渲染活动详情组件
+  const renderDetailSection = () => {
+    const sectionProps = {
+      event,
+      eventContent,
+      recapContent,
+      sessions,
+      sessionsLoading
     }
+    return <DetailSection {...sectionProps} />
   }
 
   return (
@@ -289,23 +331,44 @@ export default function EventDetailPage() {
         />
       </div>
 
-      <div className={styles.navigation}>
-        <Menu
-          mode="horizontal"
-          selectedKeys={[activeContentTab]}
-          onClick={changeContentTab}
-          className={styles.navigationMenu}
-          items={[
-            { key: 'detail', label: '活动详情' },
-            { key: 'volunteer', label: '志愿者' },
-            { key: 'giftGallery', label: '礼品墙' },
-            { key: 'openFinance', label: '财务公开' },
-            { key: 'dataStatistic', label: '活动数据统计' },
-            { key: 'otherEvents', label: '往届活动' }
-          ]}
-        />
+      <div className={styles.actionButtons}>
+        <div className={styles.buttonContainer}>
+          <Button 
+            type="primary" 
+            icon={<UserPlus size={18} />}
+            size="large"
+            className={styles.actionButton}
+            onClick={() => window.open(`/`, '_blank')}
+          >
+            志愿者/讲师报名注册
+          </Button>
+          <Button 
+            icon={<FileText size={18} />}
+            size="large" 
+            className={styles.actionButton}
+            onClick={() => window.open(`/`, '_blank')}
+          >
+            议题征集
+          </Button>
+          <Button 
+            icon={<Upload size={18} />}
+            size="large"
+            className={styles.actionButton} 
+            onClick={() => window.open(`/`, '_blank')}
+          >
+            议题课件提交
+          </Button>
+          <Button 
+            icon={<Users size={18} />}
+            size="large"
+            className={styles.actionButton}
+            onClick={() => window.open(`/`, '_blank')}
+          >
+            参会注册
+          </Button>
+        </div>
       </div>
-      <div className={styles.content}>{renderActiveSection()}</div>
+      <div className={styles.content}>{renderDetailSection()}</div>
     </div>
   )
 }
@@ -320,7 +383,11 @@ interface SectionProps {
 }
 
 // 活动详情组件
-const DetailSection = ({ event, sessions = [], sessionsLoading }: SectionProps) => {
+const DetailSection = ({
+  event,
+  sessions = [],
+  sessionsLoading
+}: SectionProps) => {
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -328,17 +395,24 @@ const DetailSection = ({ event, sessions = [], sessionsLoading }: SectionProps) 
   // 会场组件
   const SessionContent: React.FC<Session> = ({
     title: name,
+    address,
     description,
     producer,
     volunteer,
     agendas
   }) => {
     // 将志愿者字符串转换为数组
-    const volunteerArray = volunteer ? volunteer.split(/[,;]/).map(v => v.trim()).filter(v => v) : []
+    const volunteerArray = volunteer
+      ? volunteer
+          .split(/[,;]/)
+          .map(v => v.trim())
+          .filter(v => v)
+      : []
 
     return (
       <div className={styles.sessionContent}>
         <h1 className={styles.sessionTitle}>{name}</h1>
+        <p className={styles.sessionAddress}>{address}</p>
         <p className={styles.sessionDescription}>{description}</p>
         <div className={styles.sessionAudit}>
           <p className={styles.sessionProducer}>
@@ -356,23 +430,17 @@ const DetailSection = ({ event, sessions = [], sessionsLoading }: SectionProps) 
             <h2 className={styles.agendaTitle}>议程</h2>
             <div className={styles.agendaList}>
               {agendas.map((item, index) => {
-
                 return (
-                  <div
-                    key={index}
-                    className={styles.agendaItem}
-                  >
+                  <div key={index} className={styles.agendaItem}>
                     <div className={styles.agendaTime}>
-                      {formatTime(item.start_time)} - {formatTime(item.end_time)}
+                      {formatTime(item.start_time)} -{' '}
+                      {formatTime(item.end_time)}
                     </div>
                     <div className={styles.agendaTopic}>{item.topic}</div>
 
                     <div className={styles.agendaSpeakers}>
                       {item.speakers.map((speaker, speakerIndex) => (
-                        <div
-                          key={speakerIndex}
-                          className={styles.speakerCard}
-                        >
+                        <div key={speakerIndex} className={styles.speakerCard}>
                           <div className={styles.speakerAvatarContainer}>
                             {speaker.avatar ? (
                               <img
@@ -435,19 +503,23 @@ const DetailSection = ({ event, sessions = [], sessionsLoading }: SectionProps) 
   // 将会场数据转换为 Tabs 格式
   const getSessionTabs = (): TabsProps['items'] => {
     if (sessionsLoading) {
-      return [{
-        key: 'loading',
-        label: '加载中...',
-        children: <div className={styles.loading}>会场数据加载中...</div>
-      }]
+      return [
+        {
+          key: 'loading',
+          label: '加载中...',
+          children: <div className={styles.loading}>会场数据加载中...</div>
+        }
+      ]
     }
 
     if (sessions.length === 0) {
-      return [{
-        key: 'empty',
-        label: '暂无会场',
-        children: <div className={styles.empty}>暂无会场数据</div>
-      }]
+      return [
+        {
+          key: 'empty',
+          label: '暂无会场',
+          children: <div className={styles.empty}>暂无会场数据</div>
+        }
+      ]
     }
 
     return sessions.map((session, index) => ({
@@ -472,190 +544,3 @@ const DetailSection = ({ event, sessions = [], sessionsLoading }: SectionProps) 
   )
 }
 
-// 志愿者组件
-const VolunteerSection = ({ }: SectionProps) => {
-  const onChange = (key: string) => {
-    console.log(key)
-  }
-
-  // 定义嘉宾接口
-  interface Speaker {
-    name: string
-    title: string
-    avatarUrl: string
-  }
-
-  // 定义论坛内容组件
-  interface VolunteerContentProps {
-    name: string
-    amount: number
-    speakers: Speaker[]
-  }
-
-  const VolunteerContent: React.FC<VolunteerContentProps> = ({
-    name,
-    amount,
-    speakers
-  }) => {
-    return (
-      <div className={styles.volunteerContent}>
-        <h3 className={styles.volunteerTitle}>{`${name}(${amount})`}</h3>
-        <div className={styles.volunteerSpeakersList}>
-          {speakers.map((speaker, index) => (
-            <div key={index} className={styles.volunteerSpeakerCard}>
-              <div className={styles.volunteerAvatarContainer}>
-                {speaker.avatarUrl ? (
-                  <img
-                    src={speaker.avatarUrl}
-                    alt={speaker.name}
-                    className={styles.volunteerSpeakerAvatar}
-                    onError={e => {
-                      e.currentTarget.style.display = 'none'
-                      const container = e.currentTarget.parentElement
-                      if (container) {
-                        const iconDiv = document.createElement('div')
-                        iconDiv.className = styles.volunteerAvatarIcon
-                        container.appendChild(iconDiv)
-                      }
-                    }}
-                  />
-                ) : (
-                  <div className={styles.volunteerAvatarIcon}>
-                    <User size={40} color="#666" />
-                  </div>
-                )}
-              </div>
-              <div className={styles.volunteerSpeakerInfo}>
-                <div className={styles.volunteerSpeakerName}>
-                  {speaker.name}
-                </div>
-                <div className={styles.volunteerSpeakerTitle}>
-                  {speaker.title}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
-  const items: TabsProps['items'] = [
-    {
-      key: '1',
-      label: '开源集市现场协作',
-      children: (
-        <VolunteerContent
-          name="开源集市现场协作"
-          amount={14}
-          speakers={[
-            {
-              name: '辛庆',
-              title: '开源社',
-              avatarUrl: '/example.jpg'
-            },
-            {
-              name: '庄表伟',
-              title: 'COSUP',
-              avatarUrl: '/example.jpg'
-            },
-            {
-              name: '陈阳',
-              title: '开源社、思否',
-              avatarUrl: '/example.jpg'
-            },
-            {
-              name: '江波',
-              title: '',
-              avatarUrl: '/example.jpg'
-            }
-          ]}
-        />
-      )
-    },
-    {
-      key: '2',
-      label: '英文翻译志愿者',
-      children: 'Content of Tab Pane 2'
-    },
-    {
-      key: '3',
-      label: '官网开发志愿者',
-      children: 'Content of Tab Pane 3'
-    },
-    {
-      key: '4',
-      label: '分论坛现场协作',
-      children: 'Content of Tab Pane 3'
-    },
-    {
-      key: '5',
-      label: '主论坛现场协作',
-      children: 'Content of Tab Pane 3'
-    }
-  ]
-
-  return (
-    <div className={styles.tabContent}>
-      <Tabs
-        defaultActiveKey="1"
-        size="large"
-        items={items}
-        onChange={onChange}
-        tabPosition="left"
-      />
-    </div>
-  )
-}
-
-// 礼品墙组件
-const GiftGallerySection = ({ }: SectionProps) => {
-  return (
-    <div className={styles.tabContent}>
-      <h2>礼品墙</h2>
-      <div className={styles.sectionContent}>
-        <p>展示活动礼品和奖励...</p>
-        {/* 可以添加礼品展示、兑换信息等 */}
-      </div>
-    </div>
-  )
-}
-
-// 财务公开组件
-const OpenFinanceSection = ({ }: SectionProps) => {
-  return (
-    <div className={styles.tabContent}>
-      <h2>财务公开</h2>
-      <div className={styles.sectionContent}>
-        <p>活动经费使用情况...</p>
-        {/* 可以添加财务报表、收支明细等 */}
-      </div>
-    </div>
-  )
-}
-
-// 数据统计组件
-const DataStatisticSection = ({ }: SectionProps) => {
-  return (
-    <div className={styles.tabContent}>
-      <h2>活动数据统计</h2>
-      <div className={styles.sectionContent}>
-        <p>活动参与数据统计分析...</p>
-        {/* 可以添加数据图表、统计信息等 */}
-      </div>
-    </div>
-  )
-}
-
-// 往届活动组件
-const OtherEventsSection = ({ }: SectionProps) => {
-  return (
-    <div className={styles.tabContent}>
-      <h2>往届活动</h2>
-      <div className={styles.sectionContent}>
-        <p>历史活动回顾...</p>
-        {/* 可以添加往届活动列表、回顾内容等 */}
-      </div>
-    </div>
-  )
-}

@@ -27,7 +27,7 @@ export default function ArticleDetailPage() {
   const { id } = router.query; // 路由参数应该叫 id，不是 ids
   const rId = Array.isArray(id) ? id[0] : id;
 
-  const [article, setArticle] = useState<Record<string, unknown> | null>(null);
+  const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   // 使用统一的认证上下文，避免重复调用 useSession
   const { session, status } = useAuth();
@@ -94,10 +94,10 @@ export default function ArticleDetailPage() {
   if (!article || (isUnderReview && !isPublisher && !canReview)) {
     return (
       <div className={styles.error}>
-        <h2>文章不存在</h2>
-        <p>抱歉，找不到您要查看的文章</p>
+        <h2>博客不存在</h2>
+        <p>抱歉，找不到您要查看的博客</p>
         <Link href="/articles" className={styles.backButton}>
-          返回文章列表
+          返回博客列表
         </Link>
       </div>
     );
@@ -108,9 +108,9 @@ export default function ArticleDetailPage() {
       {/* Header */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
-          <Link href="/articles" className={styles.backLink}>
+          <Link href="/blogs" className={styles.backLink}>
             <ArrowLeft className={styles.backIcon} />
-            返回文章列表
+            返回博客列表
           </Link>
           <div className={styles.headerActions}>
             {status === 'authenticated' &&
@@ -118,7 +118,7 @@ export default function ArticleDetailPage() {
               <Button
                 icon={<Edit size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
-                onClick={() => router.push(`/articles/${article.ID}/edit`)}
+                onClick={() => router.push(`/blogs/${article.ID}/edit`)}
               >
                 编辑
               </Button>

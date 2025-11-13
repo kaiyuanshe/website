@@ -2,7 +2,7 @@
     width: 100%;
     min-height: 100vh;
     padding: 120px 20px 60px;
-    background: linear-gradient(135deg, #a5b4fc 0%, #6366f1 100%);
+    background: linear-gradient(135deg, #a5b4fc 0%, var(--primary-700) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -177,6 +177,24 @@
     font-size: 0.9rem;
     color: rgba(255, 255, 255, 0.8);
     font-weight: 500;
+}
+
+.yearSelect {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    background: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    margin-bottom: 4px;
+    text-align: center;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
 }
 
 @media (max-width: 1200px) {
