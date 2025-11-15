@@ -55,12 +55,15 @@
   0% {
     transform: translateY(0px) rotate(0deg);
   }
+
   33% {
     transform: translateY(-20px) rotate(120deg);
   }
+
   66% {
     transform: translateY(10px) rotate(240deg);
   }
+
   100% {
     transform: translateY(0px) rotate(360deg);
   }
@@ -102,21 +105,25 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     transform: scale(1);
   }
+
   50% {
     transform: scale(1.05);
   }
 }
 
 @keyframes sparkle {
+
   0%,
   100% {
     opacity: 1;
     transform: rotate(0deg) scale(1);
   }
+
   50% {
     opacity: 0.7;
     transform: rotate(180deg) scale(1.2);
@@ -127,9 +134,12 @@
 .titleContainer {
   display: flex;
   align-items: center;
-  gap: 1rem; /* 控制标题和徽标之间的间距 */
-  justify-content: center; /* 或者 flex-start 根据需求调整 */
-  flex-wrap: wrap; /* 小屏幕时自动换行 */
+  gap: 1rem;
+  /* 控制标题和徽标之间的间距 */
+  justify-content: center;
+  /* 或者 flex-start 根据需求调整 */
+  flex-wrap: wrap;
+  /* 小屏幕时自动换行 */
 }
 
 .title {
@@ -142,7 +152,8 @@
   margin: 0;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
   letter-spacing: -0.02em;
-  white-space: nowrap; /* 防止标题换行 */
+  white-space: nowrap;
+  /* 防止标题换行 */
 }
 
 .titleBadge {
@@ -155,21 +166,23 @@
   letter-spacing: 0.1em;
   box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
   animation: glow 2s infinite alternate;
-  white-space: nowrap; /* 防止徽标文字换行 */
+  white-space: nowrap;
+  /* 防止徽标文字换行 */
 }
 
 /* 响应式调整 */
 @media (max-width: 768px) {
   .titleContainer {
-    flex-direction: column; /* 小屏幕时垂直排列 */
+    flex-direction: column;
+    /* 小屏幕时垂直排列 */
     gap: 0.5rem;
     text-align: center;
   }
-  
+
   .title {
     font-size: 2.5rem;
   }
-  
+
   .titleBadge {
     font-size: 1rem;
     padding: 0.4rem 1.2rem;
@@ -180,6 +193,7 @@
   from {
     box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
   }
+
   to {
     box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
   }
@@ -317,6 +331,7 @@
   0% {
     transform: translateX(-100%) translateY(-100%) rotate(45deg);
   }
+
   100% {
     transform: translateX(100%) translateY(100%) rotate(45deg);
   }
@@ -431,6 +446,23 @@
   gap: 0.5rem;
 }
 
+.cityIntro {
+  margin-top: 8px;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #666;
+  
+  /* 多行文本省略 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 限制显示2行 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  /* 兼容其他浏览器 */
+  max-height: 2.8em; /* line-height * 行数 */
+}
+
 .cityName {
   display: flex;
   align-items: center;
@@ -524,6 +556,7 @@
 }
 
 @keyframes bounce {
+
   0%,
   20%,
   50%,
@@ -531,9 +564,11 @@
   100% {
     transform: translateY(0);
   }
+
   40% {
     transform: translateY(-10px);
   }
+
   60% {
     transform: translateY(-5px);
   }
@@ -694,4 +729,41 @@
   .actionSection {
     padding: 2rem 1rem;
   }
+}
+
+
+.addCommunity {
+  display: flex;
+  align-items: flex-start; 
+  justify-content: flex-end;
+  flex-shrink: 0;
+  margin-left: auto; 
+}
+
+.addCommunityButton {
+  display: flex;
+  align-items: center; 
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(54, 122, 219, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 0; /* 移除顶部边距 */
+}
+
+.addCommunityButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  background: rgba(54, 122, 219, 0.2);
+
+}
+
+.addCommunityButton:active {
+  transform: translateY(0);
 }

@@ -53,11 +53,13 @@ func SetupRouter(r *gin.Engine) {
 		community.DELETE("/:id", middlewares.JWT("event:delete"), controllers.DeleteCommunity)
 		community.PUT("/:id", middlewares.JWT("event:write"), controllers.UpdateCommunity)
 		community.GET("", controllers.QueryCommunity)
+		community.GET("/:id", controllers.GetCommunity)
 	}
 
 	member := r.Group("/v1/members")
 	{
-		member.POST("/:communityId", middlewares.JWT("event:write"), controllers.CreatMember)
+		member.POST("", middlewares.JWT("event:write"), controllers.CreatMember)
+		member.GET("", controllers.QueryMembers)
 		member.DELETE("/:id", middlewares.JWT("event:delete"), controllers.DeleteMember)
 		member.PUT("/:id", middlewares.JWT("event:write"), controllers.UpdateMember)
 	}

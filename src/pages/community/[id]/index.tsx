@@ -1,43 +1,63 @@
 import type React from "react"
-import { Button, Card, Avatar, Tag, Spin, message } from "antd"
-import { 
-  MapPin, Users, Globe, Building2, Mail, Calendar, 
-  Github, Twitter, ArrowLeft, UserPlus, Star, GitBranch
+import { Button, Card, Avatar, Tag, Spin, message, Modal, Input, Form, Upload, Popconfirm } from "antd"
+import {
+  MapPin, Users, Globe, Building2, Mail, Calendar,
+  Github, Twitter, ArrowLeft, UserPlus, Star, GitBranch,
+  Clock, MapPin as MapIcon, User, Link as LinkIcon,
+  Upload as UploadIcon,
+  Edit,
+  Trash2
 } from "lucide-react"
 import { useState, useEffect } from "react"
 import { useRouter } from "next/router"
 import styles from "./index.module.css"
+import { getCommunity, Community } from "../../api/comunity"
+import AvatarEdit from "@/components/settings/AvatarEdit"
+import { createMember, deleteMember, updateMember } from "@/pages/api/member"
 
-// 社区成员接口定义
-interface CommunityMember {
-  id: number;
-  name: string;
-  avatar: string;
-  role: string;
-  bio: string;
-  email?: string;
-  github?: string;
-  twitter?: string;
-  joinDate: string;
-  contributions: number;
-  projects: string[];
+// 根据接口返回的数据结构定义接口
+interface Event {
+  ID: number;
+  CreatedAt: string;
+  UpdatedAt: string;
+  DeletedAt: string | null;
+  title: string;
+  description: string;
+  event_mode: string;
+  event_type: string;
+  location: string;
+  link: string;
+  start_time: string;
+  end_time: string;
+  cover_img: string;
+  tags: string[];
+  participants: number;
+  status: number;
+  publish_status: number;
+  publish_time: string | null;
 }
 
-// 社区详情接口定义
-interface CommunityDetail {
-  ID: number;
-  city: string;
-  intro: string;
-  cover: string;
-  register_link: string;
-  start_date: string;
-  created_at: string;
-  updated_at: string;
+interface CommunityMember {
+  ID?: number;
+  name?: string;
+  avatar?: string;
+  title?: string;
+}
+
+// 扩展社区详情接口
+interface CommunityDetail extends Community {
+  events?: Event[];
+  members?: CommunityMember[];
+  user_id?: number;
+  user?: any;
   isInternational?: boolean;
-  memberCount: number;
-  projectCount: number;
-  eventCount: number;
-  members: CommunityMember[];
+}
+
+// 添加成员的表单数据接口
+interface AddMemberFormData {
+  name: string;
+  title: string;
+  avatar?: string;
 }
 
 const CommunityDetailPage: React.FC = () => {
@@ -45,39 +65,41 @@ const CommunityDetailPage: React.FC = () => {
   const { id } = router.query
   const [community, setCommunity] = useState<CommunityDetail | null>(null)
   const [loading, setLoading] = useState(true)
+  const [addMemberModalVisible, setAddMemberModalVisible] = useState(false)
+  const [form] = Form.useForm()
+  const [avatar, setAvatar] = useState<string>("")
+  const [editingMember, setEditingMember] = useState<CommunityMember | null>(null);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editForm] = Form.useForm();
 
-  // 模拟获取社区详情数据
+  // 获取社区详情数据
   useEffect(() => {
     if (!id) return
 
     const loadCommunityDetail = async () => {
       try {
         setLoading(true)
-        
-        // 模拟API调用延迟
-        await new Promise(resolve => setTimeout(resolve, 1000))
-        
-        // 模拟社区详情数据
-        const mockCommunityData: CommunityDetail = {
-          ID: Number(id),
-          city: getCityName(Number(id)),
-          intro: getCityIntro(Number(id)),
-          cover: getCityCover(Number(id)),
-          register_link: `https://kaiyuanshe.feishu.cn/share/base/form/shrcn${getCityName(Number(id)).toLowerCase()}`,
-          start_date: "2024-01-15T10:00:00Z",
-          created_at: "2024-01-01T00:00:00Z",
-          updated_at: "2024-01-15T00:00:00Z",
-          isInternational: getCityName(Number(id)) === "新加坡",
-          memberCount: 156,
-          projectCount: 23,
-          eventCount: 12,
-          members: generateMockMembers()
-        }
 
-        setCommunity(mockCommunityData)
+        const result = await getCommunity(Number(id))
+
+        if (result.success && result.data) {
+          // 直接使用接口返回的数据
+          const communityData: CommunityDetail = {
+            ...result.data,
+            isInternational: isInternationalCity(result.data.city),
+          }
+
+          setCommunity(communityData)
+          console.log('社区详情数据:', communityData)
+        } else {
+          console.error('获取社区详情失败:', result.message)
+          message.error(result.message || '获取社区详情失败')
+          setCommunity(null)
+        }
       } catch (error) {
         console.error('加载社区详情失败:', error)
         message.error('加载社区详情失败')
+        setCommunity(null)
       } finally {
         setLoading(false)
       }
@@ -86,123 +108,208 @@ const CommunityDetailPage: React.FC = () => {
     loadCommunityDetail()
   }, [id])
 
-  // 获取城市名称
-  const getCityName = (cityId: number): string => {
-    const cityMap: Record<number, string> = {
-      1: "北京", 2: "上海", 3: "深圳", 4: "广州", 5: "杭州",
-      6: "成都", 7: "南京", 8: "长沙", 9: "大连", 10: "新加坡"
-    }
-    return cityMap[cityId] || "未知城市"
+  // 判断是否为国际城市
+  const isInternationalCity = (cityName: string): boolean => {
+    const internationalCities = ['新加坡', '东京', '首尔', '纽约', '旧金山', '伦敦', '柏林', '悉尼'];
+    return internationalCities.includes(cityName);
   }
 
-  // 获取城市介绍
-  const getCityIntro = (cityId: number): string => {
-    const introMap: Record<number, string> = {
-      1: "首都开源社区，汇聚全国顶尖技术人才，致力于推动开源技术在政企的应用与发展。",
-      2: "国际金融中心的开源力量，连接全球开源生态，推动金融科技与开源技术融合创新。",
-      3: "科技创新之都，硬件与软件完美结合的开源实验场，引领物联网与AI开源发展。",
-      4: "华南开源技术中心，传统产业与现代科技融合的桥梁，推动制造业数字化转型。",
-      5: "数字经济之城，电商与云计算开源技术的创新高地，助力数字中国建设。",
-      6: "西南科技重镇，游戏产业与开源技术结合的创新基地，推动西部地区数字化发展。",
-      7: "历史文化名城的现代科技力量，高校云集的开源人才培养基地，产学研深度融合。",
-      8: "中部崛起的科技新星，工程机械与智能制造的开源技术应用先锋区域。",
-      9: "东北亚开源技术门户，软件外包产业与开源技术结合的国际化创新中心。",
-      10: "东南亚开源技术枢纽，连接亚太地区开源社区，推动跨境技术合作与交流。"
-    }
-    return introMap[cityId] || "这是一个充满活力的开源社区。"
+  // 格式化日期时间
+  const formatDateTime = (dateTime: string) => {
+    return new Date(dateTime).toLocaleString('zh-CN', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   }
 
-  // 获取城市封面
-  const getCityCover = (cityId: number): string => {
-    const coverMap: Record<number, string> = {
-      1: "https://images.unsplash.com/photo-1508804185872-d7badad00f7d?w=400&h=300&fit=crop",
-      2: "https://images.unsplash.com/photo-1474181487882-5abf3f0ba5d2?w=400&h=300&fit=crop",
-      3: "https://images.unsplash.com/photo-1551265401-e54b53b6ae36?w=400&h=300&fit=crop",
-      4: "https://images.unsplash.com/photo-1551815751-dd711dee3ae4?w=400&h=300&fit=crop",
-      5: "https://images.unsplash.com/photo-1571987460726-5d4acb3fecd1?w=400&h=300&fit=crop",
-      6: "https://images.unsplash.com/photo-1569949263394-1c0903b2b98d?w=400&h=300&fit=crop",
-      7: "https://images.unsplash.com/photo-1577552106387-b6b7b3e3b8c4?w=400&h=300&fit=crop",
-      8: "https://images.unsplash.com/photo-1578979879663-4ba8d133646b?w=400&h=300&fit=crop",
-      9: "https://images.unsplash.com/photo-1566041510639-8d95a2490bda?w=400&h=300&fit=crop",
-      10: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=400&h=300&fit=crop"
-    }
-    return coverMap[cityId] || ""
-  }
+  // 获取活动状态
+  const getEventStatus = (event: Event) => {
+    const now = new Date();
+    const startTime = new Date(event.start_time);
+    const endTime = new Date(event.end_time);
 
-  // 生成模拟成员数据
-  const generateMockMembers = (): CommunityMember[] => {
-    return [
-      {
-        id: 1,
-        name: "张开源",
-        avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop",
-        role: "社区管理员",
-        bio: "全栈开发者，开源爱好者，致力于推动本地开源生态发展",
-        email: "zhangkaiyuan@example.com",
-        github: "zhangkaiyuan",
-        twitter: "zhangkaiyuan",
-        joinDate: "2024-01-15",
-        contributions: 127,
-        projects: ["Vue.js", "React", "Node.js"]
-      },
-      {
-        id: 2,
-        name: "李技术",
-        avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=100&h=100&fit=crop",
-        role: "技术导师",
-        bio: "前端架构师，专注于现代前端技术栈和性能优化",
-        email: "lijishu@example.com",
-        github: "lijishu",
-        joinDate: "2024-01-20",
-        contributions: 89,
-        projects: ["TypeScript", "Webpack", "Vite"]
-      },
-      {
-        id: 3,
-        name: "王代码",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop",
-        role: "活跃成员",
-        bio: "后端工程师，云原生技术专家，Kubernetes贡献者",
-        github: "wangdaima",
-        joinDate: "2024-02-01",
-        contributions: 64,
-        projects: ["Kubernetes", "Docker", "Go"]
-      },
-      {
-        id: 4,
-        name: "陈算法",
-        avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop",
-        role: "技术专家",
-        bio: "机器学习工程师，专注于AI开源项目和算法优化",
-        email: "chensuanfa@example.com",
-        twitter: "chensuanfa",
-        joinDate: "2024-02-10",
-        contributions: 95,
-        projects: ["TensorFlow", "PyTorch", "Scikit-learn"]
-      },
-      {
-        id: 5,
-        name: "刘创新",
-        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=100&h=100&fit=crop",
-        role: "新成员",
-        bio: "移动端开发者，Flutter和React Native爱好者",
-        github: "liuchuangxin",
-        joinDate: "2024-03-01",
-        contributions: 23,
-        projects: ["Flutter", "React Native", "Dart"]
-      }
-    ]
+    if (now < startTime) {
+      return { status: 'upcoming', text: '即将开始', color: 'blue' };
+    } else if (now >= startTime && now <= endTime) {
+      return { status: 'ongoing', text: '进行中', color: 'green' };
+    } else {
+      return { status: 'completed', text: '已结束', color: 'default' };
+    }
   }
 
   const handleBack = () => {
     router.back()
   }
 
-  const handleJoinCommunity = () => {
-    if (community?.register_link) {
-      window.open(community.register_link, "_blank")
-    }
+
+  const handleEventClick = (event: Event) => {
+    router.push(`/events/${event.ID}`)
   }
+
+  const handleCreateEvent = () => {
+    router.push('/events/new?event_type=community')
+  }
+
+  // 打开添加成员弹窗
+  const handleOpenAddMember = () => {
+    setAddMemberModalVisible(true)
+  }
+
+  // 关闭添加成员弹窗
+  const handleCloseAddMember = () => {
+    setAddMemberModalVisible(false)
+    setAvatar("")
+    form.resetFields()
+  }
+
+  // 提交添加成员表单
+  const handleAddMember = async (values: AddMemberFormData) => {
+    try {
+      if (!community) {
+        message.error('社区信息不存在');
+        return;
+      }
+
+      // 调用添加成员的API
+      const result = await createMember({
+        name: values.name,
+        avatar: avatar,
+        title: values.title,
+        community_id: community.ID
+      });
+
+      if (result.success && result.data) {
+        // 更新社区数据，添加新成员
+        if (community) {
+          const newMember: CommunityMember = {
+            ID: result.data.ID,
+            name: result.data.name,
+            avatar: result.data.avatar,
+            title: result.data.title
+          };
+
+          const updatedCommunity = {
+            ...community,
+            members: [...(community.members || []), newMember]
+          };
+          setCommunity(updatedCommunity);
+        }
+
+        message.success('成员添加成功');
+        handleCloseAddMember();
+      } else {
+        message.error(result.message || '添加成员失败');
+      }
+    } catch (error) {
+      message.error('添加成员失败');
+      console.error('添加成员失败:', error);
+    }
+
+    setAvatar("");
+    form.resetFields();
+  };
+
+  const handleAvatarSave = async (avatarUrl: string) => {
+    // 设置表单中的头像字段
+    form.setFieldsValue({ avatar: avatarUrl });
+    setAvatar(avatarUrl);
+    message.success('头像上传成功');
+  }
+
+
+  const handleDeleteMember = async (member: CommunityMember) => {
+    try {
+      if (member.ID) {
+        // 调用删除API
+        const result = await deleteMember(member.ID);
+
+
+        if (result.success) {
+          // 从列表中移除
+          if (community) {
+            const updatedMembers = community.members?.filter(m => m.ID !== member.ID) || [];
+            setCommunity({
+              ...community,
+              members: updatedMembers
+            });
+          }
+          message.success('成员删除成功');
+        } else {
+          message.error(result.message || '删除成员失败');
+        }
+      } else {
+        message.error('成员ID不存在');
+      }
+    } catch (error) {
+      message.error('删除成员失败');
+      console.error('删除成员失败:', error);
+    }
+  };
+
+  // 打开编辑弹窗
+  const handleEditMember = (member: CommunityMember) => {
+    setEditingMember(member);
+    editForm.setFieldsValue({
+      name: member.name,
+      title: member.title,
+      avatar: member.avatar
+    });
+    setEditModalVisible(true);
+  };
+
+  // 关闭编辑弹窗
+  const handleCloseEditModal = () => {
+    setEditModalVisible(false);
+    setEditingMember(null);
+    setAvatar("")
+    editForm.resetFields();
+  };
+
+
+  // 提交编辑表单
+  const handleEditMemberSubmit = async (values: AddMemberFormData) => {
+    try {
+      if (!editingMember?.ID) {
+        message.error('成员信息不完整');
+        return;
+      }
+
+      // 调用更新成员API
+      const result = await updateMember(editingMember.ID, {
+        name: values.name,
+        title: values.title,
+        avatar: values.avatar
+      });
+
+      if (result.success && result.data) {
+        // 更新本地数据
+        if (community) {
+          const updatedMembers = community.members?.map(member =>
+            member.ID === editingMember.ID
+              ? { ...member, ...result.data }
+              : member
+          ) || [];
+
+          setCommunity({
+            ...community,
+            members: updatedMembers
+          });
+        }
+
+        message.success('成员信息更新成功');
+        handleCloseEditModal();
+      } else {
+        message.error(result.message || '更新成员信息失败');
+      }
+    } catch (error) {
+      message.error('更新成员信息失败');
+      console.error('更新成员信息失败:', error);
+    }
+  };
+
 
   if (loading) {
     return (
@@ -225,8 +332,8 @@ const CommunityDetailPage: React.FC = () => {
   return (
     <div className={styles.container}>
       {/* 返回按钮 */}
-      <Button 
-        icon={<ArrowLeft size={16} />} 
+      <Button
+        icon={<ArrowLeft size={16} />}
         onClick={handleBack}
         className={styles.backButton}
       >
@@ -236,7 +343,9 @@ const CommunityDetailPage: React.FC = () => {
       {/* 社区头部信息 */}
       <div className={styles.header}>
         <div className={styles.headerBackground}>
-          <img src={community.cover} alt={community.city} className={styles.coverImage} />
+          {community.cover && (
+            <img src={community.cover} alt={community.city} className={styles.coverImage} />
+          )}
           <div className={styles.headerOverlay}></div>
         </div>
         <div className={styles.headerContent}>
@@ -247,25 +356,24 @@ const CommunityDetailPage: React.FC = () => {
                 {community.city}开源社区
                 {community.isInternational && <Globe size={20} className={styles.internationalIcon} />}
               </h1>
-              <Tag color="green" className={styles.statusTag}>活跃社区</Tag>
             </div>
             <p className={styles.communityIntro}>{community.intro}</p>
-            
+
             {/* 社区统计 */}
             <div className={styles.statsContainer}>
               <div className={styles.stat}>
-                
-                <span className={styles.statNumber}>{community.memberCount}</span>
+                <Users size={20} />
+                <span className={styles.statNumber}>{community.members?.length || 0}</span>
                 <span className={styles.statLabel}>成员</span>
               </div>
               <div className={styles.stat}>
-             
-                <span className={styles.statNumber}>{community.projectCount}</span>
+                <GitBranch size={20} />
+                <span className={styles.statNumber}>0</span>
                 <span className={styles.statLabel}>项目</span>
               </div>
               <div className={styles.stat}>
-            
-                <span className={styles.statNumber}>{community.eventCount}</span>
+                <Calendar size={20} />
+                <span className={styles.statNumber}>{community.events?.length || 0}</span>
                 <span className={styles.statLabel}>活动</span>
               </div>
             </div>
@@ -273,91 +381,290 @@ const CommunityDetailPage: React.FC = () => {
         </div>
       </div>
 
-      {/* 社区成员列表 */}
+      {/* 社区内容区域 */}
       <div className={styles.content}>
+
+        {/* 社区成员列表 */}
         <div className={styles.membersSection}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>
               <Users size={24} />
-              社区成员 ({community.members.length})
+              社区成员 ({community.members?.length || 0})
             </h2>
-            <Button 
-              type="primary" 
-              size="large" 
+            <Button
+              type="primary"
+              size="large"
               icon={<UserPlus size={18} />}
-              onClick={handleJoinCommunity}
+              onClick={handleOpenAddMember}
               className={styles.joinButton}
             >
-              加入社区
+              添加成员
             </Button>
           </div>
-          
-          <div className={styles.membersGrid}>
-            {community.members.map((member) => (
-              <Card key={member.id} className={styles.memberCard}>
-                <div className={styles.memberHeader}>
-                  <Avatar size={64} src={member.avatar} className={styles.memberAvatar} />
-                  <div className={styles.memberInfo}>
-                    <h3 className={styles.memberName}>{member.name}</h3>
-                    <Tag color="blue" className={styles.roleTag}>{member.role}</Tag>
-                  </div>
-                </div>
-                
-                <p className={styles.memberBio}>{member.bio}</p>
-                
-                <div className={styles.memberStats}>
-                  <div className={styles.memberStat}>
-                    <Star size={16} />
-                    <span>{member.contributions} 贡献</span>
-                  </div>
-                  <div className={styles.memberStat}>
-                    <Calendar size={16} />
-                    <span>加入于 {member.joinDate}</span>
-                  </div>
-                </div>
 
-                <div className={styles.memberProjects}>
-                  <h4>参与项目:</h4>
-                  <div className={styles.projectTags}>
-                    {member.projects.map((project, index) => (
-                      <Tag key={index} className={styles.projectTag}>{project}</Tag>
-                    ))}
+          {community.members && community.members.length > 0 ? (
+            <div className={styles.membersGrid}>
+              {community.members.map((member) => (
+                <Card
+                  key={member.ID}
+                  className={styles.memberCard}
+                  extra={
+                    <div className={styles.cardActions}>
+                      <Button
+                        type="text"
+                        icon={<Edit size={16} />}
+                        onClick={() => handleEditMember(member)}
+                        className={styles.actionButton}
+                      />
+                      <Popconfirm
+                        title="删除成员"
+                        description={
+                          <div>
+                            <div>确定要删除成员 <strong>{member.name}</strong> 吗？</div>
+                            <div style={{ color: '#ff4d4f', fontSize: '12px', marginTop: '4px' }}>
+                              此操作不可撤销
+                            </div>
+                          </div>
+                        }
+                        onConfirm={() => handleDeleteMember(member)}
+                        okText="确认删除"
+                        cancelText="取消"
+                        okType="danger"
+                        placement="topRight"
+                      >
+                        <Button
+                          type="text"
+                          danger
+                          icon={<Trash2 size={16} />}
+                          className={styles.actionButton}
+                        />
+                      </Popconfirm>
+                    </div>
+                  }
+                >
+                  <div className={styles.memberHeader}>
+                    <Avatar size={64} src={member.avatar} className={styles.memberAvatar}>
+                      {member.name?.[0]}
+                    </Avatar>
+                    <div className={styles.memberInfo}>
+                      <h3 className={styles.memberName}>{member.name || '匿名用户'}</h3>
+                      <Tag color="blue" className={styles.roleTag}>{member.title || '社区成员'}</Tag>
+                    </div>
                   </div>
-                </div>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <Users size={48} />
+              <h3>暂无成员数据</h3>
+              <p>该社区目前还没有成员信息</p>
+            </div>
+          )}
+        </div>
 
-                <div className={styles.memberLinks}>
-                  {member.github && (
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={<Github size={16} />}
-                      href={`https://github.com/${member.github}`}
-                      target="_blank"
-                    />
-                  )}
-                  {member.twitter && (
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={<Twitter size={16} />}
-                      href={`https://twitter.com/${member.twitter}`}
-                      target="_blank"
-                    />
-                  )}
-                  {member.email && (
-                    <Button 
-                      type="text" 
-                      size="small" 
-                      icon={<Mail size={16} />}
-                      href={`mailto:${member.email}`}
-                    />
-                  )}
-                </div>
-              </Card>
-            ))}
+        {/* 社区活动列表 */}
+        <div className={styles.eventsSection}>
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
+              <Calendar size={24} />
+              社区活动 ({community.events?.length || 0})
+            </h2>
+            <Button
+              type="primary"
+              size="large"
+              onClick={handleCreateEvent}
+            >
+              创建活动
+            </Button>
           </div>
+
+          {community.events && community.events.length > 0 ? (
+            <div className={styles.eventsGrid}>
+              {community.events.map((event) => {
+                const eventStatus = getEventStatus(event);
+                return (
+                  <Card
+                    key={event.ID}
+                    className={styles.eventCard}
+                    cover={
+                      event.cover_img ? (
+                        <img
+                          alt={event.title}
+                          src={event.cover_img}
+                          className={styles.eventCover}
+                        />
+                      ) : null
+                    }
+                    actions={[
+                      <Button
+                        type="link"
+                        onClick={() => handleEventClick(event)}
+                        key="view"
+                      >
+                        查看详情
+                      </Button>,
+                    ]}
+                  >
+                    <div className={styles.eventContent}>
+                      <div className={styles.eventHeader}>
+                        <h3 className={styles.eventTitle}>{event.title}</h3>
+                        <Tag color={eventStatus.color}>
+                          {eventStatus.text}
+                        </Tag>
+                      </div>
+
+                      <p className={styles.eventDescription}>{event.description}</p>
+
+                      <div className={styles.eventDetails}>
+                        <div className={styles.eventDetail}>
+                          <Clock size={14} />
+                          <span>{formatDateTime(event.start_time)}</span>
+                        </div>
+                        <div className={styles.eventDetail}>
+                          <MapIcon size={14} />
+                          <span>{event.location} · {event.event_mode}</span>
+                        </div>
+                        {event.link && (
+                          <div className={styles.eventDetail}>
+                            <LinkIcon size={14} />
+                            <a href={event.link} target="_blank" rel="noopener noreferrer">
+                              活动链接
+                            </a>
+                          </div>
+                        )}
+                      </div>
+
+                      {event.tags && event.tags.length > 0 && (
+                        <div className={styles.eventTags}>
+                          {event.tags.map((tag, index) => (
+                            <Tag key={index} className={styles.eventTag}>
+                              {tag}
+                            </Tag>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </Card>
+                );
+              })}
+            </div>
+          ) : (
+            <div className={styles.emptyState}>
+              <Calendar size={48} />
+              <h3>暂无活动数据</h3>
+              <p>该社区目前还没有活动信息</p>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* 添加成员弹窗 */}
+      <Modal
+        title="添加社区成员"
+        open={addMemberModalVisible}
+        onCancel={handleCloseAddMember}
+        footer={null}
+        width={500}
+      >
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleAddMember}
+          className={styles.addMemberForm}
+        >
+          <Form.Item
+            name="avatar"
+            label="头像"
+            rules={[{ required: true, message: '请输入成员头像' }]}
+          >
+            <AvatarEdit
+              currentAvatar={avatar}
+              onSave={handleAvatarSave}
+            />
+          </Form.Item>
+
+          <Form.Item
+            name="name"
+            label="成员姓名"
+            rules={[{ required: true, message: '请输入成员姓名' }]}
+          >
+            <Input placeholder="请输入成员姓名" />
+          </Form.Item>
+
+          <Form.Item
+            name="title"
+            label="职位/头衔"
+            rules={[{ required: true, message: '请输入职位或头衔' }]}
+          >
+            <Input placeholder="例如：社区管理员、技术专家等" />
+          </Form.Item>
+
+          <Form.Item className={styles.formActions}>
+            <Button onClick={handleCloseAddMember}>
+              取消
+            </Button>
+            <Button type="primary" htmlType="submit">
+              添加成员
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+      <Modal
+        title="编辑成员信息"
+        open={editModalVisible}
+        onCancel={handleCloseEditModal}
+        footer={null}
+        width={500}
+      >
+        <Form
+          form={editForm}
+          layout="vertical"
+          onFinish={handleEditMemberSubmit}
+          className={styles.editMemberForm}
+        >
+          <Form.Item
+            name="avatar"
+            label="头像"
+          >
+            <Form.Item
+              name="avatar"
+              label="头像"
+              rules={[{ required: true, message: '请输入成员头像' }]}
+            >
+              <AvatarEdit
+                currentAvatar={editingMember?.avatar}
+                onSave={handleAvatarSave}
+              />
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item
+            name="name"
+            label="成员姓名"
+            rules={[{ required: true, message: '请输入成员姓名' }]}
+          >
+            <Input placeholder="请输入成员姓名" />
+          </Form.Item>
+
+          <Form.Item
+            name="title"
+            label="职位/头衔"
+            rules={[{ required: true, message: '请输入职位或头衔' }]}
+          >
+            <Input placeholder="例如：社区管理员、技术专家等" />
+          </Form.Item>
+
+          <Form.Item className={styles.formActions}>
+            <Button onClick={handleCloseEditModal}>
+              取消
+            </Button>
+            <Button type="primary" htmlType="submit">
+              保存修改
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }

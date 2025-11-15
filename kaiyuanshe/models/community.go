@@ -31,7 +31,7 @@ func (c *Community) GetByID(id uint) error {
 
 func GetCommunityByCity(city string) (Community, error) {
 	var community Community
-	err := db.Model(&Community{}).Where("city LIKE ?", "%"+city+"%").First(community).Error
+	err := db.Model(&Community{}).Where("city = ?", city).First(&community).Error
 	if err != nil {
 		return community, err
 	}

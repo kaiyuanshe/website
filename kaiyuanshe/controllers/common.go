@@ -391,13 +391,21 @@ type UpdateCommunityRequest struct {
 }
 
 type CreateMemberRequest struct {
-	Name   string `json:"name" binding:"required"`
-	Avatar string `json:"avatar" binding:"required"`
-	Title  string `json:"title" binding:"required"`
+	Name        string `json:"name" binding:"required"`
+	Avatar      string `json:"avatar" binding:"required"`
+	Title       string `json:"title" binding:"required"`
+	CommunityId uint   `json:"community_id"`
 }
 
 type UpdateMemberRequest struct {
 	Name   string `json:"name" binding:"required"`
 	Avatar string `json:"avatar" binding:"required"`
 	Title  string `json:"title" binding:"required"`
+}
+
+type QueryMembersResponse struct {
+	Members  []models.Member `json:"members"`
+	Page     int             `json:"page"`
+	PageSize int             `json:"page_size"`
+	Total    int64           `json:"total"`
 }

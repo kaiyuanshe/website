@@ -68,7 +68,7 @@ func CreateEvent(c *gin.Context) {
 	if event.EventType == "community" {
 		community, err := models.GetCommunityByCity(event.Location)
 		if err == nil {
-			event.CommunityID = community.ID
+			event.CommunityID = &community.ID
 		}
 	}
 
