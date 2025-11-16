@@ -73,6 +73,7 @@ func CreateEvent(c *gin.Context) {
 	}
 
 	event.UserId = userId
+	event.PublishStatus = 2
 	// 创建数据库记录
 	if err := event.Create(); err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, err.Error(), nil)
