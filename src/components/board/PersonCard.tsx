@@ -61,9 +61,9 @@ export default function PersonCard({
         {/* Person Info */}
         <div className={styles.personInfo}>
           <h3 className={styles.name}>{name}</h3>
-          <span className={`${styles.pronouns} ${!pronouns ? styles.empty : ''}`}>
+          {/* <span className={`${styles.pronouns} ${!pronouns ? styles.empty : ''}`}>
             {pronouns ? `(${pronouns})` : ''}
-          </span>
+          </span> */}
 
           <p className={styles.title}>{title}</p>
 

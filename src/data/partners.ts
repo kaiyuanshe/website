@@ -9,6 +9,7 @@ export interface Partner {
   tag: string
 }
 
+// 合作伙伴数据
 export const partnersRawData: Partner[] = [
   {
     title: '2024 白金赞助 浪潮 KaiwuDB & KWDB 社区',
@@ -1849,7 +1850,7 @@ export const organizePartnersByLevel = (
   return organized
 }
 
-// Level order based on data analysis
+// 赞助等级
 export const levelOrder = [
   '战略赞助',
   '白金赞助',

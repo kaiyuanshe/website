@@ -2,76 +2,8 @@ import React, { useState } from 'react'
 import BoardMembers from '@/components/board/BoardMembers'
 import BoardMemberDetail from '@/components/board/BoardMemberDetail'
 import { PersonCardProps } from '@/components/board/PersonCard'
+import { workingGroups, type WorkingGroup } from '@/data/committees'
 import styles from './index.module.css'
-
-interface WorkingGroup {
-  name: string
-  description: string
-  leader: string
-  viceLeader?: string[]
-  members: string[]
-}
-
-const workingGroups: WorkingGroup[] = [
-  {
-    name: '媒体品牌组',
-    description: 'XXX',
-    leader: '江波',
-    members: []
-  },
-  {
-    name: '顾问服务组',
-    description: 'XXX',
-    leader: '陈阳.Emily',
-    viceLeader: ['李明康', '晁倩'],
-    members: ['江波', '许银', '林旅强', '晁倩', '梁尧', '刘天栋', '止戈']
-  },
-  {
-    name: '社区合作组',
-    description: 'XXX',
-    leader: '李明康（小明）',
-    members: ['赵文涵', '李楠', '代立冬', '王文竹', '何莹', '徐硕博', '周琦', '张琰彬', '刘绪光', '徐普']
-  },
-  {
-    name: '国际接轨组',
-    description: 'XXX',
-    leader: '林旅强',
-    members: ['江波', '刘天栋', '陈阳', '李明康', '许银', '李思颖', '刘敏', '范圣佑']
-  },
-  {
-    name: '财务组',
-    description: 'XXX',
-    leader: '李佳欣',
-    viceLeader: ['王萱'],
-    members: ['李思颖']
-  },
-  {
-    name: '法务工作组',
-    description: 'XXX',
-    leader: '梁尧',
-    viceLeader: ['丁欣'],
-    members: ['沈杨', '丁文昊', '段延星']
-  },
-  {
-    name: 'KCC工作组',
-    description: 'XXX',
-    leader: '庄表伟',
-    viceLeader: ['惠世翼'],
-    members: ['王德福', '郑旭', '董吉甫', '臧鹏', '马证', '陈玄', '刘晓东']
-  },
-  {
-    name: '开源公益组',
-    description: 'XXX',
-    leader: '廖敬仪',
-    members: ['梁尧', '李思颖', '庄表伟', '林夏', '何莹', '王晓珂', '李明康']
-  },
-  {
-    name: '基础设施组',
-    description: 'XXX',
-    leader: '庄表伟',
-    members: ['李明康', '止戈', '李海龙', '陈玄', '罗基印', '刘绪光', '李思颖', '熊靖', '高天贺', '许银', '梁尧', '桑毅炜']
-  }
-]
 
 const createPersonCard = (name: string, title: string): PersonCardProps => ({
   name,

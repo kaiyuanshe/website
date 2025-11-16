@@ -1,5 +1,6 @@
 import { Member } from '../types/member'
 
+// 正式成员
 export const members: Member[] = [
   {
     name: '白宦成',
