@@ -105,12 +105,10 @@ const CommunityPage: React.FC = () => {
   }, [loadCommunities])
 
   const handleCreateCommunity = () => {
-    const handleCreateCommunity = () => {
-      window.open(
-        'https://kaiyuanshe.feishu.cn/share/base/form/shrcnogj5LPzlaiUkFaKpVbxNXe',
-        '_blank'
-      )
-    }
+    window.open(
+      'https://kaiyuanshe.feishu.cn/share/base/form/shrcnogj5LPzlaiUkFaKpVbxNXe',
+      '_blank'
+    )
   }
 
   const handleCityClick = (city: Community) => {
@@ -167,33 +165,34 @@ const CommunityPage: React.FC = () => {
           </div>
         </div>
 
-        <div className={styles.addCommunity}>
-          <Button
-            className={styles.addCommunityButton}
-            onClick={handleAddCommunity}
-          >
-            <Plus size={20} />
-            添加社区
-          </Button>
-        </div>
       </div>
 
       <div className={styles.content}>
         <div className={styles.citiesSection}>
-          <h2 className={styles.sectionTitle}>
-            <Building2 size={24} />
-            <span>社区分布</span>
-          </h2>
+          <div className={styles.sectionHeader}>
+            
+            <h2 className={styles.sectionTitle}>
+              <Building2 size={24} />
+              <span>社区分布</span>
+            </h2>
+            <div className={styles.addCommunity}>
+              <Button
+                type="primary"
+                className={styles.addCommunityButton}
+                onClick={handleAddCommunity}
+              >
+                <Plus size={18} />
+                添加社区
+              </Button>
+            </div>
+          </div>
 
           {cities.length === 0 ? (
             <div className={styles.emptyState}>
               <Building2 size={48} />
               <h3>暂无社区数据</h3>
               <p>还没有社区创建，快来创建第一个社区吧！</p>
-              <Button type="primary" onClick={handleAddCommunity}>
-                <Plus size={16} />
-                创建社区
-              </Button>
+              
             </div>
           ) : (
             <div className={styles.citiesGrid}>
