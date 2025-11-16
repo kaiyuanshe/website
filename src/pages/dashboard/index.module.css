@@ -12,7 +12,6 @@
 
 .profileSection {
   max-width: 1200px;
-  min-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -27,6 +26,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  margin-top: 16px;
+  overflow-x: auto;
 }
 
 .avatar {
@@ -66,7 +67,6 @@
 
 .content {
   max-width: 1200px;
-  min-width: 1200px;
   margin: 0 auto;
   padding: 0 24px;
 }
@@ -357,22 +357,37 @@
   .profileSection {
     padding: 0 16px;
   }
+
+  .contentWrapper {
+    display: block;
+  }
 }
 
 @media (max-width: 768px) {
   .header {
-    padding: 120px 0 40px;
-    /* 移动端调整 */
+    padding: 120px 0 24px;
+    margin-bottom: 16px;
+  }
+
+  .profileSection {
+    padding: 0 12px;
   }
 
   .content {
-    flex-direction: column;
+    padding: 0 12px;
   }
 
   .profileInfo {
     flex-direction: column;
     text-align: center;
     gap: 16px;
+  }
+
+  .profileDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 
   .cardHeader {
@@ -383,12 +398,175 @@
 
   .itemFooter {
     flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .itemFooter span {
+    font-size: 11px;
+  }
+
+  .itemTitle {
+    font-size: 14px !important;
+    line-height: 1.4;
+  }
+
+  .itemDesc {
+    font-size: 13px !important;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+  }
+
+  .bottomPagination {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .sidebarCard {
+    margin-bottom: 16px;
+  }
+
+  .navigationMenu .ant-menu-item {
+    height: 40px !important;
+    line-height: 40px !important;
+    margin-bottom: 4px !important;
+    padding-left: 8px !important;
+  }
+
+  .menuIcon {
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 6px !important;
+  }
+
+  .cardTitle {
+    font-size: 18px !important;
+  }
+
+  .sectionTitle {
+    font-size: 16px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .header {
+    padding: 100px 0 20px;
+    margin-bottom: 12px;
+  }
+
+  .profileSection {
+    padding: 0 8px;
+  }
+
+  .content {
+    padding: 0 8px;
+  }
+
+  .profileInfo {
+    gap: 12px;
+  }
+
+  .name {
+    font-size: 24px !important;
+  }
+
+  .title {
+    font-size: 16px !important;
+  }
+
+  .subtitle {
+    font-size: 12px !important;
+  }
+
+  .contentCard {
+    margin: 0 -8px;
+    border-radius: 8px;
+  }
+
+  .sidebarCard {
+    margin: 0 -8px 12px;
+    border-radius: 8px;
+  }
+
+  .itemTitle {
+    font-size: 13px !important;
+  }
+
+  .itemDesc {
+    font-size: 12px !important;
+  }
+
+  .itemFooter span {
+    font-size: 10px;
+  }
+
+  .itemTag {
+    font-size: 10px !important;
+    padding: 1px 6px !important;
   }
 }
 
 @media (max-width: 480px) {
   .header {
-    padding: 110px 0 40px;
-    /* 小屏幕调整 */
+    padding: 90px 0 16px;
+    margin-bottom: 8px;
+  }
+
+  .profileSection {
+    padding: 0 4px;
+  }
+
+  .content {
+    padding: 0 4px;
+  }
+
+  .emptyState {
+    padding: 40px 12px;
+    margin: 0 -4px;
+  }
+
+  .emptyImage {
+    width: 120px;
+    margin-top: 100px;
+  }
+
+  .emptyState p {
+    font-size: 12px;
+    padding: 0.75rem;
+  }
+
+  .postDescription {
+    font-size: 0.75rem;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .bottomPagination {
+    overflow-x: auto;
+    padding: 0 4px;
+  }
+
+  .cardTitle {
+    font-size: 16px !important;
+  }
+
+  .cardIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .name {
+    font-size: 20px !important;
+  }
+
+  .title {
+    font-size: 14px !important;
+  }
+
+  .itemFooter {
+    gap: 2px;
+  }
+
+  .itemFooter span {
+    font-size: 9px;
   }
 }

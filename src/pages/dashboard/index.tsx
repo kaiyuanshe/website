@@ -267,6 +267,8 @@ export default function DashboardPage() {
               showTotal={(total, range) =>
                 `显示 ${range[0]}-${range[1]} 条，共 ${total} 条`
               }
+              responsive
+              size="small"
             />
           </div>
         </Card>
@@ -342,6 +344,8 @@ export default function DashboardPage() {
               showTotal={(total, range) =>
                 `显示 ${range[0]}-${range[1]} 条，共 ${total} 条`
               }
+              responsive
+              size="small"
             />
           </div>
         </Card>
@@ -374,7 +378,7 @@ export default function DashboardPage() {
 
       <div className={styles.contentWrapper}>
         <Row gutter={[24, 24]} className={styles.content}>
-          <Col span={6}>
+          <Col xs={24} sm={24} md={6} lg={6} xl={6}>
             <Card className={styles.sidebarCard}>
               <div className={styles.menuSection}>
                 <Title level={4} className={styles.sectionTitle}>
@@ -391,7 +395,7 @@ export default function DashboardPage() {
             </Card>
           </Col>
 
-          <Col span={18}>
+          <Col xs={24} sm={24} md={18} lg={18} xl={18}>
             <div className={styles.mainContent}>{renderContent()}</div>
           </Col>
         </Row>
