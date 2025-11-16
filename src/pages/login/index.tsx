@@ -10,6 +10,7 @@ import { registerUser } from '../api/login'
 import GitHubLoginButton from '@/components/GitHubLoginButton'
 import AuthManager from '@/lib/authManager'
 import { useAuth } from '@/contexts/AuthContext'
+import Captcha from '@/components/Captcha'
 
 type LoginFieldType = {
   email?: string
@@ -21,12 +22,14 @@ type RegisterFieldType = {
   password?: string
   confirmPassword?: string
   username?: string
+  captcha?: string
   // verificationCode?: string
 }
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [isRegister, setIsRegister] = useState(false)
+  const [captchaId, setCaptchaId] = useState('')
   // const [registerStep, setRegisterStep] = useState<
   //   'email' | 'verification' | 'password'
   // >('email')
@@ -187,9 +190,38 @@ const LoginPage: React.FC = () => {
 
   const onRegisterFinish = async (values: RegisterFieldType) => {
     try {
-      const { email, password, username } = values
+      const { email, password, username, captcha } = values
       if (!email || !password || !username) {
         message.error('请填写完整信息')
+        return
+      }
+
+      if (!captcha) {
+        message.error('请输入验证码')
+        return
+      }
+
+      // 验证验证码
+      if (!captchaId) {
+        message.error('请先获取验证码')
+        return
+      }
+
+      // 调用后端验证验证码
+      const verifyResponse = await fetch('/api/captcha/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          captchaId,
+          captcha
+        })
+      })
+
+      const verifyResult = await verifyResponse.json()
+      if (!verifyResult.success) {
+        message.error(verifyResult.message || '验证码错误')
         return
       }
 
@@ -269,6 +301,23 @@ const LoginPage: React.FC = () => {
               ]}
             >
               <Input.Password placeholder="确认密码" />
+            </Form.Item>
+
+            <Form.Item style={{ marginBottom: '8px' }}>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <Form.Item
+                  name="captcha"
+                  style={{ flex: 1, marginBottom: 0 }}
+                  rules={[{ required: true, message: '请输入验证码' }]}
+                >
+                  <Input placeholder="验证码" />
+                </Form.Item>
+                <Captcha 
+                  onChange={setCaptchaId}
+                  width={120}
+                  height={20}
+                />
+              </div>
             </Form.Item>
 
             <Form.Item>

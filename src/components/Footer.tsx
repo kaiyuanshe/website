@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from '../hooks/useTranslation'
-import { FacebookIcon, LinkedinIcon, X } from 'lucide-react'
+import { FacebookIcon, LinkedinIcon, X, Github } from 'lucide-react'
 import { SiBilibili, SiWechat } from 'react-icons/si'
 import { useState } from 'react'
 import { Modal } from 'antd'
@@ -107,6 +107,15 @@ export default function Footer() {
             {/* Social media icons */}
             <div className={styles.socialSection}>
               <div className={styles.socialLinks}>
+                <Link
+                  href="https://github.com/kaiyuanshe"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialButton}
+                  aria-label="GitHub"
+                >
+                  <Github className={styles.socialIcon} />
+                </Link>
                 <Link
                   href="https://x.com/kaiyuanshe"
                   target="_blank"
