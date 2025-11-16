@@ -65,7 +65,6 @@ export default function EventDetailPage() {
 
   // parseMarkdown将返回的markdown转为html展示
   const [eventContent, setEventContent] = useState<string>('')
-  const [recapContent, setRecapContent] = useState<string>('')
 
   useEffect(() => {
     if (event?.description) {
@@ -310,9 +309,6 @@ export default function EventDetailPage() {
   // 渲染活动详情组件
   const renderDetailSection = () => {
     const sectionProps = {
-      event,
-      eventContent,
-      recapContent,
       sessions,
       sessionsLoading
     }
@@ -327,7 +323,9 @@ export default function EventDetailPage() {
           alt={event.title}
           className={styles.coverImage}
           preview={false}
-          width={1400}
+          width="100%"
+          height={360}
+          style={{ objectFit: 'cover' }}
         />
       </div>
 
@@ -375,16 +373,12 @@ export default function EventDetailPage() {
 
 // 定义各个组件的 Props 接口
 interface SectionProps {
-  event?: any
-  eventContent?: string
-  recapContent?: string
   sessions?: Session[]
   sessionsLoading?: boolean
 }
 
 // 活动详情组件
 const DetailSection = ({
-  event,
   sessions = [],
   sessionsLoading
 }: SectionProps) => {
