@@ -299,6 +299,57 @@
   border-color: #1677ff;
 }
 
+/* Avatar upload styles */
+.avatarUploadWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.avatarUrlInfo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.urlLabel {
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
+}
+
+.urlInput {
+  font-size: 12px;
+}
+
+/* Empty states */
+.emptyAgenda,
+.emptySpeaker {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 14px;
+  border: 1px dashed #e8e8e8;
+  border-radius: 6px;
+  background: #fafafa;
+}
+
+/* Loading states */
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  font-size: 16px;
+  color: #666;
+}
+
+.error {
+  color: #ff4d4f;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {
@@ -325,5 +376,14 @@
   .timeRow,
   .speakerRow {
     grid-template-columns: 1fr;
+  }
+
+  .avatarUploadWrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatarUrlInfo {
+    width: 100%;
   }
 }

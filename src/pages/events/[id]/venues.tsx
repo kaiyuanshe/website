@@ -5,6 +5,7 @@ import styles from "./venues.module.css"
 import dayjs from "dayjs"
 import { addAgendaToSession, createSession, deleteAgenda, deleteSession, getSessionsByEvent, updateSession } from "@/pages/api/event"
 import { useRouter } from 'next/router';
+import AvatarUpload from "@/components/avatarUpload/AvatarUpload"
 
 
 
@@ -918,15 +919,18 @@ export default function VenuesPage() {
                             </div>
                           </div>
                           <div className={styles.formGroup}>
-                            <label className={styles.smallLabel}>头像 URL</label>
-                            <Input
-                              placeholder="请输入头像 URL"
-                              value={speaker.avatar || ''}
-                              onChange={(e) =>
-                                updateSpeaker(getUniqueId(activeVenue), getUniqueId(agenda), getUniqueId(speaker), "avatar", e.target.value)
-                              }
-                              disabled={speaker.ID !== null}
-                            />
+                            <label className={styles.smallLabel}>头像</label>
+                            <div className={styles.avatarUploadWrapper}>
+                              <AvatarUpload
+                                value={speaker.avatar || ''}
+                                onChange={(url) =>
+                                  updateSpeaker(getUniqueId(activeVenue), getUniqueId(agenda), getUniqueId(speaker), "avatar", url)
+                                }
+                                disabled={speaker.ID !== null}
+                                size="medium"
+                              />
+                            
+                            </div>
                           </div>
                           <Button
                             type="link"
