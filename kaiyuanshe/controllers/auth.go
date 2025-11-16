@@ -189,7 +189,7 @@ func HandleLoginV2(c *gin.Context) {
 	loginResp.User = *user
 	loginResp.Permissions = perms
 
-	token, err := utils.GenerateTokenV2(user.ID, user.Email, user.Username, perms)
+	token, err := utils.GenerateToken(user.ID, user.Email, user.Avatar, user.Username, user.Github, perms)
 	if err != nil {
 		logger.Log.Errorf("Generate token error: %v", err)
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Token generation failed", nil)
