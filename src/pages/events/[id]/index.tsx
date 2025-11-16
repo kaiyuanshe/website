@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { App as AntdApp, Image, Button } from 'antd'
-import { User, UserPlus, FileText, Upload, Users } from 'lucide-react'
+import { User, UserPlus, FileText, Upload, Users, Settings } from 'lucide-react'
 
 import { Tabs } from 'antd'
 import type { TabsProps } from 'antd'
@@ -382,6 +382,10 @@ const DetailSection = ({
   sessions = [],
   sessionsLoading
 }: SectionProps) => {
+  const router = useRouter()
+  const { id } = router.query
+  const rId = Array.isArray(id) ? id[0] : id
+  
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -527,6 +531,15 @@ const DetailSection = ({
 
   return (
     <div className={styles.tabContent}>
+      <div className={styles.tabHeader}>
+        <Button 
+          icon={<Settings size={16} />}
+          className={styles.configButton}
+          onClick={() => router.push(`/events/${rId}/venues`)}
+        >
+          年会配置
+        </Button>
+      </div>
       <Tabs
         defaultActiveKey={sessions.length > 0 ? sessions[0].ID.toString() : '1'}
         size="large"
