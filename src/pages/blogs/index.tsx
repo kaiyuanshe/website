@@ -24,9 +24,9 @@ import {
   UserRound,
 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styles from './index.module.css';
 import { deleteEvent } from '../api/event';
-import router from 'next/router';
 import { useAuth } from '@/contexts/AuthContext';
 import { getArticles } from '../api/article';
 
@@ -39,6 +39,10 @@ export function formatTime(isoTime: string): string {
 }
 
 export default function BlogsPage() {
+  const router = useRouter();
+  const { query, isReady } = router;
+  
+  // 状态管理
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
@@ -52,14 +56,19 @@ export default function BlogsPage() {
   const [publishStatus, setPublishStatus] = useState(0);
   const [category] = useState('blog');
 
-  // 使用统一的认证上下文，避免重复调用 useSession
+  // 认证上下文
   const { session, status } = useAuth();
-
   const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
-
   const { message } = AntdApp.useApp();
 
-  // 加载博客列表
+  // 从 URL 参数初始化 searchKeyword
+  useEffect(() => {
+    if (isReady && query.keyword) {
+      setSearchKeyword(query.keyword as string);
+    }
+  }, [isReady, query.keyword]);
+
+  // 加载博客列表 - 使用 useMemo 避免不必要的重新创建
   const loadArticles = useCallback(async (params?: {
     keyword?: string;
     tag?: string;
@@ -71,21 +80,27 @@ export default function BlogsPage() {
     try {
       setLoading(true);
 
+      // 使用传入的参数或当前状态
+      const actualKeyword = params?.keyword !== undefined ? params.keyword : searchKeyword;
+      const actualPage = params?.page !== undefined ? params.page : currentPage;
+      const actualPageSize = params?.page_size !== undefined ? params.page_size : pageSize;
+      const actualPublishStatus = params?.publish_status !== undefined ? params.publish_status : publishStatus;
+
       const queryParams = {
-        keyword: params?.keyword ?? searchKeyword,
+        keyword: actualKeyword,
         tag: params?.tag ?? selectedTag,
         order: params?.order ?? sortOrder,
-        page: params?.page ?? currentPage,
-        page_size: params?.page_size ?? pageSize,
-        publish_status: params?.publish_status ?? publishStatus,
+        page: actualPage,
+        page_size: actualPageSize,
+        publish_status: actualPublishStatus,
         category: category,
       };
 
+      console.log('加载文章参数:', queryParams);
+
       const result = await getArticles(queryParams);
       if (result.success && result.data) {
-        // 处理后端返回的数据结构
         if (result.data.articles && Array.isArray(result.data.articles)) {
-          console.log(result.data.articles);
           setArticles(result.data.articles);
           setCurrentPage(result.data.page || 1);
           setPageSize(result.data.page_size || 6);
@@ -110,70 +125,130 @@ export default function BlogsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchKeyword, selectedTag, sortOrder, currentPage, pageSize, publishStatus]);
+  }, [searchKeyword, selectedTag, sortOrder, currentPage, pageSize, publishStatus, category]);
 
-  // 搜索博客
-  const handleSearch = async (keyword: string) => {
+  // 搜索博客 - 更新 URL 和状态
+  const handleSearch = useCallback(async (keyword: string) => {
+    console.log('执行搜索:', keyword);
     setSearchKeyword(keyword);
-    setCurrentPage(1); // 重置到第一页
+    setCurrentPage(1);
+    
+    // 更新 URL 查询参数
+    const newQuery = { ...router.query };
+    if (keyword) {
+      newQuery.keyword = keyword;
+    } else {
+      delete newQuery.keyword;
+    }
+    
+    await router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+    
     await loadArticles({ keyword, page: 1 });
-  };
+  }, [router, loadArticles]);
+
+  // 处理输入框变化
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchKeyword(e.target.value);
+  }, []);
+
+  // 处理清空搜索
+  const handleClearSearch = useCallback(() => {
+    handleSearch('');
+  }, [handleSearch]);
 
   // 分页处理
-  const handlePageChange = async (page: number, size?: number) => {
+  const handlePageChange = useCallback(async (page: number, size?: number) => {
     setCurrentPage(page);
     if (size && size !== pageSize) {
       setPageSize(size);
     }
     await loadArticles({ page, page_size: size || pageSize });
-  };
+  }, [loadArticles, pageSize]);
 
-  // 计算当前显示的博客
-  const startIndex = (currentPage - 1) * pageSize + 1;
-  const endIndex = Math.min(currentPage * pageSize, total);
+  // 切换视图模式
+  const handleSwitchViewMode = useCallback((mode: ViewMode) => {
+    setViewMode(mode);
+    setCurrentPage(1);
+  }, []);
 
-  const currentArticles = articles; // 服务端已经处理了分页
-
-  const handleDeleteEvent = async (id: number) => {
-    // 调用创建博客接口
+  // 删除博客
+  const handleDeleteEvent = useCallback(async (id: number) => {
     try {
       const result = await deleteEvent(id);
       if (result.success) {
         message.success(result.message);
         loadArticles();
       } else {
-        message.error(result.message || '创建博客失败');
+        message.error(result.message || '删除博客失败');
       }
     } catch {
       message.error('删除失败，请重试');
     }
-  };
+  }, [loadArticles, message]);
 
-  const handleSwitchViewMode = (mode: ViewMode) => {
-    setViewMode(mode);
-    setCurrentPage(1);
-  };
-
-
+  // 监听 URL 参数变化并自动搜索
   useEffect(() => {
-    if (status === 'loading') return; // 等待认证状态确定
+    if (isReady) {
+      const { keyword } = query;
+      console.log('URL 参数变化:', keyword);
+      
+      if (keyword && keyword !== searchKeyword) {
+        // URL 中有 keyword 参数，执行搜索
+        loadArticles({ keyword: keyword as string, page: 1 });
+      } else if (!keyword && searchKeyword) {
+        // URL 中没有 keyword 但状态中有，清空搜索
+        setSearchKeyword('');
+        loadArticles({ keyword: '', page: 1 });
+      }
+    }
+  }, [isReady, query.keyword]); // 移除 searchKeyword 和 loadArticles 依赖
+
+  // 认证状态变化时加载数据
+  useEffect(() => {
+    if (status === 'loading') return;
+
     const newPublishStatus =
       status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
+    
+    console.log('认证状态变化，发布状态:', newPublishStatus);
     setPublishStatus(newPublishStatus);
 
-    // 直接调用 loadarticles，避免 publishStatus 状态更新延迟
-    loadArticles({ publish_status: newPublishStatus });
-  }, [status, permissions.length, loadArticles, permissions]);
+    // 如果 URL 中有搜索参数，使用 URL 参数
+    if (isReady && query.keyword) {
+      loadArticles({ 
+        keyword: query.keyword as string,
+        publish_status: newPublishStatus 
+      });
+    } else {
+      loadArticles({ publish_status: newPublishStatus });
+    }
+  }, [status, permissions, isReady, query.keyword]);
+
+  // 初始加载
+  useEffect(() => {
+    if (isReady && status !== 'loading') {
+      console.log('初始加载数据');
+      loadArticles();
+    }
+  }, [isReady, status]);
+
+  // 计算显示范围
+  const startIndex = (currentPage - 1) * pageSize + 1;
+  const endIndex = Math.min(currentPage * pageSize, total);
+  const currentArticles = articles;
 
   return (
     <div className={`${styles.container} nav-t-top`}>
-      {/* Title Section */}
+      {/* Header Section */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
-          {/* <div className={styles.titleSection}>
-            <h1 className={styles.title}>博客</h1>
-            <p className={styles.subtitle}>写下所思所感，遇见共鸣之人</p>
-          </div> */}
           {status === 'authenticated' && permissions.includes('article:write') && (
             <Link href="/blogs/new" className={styles.createButton}>
               <Plus size={20} />
@@ -183,7 +258,7 @@ export default function BlogsPage() {
         </div>
       </div>
 
-      {/* Search and Filter Bar */}
+      {/* Search Section */}
       <div className={styles.searchSection}>
         <div className={styles.searchBar}>
           <AntSearch
@@ -192,9 +267,9 @@ export default function BlogsPage() {
             size="large"
             enterButton="搜索"
             value={searchKeyword}
-            onChange={(e) => setSearchKeyword(e.target.value)}
+            onChange={handleInputChange}
             onSearch={handleSearch}
-            onClear={() => handleSearch('')}
+            onClear={handleClearSearch}
             loading={loading}
           />
         </div>
@@ -224,15 +299,13 @@ export default function BlogsPage() {
             total={total}
             pageSize={pageSize}
             onChange={handlePageChange}
-            showTotal={(total) =>
-              `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`
-            }
+            showTotal={(total) => `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`}
             className={styles.fullPagination}
           />
         </div>
       </div>
 
-      {/* articles Display */}
+      {/* Articles Display */}
       {loading ? (
         <div className={styles.loadingContainer}>
           <div className={styles.loadingText}>加载中...</div>
@@ -279,9 +352,8 @@ export default function BlogsPage() {
                         <Tag className={styles.noPublishStatus}>待审核</Tag>
                       )}
                       <div className={styles.cardActions}>
-                        {/* 只有博客作者才可以编辑 */}
                         {status === 'authenticated' &&
-                          article.publisher_id.toString() === session?.user?.uid ? (
+                          article.publisher_id.toString() === session?.user?.uid && (
                           <Button
                             className={styles.actionIconButton}
                             onClick={(e) => {
@@ -289,16 +361,15 @@ export default function BlogsPage() {
                               router.push(`/blogs/${article.ID}/edit`);
                             }}
                             icon={<Edit className={styles.actionIcon} />}
-                            title="编辑活动"
+                            title="编辑博客"
                           />
-                        ) : null}
-
+                        )}
                         <Button
                           className={styles.actionIconButton}
                           onClick={(e) => {
                             e.preventDefault();
                             navigator.clipboard.writeText(
-                              `${window.location.href}/${article.ID}`
+                              `${window.location.origin}/blogs/${article.ID}`
                             );
                             message.success('链接已复制到剪贴板');
                           }}
@@ -315,7 +386,6 @@ export default function BlogsPage() {
                   <p className={styles.articleDescriptionNew}>
                     {article.description}
                   </p>
-
                   <div className={styles.cardFooter}>
                     <div className={styles.authorInfo}>
                       <Image
@@ -353,7 +423,6 @@ export default function BlogsPage() {
         </div>
       ) : (
         <div className={styles.listViewContainer}>
-          {/* articles List */}
           <div className={styles.articlesList}>
             <div className={styles.listHeader}>
               <div className={styles.listHeaderCell}>博客信息</div>
@@ -369,7 +438,6 @@ export default function BlogsPage() {
                   <div className={styles.articleInfo}>
                     <Link
                       href={`/blogs/${article.ID}`}
-                      key={article.ID}
                       className={styles.listLink}
                     >
                       {article.title}
@@ -411,12 +479,10 @@ export default function BlogsPage() {
                     )}
                   </div>
                 </div>
-
                 <div className={styles.listCell}>
                   <div className={styles.listActions}>
-                    {/* 只有博客发布者才可以编辑 */}
                     {status === 'authenticated' &&
-                      article.publisher_id.toString() === session?.user?.uid ? (
+                      article.publisher_id.toString() === session?.user?.uid && (
                       <Button
                         type="text"
                         size="small"
@@ -424,23 +490,22 @@ export default function BlogsPage() {
                         title="编辑博客"
                         onClick={() => router.push(`/blogs/${article.ID}/edit`)}
                       />
-                    ) : null}
+                    )}
                     <Button
                       type="text"
                       size="small"
                       onClick={(e) => {
                         e.preventDefault();
                         navigator.clipboard.writeText(
-                          `${window.location.href}/${article.ID}`
+                          `${window.location.origin}/blogs/${article.ID}`
                         );
                         message.success('链接已复制到剪贴板');
                       }}
                       icon={<Share2 className={styles.listActionIcon} />}
                       title="分享活动"
                     />
-                    {/* 只有博客发布者才可以删除*/}
                     {status === 'authenticated' &&
-                      article.publisher_id?.toString() === session?.user?.uid ? (
+                      article.publisher_id?.toString() === session?.user?.uid && (
                       <Popconfirm
                         title="删除博客"
                         description="你确定删除这个博客吗？"
@@ -456,7 +521,7 @@ export default function BlogsPage() {
                           title="删除博客"
                         />
                       </Popconfirm>
-                    ) : null}
+                    )}
                   </div>
                 </div>
               </div>
@@ -465,6 +530,7 @@ export default function BlogsPage() {
         </div>
       )}
 
+      {/* Bottom Pagination */}
       <div className={styles.listBottomControls}>
         <div className={styles.bottomPagination}>
           <Pagination
@@ -472,15 +538,13 @@ export default function BlogsPage() {
             total={total}
             pageSize={pageSize}
             onChange={handlePageChange}
-            // showQuickJumper={true}
-            showTotal={(total) =>
-              `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`
-            }
+            showTotal={(total) => `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`}
             className={styles.fullPagination}
           />
         </div>
       </div>
 
+      {/* WeChat Modal */}
       <Modal
         open={wechatModalVisible}
         onCancel={() => setWechatModalVisible(false)}
