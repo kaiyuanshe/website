@@ -1,10 +1,18 @@
-import type React from "react"
-import { Button, Spin, message } from "antd"
-import { MapPin, Users, Globe, Building2, Sparkles, ArrowRight, Plus } from "lucide-react"
-import { useState, useEffect, useCallback } from "react"
-import { useRouter } from "next/router"
-import styles from "./index.module.css"
-import { getCommunities, Community } from "../api/comunity"
+import type React from 'react'
+import { Button, Spin, message } from 'antd'
+import {
+  MapPin,
+  Users,
+  Globe,
+  Building2,
+  Sparkles,
+  ArrowRight,
+  Plus
+} from 'lucide-react'
+import { useState, useEffect, useCallback } from 'react'
+import { useRouter } from 'next/router'
+import styles from './index.module.css'
+import { getCommunities, Community } from '../api/comunity'
 
 const CommunityPage: React.FC = () => {
   const router = useRouter()
@@ -17,85 +25,92 @@ const CommunityPage: React.FC = () => {
   })
 
   // 加载社区数据
-  const loadCommunities = useCallback(async (params?: {
-    city?: string;
-    page?: number;
-    page_size?: number;
-    order_by?: 'created_at' | 'start_date';
-    order?: 'asc' | 'desc';
-  }) => {
-    try {
-      setLoading(true);
+  const loadCommunities = useCallback(
+    async (params?: {
+      city?: string
+      page?: number
+      page_size?: number
+      order_by?: 'created_at' | 'start_date'
+      order?: 'asc' | 'desc'
+    }) => {
+      try {
+        setLoading(true)
 
-      const queryParams = {
-        city: params?.city ?? '',
-        page: params?.page ?? 1,
-        page_size: params?.page_size ?? 50,
-        order_by: params?.order_by ?? 'created_at',
-        order: params?.order ?? 'desc',
-      };
+        const queryParams = {
+          city: params?.city ?? '',
+          page: params?.page ?? 1,
+          page_size: params?.page_size ?? 50,
+          order_by: params?.order_by ?? 'created_at',
+          order: params?.order ?? 'desc'
+        }
 
-      const result = await getCommunities(queryParams);
+        const result = await getCommunities(queryParams)
 
-      if (result.success && result.data) {
-        // 使用接口返回的真实数据
-        const communitiesData = result.data.communities || [];
-        console.log('社区数据:', communitiesData);
+        if (result.success && result.data) {
+          // 使用接口返回的真实数据
+          const communitiesData = result.data.communities || []
+          console.log('社区数据:', communitiesData)
 
-        if (communitiesData.length === 0) {
-          message.info('暂无社区数据');
-          setCities([]);
+          if (communitiesData.length === 0) {
+            message.info('暂无社区数据')
+            setCities([])
+            setStats({
+              cityCount: 0,
+              developerCount: 0,
+              projectCount: 0
+            })
+            return
+          }
+
+          setCities(communitiesData)
+
+          // 更新统计数据 - 使用真实数据计算
+          const totalCities = communitiesData.length
+          setStats({
+            cityCount: totalCities,
+            developerCount: totalCities * 150,
+            projectCount: totalCities * 25
+          })
+        } else {
+          console.error('获取社区列表失败:', result.message)
+          message.warning(result.message || '获取社区数据失败')
+
+          // 可以在这里设置默认数据作为fallback
+          setCities([])
           setStats({
             cityCount: 0,
             developerCount: 0,
             projectCount: 0
-          });
-          return;
+          })
         }
-
-        setCities(communitiesData);
-
-        // 更新统计数据 - 使用真实数据计算
-        const totalCities = communitiesData.length;
-        setStats({
-          cityCount: totalCities,
-          developerCount: totalCities * 150, 
-          projectCount: totalCities * 25    
-        });
-
-      } else {
-        console.error('获取社区列表失败:', result.message);
-        message.warning(result.message || '获取社区数据失败');
-        
-        // 可以在这里设置默认数据作为fallback
-        setCities([]);
+      } catch (error: unknown) {
+        console.error('加载社区列表异常:', error)
+        message.error('获取社区数据失败')
+        setCities([])
         setStats({
           cityCount: 0,
           developerCount: 0,
           projectCount: 0
-        });
+        })
+      } finally {
+        setLoading(false)
       }
-    } catch (error: unknown) {
-      console.error('加载社区列表异常:', error);
-      message.error('获取社区数据失败');
-      setCities([]);
-      setStats({
-        cityCount: 0,
-        developerCount: 0,
-        projectCount: 0
-      });
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    []
+  )
 
   // 从接口获取社区数据
   useEffect(() => {
-    loadCommunities();
-  }, [loadCommunities]);
+    loadCommunities()
+  }, [loadCommunities])
 
   const handleCreateCommunity = () => {
-    router.push(`/community/new`)
+    const handleCreateCommunity = () => {
+      window.open(
+        'https://kaiyuanshe.feishu.cn/share/base/form/shrcnogj5LPzlaiUkFaKpVbxNXe',
+        '_blank'
+      )
+    }
   }
 
   const handleCityClick = (city: Community) => {
@@ -105,8 +120,8 @@ const CommunityPage: React.FC = () => {
   }
 
   const handleAddCommunity = () => {
-    router.push('/community/new');
-  };
+    router.push('/community/new')
+  }
 
   if (loading) {
     return (
@@ -153,7 +168,10 @@ const CommunityPage: React.FC = () => {
         </div>
 
         <div className={styles.addCommunity}>
-          <Button className={styles.addCommunityButton} onClick={handleAddCommunity}>
+          <Button
+            className={styles.addCommunityButton}
+            onClick={handleAddCommunity}
+          >
             <Plus size={20} />
             添加社区
           </Button>
@@ -166,7 +184,7 @@ const CommunityPage: React.FC = () => {
             <Building2 size={24} />
             <span>社区分布</span>
           </h2>
-          
+
           {cities.length === 0 ? (
             <div className={styles.emptyState}>
               <Building2 size={48} />
@@ -194,15 +212,19 @@ const CommunityPage: React.FC = () => {
                           src={city.cover}
                           alt={city.city}
                           className={styles.coverImage}
-                          onError={(e) => {
+                          onError={e => {
                             // 图片加载失败时显示默认图标
-                            e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling?.classList.remove(styles.hidden);
+                            e.currentTarget.style.display = 'none'
+                            e.currentTarget.nextElementSibling?.classList.remove(
+                              styles.hidden
+                            )
                           }}
                         />
                       ) : null}
                       {/* 默认图标 */}
-                      <div className={`${styles.standardLogo} ${city.cover ? styles.hidden : ''}`}>
+                      <div
+                        className={`${styles.standardLogo} ${city.cover ? styles.hidden : ''}`}
+                      >
                         <div className={styles.logoPattern}>
                           <div className={styles.logoLines}>
                             <div className={styles.line}></div>
@@ -218,7 +240,7 @@ const CommunityPage: React.FC = () => {
                     <div className={styles.cityName}>
                       <MapPin size={16} className={styles.locationIcon} />
                       <span>{city.city}</span>
-                   <Globe size={14} className={styles.internationalIcon} />
+                      <Globe size={14} className={styles.internationalIcon} />
                     </div>
                     <div className={styles.cityStatus}>活跃社区</div>
                     {city.intro && (
@@ -241,7 +263,9 @@ const CommunityPage: React.FC = () => {
               <Sparkles size={32} />
             </div>
             <h3 className={styles.actionTitle}>加入我们的开源社区</h3>
-            <p className={styles.actionDescription}>与全球顶尖开发者一起构建更好的开源生态系统，分享知识，共同成长</p>
+            <p className={styles.actionDescription}>
+              与全球顶尖开发者一起构建更好的开源生态系统，分享知识，共同成长
+            </p>
             <div className={styles.actionFeatures}>
               <div className={styles.feature}>
                 <Users size={16} />
@@ -256,7 +280,12 @@ const CommunityPage: React.FC = () => {
                 <span>全球网络</span>
               </div>
             </div>
-            <Button type="primary" size="large" className={styles.createButton} onClick={handleCreateCommunity}>
+            <Button
+              type="primary"
+              size="large"
+              className={styles.createButton}
+              onClick={handleCreateCommunity}
+            >
               <Sparkles size={18} />
               KCC 社区创建申请
               <ArrowRight size={18} />
