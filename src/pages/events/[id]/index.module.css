@@ -22,28 +22,58 @@
 
 
 .mainImage {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
   width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.mainImage::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
 }
 
 .coverImage {
   display: block;
+  width: 100%;
   max-width: 100%;
   height: auto;
-  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: white;
+  padding: 8px;
+}
+
+.coverImage:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
 }
 
 .actionButtons {
   display: flex;
   justify-content: center;
-  padding: 30px 20px;
-  background: linear-gradient(135deg, #f0f2f5 0%, #fafbfc 100%);
-  border-radius: 16px;
-  margin: 30px auto;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+  border-radius: 20px;
+  margin: -20px auto 40px;
   max-width: 1400px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 2;
 }
 
 .buttonContainer {
@@ -57,33 +87,51 @@
 }
 
 .actionButton {
-  min-width: 200px;
-  height: 56px;
+  min-width: 220px;
+  height: 60px;
   font-size: 16px;
   font-weight: 600;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.actionButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.actionButton:hover::before {
+  left: 100%;
 }
 
 .actionButton:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
 }
 
 .actionButton:not(.ant-btn-primary) {
-  background: white;
-  border: 2px solid #d9d9d9;
-  color: #262626;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 2px solid rgba(64, 150, 255, 0.2);
+  color: #1f2937;
 }
 
 .actionButton:not(.ant-btn-primary):hover {
   border-color: #4096ff;
   color: #4096ff;
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
 }
 
 .content {
@@ -265,10 +313,17 @@
 
 /* Responsive design */
 @media (max-width: 1400px) {
+  .mainImage {
+    margin: 0 20px;
+    padding: 32px 16px;
+    border-radius: 20px;
+  }
+  
   .actionButtons {
     max-width: 100%;
-    margin: 30px 20px;
-    padding: 24px 16px;
+    margin: -16px 20px 32px;
+    padding: 32px 16px;
+    border-radius: 16px;
   }
   
   .buttonContainer {
@@ -277,8 +332,8 @@
   
   .actionButton {
     min-width: 180px;
-    height: 50px;
-    font-size: 14px;
+    height: 56px;
+    font-size: 15px;
   }
   
   .content {
@@ -292,20 +347,38 @@
 }
 
 @media (max-width: 1024px) {
+  .mainImage {
+    padding: 24px 12px;
+    border-radius: 16px;
+  }
+  
   .buttonContainer {
     gap: 12px;
   }
   
   .actionButton {
     min-width: 160px;
-    height: 48px;
-    font-size: 13px;
+    height: 52px;
+    font-size: 14px;
+    border-radius: 12px;
   }
 }
 
 @media (max-width: 768px) {
-  .actionButtons {
+  .mainImage {
+    margin: 0 12px;
     padding: 20px 12px;
+    border-radius: 16px;
+  }
+  
+  .coverImage {
+    border-radius: 12px;
+  }
+  
+  .actionButtons {
+    margin: -12px 12px 24px;
+    padding: 24px 16px;
+    border-radius: 16px;
   }
   
   .buttonContainer {
@@ -316,9 +389,10 @@
   
   .actionButton {
     min-width: 100%;
-    max-width: 300px;
-    height: 52px;
+    max-width: 320px;
+    height: 56px;
     font-size: 15px;
+    border-radius: 14px;
   }
 
   .agendaItem,
