@@ -1,0 +1,99 @@
+.mediaManager {
+  padding: 24px;
+  background: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  color: #1f2937;
+}
+
+.filterSection {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.tableContainer {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.imagePreview {
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.imagePreview:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.actionButton {
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px);
+}
+
+.uploadArea {
+  border: 2px dashed #d9d9d9;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.uploadArea:hover {
+  border-color: #1890ff;
+  background: #f0f8ff;
+}
+
+.previewModal .imageContainer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.previewModal .imageDetails {
+  background: #fafafa;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.editModal .imageThumb {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+
+.editModal .formItem {
+  margin-bottom: 16px;
+}
+
+.statsCard {
+  text-align: center;
+  padding: 16px;
+}
+
+.statsNumber {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.statsLabel {
+  color: #8c8c8c;
+  margin-top: 8px;
+}

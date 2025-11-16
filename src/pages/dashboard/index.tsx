@@ -14,7 +14,7 @@ import {
   Pagination,
   App as AntdApp
 } from 'antd'
-import { FileText, Eye, Clock } from 'lucide-react'
+import { FileText, Eye, Clock, ImageIcon } from 'lucide-react'
 import Link from 'next/link'
 import dayjs from 'dayjs'
 import styles from './index.module.css'
@@ -26,7 +26,7 @@ import { useSession } from 'next-auth/react'
 import { parseMd } from '@/utils/posts'
 
 const { Title, Text } = Typography
-type ActiveTab = 'events' | 'articles'
+type ActiveTab = 'events' | 'articles' | 'media'
 
 export default function DashboardPage() {
   const { message } = AntdApp.useApp()
@@ -118,6 +118,11 @@ export default function DashboardPage() {
       key: 'articles',
       icon: <FileText className={styles.menuIcon} />,
       label: '我的文章'
+    },
+    {
+      key: 'media',
+      icon: <ImageIcon className={styles.menuIcon} />,
+      label: '媒体管理'
     }
   ]
 
@@ -347,6 +352,41 @@ export default function DashboardPage() {
               responsive
               size="small"
             />
+          </div>
+        </Card>
+      )
+    }
+
+    if (activeTab === 'media') {
+      return (
+        <Card className={styles.contentCard}>
+          <div className={styles.cardHeader}>
+            <Title level={3} className={styles.cardTitle}>
+              <ImageIcon className={styles.cardIcon} />
+              媒体管理
+            </Title>
+          </div>
+          <Divider />
+          <div style={{ padding: '20px 0', textAlign: 'center' }}>
+            <ImageIcon size={48} style={{ color: '#1890ff', marginBottom: 16 }} />
+            <Title level={4} style={{ marginBottom: 8 }}>Cloudinary 图片管理</Title>
+            <Text type="secondary" style={{ display: 'block', marginBottom: 24 }}>
+              管理您上传的所有图片，支持查看、编辑、删除和复制链接
+            </Text>
+            <Link href="/media">
+              <button style={{
+                background: '#1890ff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                padding: '12px 24px',
+                fontSize: '16px',
+                cursor: 'pointer',
+                transition: 'background-color 0.3s'
+              }}>
+                进入媒体库
+              </button>
+            </Link>
           </div>
         </Card>
       )
