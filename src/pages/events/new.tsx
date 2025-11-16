@@ -45,6 +45,7 @@ export default function NewEventPage() {
   const [inputValue, setInputValue] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventType, setEventType] = useState<string>('community');
+  const [communityId, setCommunityId] = useState<string | undefined>();
 
   // 封面图片
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -55,11 +56,17 @@ export default function NewEventPage() {
     if (!router.isReady) return;
     
     const queryEventType = router.query.event_type as string;
+    const queryCommunityId = router.query.community_id as string;
+    
     if (queryEventType) {
       setEventType(queryEventType);
       form.setFieldValue('eventType', queryEventType);
     }
-  }, [router.isReady, router.query.event_type, form]);
+    
+    if (queryCommunityId) {
+      setCommunityId(queryCommunityId);
+    }
+  }, [router.isReady, router.query.event_type, router.query.community_id, form]);
 
   // 格式化时间为字符串
   const formatDateTime = (date: { format: (format: string) => string }, time: { format: (format: string) => string }) => {
@@ -104,7 +111,12 @@ export default function NewEventPage() {
 
       if (result.success) {
         message.success("活动创建成功！");
-        router.push('/events');
+        // 如果有社区ID，返回到社区详情页面，否则返回活动列表
+        if (communityId) {
+          router.push(`/community/${communityId}`);
+        } else {
+          router.push('/events');
+        }
       } else {
         message.error('活动创建出错');
       }
@@ -135,9 +147,9 @@ export default function NewEventPage() {
   return (
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.header}>
-        <Link href="/events" className={styles.backButton}>
+        <Link href={communityId ? `/community/${communityId}` : '/events'} className={styles.backButton}>
           <ArrowLeft className={styles.backIcon} />
-          返回活动列表
+          {communityId ? '返回社区详情' : '返回活动列表'}
         </Link>
       </div>
 

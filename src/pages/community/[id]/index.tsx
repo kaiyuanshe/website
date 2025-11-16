@@ -150,7 +150,7 @@ const CommunityDetailPage: React.FC = () => {
   }
 
   const handleCreateEvent = () => {
-    router.push('/events/new?event_type=community')
+    router.push(`/events/new?event_type=community&community_id=${id}`)
   }
 
   // 打开添加成员弹窗
@@ -357,22 +357,22 @@ const CommunityDetailPage: React.FC = () => {
                 {community.isInternational && <Globe size={20} className={styles.internationalIcon} />}
               </h1>
             </div>
-            <p className={styles.communityIntro}>{community.intro}</p>
+           
 
             {/* 社区统计 */}
             <div className={styles.statsContainer}>
               <div className={styles.stat}>
-                <Users size={20} />
+               
                 <span className={styles.statNumber}>{community.members?.length || 0}</span>
                 <span className={styles.statLabel}>成员</span>
               </div>
               <div className={styles.stat}>
-                <GitBranch size={20} />
+                
                 <span className={styles.statNumber}>0</span>
                 <span className={styles.statLabel}>项目</span>
               </div>
               <div className={styles.stat}>
-                <Calendar size={20} />
+              
                 <span className={styles.statNumber}>{community.events?.length || 0}</span>
                 <span className={styles.statLabel}>活动</span>
               </div>
