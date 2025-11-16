@@ -146,7 +146,7 @@ export default function Header() {
         key: 'community-development',
         label: '社区发展',
         children: [
-           {
+          {
             key: 'partners',
             label: '合作伙伴',
             href: '/partners',
@@ -195,8 +195,8 @@ export default function Header() {
             description: '各地开源社城市社区',
             group: 'cooperation'
           },
-         
-         
+
+
           {
             key: 'china-oss-report',
             label: '中国开源年度报告',
@@ -474,6 +474,14 @@ export default function Header() {
     }
   }
 
+
+  const handleSearchChange = useCallback((e: any) => {
+    console.log(e.target.value)
+    setSearchQuery(e.target.value);
+    router.push("/blogs?keyword=" + e.target.value)
+  }, []);
+
+
   // CNCF风格下拉菜单组件
   const NavDropdown = ({ item }: { item: MenuItem }) => {
     const isActive = activeDropdown === item.key
@@ -504,11 +512,11 @@ export default function Header() {
               <div
                 className={
                   item.key === 'about' ||
-                  item.key === 'governance' ||
-                  item.key === 'community-development' ||
-                  item.key === 'events' ||
-                  item.key === 'projects' ||
-                  item.key === 'articles-media'
+                    item.key === 'governance' ||
+                    item.key === 'community-development' ||
+                    item.key === 'events' ||
+                    item.key === 'projects' ||
+                    item.key === 'articles-media'
                     ? styles.dropdownLeftTwoColumn
                     : styles.dropdownLeft
                 }
@@ -995,7 +1003,7 @@ export default function Header() {
               <button
                 className={styles.searchButton}
                 onClick={() => setSearchOpen(true)}
-                aria-label="搜索菜单"
+                aria-label="搜索"
               >
                 <Search className={styles.searchIcon} />
               </button>
@@ -1007,9 +1015,9 @@ export default function Header() {
                     <input
                       ref={searchInputRef}
                       type="text"
-                      placeholder="搜索菜单..."
+                      placeholder="搜索..."
                       value={searchQuery}
-                      onChange={e => setSearchQuery(e.target.value)}
+                      onChange={handleSearchChange}
                       className={styles.searchInput}
                     />
                     <button
@@ -1025,7 +1033,7 @@ export default function Header() {
                   </div>
 
                   {/* 搜索结果 */}
-                  {searchQuery.trim() && (
+                  {/* {searchQuery.trim() && (
                     <div className={styles.searchResults}>
                       {searchResults.length > 0 ? (
                         <>
@@ -1108,9 +1116,9 @@ export default function Header() {
                         <div className={styles.searchNoResults}>
                           未找到相关菜单项
                         </div>
-                      )}
-                    </div>
-                  )}
+                      )} */}
+                  {/* </div>
+                  )} */}
                 </div>
               )}
             </div>
