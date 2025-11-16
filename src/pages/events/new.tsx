@@ -46,6 +46,7 @@ export default function NewEventPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventType, setEventType] = useState<string>('community');
   const [communityId, setCommunityId] = useState<string | undefined>();
+  const [fromCoscon, setFromCoscon] = useState(false);
 
   // 封面图片
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -57,6 +58,13 @@ export default function NewEventPage() {
     
     const queryEventType = router.query.event_type as string;
     const queryCommunityId = router.query.community_id as string;
+    
+    // 检查是否是从 /events/coscon 进入（通过 event_type=coscon 参数判断）
+    const isFromCoscon = queryEventType === 'coscon';
+    
+    if (isFromCoscon) {
+      setFromCoscon(true);
+    }
     
     if (queryEventType) {
       setEventType(queryEventType);
@@ -111,10 +119,14 @@ export default function NewEventPage() {
 
       if (result.success) {
         message.success("活动创建成功！");
-        // 如果有社区ID，返回到社区详情页面，否则返回活动列表
-        if (communityId) {
+        // 如果是从开源年会进入，返回开源年会列表
+        if (fromCoscon) {
+          router.push('/events/coscon');
+        } else if (communityId) {
+          // 如果有社区ID，返回到社区详情页面
           router.push(`/community/${communityId}`);
         } else {
+          // 否则返回活动列表
           router.push('/events');
         }
       } else {
@@ -147,9 +159,20 @@ export default function NewEventPage() {
   return (
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.header}>
-        <Link href={communityId ? `/community/${communityId}` : '/events'} className={styles.backButton}>
+        <Link href={
+          fromCoscon 
+            ? '/events/coscon' 
+            : communityId 
+              ? `/community/${communityId}` 
+              : '/events'
+        } className={styles.backButton}>
           <ArrowLeft className={styles.backIcon} />
-          {communityId ? '返回社区详情' : '返回活动列表'}
+          {fromCoscon 
+            ? '返回开源年会列表' 
+            : communityId 
+              ? '返回社区详情' 
+              : '返回活动列表'
+          }
         </Link>
       </div>
 
