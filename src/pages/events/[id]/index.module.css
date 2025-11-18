@@ -370,7 +370,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 768px) and (min-width: 481px) {
   .mainImage {
     height: 240px;
     margin: 12px;
@@ -404,17 +404,25 @@
 
   .agendaItem,
   .agendaItemSpecial {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     gap: 1rem;
+    text-align: left;
   }
 
   .agendaTime {
     min-width: auto;
+    text-align: center;
+    font-weight: 700;
+  }
+
+  .agendaTopic {
+    text-align: center;
   }
 
   .agendaSpeakers {
     min-width: auto;
     width: 100%;
+    align-items: center;
   }
 
   .tabHeader {
@@ -425,6 +433,32 @@
   .configButton {
     font-size: 12px;
     padding: 6px 12px;
+  }
+
+  .sessionContent {
+    padding: 2rem 1rem;
+  }
+
+  .sessionTitle {
+    font-size: 1.8rem;
+  }
+
+  .sessionAddress {
+    font-size: 1.2rem;
+  }
+
+  /* 社区活动页面移动端优化 */
+  .communityLayout {
+    padding: 40px 16px 80px;
+  }
+
+  .communityTitle {
+    font-size: 1.8rem;
+  }
+
+  .communityMeta {
+    flex-wrap: wrap;
+    font-size: 0.9rem;
   }
 }
 
@@ -572,4 +606,221 @@
   justify-content: center;
   gap: 16px;
   margin-top: 60px;
+}
+
+/* Mobile Tabs styling */
+.mobileTabs :global(.ant-tabs-nav) {
+  margin-bottom: 16px !important;
+}
+
+.mobileTabs :global(.ant-tabs-tab) {
+  min-width: 120px !important;
+  text-align: center !important;
+  font-size: 0.9rem !important;
+  padding: 12px 8px !important;
+}
+
+.mobileTabs :global(.ant-tabs-content-holder) {
+  padding: 16px 0 !important;
+}
+
+.mobileTabs :global(.ant-tabs-nav-list) {
+  flex-wrap: wrap !important;
+  justify-content: center !important;
+}
+
+/* 更细致的移动端断点 */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 0 40px;
+  }
+
+  .mainImage {
+    height: 200px;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .coverImage {
+    border-radius: 6px;
+  }
+
+  .actionButtons {
+    margin: 0 8px 16px;
+    padding: 16px 8px;
+    border-radius: 8px;
+  }
+
+  .actionButton {
+    height: 44px;
+    font-size: 13px;
+    min-width: 100%;
+    max-width: none;
+  }
+
+  .content {
+    padding: 8px;
+  }
+
+  .sessionContent {
+    padding: 1rem 0.5rem;
+  }
+
+  .sessionTitle {
+    font-size: 1.6rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .sessionAddress {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sessionDescription {
+    font-size: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .agendaTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .agendaItem {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 0.8rem;
+    text-align: center;
+  }
+
+  .agendaTime {
+    font-size: 1rem;
+    order: 1;
+  }
+
+  .agendaTopic {
+    font-size: 1.1rem;
+    order: 2;
+  }
+
+  .agendaSpeakers {
+    order: 3;
+    justify-content: center;
+  }
+
+  .speakerCard {
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+
+  .speakerAvatarContainer {
+    width: 40px;
+    height: 40px;
+  }
+
+  .speakerAvatarIcon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tabContent {
+    padding: 12px 8px;
+  }
+
+  .tabHeader {
+    top: 8px;
+    right: 8px;
+  }
+
+  .configButton {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  /* 社区活动页面移动端优化 */
+  .communityLayout {
+    padding: 30px 12px 60px;
+  }
+
+  .communityTitle {
+    font-size: 1.6rem;
+    line-height: 1.3;
+    margin-bottom: 12px;
+  }
+
+  .communityMeta {
+    flex-direction: column;
+    gap: 6px;
+    font-size: 0.9rem;
+  }
+
+  .metaDivider {
+    display: none;
+  }
+
+  .communityIntro {
+    font-size: 0.95rem;
+    margin: 30px auto;
+    line-height: 1.7;
+  }
+
+  .communityHighlights {
+    margin: 40px auto;
+  }
+
+  .communityHighlights h2 {
+    font-size: 1.2rem;
+    margin-bottom: 16px;
+  }
+
+  .communityHighlights li {
+    padding-left: 20px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+  }
+
+  .communityActions {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-top: 40px;
+  }
+
+  .mobileTabs :global(.ant-tabs-tab) {
+    min-width: 80px !important;
+    font-size: 0.8rem !important;
+    padding: 10px 6px !important;
+  }
+}
+
+/* 超小屏设备优化 */
+@media (max-width: 360px) {
+  .sessionTitle {
+    font-size: 1.4rem;
+  }
+
+  .sessionAddress {
+    font-size: 1rem;
+  }
+
+  .agendaTitle {
+    font-size: 1.3rem;
+  }
+
+  .agendaTopic {
+    font-size: 1rem;
+  }
+
+  .communityTitle {
+    font-size: 1.4rem;
+  }
+
+  .mobileTabs :global(.ant-tabs-tab) {
+    min-width: 70px !important;
+    font-size: 0.75rem !important;
+    padding: 8px 4px !important;
+  }
 }

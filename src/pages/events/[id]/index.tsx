@@ -51,6 +51,19 @@ export default function EventDetailPage() {
   const [activeContentTab] = useState<ContentTab>('detail')
   const [sessions, setSessions] = useState<Session[]>([])
   const [sessionsLoading, setSessionsLoading] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  // 检测屏幕尺寸
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
 
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -310,7 +323,8 @@ export default function EventDetailPage() {
   const renderDetailSection = () => {
     const sectionProps = {
       sessions,
-      sessionsLoading
+      sessionsLoading,
+      isMobile
     }
     return <DetailSection {...sectionProps} />
   }
@@ -375,12 +389,14 @@ export default function EventDetailPage() {
 interface SectionProps {
   sessions?: Session[]
   sessionsLoading?: boolean
+  isMobile?: boolean
 }
 
 // 活动详情组件
 const DetailSection = ({
   sessions = [],
-  sessionsLoading
+  sessionsLoading,
+  isMobile = false
 }: SectionProps) => {
   const router = useRouter()
   const { id } = router.query
@@ -545,7 +561,8 @@ const DetailSection = ({
         size="large"
         items={items}
         onChange={onChange}
-        tabPosition="left"
+        tabPosition={isMobile ? "top" : "left"}
+        className={isMobile ? styles.mobileTabs : ''}
       />
     </div>
   )
