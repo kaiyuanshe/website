@@ -38,7 +38,7 @@ export default function EventSection() {
          page_size: 3,
          publish_status: 2,
          status: 3,
-         event_type:'community'
+        //  event_type:'community'
 
        };
  

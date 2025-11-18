@@ -1,176 +1,343 @@
-export default function CosconEvent() {
-  return (
-    <div 
-      style={{ width: '100%', height: '100vh' }}
-      dangerouslySetInnerHTML={{
-        __html: `
-<html>
-<head>
-  <title>2021 第六届中国开源年会（COSCon'21）</title>
-  <meta name="description" content="2021 第六届中国开源年会（COSCon'21）">
-  <meta name="keywords" content="2021 第六届中国开源年会（COSCon'21） 开源,开源年会,OpenSource">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Cache" content="no-cache">
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/>
-  <meta name="viewport"
-        content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-  <meta http-equiv="Expires" content="-1"/>
-  <script src="https://file.bagevent.com/resources/js/jquery.min.js"></script>
-  <script type="text/javascript" src="//res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import {
+  Card,
+  Image,
+  Button,
+  Tag,
+  Popconfirm,
+  App as AntdApp,
+} from 'antd';
+import dayjs from 'dayjs';
+import {
+  Calendar,
+  Users,
+  MapPin,
+  Plus,
+  Edit,
+  Trash2,
+  Share2,
+  Globe,
+} from 'lucide-react';
+import { SiX } from 'react-icons/si';
+import Link from 'next/link';
+import Script from 'next/script';
+import styles from '../index.module.css';
+import { getEvents, deleteEvent } from '../../api/event';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/contexts/AuthContext';
 
-  <script>
-      function storageSurvey_local(data) {
-          //将后台返回的数据先进行base64解码，再转换成json格式。
-          //console.log(data);
-      }
 
-      $(document).ready(function () {
-          getWxJsapiSignature();
-      });
-      var serach = window.location.search;
-      var lineLink = window.location.href;
-      var share_data = {
-          title: \`2021 第六届中国开源年会（COSCon'21）\`, // 分享标题
-          desc: \`2021 第六届中国开源年会（COSCon'21）\`, // 分享描述
-          link: lineLink, // 分享链接
-          imgUrl: "https://www.bagevent.com/resource/20210726/1548406511670936.JPG"
+export function formatTime(isoTime: string): string {
+  return dayjs(isoTime).format('YYYY-MM-DD');
+}
+
+export default function CosconEventsPage() {
+  const { message } = AntdApp.useApp();
+  const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [publishStatus, setPublishStatus] = useState(2);
+
+  const router = useRouter();
+  const { session, status } = useAuth();
+  const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
+
+  // 加载事件列表 - 固定参数，只加载 coscon 类型的活动
+  const loadEvents = useCallback(async () => {
+    try {
+      setLoading(true);
+
+      const queryParams = {
+        keyword: '',
+        tag: '',
+        order: 'desc' as const,
+        page: 1,
+        page_size: 9999,
+        status: '3',
+        location: '',
+        event_mode: '',
+        event_type: 'coscon', // 写死为 coscon
+        publish_status: publishStatus,
       };
 
-      var jsApiList = ['checkJsApi',
-          'onMenuShareTimeline',
-          'onMenuShareAppMessage',
-          'onMenuShareQQ',
-          'onMenuShareWeibo'];
+      const result = await getEvents(queryParams);
 
-      //使用jsonp跨域请求微信签名信息
-      function getWxJsapiSignature() {
-          $.ajax({
-              type: "GET",
-              url: 'https://www.bagevent.com/getWxJsapiSignatureToJsonp.do?jsonpCallback=storageSurvey_local&' +
-                  'url=' + encodeURIComponent(window.location.href) + '&eventId=7685233' ,
-              dataType: 'jsonp',
-              processData: false,
-              jsonpCallback: 'storageSurvey_local',
-              sync: false,
-              success: function (resp) {
-                  console.info(resp);
-                  var resultSet = eval(resp);
-                  if (resultSet.retStatus == 200) {
-                      var signature = resultSet.resultObject.signature;
-                      var timestampstr = resultSet.resultObject.timestamp;
-                      var noncestr = resultSet.resultObject.nonceStr;
-                      var appid = resultSet.resultObject.appId;
-                      wx.config({
-                          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                          appId: appid, // 必填，公众号的唯一标识
-                          timestamp: timestampstr, // 必填，生成签名的时间戳
-                          nonceStr: noncestr, // 必填，生成签名的随机串
-                          signature: signature, // 必填，签名，见附录1
-                          jsApiList: jsApiList // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-                      });
-                      wx.ready(function () {
-                          wx.onMenuShareTimeline(share_data);
-                          wx.onMenuShareAppMessage(share_data);
-                          wx.onMenuShareQQ(share_data);
-                          wx.showMenuItems({
-                              menuList: [
-                                  "menuItem:share:appMessage",
-                                  "menuItem:share:timeline",
-                                  "menuItem:share:qq"
-                              ]
-                          });
-                      })
-                  } else {
-                      console.error(resultSet.resultObject);
-                  }
-              },
-              error: function (data) {
-                  console.log(data)
-              }
-          });
+      if (result.success && result.data) {
+        if (result.data.events && Array.isArray(result.data.events)) {
+          setEvents(result.data.events);
+        } else if (Array.isArray(result.data)) {
+          setEvents(result.data);
+        } else {
+          console.warn('API 返回的数据格式不符合预期:', result.data);
+          setEvents([]);
+        }
+      } else {
+        console.error('获取事件列表失败:', result.message);
+        setEvents([]);
       }
+    } catch (error: unknown) {
+      console.error('加载事件列表异常:', error);
+      setEvents([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [publishStatus]);
 
-      function hideQRCode() {
-          $("#qrCode").hide();
-          $("#qrCodeShadow").hide();
+  // 根据登录状态更新 publishStatus
+  useEffect(() => {
+    if (status === 'authenticated' && permissions.includes('event:review')) {
+      setPublishStatus(0);
+    } else if (status === 'unauthenticated') {
+      setPublishStatus(2);
+    }
+  }, [status, permissions]);
+
+  // 主要的数据加载效果
+  useEffect(() => {
+    if (!router.isReady) return;
+    loadEvents();
+  }, [publishStatus, loadEvents, router.isReady]);
+
+
+  // 获取事件状态显示文本
+  const getStatusText = (event: any) => {
+    if (event.status === 0) {
+      return '未开始';
+    } else if (event.status === 1) {
+      return '进行中';
+    } else {
+      return '已结束';
+    }
+  };
+
+  // 获取事件状态类名
+  const getStatusClass = (event: any) => {
+    if (event.status === 0) {
+      return styles.upcoming;
+    } else if (event.status === 1) {
+      return styles.ongoing;
+    } else {
+      return styles.ended;
+    }
+  };
+
+  const handleDeleteEvent = async (id: number) => {
+    try {
+      const result = await deleteEvent(id);
+      if (result.success) {
+        message.success(result.message);
+        loadEvents();
+      } else {
+        message.error(result.message || '删除活动失败');
       }
+    } catch {
+      message.error('删除失败，请重试');
+    }
+  };
 
-      window.onload = function () {
-          var userAgent = window.navigator.userAgent; //包含以下属性中所有或一部分的字符串：
+  return (
+    <div className={`${styles.container} nav-t-top`}>
+      {/* Title Section */}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <div className={styles.titleSection}>
+            <h1 className={styles.title}>中国开源年会</h1>
+            <p className={styles.subtitle}>中国最大的开源技术年度盛会</p>
+          </div>
+          <Link href="/events/new?event_type=coscon" className={styles.createButton}>
+            <Plus size={20} />
+            发布开源年会
+          </Link>
+        </div>
+      </div>
 
-          var flag = false;
-          //IE浏览器
-          if (userAgent.indexOf('NET') != -1 && userAgent.indexOf("rv") != -1) {
-              flag = true;
+      {/* Ticket Purchase Section */}
+      <div className="w-full my-8">
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">购票信息</h2>
+          <iframe 
+            id="promote_ticket_iframe" 
+            width="100%" 
+            src="https://www.bagevent.com/widget/ticket/8199016?widget=2&iframe=1" 
+            frameBorder="0" 
+            scrolling="no"
+            style={{ minHeight: '400px' }}
+          />
+        </div>
+      </div>
+
+      <Script
+        src="https://www.bagevent.com/resources/js/iframeResizer/iframeResizer.min.js"
+        onLoad={() => {
+          if (typeof window !== 'undefined' && (window as any).iFrameResize) {
+            (window as any).iFrameResize({
+              checkOrigin: false, 
+              heightCalculationMethod: 'taggedElement'
+            }, "#promote_ticket_iframe");
           }
-          //Edge
-          if (userAgent.indexOf('Edge') != -1) {
-              flag = true;
-          }
-          var serach = window.location.search;
-          var bagUrl = "https://www.bagevent.com/event/7685233" + serach;
+        }}
+      />
 
-          if (flag) {
-              document.getElementById("iediv").setAttribute("style", "display:block");
-              document.getElementById("framediv").setAttribute("src", bagUrl)
-          } else {
-              var body = document.createElement("body");
-              body.setAttribute("style", "margin: 0;overflow: hidden;");
-              body.innerHTML = "<div id='qrCode' style=\\"text-align: center;padding: 24px;width: 280px;height: 316px;position: fixed;left: 50%;margin-left: -140px;background: rgb(255, 255, 255);box-shadow: rgba(0, 0, 0, 0.3) 0px 0px 30px 0px;z-index: 10000;border-radius: 10px;box-sizing: border-box;color: rgb(32, 32, 32);bottom: 252px;display: none\\"> \\n" +
-                  "    <img id='qrImage' style=\\"margin-bottom: 16px;width: 100%; border:0;max-width: none;\\" src=\\"\\" />\\n" +
-                  "    <div class=\\"text\\">长按识别二维码</div>\\n" +
-                  "</div><div id='qrCodeShadow' onclick='hideQRCode()' style=\\"position:fixed; left:0; top:0; bottom:0; right:0; background:rgba(255,255,255,0.01); z-index:1000;display: none\\"></div>" +
-                  "<iframe src=" + bagUrl + " ></iframe>\\n" +
-                  "    <style>\\n" +
-                  "        iframe{\\n" +
-                  "            overflow: scroll;\\n" +
-                  "            -webkit-overflow-scrolling: touch;\\n" +
-                  "            min-width: 100%;\\n" +
-                  "            *width:100%;\\n" +
-                  "            width:1px;\\n" +
-                  "            border: 0;\\n" +
-                  "            height: 960px;\\n" +
-                  "            height: 100vh;\\n" +
-                  "        }\\n" +
-                  "    </style>";
-              document.body = body;
-          }
-
-          if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)) {
-
-              setInterval(function () {
-                  window.frames[0].postMessage('1', 'https://www.bagevent.com');
-              }, 2000);
-
-              window.addEventListener('message', function (e) {
-                  if (e.origin === "https://www.bagevent.com") {
-                      if (e.data != null && e.data !== "" && e.data !== undefined  && typeof e.data == "string") {
-                          showQRCode(e.data);
+      {/* Events Display */}
+      {loading ? (
+        <div className={styles.loading}>
+          <div className={styles.loadingSpinner}></div>
+        </div>
+      ) : events.length === 0 ? (
+        <div className={styles.emptyContainer}>
+          <div className={styles.emptyIcon}>📅</div>
+          <div className={styles.emptyTitle}>暂无中国开源年会活动</div>
+          <div className={styles.emptyDescription}>
+            还没有创建任何中国开源年会活动
+          </div>
+          <Link href="/events/new?event_type=coscon" className={styles.createButton}>
+            <Plus className={styles.buttonIcon} />
+            创建第一个活动
+          </Link>
+        </div>
+      ) : (
+        <div className={styles.eventsGrid}>
+          {events.map((event) => (
+            <Link
+              href={`/events/${event.ID}`}
+              key={event.ID}
+              className={styles.cardLink}
+            >
+              <Card
+                className={styles.eventCard}
+                cover={
+                  <div className={styles.cardCover}>
+                    <Image
+                      alt={event.title}
+                      src={
+                        event.cover_img ||
+                        '/placeholder.svg?height=240&width=400&text=活动封面'
                       }
-                  }
-              }, false);
+                      className={styles.coverImage}
+                      preview={false}
+                    />
+                    <div className={styles.coverOverlay}>
+                      <Tag
+                        className={`${styles.statusTag} ${getStatusClass(event)}`}
+                      >
+                        {getStatusText(event)}
+                      </Tag>
+                      {event.publish_status === 1 && (
+                        <Tag className={styles.noPublishStatus}>未发布</Tag>
+                      )}
+                      <div className={styles.cardActions}>
+                        {status === 'authenticated' &&
+                          permissions.includes('event:write') ? (
+                          <Button
+                            className={styles.actionIconButton}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              router.push(`/events/${event.ID}/edit?event_type=coscon`);
+                            }}
+                            icon={<Edit className={styles.actionIcon} />}
+                            title="编辑活动"
+                          />
+                        ) : null}
+                        <Button
+                          className={styles.actionIconButton}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            navigator.clipboard.writeText(
+                              `${window.location.href.replace('/coscon', '')}/${event.ID}`
+                            );
+                            message.success('链接已复制到剪贴板');
+                          }}
+                          icon={<Share2 className={styles.actionIcon} />}
+                          title="分享活动"
+                        />
+                        <Button
+                          className={styles.actionIconButton}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            if (event.twitter) {
+                              window.open(event.twitter, '_blank');
+                            }
+                          }}
+                          icon={<SiX className={styles.actionIcon} />}
+                          title="查看推文"
+                        />
+                        {status === 'authenticated' &&
+                          permissions.includes('event:delete') ? (
+                          <Popconfirm
+                            title="删除活动"
+                            description="你确定删除这个活动吗？"
+                            okText="是"
+                            cancelText="否"
+                            onConfirm={() => handleDeleteEvent(event.ID)}
+                          >
+                            <Button
+                              className={styles.actionIconButton}
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                              icon={<Trash2 className={styles.actionIcon} />}
+                              title="删除活动"
+                              danger
+                            />
+                          </Popconfirm>
+                        ) : null}
+                      </div>
+                    </div>
+                  </div>
+                }
+              >
+                <div className={styles.cardBody}>
+                  <h3 className={styles.eventTitle}>{event.title}</h3>
 
-              function showQRCode(imgUrl) {
-                  $("#qrImage").attr("src", imgUrl);
-                  $("#qrCode").show();
-                  $("#qrCodeShadow").show();
-              }
-
-          }
-      }
-
-  </script>
-  <script type="text/javascript" src="/eportal/uiFramework/wwimages/js/o_code_2016.js" language="JavaScript"></script>
-</head>
-<frameset rows="100%" id="iediv" style="display: none">
-  <frame src="" id="framediv">
-  <noframes>请点击下面链接: &lt;a href="https://www.bagevent.com/event/7685233"&gt;link&lt;/a&gt;</noframes>
-</frameset>
-</html>
-        `
-      }}
-    />
+                  <div className={styles.cardMeta}>
+                    <div className={styles.metaItem}>
+                      <Calendar className={styles.metaIcon} />
+                      <span>{formatTime(event.start_time)}</span>
+                    </div>
+                    <div className={styles.metaItem}>
+                      {event.event_mode === '线上活动' ? (
+                        <>
+                          <Globe className={styles.metaIcon} />
+                          <span className={styles.locationText}>线上活动</span>
+                        </>
+                      ) : (
+                        <>
+                          <MapPin className={styles.metaIcon} />
+                          <span className={styles.locationText}>
+                            {event.location || '未指定地点'}
+                          </span>
+                        </>
+                      )}
+                    </div>
+                    {event.participants !== 0 && (
+                      <div className={styles.metaItem}>
+                        <Users className={styles.metaIcon} />
+                        <span>{event.participants || ''}</span>
+                      </div>
+                    )}
+                  </div>
+                  {event.tags && event.tags.length > 0 && (
+                    <div className={styles.cardTags}>
+                      {event.tags
+                        .slice(0, 3)
+                        .map((tag: string, index: number) => (
+                          <Tag key={index} className={styles.eventTag}>
+                            {tag}
+                          </Tag>
+                        ))}
+                      {event.tags.length > 3 && (
+                        <Tag className={styles.moreTag}>
+                          +{event.tags.length - 3}
+                        </Tag>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </Card>
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
