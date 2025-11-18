@@ -150,7 +150,7 @@ export default function Header() {
             key: 'partners',
             label: '合作伙伴',
             href: '/partners',
-            description: '赞助伙伴、合作媒体、合作社区',
+            description: '年度伙伴、合作媒体、合作社区',
             group: 'recognition'
           },
           {

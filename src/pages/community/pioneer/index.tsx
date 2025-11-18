@@ -38,11 +38,11 @@ export default function PioneerPage() {
         <div className={styles.sponsor}>
           <span className={styles.sponsorText}>发起单位</span>
           <div className={styles.sponsorLogos}>
-            <img src="/logo_2.svg" alt="发起单位Logo" className={styles.sponsorLogo} />
-            <img src="/logo.png" alt="发起单位Logo" className={styles.sponsorLogo} />
+            <img src="/logo_2.svg" alt="开源社发起单位Logo" className={styles.sponsorLogo} />
+            <img src="/img/media/segmentfault.png" alt="思否发起单位Logo" className={styles.sponsorLogo} />
           </div>
         </div>
-        <p className={styles.subtitle}>致敬那些推动开源发展的杰出贡献者</p>
+        <p className={styles.subtitle}>所谓先锋，我们理解不仅限于开发者，贡献代码的开发者、开源项目发起人、开源布道师、开源治理的先锋人物、关注开源的投资人等对推动开源生态发展有帮助的人都是榜单的目标对象。开源项目、开源治理、开源布道、开源商业、开源教育等都是我们重点关注的领域。<br/>这不是一个千篇一律的人物排行，而是——面向开发者的“米其林推荐”、“心（舌）尖上的开源人物”。<br/>榜单发布时除发布名单,每位人物还都会配有推介理由,它既是对于过去一年的总结也是由 SegmentFault 思否和开源社为你联合推介的“年度最值得关注的开源人物”。</p>
       </div>
 
       {sortedYears.map(year => (
