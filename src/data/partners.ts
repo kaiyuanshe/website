@@ -12,6 +12,166 @@ export interface Partner {
 // 合作伙伴数据
 export const partnersRawData: Partner[] = [
   {
+    title: '蚂蚁开源',
+    organization: '蚂蚁集团',
+    person: '',
+    year: '2025',
+    level: '白金赞助',
+    link: 'https://opensource.antgroup.com/',
+    logo: '/img/partners/ant.jpg',
+    tag: '累计赞助3年'
+  },
+  {
+    title: '原力灵机',
+    organization: '原力灵机',
+    person: '',
+    year: '2025',
+    level: '金牌赞助',
+    link: 'https://dexmal.hjwtest.com',
+    logo: '/img/partners/dexmal.png',
+    tag: ''
+  },
+  {
+    title: '华为',
+    organization: '华为',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
+    tag: '累计赞助9年'
+  },
+  {
+    title: '字节跳动',
+    organization: '字节跳动',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://opensource.bytedance.com',
+    logo: '/img/partners/bytedance.webp',
+    tag: ''
+  },
+  {
+    title: 'GOSIM',
+    organization: 'GOSIM',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://gosim.org',
+    logo: '/img/partners/gosim-logo2025.png',
+    tag: ''
+  },
+  {
+    title: '百度文心大模型',
+    organization: '百度',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://wenxin.baidu.com',
+    logo: '/img/partners/wenxin.png',
+    tag: ''
+  },
+  {
+    title: '商汤大装置',
+    organization: '商汤',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://www.sensecore.cn',
+    logo: '/img/partners/sensecore.png',
+    tag: ''
+  },
+  {
+    title: 'openKylin',
+    organization: '麒麟软件',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://www.openkylin.top',
+    logo: '/img/partners/openkylin.svg',
+    tag: '累计赞助2年'
+  },
+  {
+    title: 'OceanBase',
+    organization: 'OceanBase',
+    person: '',
+    year: '2025',
+    level: '银牌赞助',
+    link: 'https://open.oceanbase.com',
+    logo: 'img/partners/oceanbase.png',
+    tag: '累计赞助4年'
+  },
+  {
+    title: '龙蜥社区',
+    organization: '龙蜥社区',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://openanolis.cn/',
+    logo: '/img/partners/openanolis.png',
+    tag: ''
+  },
+  {
+    title: '迪玛科技',
+    organization: '迪玛科技',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://www.dimatec.com.cn/cn/index.html',
+    logo: '/img/partners/dima.png',
+    tag: '累计赞助6年'
+  },
+  {
+    title: 'Seafile',
+    organization: 'Seafile',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://www.seafile.com/home/',
+    logo: '/img/partners/seafile.svg',
+    tag: '累计赞助4年'
+  },
+  {
+    title: '醋溜科技',
+    organization: '醋溜科技',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://www.culiutech.com/',
+    logo: '/img/partners/culiu.png',
+    tag: '累计赞助3年'
+  },
+  {
+    title: '立创开源硬件平台',
+    organization: '嘉立创',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://oshwhub.com/',
+    logo: '/img/partners/oshwhub.png',
+    tag: '累计赞助2年'
+  },
+  {
+    title: '安势科技',
+    organization: '安势科技',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://www.sectrend.com.cn/',
+    logo: '/img/partners/sensecore.png',
+    tag: '累计赞助2年'
+  },
+  {
+    title: '大成律所',
+    organization: '北京大成（上海）律师事务所',
+    person: '',
+    year: '2025',
+    level: '星牌赞助',
+    link: 'https://shanghai.dacheng.com/',
+    logo: '/img/partners/dntons.png',
+    tag: '累计赞助2年'
+  },
+  {
     title: '2024 白金赞助 浪潮 KaiwuDB & KWDB 社区',
     organization: '浪潮 KaiwuDB & KWDB 社区',
     person: '',
@@ -58,8 +218,8 @@ export const partnersRawData: Partner[] = [
     year: '2024',
     level: '银牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: '/img/partners/OceanBase.png',
-    tag: '累计赞助5年'
+    logo: '/img/partners/oceanbase.png',
+    tag: '累计赞助3年'
   },
   {
     title: '2024 银牌赞助 openKylin',
@@ -248,7 +408,7 @@ export const partnersRawData: Partner[] = [
     year: '2023',
     level: '银牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: '/logo.png',
+    logo: 'img/partners/oceanbase.png',
     tag: ''
   },
   {
@@ -558,7 +718,7 @@ export const partnersRawData: Partner[] = [
     year: '2022',
     level: '星牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: '/logo.png',
+    logo: 'img/partners/oceanbase.png',
     tag: ''
   },
   {
@@ -1852,6 +2012,10 @@ export const organizePartnersByLevel = (
 
 // 赞助等级
 export const levelOrder = [
+  '主办单位',
+  '指导单位',
+  '协办单位',
+  '承办单位',
   '战略赞助',
   '白金赞助',
   '金牌赞助',
@@ -1859,23 +2023,19 @@ export const levelOrder = [
   '铜牌赞助',
   '星牌赞助',
   '个人赞助',
-  // '亮点赞助',
-  // '成员赞助',
-  // '战略合作媒体',
+  '亮点赞助',
+  '成员赞助',
+  '战略合作媒体',
   '媒体伙伴',
-  '战略合作社区'
-  // '主办单位',
-  // '指导单位',
-  // '协办单位',
-  // '承办单位',
-  // '大会合作单位',
-  // '特别支持',
-  // '讲师赞助',
-  // '国际讲师差旅赞助',
-  // '报名平台伙伴',
-  // '视频直播伙伴',
-  // '网站支持',
-  // '元宇宙会场赞助'
+  '战略合作社区',
+  '大会合作单位',
+  '特别支持',
+  '讲师赞助',
+  '国际讲师差旅赞助',
+  '报名平台伙伴',
+  '视频直播伙伴',
+  '网站支持',
+  '元宇宙会场赞助'
 ]
 
 // Function to organize partners by year
