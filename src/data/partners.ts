@@ -158,7 +158,7 @@ export const partnersRawData: Partner[] = [
     year: '2025',
     level: '星牌赞助',
     link: 'https://www.sectrend.com.cn/',
-    logo: '/img/partners/sensecore.png',
+    logo: '/img/partners/sectrend.png',
     tag: '累计赞助2年'
   },
   {
@@ -209,7 +209,7 @@ export const partnersRawData: Partner[] = [
     level: '银牌赞助',
     link: 'https://dev.amazoncloud.cn/',
     logo: '/img/partners/amazoncloud.webp',
-    tag: ''
+    tag: '累计赞助4年'
   },
   {
     title: '2024 银牌赞助 OceanBase',
@@ -348,7 +348,7 @@ export const partnersRawData: Partner[] = [
     year: '2023',
     level: '星牌赞助',
     link: 'https://www.sectrend.com.cn',
-    logo: '/logo.png',
+    logo: '/img/partners/sectrend.png',
     tag: ''
   },
   {
@@ -408,7 +408,7 @@ export const partnersRawData: Partner[] = [
     year: '2023',
     level: '银牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: 'img/partners/oceanbase.png',
+    logo: '/img/partners/oceanbase.png',
     tag: ''
   },
   {
@@ -718,7 +718,7 @@ export const partnersRawData: Partner[] = [
     year: '2022',
     level: '星牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: 'img/partners/oceanbase.png',
+    logo: '/img/partners/oceanbase.png',
     tag: ''
   },
   {
