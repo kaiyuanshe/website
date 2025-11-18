@@ -88,7 +88,7 @@ export const partnersRawData: Partner[] = [
     year: '2025',
     level: '银牌赞助',
     link: 'https://www.openkylin.top',
-    logo: '/img/partners/openkylin.svg',
+    logo: '/img/partners/openkylin.png',
     tag: '累计赞助2年'
   },
   {
@@ -98,7 +98,7 @@ export const partnersRawData: Partner[] = [
     year: '2025',
     level: '银牌赞助',
     link: 'https://open.oceanbase.com',
-    logo: 'img/partners/oceanbase.png',
+    logo: '/img/partners/oceanbase.png',
     tag: '累计赞助4年'
   },
   {
@@ -172,14 +172,14 @@ export const partnersRawData: Partner[] = [
     tag: '累计赞助2年'
   },
   {
-    title: '2024 白金赞助 浪潮 KaiwuDB & KWDB 社区',
-    organization: '浪潮 KaiwuDB & KWDB 社区',
+    title: '浪潮 KaiwuDB & KWDB 社区',
+    organization: '浪潮集团',
     person: '',
     year: '2024',
     level: '白金赞助',
-    link: '浪潮 KaiwuDB 分布式多模数据库—多模一库，快人一步',
+    link: 'https://www.kaiwudb.com',
     logo: '/img/partners/kaiwuDB.webp',
-    tag: '累计赞助5年'
+    tag: '累计赞助3年'
   },
   {
     title: '2024 金牌赞助 华为',
@@ -187,7 +187,7 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2024',
     level: '金牌赞助',
-    link: '',
+    link: 'https://www.huawei.com/cn/open-source',
     logo: '/img/partners/huawei.png',
     tag: ''
   },
@@ -228,7 +228,7 @@ export const partnersRawData: Partner[] = [
     year: '2024',
     level: '银牌赞助',
     link: 'https://www.openkylin.top',
-    logo: '/logo.png',
+    logo: '/img/partners/openkylin.png',
     tag: ''
   },
   {
@@ -238,7 +238,7 @@ export const partnersRawData: Partner[] = [
     year: '2024',
     level: '星牌赞助',
     link: 'https://www.sectrend.com.cn',
-    logo: '/logo.png',
+    logo: '/img/partners/sectrend.png',
     tag: ''
   },
   {
@@ -247,9 +247,9 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2024',
     level: '星牌赞助',
-    link: 'https://www.culiu-tech.com/',
-    logo: '/logo.png',
-    tag: '累计赞助5年'
+    link: '/img/partners/culiu.png',
+    logo: '/img/partners/culiu.png',
+    tag: '累计赞助2年'
   },
   {
     title: '2024 星牌赞助 北京大成（上海）律师事务所',
@@ -258,7 +258,7 @@ export const partnersRawData: Partner[] = [
     year: '2024',
     level: '星牌赞助',
     link: '',
-    logo: '/logo.png',
+    logo: '/img/partners/dntons.png',
     tag: ''
   },
   {
@@ -268,17 +268,17 @@ export const partnersRawData: Partner[] = [
     year: '2024',
     level: '星牌赞助',
     link: 'https://www.dimatec.com.cn/portal/aboutus.html',
-    logo: '/logo.png',
+    logo: '/img/partners/dima.png',
     tag: ''
   },
   {
     title: '2024 星牌赞助 立创开源硬件平台',
-    organization: '立创开源硬件平台',
+    organization: '嘉立创',
     person: '',
     year: '2024',
     level: '星牌赞助',
     link: 'https://oshwhub.com/',
-    logo: '/logo.png',
+    logo: '/img/partners/oshwhub.png',
     tag: ''
   },
   {
@@ -287,8 +287,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2024',
     level: '星牌赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.seafile.com/home/',
+    logo: '/img/partners/seafile.svg',
     tag: ''
   },
   {
@@ -378,7 +378,7 @@ export const partnersRawData: Partner[] = [
     year: '2023',
     level: '银牌赞助',
     link: 'https://dev.amazoncloud.cn/',
-    logo: '/logo.png',
+    logo: '/img/partners/amazoncloud.webp',
     tag: ''
   },
   {
@@ -387,8 +387,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2023',
     level: '铜牌赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.seafile.com/home/',
+    logo: '/img/partners/seafile.svg',
     tag: ''
   },
   {
@@ -397,8 +397,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2023',
     level: '白金赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -418,7 +418,7 @@ export const partnersRawData: Partner[] = [
     year: '2023',
     level: '铜牌赞助',
     link: 'https://www.dimatec.com.cn/portal/aboutus.html',
-    logo: '/logo.png',
+    logo: '/img/partners/dima.png',
     tag: ''
   },
   {
@@ -567,8 +567,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2022',
     level: '白金赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -608,7 +608,7 @@ export const partnersRawData: Partner[] = [
     year: '2022',
     level: '金牌赞助',
     link: 'https://dev.amazoncloud.cn/',
-    logo: '/logo.png',
+    logo: '/img/partners/amazoncloud.webp',
     tag: ''
   },
   {
@@ -648,7 +648,7 @@ export const partnersRawData: Partner[] = [
     year: '2022',
     level: '铜牌赞助',
     link: 'https://www.dimatec.com.cn/portal/aboutus.html',
-    logo: '/logo.png',
+    logo: '/img/partners/dima.png',
     tag: ''
   },
   {
@@ -779,7 +779,7 @@ export const partnersRawData: Partner[] = [
     level: '战略赞助',
     link: 'https://mp.weixin.qq.com/s/KEsFaVKrNr7vQTkyBcvH-w\nhttps://cloud.tencent.com/act/pro/weopen-home',
     logo: '/img/partners/tengyuan.png',
-    tag: '累计赞助6年'
+    tag: ''
   },
   {
     title: '2021 白金赞助 华为',
@@ -787,7 +787,7 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2021',
     level: '白金赞助',
-    link: '',
+    link: 'https://www.huawei.com/cn/open-source',
     logo: '/img/partners/huawei.png',
     tag: ''
   },
@@ -858,7 +858,7 @@ export const partnersRawData: Partner[] = [
     year: '2021',
     level: '金牌赞助',
     link: 'https://dev.amazoncloud.cn/',
-    logo: '/logo.png',
+    logo: '/img/partners/amazoncloud.webp',
     tag: ''
   },
   {
@@ -898,7 +898,7 @@ export const partnersRawData: Partner[] = [
     year: '2021',
     level: '铜牌赞助',
     link: 'https://www.dimatec.com.cn/portal/aboutus.html',
-    logo: '/logo.png',
+    logo: '/img/partners/dima.png',
     tag: ''
   },
   {
@@ -987,7 +987,7 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2020',
     level: '战略赞助',
-    link: '',
+    link: 'https://www.huawei.com/cn/open-source',
     logo: '/img/partners/huawei.png',
     tag: ''
   },
@@ -1088,7 +1088,7 @@ export const partnersRawData: Partner[] = [
     year: '2020',
     level: '星牌赞助',
     link: 'https://www.dimatec.com.cn/portal/aboutus.html',
-    logo: '/logo.png',
+    logo: '/img/partners/dima.png',
     tag: ''
   },
   {
@@ -1157,8 +1157,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2019',
     level: '战略赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -1397,8 +1397,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2018',
     level: '战略赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -1507,8 +1507,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2018',
     level: '国际讲师差旅赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -1677,8 +1677,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2017',
     level: '银牌赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -1807,8 +1807,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2017',
     level: '讲师赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.huawei.com/cn/open-source',
+    logo: '/img/partners/huawei.png',
     tag: ''
   },
   {
@@ -1877,8 +1877,8 @@ export const partnersRawData: Partner[] = [
     person: '',
     year: '2016',
     level: '铜牌赞助',
-    link: '',
-    logo: '/logo.png',
+    link: 'https://www.seafile.com/home/',
+    logo: '/img/partners/seafile.svg',
     tag: ''
   },
   {
