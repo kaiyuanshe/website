@@ -999,7 +999,7 @@ export default function Header() {
               </Link>
             )}
 
-            <div className={styles.searchContainer}>
+            {/* <div className={styles.searchContainer}>
               <button
                 className={styles.searchButton}
                 onClick={() => setSearchOpen(true)}
@@ -1032,96 +1032,10 @@ export default function Header() {
                     </button>
                   </div>
 
-                  {/* 搜索结果 */}
-                  {/* {searchQuery.trim() && (
-                    <div className={styles.searchResults}>
-                      {searchResults.length > 0 ? (
-                        <>
-                          <div className={styles.searchResultsHeader}>
-                            找到 {searchResults.length} 个结果
-                          </div>
-                          {searchResults.map((result, index) =>
-                            result.item.key === 'contact' ? (
-                              <a
-                                key={`${result.item.key}-${index}`}
-                                href={result.item.href || '/about'}
-                                className={styles.searchResultItem}
-                                onClick={e => {
-                                  setSearchOpen(false)
-                                  setSearchQuery('')
-                                  handleContactClick(e)
-                                }}
-                              >
-                                <div className={styles.searchResultContent}>
-                                  <div className={styles.searchResultTitle}>
-                                    {result.item.label}
-                                    {result.parentLabel && (
-                                      <span
-                                        className={styles.searchResultParent}
-                                      >
-                                        在 {result.parentLabel}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {result.item.description && (
-                                    <div className={styles.searchResultDesc}>
-                                      {result.item.description}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className={styles.searchResultScore}>
-                                  {result.matchType === 'label'
-                                    ? '标题匹配'
-                                    : '描述匹配'}
-                                </div>
-                              </a>
-                            ) : (
-                              <Link
-                                key={`${result.item.key}-${index}`}
-                                href={result.item.href || '/'}
-                                className={styles.searchResultItem}
-                                onClick={() => {
-                                  setSearchOpen(false)
-                                  setSearchQuery('')
-                                }}
-                                target={result.item.target}
-                              >
-                                <div className={styles.searchResultContent}>
-                                  <div className={styles.searchResultTitle}>
-                                    {result.item.label}
-                                    {result.parentLabel && (
-                                      <span
-                                        className={styles.searchResultParent}
-                                      >
-                                        在 {result.parentLabel}
-                                      </span>
-                                    )}
-                                  </div>
-                                  {result.item.description && (
-                                    <div className={styles.searchResultDesc}>
-                                      {result.item.description}
-                                    </div>
-                                  )}
-                                </div>
-                                <div className={styles.searchResultScore}>
-                                  {result.matchType === 'label'
-                                    ? '标题匹配'
-                                    : '描述匹配'}
-                                </div>
-                              </Link>
-                            )
-                          )}
-                        </>
-                      ) : (
-                        <div className={styles.searchNoResults}>
-                          未找到相关菜单项
-                        </div>
-                      )} */}
-                  {/* </div>
-                  )} */}
+                  
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
 
           {/* 移动端菜单按钮 */}
