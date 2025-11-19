@@ -544,17 +544,21 @@ const DetailSection = ({
   }
 
   const items: TabsProps['items'] = getSessionTabs()
+  const { session } = useAuth()
+  const permissions = session?.user?.permissions || []
 
   return (
     <div className={styles.tabContent}>
       <div className={styles.tabHeader}>
-        <Button 
-          icon={<Settings size={16} />}
-          className={styles.configButton}
-          onClick={() => router.push(`/events/${rId}/venues`)}
-        >
-          年会配置
-        </Button>
+        {permissions.includes('event:write') && (
+          <Button 
+            icon={<Settings size={16} />}
+            className={styles.configButton}
+            onClick={() => router.push(`/events/${rId}/venues`)}
+          >
+            年会配置
+          </Button>
+        )}
       </div>
       <Tabs
         defaultActiveKey={sessions.length > 0 ? sessions[0].ID.toString() : '1'}
