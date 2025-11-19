@@ -319,7 +319,7 @@ export default function BlogsPage() {
               ? '没有找到符合条件的博客'
               : '还没有创建任何博客'}
           </div>
-          {!searchKeyword && !selectedTag && (
+          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('article:write') && (
             <Link href="/blogs/new" className={styles.createButton}>
               <Plus className={styles.buttonIcon} />
               发布第一个博客

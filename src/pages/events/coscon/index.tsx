@@ -144,39 +144,16 @@ export default function CosconEventsPage() {
             <h1 className={styles.title}>中国开源年会</h1>
             <p className={styles.subtitle}>中国最大的开源技术年度盛会</p>
           </div>
-          <Link href="/events/new?event_type=coscon" className={styles.createButton}>
-            <Plus size={20} />
-            发布开源年会
-          </Link>
+          {status === 'authenticated' && permissions.includes('event:write') && (
+            <Link href="/events/new?event_type=coscon" className={styles.createButton}>
+              <Plus size={20} />
+              发布开源年会
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* Ticket Purchase Section */}
-      <div className="w-full my-8">
-        <div className="bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">购票信息</h2>
-          <iframe 
-            id="promote_ticket_iframe" 
-            width="100%" 
-            src="https://www.bagevent.com/widget/ticket/8199016?widget=2&iframe=1" 
-            frameBorder="0" 
-            scrolling="no"
-            style={{ minHeight: '400px' }}
-          />
-        </div>
-      </div>
-
-      <Script
-        src="https://www.bagevent.com/resources/js/iframeResizer/iframeResizer.min.js"
-        onLoad={() => {
-          if (typeof window !== 'undefined' && (window as any).iFrameResize) {
-            (window as any).iFrameResize({
-              checkOrigin: false, 
-              heightCalculationMethod: 'taggedElement'
-            }, "#promote_ticket_iframe");
-          }
-        }}
-      />
+      
 
       {/* Events Display */}
       {loading ? (
@@ -190,10 +167,12 @@ export default function CosconEventsPage() {
           <div className={styles.emptyDescription}>
             还没有创建任何中国开源年会活动
           </div>
-          <Link href="/events/new?event_type=coscon" className={styles.createButton}>
-            <Plus className={styles.buttonIcon} />
-            创建第一个活动
-          </Link>
+          {status === 'authenticated' && permissions.includes('event:write') && (
+            <Link href="/events/new?event_type=coscon" className={styles.createButton}>
+              <Plus className={styles.buttonIcon} />
+              创建第一个活动
+            </Link>
+          )}
         </div>
       ) : (
         <div className={styles.eventsGrid}>

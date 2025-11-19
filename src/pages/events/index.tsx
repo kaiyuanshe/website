@@ -264,10 +264,12 @@ export default function EventsPage() {
             <h1 className={styles.title}>精彩活动</h1>
             <p className={styles.subtitle}>发现精彩活动，连接志同道合的人</p>
           </div>
-          <Link href={`/events/new?event_type=${eventTypeFilter}`} className={styles.createButton}>
-            <Plus size={20} />
-            发布活动
-          </Link>
+          {permissions.includes('event:write') && (
+            <Link href={`/events/new?event_type=${eventTypeFilter}`} className={styles.createButton}>
+              <Plus size={20} />
+              发布活动
+            </Link>
+          )}
         </div>
       </div>
 
@@ -395,7 +397,8 @@ export default function EventsPage() {
             !statusFilter &&
             !locationKeyword &&
             !eventModeFilter &&
-            !eventTypeFilter && (
+            !eventTypeFilter &&
+            permissions.includes('event:write') && (
               <Link href={`/events/new?event_type=${eventTypeFilter}`} className={styles.createButton}>
                 <Plus className={styles.buttonIcon} />
                 创建第一个活动

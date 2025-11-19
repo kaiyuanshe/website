@@ -128,10 +128,12 @@ export default function OsreportsPage() {
           <div className={styles.emptyDescription}>
             还没有创建任何年度报告
           </div>
-          <Link href="/osreports/new" className={styles.createButton}>
-            <Plus className={styles.buttonIcon} />
-            发布第一个年度报告
-          </Link>
+          {status === 'authenticated' && permissions.includes('article:write') && (
+            <Link href="/osreports/new" className={styles.createButton}>
+              <Plus className={styles.buttonIcon} />
+              发布第一个年度报告
+            </Link>
+          )}
         </div>
       ) : (
         <div className={styles.articlesGrid}>

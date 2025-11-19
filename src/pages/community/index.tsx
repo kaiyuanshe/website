@@ -9,10 +9,11 @@ import {
   ArrowRight,
   Plus
 } from 'lucide-react'
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import styles from './index.module.css'
 import { getCommunities, Community } from '../api/comunity'
+import { useAuth } from '@/contexts/AuthContext'
 
 const CommunityPage: React.FC = () => {
   const router = useRouter()
@@ -23,6 +24,14 @@ const CommunityPage: React.FC = () => {
     developerCount: 0,
     projectCount: 0
   })
+
+  // 使用统一的认证上下文
+  const { session, status } = useAuth()
+
+  const permissions = useMemo(
+    () => session?.user?.permissions || [],
+    [session?.user?.permissions]
+  )
 
   // 加载社区数据
   const loadCommunities = useCallback(
@@ -175,16 +184,18 @@ const CommunityPage: React.FC = () => {
               <Building2 size={24} />
               <span>社区分布</span>
             </h2>
-            <div className={styles.addCommunity}>
-              <Button
-                type="primary"
-                className={styles.addCommunityButton}
-                onClick={handleAddCommunity}
-              >
-                <Plus size={18} />
-                添加社区
-              </Button>
-            </div>
+            {status === 'authenticated' && permissions.includes('kcc:write') && (
+              <div className={styles.addCommunity}>
+                <Button
+                  type="primary"
+                  className={styles.addCommunityButton}
+                  onClick={handleAddCommunity}
+                >
+                  <Plus size={18} />
+                  添加社区
+                </Button>
+              </div>
+            )}
           </div>
 
           {cities.length === 0 ? (

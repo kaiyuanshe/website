@@ -247,7 +247,7 @@ export default function AnnouncementPage() {
               ? '没有找到符合条件的公告'
               : '还没有创建任何公告'}
           </div>
-          {!searchKeyword && !selectedTag && (
+          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('article:write') && (
             <Link href="/announcement/new" className={styles.createButton}>
               <Plus className={styles.buttonIcon} />
               发布第一个公告

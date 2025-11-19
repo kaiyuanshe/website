@@ -1,92 +1,80 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  Button,
-  Tag,
-  Card,
-  Modal,
-  Image,
-  App as AntdApp,
-} from 'antd';
-import dayjs from 'dayjs';
-import {
-  Plus,
-  Edit,
-  Share2,
-  Eye,
-} from 'lucide-react';
-import Link from 'next/link';
-import styles from './index.module.css';
-import router from 'next/router';
-import { useAuth } from '@/contexts/AuthContext';
-import { getArticles } from '../api/article';
-
-
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Button, Tag, Card, Modal, Image, App as AntdApp } from 'antd'
+import dayjs from 'dayjs'
+import { Plus, Edit, Share2, Eye } from 'lucide-react'
+import Link from 'next/link'
+import styles from './index.module.css'
+import router from 'next/router'
+import { useAuth } from '@/contexts/AuthContext'
+import { getArticles } from '../api/article'
 
 export default function KysreportsPage() {
-  const [articles, setArticles] = useState<Record<string, any>[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [wechatModalVisible, setWechatModalVisible] = useState(false);
-  const [publishStatus, setPublishStatus] = useState(0);
-  const [category] = useState('kys_annual_report');
+  const [articles, setArticles] = useState<Record<string, any>[]>([])
+  const [loading, setLoading] = useState(false)
+  const [wechatModalVisible, setWechatModalVisible] = useState(false)
+  const [publishStatus, setPublishStatus] = useState(0)
+  const [category] = useState('kys_annual_report')
 
   // 使用统一的认证上下文，避免重复调用 useSession
-  const { session, status } = useAuth();
+  const { session, status } = useAuth()
 
-  const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
+  const permissions = useMemo(
+    () => session?.user?.permissions || [],
+    [session?.user?.permissions]
+  )
 
-  const { message } = AntdApp.useApp();
+  const { message } = AntdApp.useApp()
 
   // 加载年度报告列表
-  const loadArticles = useCallback(async (params?: {
-    publish_status?: number;
-  }) => {
-    try {
-      setLoading(true);
+  const loadArticles = useCallback(
+    async (params?: { publish_status?: number }) => {
+      try {
+        setLoading(true)
 
-      const queryParams = {
-        page: 1,
-        page_size: 9999,
-        publish_status: params?.publish_status ?? publishStatus,
-        category: category,
-      };
-
-      const result = await getArticles(queryParams);
-      if (result.success && result.data) {
-        // 处理后端返回的数据结构
-        if (result.data.articles && Array.isArray(result.data.articles)) {
-          console.log(result.data.articles);
-          setArticles(result.data.articles);
-        } else if (Array.isArray(result.data)) {
-          setArticles(result.data);
-        } else {
-          console.warn('API 返回的数据格式不符合预期:', result.data);
-          setArticles([]);
+        const queryParams = {
+          page: 1,
+          page_size: 9999,
+          publish_status: params?.publish_status ?? publishStatus,
+          category: category
         }
-      } else {
-        console.error('获取年度报告列表失败:', result.message);
-        setArticles([]);
+
+        const result = await getArticles(queryParams)
+        if (result.success && result.data) {
+          // 处理后端返回的数据结构
+          if (result.data.articles && Array.isArray(result.data.articles)) {
+            console.log(result.data.articles)
+            setArticles(result.data.articles)
+          } else if (Array.isArray(result.data)) {
+            setArticles(result.data)
+          } else {
+            console.warn('API 返回的数据格式不符合预期:', result.data)
+            setArticles([])
+          }
+        } else {
+          console.error('获取年度报告列表失败:', result.message)
+          setArticles([])
+        }
+      } catch (error: unknown) {
+        console.error('加载年度报告列表异常:', error)
+        setArticles([])
+      } finally {
+        setLoading(false)
       }
-    } catch (error: unknown) {
-      console.error('加载年度报告列表异常:', error);
-      setArticles([]);
-    } finally {
-      setLoading(false);
-    }
-  }, [publishStatus]);
-
-
-
-
+    },
+    [publishStatus]
+  )
 
   useEffect(() => {
-    if (status === 'loading') return; // 等待认证状态确定
+    if (status === 'loading') return // 等待认证状态确定
     const newPublishStatus =
-      status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
-    setPublishStatus(newPublishStatus);
+      status === 'authenticated' && permissions.includes('article:review')
+        ? 0
+        : 2
+    setPublishStatus(newPublishStatus)
 
     // 直接调用 loadarticles，避免 publishStatus 状态更新延迟
-    loadArticles({ publish_status: newPublishStatus });
-  }, [status, permissions.length, loadArticles, permissions]);
+    loadArticles({ publish_status: newPublishStatus })
+  }, [status, permissions.length, loadArticles, permissions])
 
   return (
     <div className={`${styles.container} nav-t-top`}>
@@ -97,15 +85,15 @@ export default function KysreportsPage() {
             <h1 className={styles.title}>年度报告</h1>
             <p className={styles.subtitle}>写下所思所感，遇见共鸣之人</p>
           </div> */}
-          {status === 'authenticated' && permissions.includes('article:write') && (
-            <Link href="/kysreports/new" className={styles.createButton}>
-              <Plus size={20} />
-              发布年度报告
-            </Link>
-          )}
+          {status === 'authenticated' &&
+            permissions.includes('article:write') && (
+              <Link href="/kysreports/new" className={styles.createButton}>
+                <Plus size={20} />
+                发布年度报告
+              </Link>
+            )}
         </div>
       </div>
-
 
       {/* articles Display */}
       {loading ? (
@@ -116,17 +104,18 @@ export default function KysreportsPage() {
         <div className={styles.emptyContainer}>
           <div className={styles.emptyIcon}>📖</div>
           <div className={styles.emptyTitle}>暂无年度报告</div>
-          <div className={styles.emptyDescription}>
-            还没有创建任何年度报告
-          </div>
-          <Link href="/kysreports/new" className={styles.createButton}>
-            <Plus className={styles.buttonIcon} />
-            发布第一个年度报告
-          </Link>
+          <div className={styles.emptyDescription}>还没有创建任何年度报告</div>
+          {status === 'authenticated' &&
+            permissions.includes('article:write') && (
+              <Link href="/kysreports/new" className={styles.createButton}>
+                <Plus className={styles.buttonIcon} />
+                发布第一个年度报告
+              </Link>
+            )}
         </div>
       ) : (
         <div className={styles.articlesGrid}>
-          {articles.map((article) => (
+          {articles.map(article => (
             <Link
               href={`/kysreports/${article.ID}`}
               key={article.ID}
@@ -152,12 +141,13 @@ export default function KysreportsPage() {
                       <div className={styles.cardActions}>
                         {/* 只有年度报告作者才可以编辑 */}
                         {status === 'authenticated' &&
-                          article.publisher_id.toString() === session?.user?.uid ? (
+                        article.publisher_id.toString() ===
+                          session?.user?.uid ? (
                           <Button
                             className={styles.actionIconButton}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              router.push(`/kysreports/${article.ID}/edit`);
+                            onClick={e => {
+                              e.preventDefault()
+                              router.push(`/kysreports/${article.ID}/edit`)
                             }}
                             icon={<Edit className={styles.actionIcon} />}
                             title="编辑活动"
@@ -166,12 +156,12 @@ export default function KysreportsPage() {
 
                         <Button
                           className={styles.actionIconButton}
-                          onClick={(e) => {
-                            e.preventDefault();
+                          onClick={e => {
+                            e.preventDefault()
                             navigator.clipboard.writeText(
                               `${window.location.href}/${article.ID}`
-                            );
-                            message.success('链接已复制到剪贴板');
+                            )
+                            message.success('链接已复制到剪贴板')
                           }}
                           icon={<Share2 className={styles.actionIcon} />}
                           title="分享年度报告"
@@ -203,9 +193,9 @@ export default function KysreportsPage() {
                           {article.publisher?.username || ''}
                         </span>
                         <span className={styles.publishTime}>
-                          {dayjs(article.publish_time || article.CreatedAt).format(
-                            'YYYY年M月D日'
-                          )}{' '}
+                          {dayjs(
+                            article.publish_time || article.CreatedAt
+                          ).format('YYYY年M月D日')}{' '}
                           · {article.read_time || '6 分钟'}阅读
                         </span>
                       </div>
@@ -223,7 +213,6 @@ export default function KysreportsPage() {
           ))}
         </div>
       )}
-
 
       <Modal
         open={wechatModalVisible}
@@ -256,5 +245,5 @@ export default function KysreportsPage() {
         </div>
       </Modal>
     </div>
-  );
+  )
 }
