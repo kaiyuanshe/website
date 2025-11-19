@@ -109,7 +109,7 @@ const PartnersPage: React.FC = () => {
   const renderPartnerSection = (level: string, partners: Partner[]) => {
     if (!partners || partners.length === 0) return null
     
-    const isHighTierSponsor = level === '战略赞助' || level === '白金赞助'
+    const isHighTierSponsor = level === '战略合作' || level === '白金合作'
     const gridClassName = isHighTierSponsor ? styles.singleRowGrid : styles.partnersGrid
     
     return (

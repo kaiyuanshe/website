@@ -467,7 +467,7 @@ export const pioneers: Pioneer[] = [
     description:
       '95后开发者 DIYgod，秉持 "写代码是热爱，写到世界充满爱" 理念，以 "让 RSS 更简单" 为使命打造 RSSHub 开源项目，在 GitHub 获超 30k 星标，有900多 Contributors，展现中国开源力量。',
     avatar:
-      'https://pics2.baidu.com/feed/77094b36acaf2edd5cf1445e97c627e63801936e.jpeg',
+      '/logo.png',
     year: 2024
   },
   {
@@ -477,7 +477,7 @@ export const pioneers: Pioneer[] = [
     description:
       '活跃在全球技术舞台的开源布道者，在亚太、欧洲、北美的技术会议上都可以看到她的身影。同时也是众多开源活动的组织者，KubeCon China 2024会议的联席主席。',
     avatar:
-      'https://pics3.baidu.com/feed/0df3d7ca7bcb0a4602bdad6b71b5d02b6a60af2e.jpeg@f_auto?token=0dfcda78fa0cbe78c31031700fd5e4fe',
+      '/logo.png',
     year: 2024
   },
   {
@@ -488,7 +488,7 @@ export const pioneers: Pioneer[] = [
     description:
       '活跃的云原生布道者，KubeCon 演讲嘉宾和评审委员会成员，多次在全球大会上分享前沿技术，在国内多个城市组织了多长 KCD 云原生活动，影响力广泛。同时也是多个 CNCF 开源项目的长期贡献者。',
     avatar:
-      'https://pics3.baidu.com/feed/a9d3fd1f4134970a92b5f7198e1cf7c7a6865d23.jpeg@f_auto?token=7f667d657aea4aa14b2e986ad481a6db',
+      '/logo.png',
     year: 2024
   },
   {
@@ -499,7 +499,7 @@ export const pioneers: Pioneer[] = [
     description:
       '专注开源信息技术，成果显著，他设计的开源工具 EasyGraph（PyPI 下载近60万次，论文发表于 Patterns），他系统研究开源大数据中的开发者行为，获学界关注。',
     avatar:
-      'https://pics5.baidu.com/feed/7acb0a46f21fbe09fafb85bd70b62a3c8544add3.jpeg@f_auto?token=fc94896676f6cbb96a61d049c3e013f2',
+      '/logo.png',
     year: 2024
   },
   {
@@ -509,7 +509,7 @@ export const pioneers: Pioneer[] = [
     description:
       '心系青少年与高校学生开发者生态，投身开源技术、生态建设与社区治理，热忱不减。多次亮相各大开源会议，凭专业引领开源数据库话题研讨，积极布道 OceanBase 开源技术和社区。',
     avatar:
-      'https://pics4.baidu.com/feed/fd039245d688d43f275e4aeb66c8f4140ff43b1d.jpeg@f_auto?token=5445f018828f06bccdf43f8576f631f3',
+      '/logo.png',
     year: 2024
   },
   {
@@ -519,7 +519,7 @@ export const pioneers: Pioneer[] = [
     description:
       '作为学习者社群的创始人，范晶晶带领 Datawhale 以开源的方式推动数据科学与 AI 人才培养，开源了51门学习教程、出版了系列图书，聚合了一群有开源精神和探索精神的团队成员。',
     avatar:
-      'https://pics5.baidu.com/feed/2cf5e0fe9925bc316d131d5e4409abbec913708a.jpeg@f_auto?token=d3b644c8f06ea0a1efb8f0e680f716ad',
+      '/logo.png',
     year: 2024
   },
   {
@@ -529,7 +529,7 @@ export const pioneers: Pioneer[] = [
     description:
       '通信行业的开源老兵，活跃在国内外开源社区，积极探索 OSPO 最佳实践。',
     avatar:
-      'https://pics6.baidu.com/feed/54fbb2fb43166d22160cbf0f5cf52ff89152d213.jpeg@f_auto?token=435fc8fea8721bfd0d7dd1f416a25175',
+      '/logo.png',
     year: 2024
   },
   {
@@ -540,7 +540,7 @@ export const pioneers: Pioneer[] = [
     description:
       '日拱一卒，笃志不倦。深入开源合规、开源治理领域研究，牵头编写开源治理成熟度模型标准，信通院《开源合规指南》、《开源大模型应用指南》研究报告。',
     avatar:
-      'https://pics1.baidu.com/feed/77094b36acaf2edd21cdc93f97c627e638019309.jpeg@f_auto?token=6d4fdea47864bfa10c05ef96d2f5dc85',
+      '/logo.png',
     year: 2024
   },
   {
@@ -551,7 +551,7 @@ export const pioneers: Pioneer[] = [
     description:
       '过去15年，在多个开源基金会和组织参与贡献，包括 CNCF、OCI、LF Edge 和 OpenStack 基金会等。目前参与贡献重点为开源人工智能战略、许可和流程。',
     avatar:
-      'https://pics2.baidu.com/feed/c8177f3e6709c93d05e633d184ebded3d00054e0.jpeg@f_auto?token=466b1531b4049e9b96f57d49761a26d7',
+      '/logo.png',
     year: 2024
   },
   {
@@ -561,7 +561,7 @@ export const pioneers: Pioneer[] = [
     description:
       'openKylin 社区的版本研发负责人，长期从事 Linux 桌面相关的技术研发和推广，凭借多年的社区贡献成为 Ubuntu Developer，Debian Maintainer，是开源社区的中坚力量。',
     avatar:
-      'https://mmbiz.qpic.cn/sz_mmbiz_png/hOYDxANDZpiasVq5FoYu2NmovsaJH8P5zt84YwB2f3uRMYDm2baROUtZ5heFgcWTdgt1p2mdaxfbiacPP4tC1iaHw/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1',
+      '/logo.png',
     year: 2024
   },
   {
@@ -572,7 +572,7 @@ export const pioneers: Pioneer[] = [
     description:
       '在多个开源社区中贡献，通过组织开源活动、发表演讲，和撰写博客写作积极推动开源教育与跨社区合作。',
     avatar:
-      'https://pics5.baidu.com/feed/377adab44aed2e73d8a2cfba9cd7878485d6fac6.jpeg@f_auto?token=e248cbcf3d182a249bc94cf2730a41a3',
+      '/logo.png',
     year: 2024
   },
   {
@@ -582,7 +582,7 @@ export const pioneers: Pioneer[] = [
     description:
       '作为开源商业先锋，带领飞轮科技助力 Apache Doris 在核心功能研发、社区运营推广、用户支持维护等多个方面给予了强有力的支持，推动 Apache Doris 成为大数据领域最为活跃的开源项目之一。',
     avatar:
-      'https://mmbiz.qpic.cn/sz_mmbiz_png/hOYDxANDZpiasVq5FoYu2NmovsaJH8P5z5tf0kyEtL8uTDmMOtKXz8KYplSjicmV1Lhv65RyIMkAs0wEXqFbLiadQ/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1',
+      '/logo.png',
     year: 2024
   },
   {
@@ -592,7 +592,7 @@ export const pioneers: Pioneer[] = [
     description:
       '长期致力于推动开放式协作与创新，在开源硬件、开源公益、开源治理等领域持续贡献，是坚持不懈、脚踏实地推动中国开源发展的无名先锋。',
     avatar:
-      'https://mmbiz.qpic.cn/sz_mmbiz_png/hOYDxANDZpiasVq5FoYu2NmovsaJH8P5z5tf0kyEtL8uTDmMOtKXz8KYplSjicmV1Lhv65RyIMkAs0wEXqFbLiadQ/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1',
+      '/logo.png',
     year: 2024
   },
   {
@@ -602,7 +602,7 @@ export const pioneers: Pioneer[] = [
     description:
       '在技术层面推动了 Apache RocketMQ 的架构演进与场景拓展，在社区建设与人才培育方面积极参与社区布道，为 Apache RocketMQ 社区的持续发展注入了强大的动力。',
     avatar:
-      'https://mmbiz.qpic.cn/sz_mmbiz_png/hOYDxANDZpiasVq5FoYu2NmovsaJH8P5z5tf0kyEtL8uTDmMOtKXz8KYplSjicmV1Lhv65RyIMkAs0wEXqFbLiadQ/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1',
+      '/logo.png',
     year: 2024
   },
   {
@@ -612,7 +612,7 @@ export const pioneers: Pioneer[] = [
     description:
       '作为 Zilliz 合伙人和技术总监、LF AI & Data 基金会技术咨询委员会成员，栾小凡拥有中美顶尖高校背景与科技公司经验。在他带领下，Milvus 已成为万星项目，获 2000 多家企业应用于多场景。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -622,7 +622,7 @@ export const pioneers: Pioneer[] = [
     description:
       '罗杨专注软件与系统安全关键技术研究，其提出的 Casbin 框架在同类开源项目中领先。他作为多场开源赛事组织者、布道者，推动开源与教育融合，凭创新实践获多个国内外顶尖奖项。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -632,7 +632,7 @@ export const pioneers: Pioneer[] = [
     description:
       '一位 16 岁考入香港大学物理系的天才少年，经历了对冲基金量化交易和创业制造智能硬件的洗礼后，如今以 RWKV 模型开发者的身份在 AI 领域崭露头角。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -642,7 +642,7 @@ export const pioneers: Pioneer[] = [
     description:
       '作为 Juicedata 的 1 号成员，苏锐在 JuiceFS 开源项目从无到有的过程中扮演了关键角色，同时，他在探索开源项目商业化方面也取得了不俗的成绩。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -652,7 +652,7 @@ export const pioneers: Pioneer[] = [
     description:
       '兼具实干与梦想追求的工程师，坚信开源连接全球，让 AI 益处普惠大众，推动了多位开源模型从业者成关键意见领袖，助力社区成长。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -662,7 +662,7 @@ export const pioneers: Pioneer[] = [
     description:
       '曾是腾讯、华为等大厂最年轻的高级研究员/技术专家，发表多篇顶会论文，在顶级竞赛中获得世界冠军。其创建的 MetaGPT 等多个开源项目多次占据 GitHub 热榜世界第一。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -672,7 +672,7 @@ export const pioneers: Pioneer[] = [
     description:
       '从 2005 年至今，吴峰光投身于开源已 17 年。作为核心的 Linux 内核代码贡献者，他有独立维护的代码树，可以直接向 Linus 提交补丁，常年受邀参加 Kernel Summit，全球达此成就者不过百人。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -682,7 +682,7 @@ export const pioneers: Pioneer[] = [
     description:
       '十余年如一日地推进中国嵌入式开源软件，开源了 RT-Thread 内核以及周边的核心组件，并搭建国内最大的嵌入式软件生态。',
     avatar:
-      'https://pics1.baidu.com/feed/00e93901213fb80eda75c9332c070921bb389497.jpeg@f_auto?token=c179397190e06203893af9a170be092a',
+      '/logo.png',
     year: 2024
   },
   {
@@ -802,7 +802,7 @@ export const pioneers: Pioneer[] = [
     description:
       '国内开源教育的领军人物，身体力行带领学生参与开源、贡献开源，发起的开源项目 IoTDB 进入 Apache 孵化器，并毕业成为顶级项目。',
     avatar:
-      'https://i-blog.csdnimg.cn/blog_migrate/672db24ae35e7917acdce0aa5dfb2e9b.jpeg',
+      '/logo.png',
     year: 2023
   },
   {
@@ -812,8 +812,168 @@ export const pioneers: Pioneer[] = [
     description:
       '作为清华大学计算机系教授和博导，陈渝是学术界中最身体力行，教学和实践开源结合起来的教授。在高校里持续十几年一直在不遗余力地推广开源，在课程中开设《开源与操作系统的发展史-操作系统的简介》等科普课，组织操作系统大赛，鼓励学生们从事操作系统的开源贡献和参与到开源社区中来。 ',
     avatar:
-      'https://i-blog.csdnimg.cn/blog_migrate/7fe39c0fb07b221998bebd0a6fb8fb8a.jpeg',
+      '/logo.png',
     year: 2023
+  },
+  {
+    id: 3,
+    name: '丁皓(漩涡)',
+    title: 'Databend 研发工程师',
+    description:
+      '丁皓（漩涡）参与开源近十年来，累计贡献了 500 多个项目，提交了 2,000 多个 Issues 和 3,000 多次 PR，参与了近 8,000 次代码审查。作为 OpenDAL 项目作者及发起人，将项目捐赠到 Apache 孵化，并带领团队将来自国内外多元化的贡献者，从孵化初期的 40 余位发展到目前的 163 位。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 4,
+    name: '古思为',
+    title: 'Nebula Graph 首席开源布道师',
+    description:
+      '活跃在各个社区活动、技术大会上的开源布道师，享受在公共空间、开源社区用魔法构建东西，并把习得魔法 scale 给社区中的更多巫师。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 5,
+    name: '郭旭东',
+    title: 'LFAPAC Evangelist',
+    description:
+      '活跃于各种各样的技术社区、开源社区，对于社区、布道、技术与教育都有着充沛的热情，热心公益，积极贡献，是开源社区不可或缺里的中坚力量。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 6,
+    name: '季敏',
+    title: 'Seata 社区创始人，阿里中间件分布式事务团队负责人',
+    description:
+      '作为 Seata 社区创始人，季敏从 0-1 构建了 Seata 开源社区体系，并受到了开发者的热烈欢迎，在短短三年间项目收获了 23k star。同时，他积极参与开源技术布道，近三年参加线上线下主题分享活动数十场。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 7,
+    name: '李梦',
+    title: '开源之夏/中科院软件所',
+    description:
+      '作为开源之夏的主要推动者之一，李梦依托开源之夏活动，辗转在国内多个城市和高校，通过 Meetup、校园行等活动积极宣传、布道开源，为开源教育做出了不可磨灭的贡献。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 8,
+    name: '李钰',
+    title: '阿里巴巴资深技术专家，ASF Member，Apache Flink & HBase PMC',
+    description:
+      '无论在 CommunityOverCode Asia 大会里，在 ALC Beijing 的双周例会里，或是作为多个 Apache 孵化项目的领路人 (Champion) 或导师 (Mentor)，我们总是会看到李钰的身影，参与并贡献着开源生态的发展，提升了国内开发者在国际开源领域的贡献度和影响力。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 9,
+    name: '林旅强',
+    title: '零一万物开源负责人，开源社联合创始人',
+    description:
+      '从 GitCafe 到华为，到如今的零一万物，林旅强一直活跃在开源社区中，关注开发者关系、开源商业、社区建设等领域，并翻译中国首部开发者关系图书《开发者关系:方法与实践》。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 10,
+    name: '刘军',
+    title: 'Apache Dubbo PMC Chair，阿里云服务框架负责人',
+    description:
+      '刘军是 Apache Dubbo PMC Chair，微服务、RPC 领域的老兵。作为Dubbo 开源社区负责人，推动 Dubbo 重启开源并成为 Apache 顶级项目。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 11,
+    name: '刘敏',
+    title: '优麒麟社区运营负责人，openKylin 社区副秘书长 & 运营负责人',
+    description:
+      'openKylin 社区的运营负责人，KDE Network China 初创成员，长期积极投入在开源 Linux 操作系统和开源社区治理的研究工作中，也是可信开源治理标准专家组的成员。在国际国内的社区活动和开源会议中，经常可见到刘敏活跃的身影。 ',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 12,
+    name: '陆首群',
+    title: '中国开源软件推进联盟(COPU)主席',
+    description:
+      '2023 年最冷的冬天，中国开源软件推进联盟（COPU）主席陆首群坐着轮椅上台演讲，感动了开源圈的新一代年轻人。陆首群教授是中国开源行业泰斗，是世界闻名的开源领袖，是中国信息化的开拓者和实践者，同时也是中国开源运动的倡导者和推动者。笔耕不辍，著有新书《开源创新：数字化转型与智能化重构》。',
+    avatar:
+      '/logo.png',
+    year: 2023
+  },
+  {
+    id: 1,
+    name: 'Anthony Fu',
+    title: 'NuxtLabs 员工，Slidev、Vitest、VueUse 作者，Vue.js 团队成员',
+    description:
+      '即使不是前端圈的一份子，我们也经常能刷到 AntFu 的身影，出圈是对一个人是否有影响力的最好注解。而在 B 站上，我们正见证着 AntFu 成为程序员中的新锐网红，做开源界的明星有什么不可以呢？',
+    avatar:
+      '/logo.png',
+    year: 2022
+  },
+  {
+    id: 2,
+    name: 'Koala',
+    title: 'B 站 “Koala 聊开源” Up 主',
+    description:
+      '曾是土木工程师，2020 年退休的程序员妈妈。缘于支持儿子的开源项目，开始接触开源，并在 B 站上开设账号 “Koala 聊开源”，通过视频的形式发布自己对开源的见解，兼顾深度与趣味性、科普性，获得了广泛关注。',
+    avatar:
+      '/logo.png',
+    year: 2022
+  },
+  {
+    id: 1,
+    name: '包云岗',
+    title: '中科院计算所研究员、博士生导师、所长助理，中国科学院大学教授，中国开放指令生态（RISC-V）联盟秘书长',
+    description:
+      '包云岗入选开放指令集 RISC-V 国际基金会理事会，成立中国 RISC-V 联盟，推动中国开源芯片生态建设。推动中科院大学启动“一生一芯”计划，让开源芯片教育走进本科生课堂。带领团队突破开源芯片敏捷设计方法的若干关键技术，推出“香山”开源高性能处理器芯片，当之无愧的开源芯片领军人物。',
+    avatar:
+      '/logo.png',
+    year: 2021
+  },
+  {
+    id: 2,
+    name: '陈莉君',
+    title: '西安邮电大学教授、中国开源联盟专家组成员',
+    description:
+      '国内最早致力于 Linux 操作系统、开源教育的高校老师，业余时间主办的 Linux 内核之旅网站，为 Linux 爱好者默默提供着无私的帮助，值得一提的是，把自己 2002 年撰写的《深入分析 Linux 内核源代码》一书，因为绝版而全文公布于网络，这为嵌入式开发者和 Linux 内核爱好者提供了触手可得的资料。坚持 20 多年，门生遍天下！',
+    avatar:
+      '/logo.png',
+    year: 2021
+  },
+  {
+    id: 1,
+    name: '陈昱',
+    title: '云启资本董事总经理',
+    description:
+      '云启资本董事总经理。通过投资的方式助力中国开源生态加速成长，是中国投资领域助力开源生态的代表人物。',
+    avatar:
+      '/logo.png',
+    year: 2020
+  },
+  {
+    id: 2,
+    name: '堵俊平',
+    title: '开放原子基金会TOC主席，Apache基金会Member，LF AI基金会董事，华为云与计算开源业务总经理',
+    description:
+      '开放原子基金会TOC主席。Apache Hadoop 国内最早的贡献者与提交者，具备国际视野与格局的国内开源领军人物之一。',
+    avatar:
+      '/logo.png',
+    year: 2020
   }
 ]
 

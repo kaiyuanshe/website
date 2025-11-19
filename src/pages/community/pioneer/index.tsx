@@ -34,7 +34,7 @@ export default function PioneerPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>开源先锋榜</h1>
+        <h1 className={styles.title}>中国开源先锋榜</h1>
         <div className={styles.sponsor}>
           <span className={styles.sponsorText}>发起单位</span>
           <div className={styles.sponsorLogos}>
@@ -105,7 +105,7 @@ export default function PioneerPage() {
                 <p className={styles.modalJobTitle}>{selectedPioneer.title}</p>
 
                 <div className={styles.modalDescription}>
-                  <h4>个人简介</h4>
+                  <h4>推荐理由</h4>
                   <p>{selectedPioneer.description}</p>
                 </div>
               </div>
