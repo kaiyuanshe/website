@@ -26,14 +26,14 @@ import {
 import dayjs from 'dayjs';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from './edit.module.css'; 
+import styles from './edit.module.css';
 import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
 
 import { getEventById, updateEvent } from '@/pages/api/event';
 import dynamic from 'next/dynamic';
 
 // const QuillEditor = dynamic(() => import('@/components/quillEditor/QuillEditor'), { ssr: false });
-const   VditorEditor  = dynamic(()=>import('@/components/vditorEditor/VditorEditor'), { ssr: false })
+const VditorEditor = dynamic(() => import('@/components/vditorEditor/VditorEditor'), { ssr: false })
 
 type EventMode = '线上活动' | '线下活动';
 
@@ -93,8 +93,10 @@ export default function EditEventPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventType, setEventType] = useState<string>('');
   const [cloudinaryImg, setCloudinaryImg] = useState<{ secure_url: string } | undefined>();
-  const [event, setEvent] = useState<{ ID: string; title: string; description: string; event_mode: string; event_type: string; link: string; location: string; start_time: string; end_time: string; cover_img: string; tags: string[]; twitter: string; registration_link: string; registration_deadline: string } | null>(null);
+  const [event, setEvent] = useState<{ ID: string; title: string; eventSetting: number; bageLink: string; description: string; event_mode: string; event_type: string; link: string; location: string; start_time: string; end_time: string; cover_img: string; tags: string[]; twitter: string; registration_link: string; registration_deadline: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [eventSetting, setEventSetting] = useState<number>();
+
 
   // 格式化时间为字符串
   const formatDateTime = (date: { format: (format: string) => string }, time: { format: (format: string) => string }) => {
@@ -112,7 +114,7 @@ export default function EditEventPage() {
     [form]
   );
 
-  const handleSubmit = async (values: { title: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string } }) => {
+  const handleSubmit = async (values: { title: string; eventSetting: number; bageLink: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string } }) => {
     try {
       setIsSubmitting(true);
 
@@ -128,6 +130,8 @@ export default function EditEventPage() {
         cover_img: cloudinaryImg?.secure_url || previewUrl, // 当用户未修改封面则使用详情返回的
         tags: tags,
         twitter: values.twitter,
+        event_setting: values.eventSetting,
+        bage_link: values.bageLink,
         registration_link: values.registrationLink,
         registration_deadline: values.registrationDeadline
           ? values.registrationDeadline.format('YYYY-MM-DD HH:mm:ss')
@@ -180,6 +184,7 @@ export default function EditEventPage() {
 
           // 动态设置 eventMode，以便正确渲染
           setEventMode(data?.event_mode as EventMode);
+          setEventSetting(data?.event_setting)
 
           form.setFieldsValue({
             title: data?.title,
@@ -194,6 +199,8 @@ export default function EditEventPage() {
             endDate: dayjs(data?.end_time),
             endTime: dayjs(data?.end_time),
             twitter: data?.twitter,
+            eventSetting: data?.event_setting,
+            bageLink: data?.bage_link,
             registrationLink: data?.registration_link,
             registrationDeadline: data?.registration_deadline
               ? dayjs(data?.registration_deadline)
@@ -217,7 +224,7 @@ export default function EditEventPage() {
   // 初始化时获取 URL 参数
   useEffect(() => {
     if (!router.isReady) return;
-    
+
     const queryEventType = router.query.event_type as string;
     if (queryEventType) {
       setEventType(queryEventType);
@@ -333,6 +340,43 @@ export default function EditEventPage() {
                     ]}
                   />
                 </Form.Item>
+
+                {eventType === "coscon" && (
+                  <div className={styles.formRow}>
+                    <Form.Item
+                      label="活动配置"
+                      name="eventSetting"
+                      rules={[{ required: true, message: '请选活动配置' }]}
+                      className={styles.fixedWidthItem}
+                    >
+                      <Select
+                        placeholder="请选择活动配置"
+                        options={[
+                          { label: '自行配置', value: 1 },
+                          { label: '跳转到百格网站', value: 2 },
+                        ]}
+                        onChange={(value) => setEventSetting(value)}
+                      />
+                    </Form.Item>
+
+                    {eventSetting == 2 && (
+                      <Form.Item
+                        label="百格链接"
+                        name="bageLink"
+                        rules={[{
+                          required: true,
+                          message: '请输入百格链接',
+                        }]}
+                        className={styles.flexibleItem}
+                      >
+                        <Input
+                          placeholder="请输入百格链接"
+                          className={styles.inputWithIconField}
+                        />
+                      </Form.Item>
+                    )}
+                  </div>
+                )}
               </div>
             </Card>
 

@@ -541,3 +541,20 @@
     justify-content: center;
   }
 }
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 2fr; /* 左边固定比例，右边自适应 */
+  gap: 16px;
+  align-items: start;
+}
+
+.fixedWidthItem {
+  /* 左边项保持固定宽度 */
+  min-width: 200px; /* 或者你想要的固定宽度 */
+}
+
+.flexibleItem {
+  /* 右边项自适应 */
+  min-width: 0; /* 重要：防止内容溢出 */
+}

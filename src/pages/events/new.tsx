@@ -31,7 +31,7 @@ import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
 import dynamic from 'next/dynamic';
 
 // const QuillEditor = dynamic(() => import('@/components/quillEditor/QuillEditor'), { ssr: false });
-const   VditorEditor  = dynamic(()=>import('@/components/vditorEditor/VditorEditor'), { ssr: false })
+const VditorEditor = dynamic(() => import('@/components/vditorEditor/VditorEditor'), { ssr: false })
 
 export default function NewEventPage() {
   const { message } = AntdApp.useApp();
@@ -47,6 +47,7 @@ export default function NewEventPage() {
   const [eventType, setEventType] = useState<string>('community');
   const [communityId, setCommunityId] = useState<string | undefined>();
   const [fromCoscon, setFromCoscon] = useState(false);
+  const [eventSetting, setEventSetting] = useState<number>();
 
   // 封面图片
   const [previewUrl, setPreviewUrl] = useState<string>('');
@@ -55,22 +56,22 @@ export default function NewEventPage() {
   // 初始化时获取 URL 参数
   useEffect(() => {
     if (!router.isReady) return;
-    
+
     const queryEventType = router.query.event_type as string;
     const queryCommunityId = router.query.community_id as string;
-    
+
     // 检查是否是从 /events/coscon 进入（通过 event_type=coscon 参数判断）
     const isFromCoscon = queryEventType === 'coscon';
-    
+
     if (isFromCoscon) {
       setFromCoscon(true);
     }
-    
+
     if (queryEventType) {
       setEventType(queryEventType);
       form.setFieldValue('eventType', queryEventType);
     }
-    
+
     if (queryCommunityId) {
       setCommunityId(queryCommunityId);
     }
@@ -92,7 +93,10 @@ export default function NewEventPage() {
     [form]
   );
 
-  const handleSubmit = async (values: { title: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string } }) => {
+  const handleSubmit = async (values: {
+    bageLink: string;
+    eventSetting: number; title: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string }
+  }) => {
     try {
       setIsSubmitting(true);
 
@@ -107,6 +111,8 @@ export default function NewEventPage() {
         end_time: formatDateTime(values.endDate, values.endTime),
         cover_img: cloudinaryImg?.secure_url || '',
         tags: tags,
+        event_setting: values.eventSetting,
+        bage_link: values.bageLink,
         twitter: values.twitter,
         registration_link: values.registrationLink,
         registration_deadline: values.registrationDeadline
@@ -160,17 +166,17 @@ export default function NewEventPage() {
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.header}>
         <Link href={
-          fromCoscon 
-            ? '/events/coscon' 
-            : communityId 
-              ? `/community/${communityId}` 
+          fromCoscon
+            ? '/events/coscon'
+            : communityId
+              ? `/community/${communityId}`
               : '/events'
         } className={styles.backButton}>
           <ArrowLeft className={styles.backIcon} />
-          {fromCoscon 
-            ? '返回开源年会列表' 
-            : communityId 
-              ? '返回社区详情' 
+          {fromCoscon
+            ? '返回开源年会列表'
+            : communityId
+              ? '返回社区详情'
               : '返回活动列表'
           }
         </Link>
@@ -263,6 +269,43 @@ export default function NewEventPage() {
                   />
                 </Form.Item>
               </div>
+
+              {eventType === "coscon" && (
+                <div className={styles.formRow}>
+                  <Form.Item
+                    label="活动配置"
+                    name="eventSetting"
+                    rules={[{ required: true, message: '请选活动配置' }]}
+                    className={styles.fixedWidthItem}
+                  >
+                    <Select
+                      placeholder="请选择活动配置"
+                      options={[
+                        { label: '自行配置', value: 1 },
+                        { label: '跳转到百格网站', value: 2 },
+                      ]}
+                      onChange={(value) => setEventSetting(value)}
+                    />
+                  </Form.Item>
+
+                  {eventSetting == 2 && (
+                    <Form.Item
+                      label="百格链接"
+                      name="bageLink"
+                      rules={[{
+                        required: true,
+                        message: '请输入百格链接',
+                      }]}
+                      className={styles.flexibleItem}
+                    >
+                      <Input
+                        placeholder="请输入百格链接"
+                        className={styles.inputWithIconField}
+                      />
+                    </Form.Item>
+                  )}
+                </div>
+              )}
             </Card>
 
 

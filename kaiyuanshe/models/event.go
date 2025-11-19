@@ -34,6 +34,8 @@ type Event struct {
 	Sessions             []Session           `gorm:"foreignKey:EventID" json:"sessions"`
 	VolunteerCategories  []VolunteerCategory `gorm:"foreignKey:EventID" json:"volunteer_categories"`
 	Gifts                []Gift              `gorm:"foreignKey:EventID" json:"gifts"`
+	BageLink             string              `json:"bage_link"`
+	EventSetting         uint                `gorm:"default:1" json:"event_setting" ` // 1: 自行配置 2: 跳转到百格
 }
 
 func (e *Event) Create() error {

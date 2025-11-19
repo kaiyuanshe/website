@@ -65,7 +65,7 @@ export default function EventsPage() {
   const [statusFilter, setStatusFilter] = useState('3');
   const [locationKeyword, setLocationKeyword] = useState('');
   const [eventModeFilter, setEventModeFilter] = useState('');
-  const [eventTypeFilter] = useState('community'); // 写死为社区活动
+  const [eventTypeFilter] = useState('community'); // 社区活动
 
   // 加载事件列表
   const loadEvents = useCallback(async (params?: {
@@ -413,6 +413,7 @@ export default function EventsPage() {
               key={event.ID}
               className={styles.cardLink}
             >
+              
               <Card
                 className={styles.eventCard}
                 cover={

@@ -13,6 +13,8 @@ export interface CreateEventParams {
   cover_img: string;
   tags: string[];
   twitter: string;
+  event_setting: number;
+  bage_link: string;
   registration_deadline?: string;
   registration_link?: string;
 }
@@ -29,6 +31,8 @@ export interface UpdateEventParams {
   cover_img: string;
   tags: string[];
   twitter: string;
+  event_setting: number;
+  bage_link: string;
   registration_deadline?: string;
   registration_link?: string;
 }
@@ -63,6 +67,8 @@ export interface Event {
   cover_img: string;
   tags: string[];
   twitter: string;
+  event_setting: number;
+  bage_link: string;
   participants: number;
   registration_link: string;
   registration_deadline: string;
@@ -105,6 +111,8 @@ export const createEvent = async (
       cover_img: params.cover_img,
       tags: params.tags ?? [],
       twitter: params.twitter ?? '',
+      event_setting: params.event_setting,
+      bage_link: params.bage_link,
       registration_link: params.registration_link ?? '',
       registration_deadline: params.registration_deadline ?? '',
     };
@@ -199,6 +207,8 @@ export const updateEventDraft = async (
       cover_img: params.cover_img,
       tags: params.tags ?? [],
       twitter: params.twitter ?? '',
+       event_setting: params.event_setting,
+      bage_link: params.bage_link,
       registration_deadline: params.registration_deadline,
       registration_link: params.registration_link,
     };

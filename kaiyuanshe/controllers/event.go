@@ -41,6 +41,8 @@ func CreateEvent(c *gin.Context) {
 		CoverImg:         req.CoverImg,
 		Tags:             req.Tags,
 		Twitter:          req.Twitter,
+		BageLink:         req.BageLink,
+		EventSetting:     req.EventSetting,
 	}
 
 	if req.RegistrationDeadline != "" {
@@ -216,7 +218,11 @@ func UpdateEvent(c *gin.Context) {
 	event.CoverImg = req.CoverImg
 	event.Tags = req.Tags
 	event.Twitter = req.Twitter
+	event.EventSetting = req.EventSetting
+	event.BageLink = req.BageLink
+
 	event.RegistrationLink = req.RegistrationLink
+
 	if req.RegistrationDeadline != "" {
 		regisDeadline, err := utils.ParseTime(req.RegistrationDeadline)
 		if err != nil {

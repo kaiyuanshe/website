@@ -153,7 +153,7 @@ export default function CosconEventsPage() {
         </div>
       </div>
 
-      
+
 
       {/* Events Display */}
       {loading ? (
@@ -178,7 +178,9 @@ export default function CosconEventsPage() {
         <div className={styles.eventsGrid}>
           {events.map((event) => (
             <Link
-              href={`/events/${event.ID}`}
+              href={event.event_setting === 2 && event.bage_link ? event.bage_link : `/events/${event.ID}`}
+              target={event.event_setting === 2 && event.bage_link ? '_blank' : '_self'}
+              rel={event.event_setting === 2 && event.bage_link ? 'noopener noreferrer' : undefined}
               key={event.ID}
               className={styles.cardLink}
             >

@@ -22,6 +22,8 @@ type CreateEventRequest struct {
 	CoverImg             string   `json:"cover_img" binding:"required"`
 	Tags                 []string `json:"tags"`
 	Twitter              string   `json:"twitter" binding:"required"`
+	EventSetting         uint     `json:"event_setting" binding:"required"`
+	BageLink             string   `json:"bage_link"`
 }
 
 type QueryEventsResponse struct {
@@ -45,6 +47,8 @@ type UpdateEventRequest struct {
 	Twitter              string   `json:"twitter" binding:"required"`
 	RegistrationLink     string   `json:"registration_link"`
 	RegistrationDeadline string   `json:"registration_deadline"`
+	EventSetting         uint     `json:"event_setting" binging:"event_setting"`
+	BageLink             string   `json:"bage_link"`
 }
 
 type UpdateEventPublishStatusRequest struct {
