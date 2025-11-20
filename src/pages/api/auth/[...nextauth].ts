@@ -34,6 +34,11 @@ export default NextAuth({
     GitHubProvider({
       clientId: process.env.GITHUB_CLIENT_ID as string,
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          scope: 'user:email read:user',
+        },
+      },
     }),
     CredentialsProvider({
       id: 'code-login',
@@ -123,7 +128,18 @@ export default NextAuth({
   },
 
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
+    async signIn({ user, account, profile }) {
+      // 处理GitHub登录
+      if (account?.provider === 'github') {
+        // GitHub登录成功后的用户信息会自动包含邮箱（如果scope设置正确）
+        console.log('GitHub login user:', user);
+        console.log('GitHub profile:', profile);
+        return true;
+      }
+      return true;
+    },
+
+    async jwt({ token, user, account, profile, trigger, session }) {
       // 首次登录时保存用户信息到token
       if (user) {
         const userWithExtras = user as {
@@ -135,13 +151,25 @@ export default NextAuth({
           permissions?: string[];
           token?: string;
         };
-        token.uid = userWithExtras.id;
-        token.username = userWithExtras.username;
-        token.github = userWithExtras.github;
-        token.email = userWithExtras.email;
-        token.avatar = userWithExtras.avatar;
-        token.permissions = userWithExtras.permissions;
-        token.token = userWithExtras.token;
+        
+        // 如果是GitHub登录，使用GitHub的用户信息
+        if (account?.provider === 'github') {
+          token.uid = userWithExtras.id;
+          token.email = userWithExtras.email;
+          token.username = userWithExtras.name || (profile as any)?.login;
+          token.github = (profile as any)?.login || userWithExtras.github;
+          token.avatar = userWithExtras.image;
+          // GitHub登录用户默认权限
+          token.permissions = ['user'];
+        } else {
+          token.uid = userWithExtras.id;
+          token.username = userWithExtras.username;
+          token.github = userWithExtras.github;
+          token.email = userWithExtras.email;
+          token.avatar = userWithExtras.avatar;
+          token.permissions = userWithExtras.permissions;
+          token.token = userWithExtras.token;
+        }
       }
       
       // 当触发update()时，更新token中的用户信息
