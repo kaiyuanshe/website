@@ -30,39 +30,39 @@ export default function EventSection() {
   const { t } = useTranslation()
   const [events, setEvents] = useState<any[]>([])
 
- // 加载事件列表
-   const loadEvents = async () => {
-     try {
-       const queryParams = {
-         page: 1,
-         page_size: 3,
-         publish_status: 2,
-         status: 3,
+  // 加载事件列表
+  const loadEvents = async () => {
+    try {
+      const queryParams = {
+        page: 1,
+        page_size: 3,
+        publish_status: 2,
+        status: 3,
         //  event_type:'community'
 
-       };
- 
-       const result = await getEvents(queryParams);
- 
-       if (result.success && result.data) {
-         // 处理后端返回的数据结构
-         if (result.data.events && Array.isArray(result.data.events)) {
-           setEvents(result.data.events);
-         } else if (Array.isArray(result.data)) {
-           setEvents(result.data);
-         } else {
-           console.warn('API 返回的数据格式不符合预期:', result.data);
-           setEvents([]);
-         }
-       } else {
-         console.error('获取事件列表失败:', result.message);
-         setEvents([]);
-       }
-     } catch (error) {
-       console.error('加载事件列表异常:', error);
-       setEvents([]);
-     }
-   };
+      };
+
+      const result = await getEvents(queryParams);
+
+      if (result.success && result.data) {
+        // 处理后端返回的数据结构
+        if (result.data.events && Array.isArray(result.data.events)) {
+          setEvents(result.data.events);
+        } else if (Array.isArray(result.data)) {
+          setEvents(result.data);
+        } else {
+          console.warn('API 返回的数据格式不符合预期:', result.data);
+          setEvents([]);
+        }
+      } else {
+        console.error('获取事件列表失败:', result.message);
+        setEvents([]);
+      }
+    } catch (error) {
+      console.error('加载事件列表异常:', error);
+      setEvents([]);
+    }
+  };
 
   // 组件挂载时加载数据，但避免在认证过程中重复请求
   useEffect(() => {
@@ -87,13 +87,12 @@ export default function EventSection() {
               <div className={styles.activityCardHeader}>
                 <div className={styles.activityMeta}>
                   <span
-                    className={`${styles.activityBadge} ${
-                      event.status === 0
-                        ? styles.activityBadgeInactive
-                        : event.status === 1
-                          ? styles.activityBadgeActive
-                          : styles.activityBadgeEnded
-                    }`}
+                    className={`${styles.activityBadge} ${event.status === 0
+                      ? styles.activityBadgeInactive
+                      : event.status === 1
+                        ? styles.activityBadgeActive
+                        : styles.activityBadgeEnded
+                      }`}
                   >
                     {event.status === 0
                       ? t('homepage.events.status.notStarted')
@@ -141,7 +140,10 @@ export default function EventSection() {
                     {/* {event.tags.length > 3 && <Tag className={styles.moreTag}>+{event.tags.length - 3}</Tag>} */}
                   </div>
                 )}
-                <Link href={`/events/${event.ID}`} passHref>
+                <Link href={event.event_setting === 2 && event.bage_link ? event.bage_link : `/events/${event.ID}`}
+                  target={event.event_setting === 2 && event.bage_link ? '_blank' : '_self'}
+                  rel={event.event_setting === 2 && event.bage_link ? 'noopener noreferrer' : undefined}
+                  passHref>
                   <button className={styles.activityButton}>{t('homepage.events.learnMore')}</button>
                 </Link>
               </div>
