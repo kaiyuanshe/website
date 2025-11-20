@@ -1,14 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import {
-  Card,
-  Image,
-  Button,
-  Tag,
-  Popconfirm,
-  App as AntdApp,
-} from 'antd';
-import dayjs from 'dayjs';
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import { Card, Image, Button, Tag, Popconfirm, App as AntdApp } from 'antd'
+import dayjs from 'dayjs'
 import {
   Calendar,
   Users,
@@ -17,35 +10,36 @@ import {
   Edit,
   Trash2,
   Share2,
-  Globe,
-} from 'lucide-react';
-import { SiX } from 'react-icons/si';
-import Link from 'next/link';
-import Script from 'next/script';
-import styles from '../index.module.css';
-import { getEvents, deleteEvent } from '../../api/event';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/contexts/AuthContext';
-
+  Globe
+} from 'lucide-react'
+import { SiX } from 'react-icons/si'
+import Link from 'next/link'
+import styles from '../index.module.css'
+import { getEvents, deleteEvent } from '../../api/event'
+import { useRouter } from 'next/router'
+import { useAuth } from '@/contexts/AuthContext'
 
 export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format('YYYY-MM-DD');
+  return dayjs(isoTime).format('YYYY-MM-DD')
 }
 
 export default function CosconEventsPage() {
-  const { message } = AntdApp.useApp();
-  const [events, setEvents] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [publishStatus, setPublishStatus] = useState(2);
+  const { message } = AntdApp.useApp()
+  const [events, setEvents] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+  const [publishStatus, setPublishStatus] = useState(2)
 
-  const router = useRouter();
-  const { session, status } = useAuth();
-  const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
+  const router = useRouter()
+  const { session, status } = useAuth()
+  const permissions = useMemo(
+    () => session?.user?.permissions || [],
+    [session?.user?.permissions]
+  )
 
   // 加载事件列表 - 固定参数，只加载 coscon 类型的活动
   const loadEvents = useCallback(async () => {
     try {
-      setLoading(true);
+      setLoading(true)
 
       const queryParams = {
         keyword: '',
@@ -57,83 +51,82 @@ export default function CosconEventsPage() {
         location: '',
         event_mode: '',
         event_type: 'coscon', // 写死为 coscon
-        publish_status: publishStatus,
-      };
+        publish_status: publishStatus
+      }
 
-      const result = await getEvents(queryParams);
+      const result = await getEvents(queryParams)
 
       if (result.success && result.data) {
         if (result.data.events && Array.isArray(result.data.events)) {
-          setEvents(result.data.events);
+          setEvents(result.data.events)
         } else if (Array.isArray(result.data)) {
-          setEvents(result.data);
+          setEvents(result.data)
         } else {
-          console.warn('API 返回的数据格式不符合预期:', result.data);
-          setEvents([]);
+          console.warn('API 返回的数据格式不符合预期:', result.data)
+          setEvents([])
         }
       } else {
-        console.error('获取事件列表失败:', result.message);
-        setEvents([]);
+        console.error('获取事件列表失败:', result.message)
+        setEvents([])
       }
     } catch (error: unknown) {
-      console.error('加载事件列表异常:', error);
-      setEvents([]);
+      console.error('加载事件列表异常:', error)
+      setEvents([])
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  }, [publishStatus]);
+  }, [publishStatus])
 
   // 根据登录状态更新 publishStatus
   useEffect(() => {
     if (status === 'authenticated' && permissions.includes('event:review')) {
-      setPublishStatus(0);
+      setPublishStatus(0)
     } else if (status === 'unauthenticated') {
-      setPublishStatus(2);
+      setPublishStatus(2)
     }
-  }, [status, permissions]);
+  }, [status, permissions])
 
   // 主要的数据加载效果
   useEffect(() => {
-    if (!router.isReady) return;
-    loadEvents();
-  }, [publishStatus, loadEvents, router.isReady]);
-
+    if (!router.isReady) return
+    loadEvents()
+  }, [publishStatus, loadEvents, router.isReady])
 
   // 获取事件状态显示文本
   const getStatusText = (event: any) => {
     if (event.status === 0) {
-      return '未开始';
+      return '未开始'
     } else if (event.status === 1) {
-      return '进行中';
+      return '进行中'
     } else {
-      return '已结束';
+      return '已结束'
     }
-  };
+  }
 
   // 获取事件状态类名
   const getStatusClass = (event: any) => {
     if (event.status === 0) {
-      return styles.upcoming;
+      return styles.upcoming
     } else if (event.status === 1) {
-      return styles.ongoing;
+      return styles.ongoing
     } else {
-      return styles.ended;
+      return styles.ended
     }
-  };
+  }
 
   const handleDeleteEvent = async (id: number) => {
     try {
-      const result = await deleteEvent(id);
+      const result = await deleteEvent(id)
       if (result.success) {
-        message.success(result.message);
-        loadEvents();
+        message.success(result.message)
+        loadEvents()
       } else {
-        message.error(result.message || '删除活动失败');
+        message.error(result.message || '删除活动失败')
       }
     } catch {
-      message.error('删除失败，请重试');
+      message.error('删除失败，请重试')
     }
-  };
+  }
 
   return (
     <div className={`${styles.container} nav-t-top`}>
@@ -144,16 +137,18 @@ export default function CosconEventsPage() {
             <h1 className={styles.title}>中国开源年会</h1>
             <p className={styles.subtitle}>中国最大的开源技术年度盛会</p>
           </div>
-          {status === 'authenticated' && permissions.includes('event:write') && (
-            <Link href="/events/new?event_type=coscon" className={styles.createButton}>
-              <Plus size={20} />
-              发布开源年会
-            </Link>
-          )}
+          {status === 'authenticated' &&
+            permissions.includes('event:write') && (
+              <Link
+                href="/events/new?event_type=coscon"
+                className={styles.createButton}
+              >
+                <Plus size={20} />
+                发布开源年会
+              </Link>
+            )}
         </div>
       </div>
-
-
 
       {/* Events Display */}
       {loading ? (
@@ -167,20 +162,36 @@ export default function CosconEventsPage() {
           <div className={styles.emptyDescription}>
             还没有创建任何中国开源年会活动
           </div>
-          {status === 'authenticated' && permissions.includes('event:write') && (
-            <Link href="/events/new?event_type=coscon" className={styles.createButton}>
-              <Plus className={styles.buttonIcon} />
-              创建第一个活动
-            </Link>
-          )}
+          {status === 'authenticated' &&
+            permissions.includes('event:write') && (
+              <Link
+                href="/events/new?event_type=coscon"
+                className={styles.createButton}
+              >
+                <Plus className={styles.buttonIcon} />
+                创建第一个活动
+              </Link>
+            )}
         </div>
       ) : (
         <div className={styles.eventsGrid}>
-          {events.map((event) => (
+          {events.map(event => (
             <Link
-              href={event.event_setting === 2 && event.bage_link ? event.bage_link : `/events/${event.ID}`}
-              target={event.event_setting === 2 && event.bage_link ? '_blank' : '_self'}
-              rel={event.event_setting === 2 && event.bage_link ? 'noopener noreferrer' : undefined}
+              href={
+                event.event_setting === 2 && event.bage_link
+                  ? event.bage_link
+                  : `/events/${event.ID}`
+              }
+              target={
+                event.event_setting === 2 && event.bage_link
+                  ? '_blank'
+                  : '_self'
+              }
+              rel={
+                event.event_setting === 2 && event.bage_link
+                  ? 'noopener noreferrer'
+                  : undefined
+              }
               key={event.ID}
               className={styles.cardLink}
             >
@@ -208,12 +219,14 @@ export default function CosconEventsPage() {
                       )}
                       <div className={styles.cardActions}>
                         {status === 'authenticated' &&
-                          permissions.includes('event:write') ? (
+                        permissions.includes('event:write') ? (
                           <Button
                             className={styles.actionIconButton}
-                            onClick={(e) => {
-                              e.preventDefault();
-                              router.push(`/events/${event.ID}/edit?event_type=coscon`);
+                            onClick={e => {
+                              e.preventDefault()
+                              router.push(
+                                `/events/${event.ID}/edit?event_type=coscon`
+                              )
                             }}
                             icon={<Edit className={styles.actionIcon} />}
                             title="编辑活动"
@@ -221,29 +234,29 @@ export default function CosconEventsPage() {
                         ) : null}
                         <Button
                           className={styles.actionIconButton}
-                          onClick={(e) => {
-                            e.preventDefault();
+                          onClick={e => {
+                            e.preventDefault()
                             navigator.clipboard.writeText(
                               `${window.location.href.replace('/coscon', '')}/${event.ID}`
-                            );
-                            message.success('链接已复制到剪贴板');
+                            )
+                            message.success('链接已复制到剪贴板')
                           }}
                           icon={<Share2 className={styles.actionIcon} />}
                           title="分享活动"
                         />
                         <Button
                           className={styles.actionIconButton}
-                          onClick={(e) => {
-                            e.preventDefault();
+                          onClick={e => {
+                            e.preventDefault()
                             if (event.twitter) {
-                              window.open(event.twitter, '_blank');
+                              window.open(event.twitter, '_blank')
                             }
                           }}
                           icon={<SiX className={styles.actionIcon} />}
                           title="查看推文"
                         />
                         {status === 'authenticated' &&
-                          permissions.includes('event:delete') ? (
+                        permissions.includes('event:delete') ? (
                           <Popconfirm
                             title="删除活动"
                             description="你确定删除这个活动吗？"
@@ -253,8 +266,8 @@ export default function CosconEventsPage() {
                           >
                             <Button
                               className={styles.actionIconButton}
-                              onClick={(e) => {
-                                e.preventDefault();
+                              onClick={e => {
+                                e.preventDefault()
                               }}
                               icon={<Trash2 className={styles.actionIcon} />}
                               title="删除活动"
@@ -320,5 +333,5 @@ export default function CosconEventsPage() {
         </div>
       )}
     </div>
-  );
+  )
 }

@@ -535,7 +535,7 @@
 .coverImage :global(.ant-image-preview-img) {
   width: 100% !important;
   height: 100% !important;
-  min-width: 384px !important;
+  /* min-width: 384px !important; */
   min-height: 200px !important;
   max-width: none !important;
   max-height: none !important;
@@ -548,7 +548,7 @@
 .cardCover img {
   width: 100% !important;
   height: 100% !important;
-  min-width: 384px !important;
+  /* min-width: 384px !important; */
   min-height: 200px !important;
   max-width: none !important;
   max-height: none !important;
