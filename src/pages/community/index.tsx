@@ -184,7 +184,7 @@ const CommunityPage: React.FC = () => {
               <Building2 size={24} />
               <span>社区分布</span>
             </h2>
-            {status === 'authenticated' && permissions.includes('kcc:write') && (
+            {status === 'authenticated' && permissions.includes('event:write') && (
               <div className={styles.addCommunity}>
                 <Button
                   type="primary"

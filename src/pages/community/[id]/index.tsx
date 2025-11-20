@@ -417,6 +417,7 @@ const CommunityDetailPage: React.FC = () => {
                   key={member.ID}
                   className={styles.memberCard}
                   extra={
+                     status === 'authenticated' && permissions.includes('event:write') && (
                     <div className={styles.cardActions}>
                       <Button
                         type="text"
@@ -447,7 +448,7 @@ const CommunityDetailPage: React.FC = () => {
                           className={styles.actionButton}
                         />
                       </Popconfirm>
-                    </div>
+                    </div>)
                   }
                 >
                   <div className={styles.memberHeader}>
