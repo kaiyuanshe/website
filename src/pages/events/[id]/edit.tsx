@@ -9,6 +9,7 @@ import {
   Tag,
   App as AntdApp,
   Select,
+  Spin,
 } from 'antd';
 import type { InputProps } from 'antd';
 import {
@@ -34,6 +35,8 @@ import dynamic from 'next/dynamic';
 
 // const QuillEditor = dynamic(() => import('@/components/quillEditor/QuillEditor'), { ssr: false });
 const VditorEditor = dynamic(() => import('@/components/vditorEditor/VditorEditor'), { ssr: false })
+
+import { usePermissionGuard } from '@/hooks/usePermissionGuard'
 
 type EventMode = '线上活动' | '线下活动';
 
@@ -85,6 +88,10 @@ export default function EditEventPage() {
   const router = useRouter();
   const { id } = router.query; // 路由参数应该叫 id，不是 ids
   const rId = Array.isArray(id) ? id[0] : id;
+  
+  // 权限检查
+  const { isLoading: permissionLoading, hasPermission } = usePermissionGuard('event:write');
+  
   const [eventMode, setEventMode] = useState<EventMode>('线上活动');
   const [tags, setTags] = useState<string[]>(['技术分享']);
   const [inputVisible, setInputVisible] = useState(false);
@@ -230,6 +237,16 @@ export default function EditEventPage() {
       setEventType(queryEventType);
     }
   }, [router.isReady, router.query.event_type]);
+
+  // 如果正在加载权限，显示加载状态
+  if (permissionLoading) {
+    return (
+      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+        <Spin size="large" />
+        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

@@ -9,6 +9,7 @@ import {
   Tag,
   App as AntdApp,
   Select,
+  Spin,
 } from 'antd';
 
 import {
@@ -33,10 +34,15 @@ import dynamic from 'next/dynamic';
 // const QuillEditor = dynamic(() => import('@/components/quillEditor/QuillEditor'), { ssr: false });
 const VditorEditor = dynamic(() => import('@/components/vditorEditor/VditorEditor'), { ssr: false })
 
+import { usePermissionGuard } from '@/hooks/usePermissionGuard';
+
 export default function NewEventPage() {
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
   const router = useRouter();
+  
+  // 权限检查
+  const { isLoading, hasPermission } = usePermissionGuard('event:write');
   const [eventMode, setEventMode] = useState<'线上活动' | '线下活动'>(
     '线上活动'
   );
@@ -161,6 +167,16 @@ export default function NewEventPage() {
     setTags(newTags);
     console.log('删除标签后:', newTags);
   };
+
+  // 如果正在加载权限，显示加载状态
+  if (isLoading) {
+    return (
+      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+        <Spin size="large" />
+        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`${styles.container} nav-t-top`}>

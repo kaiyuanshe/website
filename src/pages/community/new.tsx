@@ -6,19 +6,24 @@ import {
   Upload,
   Button,
   Card,
-  App as AntdApp
+  App as AntdApp,
+  Spin
 } from 'antd'
 import { UploadIcon, Save, X } from 'lucide-react'
 import styles from './new.module.css'
 import UploadCardImg from '@/components/uploadCardImg/UploadCardImg'
 import router from 'next/router'
 import { createCommunity } from '../api/comunity'
+import { usePermissionGuard } from '@/hooks/usePermissionGuard'
 
 const { TextArea } = Input
 
 export default function NewCityPage() {
   const { message } = AntdApp.useApp()
   const [form] = Form.useForm()
+  
+  // 权限检查
+  const { isLoading, hasPermission } = usePermissionGuard('event:write')
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [cloudinaryImg, setCloudinaryImg] = useState<Record<string, unknown>>()
@@ -62,6 +67,16 @@ export default function NewCityPage() {
 
   const handleReset = () => {
     router.push('/community')
+  }
+
+  // 如果正在加载权限，显示加载状态
+  if (isLoading) {
+    return (
+      <div className={styles.container} style={{ textAlign: 'center', padding: '100px 0' }}>
+        <Spin size="large" />
+        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+      </div>
+    );
   }
 
   return (

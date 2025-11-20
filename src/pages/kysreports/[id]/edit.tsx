@@ -7,6 +7,7 @@ import {
   Tag,
   App as AntdApp,
   Select,
+  Spin,
 } from 'antd';
 import { useRouter } from 'next/router';
 import {
@@ -25,6 +26,7 @@ import VditorEditor from '@/components/vditorEditor/VditorEditor';
 import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
 
 import { getArticleById, updateArticle } from '@/pages/api/article';
+import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 
 const { TextArea } = Input;
 
@@ -35,6 +37,9 @@ export default function EditArticlePage() {
   const { id } = router.query;
   const rId = Array.isArray(id) ? id[0] : id;
   const [loading, setLoading] = useState(true);
+  
+  // 权限检查
+  const { isLoading: permissionLoading, hasPermission } = usePermissionGuard('event:write');
 
   const [article, setArticle] = useState<Record<string, unknown>>();
   const [tags, setTags] = useState<string[]>([]);
@@ -139,6 +144,16 @@ export default function EditArticlePage() {
 
     fetchData();
   }, [router.isReady, rId, form, message]);
+
+  // 如果正在加载权限，显示加载状态
+  if (permissionLoading) {
+    return (
+      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+        <Spin size="large" />
+        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+      </div>
+    );
+  }
 
   if (!loading && !article) {
     return (
