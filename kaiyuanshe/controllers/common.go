@@ -337,7 +337,7 @@ type UpdateRecapRequest struct {
 }
 
 type UpdateUserRequest struct {
-	Email    string `json:"email" binding:"required"`
+	Email    string `json:"email"`
 	Username string `json:"username" binding:"required"`
 	Avatar   string `json:"avatar" binding:"required"`
 	Github   string `json:"github"`
