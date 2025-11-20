@@ -159,7 +159,7 @@ export default function AnnouncementPage() {
   useEffect(() => {
     if (status === 'loading') return; // 等待认证状态确定
     const newPublishStatus =
-      status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
+      status === 'authenticated' && permissions.includes('event:write') ? 0 : 2;
     setPublishStatus(newPublishStatus);
 
     // 直接调用 loadarticles，避免 publishStatus 状态更新延迟
@@ -247,7 +247,7 @@ export default function AnnouncementPage() {
               ? '没有找到符合条件的公告'
               : '还没有创建任何公告'}
           </div>
-          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('article:write') && (
+          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/announcement/new" className={styles.createButton}>
               <Plus className={styles.buttonIcon} />
               发布第一个公告

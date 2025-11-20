@@ -87,11 +87,11 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const isUnderReview = article?.publish_status === 1;
-  const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
-  const canReview = permissions.includes('article:review');
+  // const isUnderReview = article?.publish_status === 1;
+  // const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
+  // const canReview = permissions.includes('event:review');
 
-  if (!article || (isUnderReview && !isPublisher && !canReview)) {
+  if (!article) {
     return (
       <div className={styles.error}>
         <h2>年度报告不存在</h2>
@@ -123,9 +123,9 @@ export default function ArticleDetailPage() {
                 编辑
               </Button>
             ) : null}
-            {article.publish_status === 1 &&
+            {/* {article.publish_status === 1 &&
               status === 'authenticated' &&
-              permissions.includes('article:review') ? (
+              permissions.includes('event:review') ? (
               <Button
                 icon={<CheckCircle size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
@@ -133,7 +133,7 @@ export default function ArticleDetailPage() {
               >
                 审核通过
               </Button>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>

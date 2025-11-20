@@ -87,11 +87,11 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const isUnderReview = article?.publish_status === 1;
-  const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
-  const canReview = permissions.includes('article:review');
+  // const isUnderReview = article?.publish_status === 1;
+  // const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
+  // const canReview = permissions.includes('event:write');
 
-  if (!article || (isUnderReview && !isPublisher && !canReview)) {
+  if (!article) {
     return (
       <div className={styles.error}>
         <h2>公告不存在</h2>

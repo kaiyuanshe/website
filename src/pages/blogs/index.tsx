@@ -215,7 +215,7 @@ export default function BlogsPage() {
     if (status === 'loading') return;
 
     const newPublishStatus =
-      status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
+      status === 'authenticated' && permissions.includes('event:write') ? 0 : 2;
 
     console.log('认证状态变化，发布状态:', newPublishStatus);
     setPublishStatus(newPublishStatus);
@@ -319,7 +319,7 @@ export default function BlogsPage() {
               ? '没有找到符合条件的博客'
               : '还没有创建任何博客'}
           </div>
-          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('article:write') && (
+          {!searchKeyword && !selectedTag && status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/blogs/new" className={styles.createButton}>
               <Plus className={styles.buttonIcon} />
               发布第一个博客

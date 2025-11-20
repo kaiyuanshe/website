@@ -90,7 +90,7 @@ export default function OsreportsPage() {
   useEffect(() => {
     if (status === 'loading') return; // 等待认证状态确定
     const newPublishStatus =
-      status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
+      status === 'authenticated' && permissions.includes('event:review') ? 0 : 2;
     setPublishStatus(newPublishStatus);
 
     // 直接调用 loadarticles，避免 publishStatus 状态更新延迟
@@ -106,7 +106,7 @@ export default function OsreportsPage() {
             <h1 className={styles.title}>年度报告</h1>
             <p className={styles.subtitle}>写下所思所感，遇见共鸣之人</p>
           </div> */}
-          {status === 'authenticated' && permissions.includes('article:write') && (
+          {status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/osreports/new" className={styles.createButton}>
               <Plus size={20} />
               发布年度报告
@@ -128,7 +128,7 @@ export default function OsreportsPage() {
           <div className={styles.emptyDescription}>
             还没有创建任何年度报告
           </div>
-          {status === 'authenticated' && permissions.includes('article:write') && (
+          {status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/osreports/new" className={styles.createButton}>
               <Plus className={styles.buttonIcon} />
               发布第一个年度报告

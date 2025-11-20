@@ -87,16 +87,16 @@ export default function ArticleDetailPage() {
     );
   }
 
-  const isUnderReview = article?.publish_status === 1;
-  const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
-  const canReview = permissions.includes('article:review');
+  // const isUnderReview = article?.publish_status === 1;
+  // const isPublisher = article?.publisher_id?.toString() === session?.user?.uid;
+  // const canReview = permissions.includes('event:review');
 
-  if (!article || (isUnderReview && !isPublisher && !canReview)) {
+  if (!article) {
     return (
       <div className={styles.error}>
         <h2>博客不存在</h2>
         <p>抱歉，找不到您要查看的博客</p>
-        <Link href="/articles" className={styles.backButton}>
+        <Link href="/blogs" className={styles.backButton}>
           返回博客列表
         </Link>
       </div>
@@ -125,7 +125,7 @@ export default function ArticleDetailPage() {
             ) : null}
             {/* {article.publish_status === 1 &&
               status === 'authenticated' &&
-              permissions.includes('article:review') ? (
+              permissions.includes('event:write') ? (
               <Button
                 icon={<CheckCircle size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
