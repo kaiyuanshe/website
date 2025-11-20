@@ -126,17 +126,17 @@ func DeleteArticle(c *gin.Context) {
 		return
 	}
 
-	uid, ok := c.Get("uid")
-	if !ok {
-		utils.ErrorResponse(c, http.StatusUnauthorized, "unauthorized", nil)
-		return
-	}
+	// uid, ok := c.Get("uid")
+	// if !ok {
+	// 	utils.ErrorResponse(c, http.StatusUnauthorized, "unauthorized", nil)
+	// 	return
+	// }
 
-	userId, _ := uid.(uint)
-	if article.PublisherId != userId {
-		utils.ErrorResponse(c, http.StatusUnauthorized, "not author", nil)
-		return
-	}
+	// userId, _ := uid.(uint)
+	// if article.PublisherId != userId {
+	// 	utils.ErrorResponse(c, http.StatusUnauthorized, "not author", nil)
+	// 	return
+	// }
 
 	if err := article.Delete(); err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Failed to delete article", nil)
@@ -167,17 +167,17 @@ func UpdateArticle(c *gin.Context) {
 		return
 	}
 
-	uid, ok := c.Get("uid")
-	if !ok {
-		utils.ErrorResponse(c, http.StatusUnauthorized, "unauthorized", nil)
-		return
-	}
+	// uid, ok := c.Get("uid")
+	// if !ok {
+	// 	utils.ErrorResponse(c, http.StatusUnauthorized, "unauthorized", nil)
+	// 	return
+	// }
 
-	userId, _ := uid.(uint)
-	if article.PublisherId != userId {
-		utils.ErrorResponse(c, http.StatusUnauthorized, "not author", nil)
-		return
-	}
+	// userId, _ := uid.(uint)
+	// if article.PublisherId != userId {
+	// 	utils.ErrorResponse(c, http.StatusUnauthorized, "not author", nil)
+	// 	return
+	// }
 
 	article.Title = req.Title
 	article.Description = req.Desc

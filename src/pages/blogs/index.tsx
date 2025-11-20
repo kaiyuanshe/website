@@ -41,7 +41,7 @@ export function formatTime(isoTime: string): string {
 export default function BlogsPage() {
   const router = useRouter();
   const { query, isReady } = router;
-  
+
   // 状态管理
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [currentPage, setCurrentPage] = useState(1);
@@ -132,7 +132,7 @@ export default function BlogsPage() {
     console.log('执行搜索:', keyword);
     setSearchKeyword(keyword);
     setCurrentPage(1);
-    
+
     // 更新 URL 查询参数
     const newQuery = { ...router.query };
     if (keyword) {
@@ -140,7 +140,7 @@ export default function BlogsPage() {
     } else {
       delete newQuery.keyword;
     }
-    
+
     await router.push(
       {
         pathname: router.pathname,
@@ -149,7 +149,7 @@ export default function BlogsPage() {
       undefined,
       { shallow: true }
     );
-    
+
     await loadArticles({ keyword, page: 1 });
   }, [router, loadArticles]);
 
@@ -198,7 +198,7 @@ export default function BlogsPage() {
     if (isReady) {
       const { keyword } = query;
       console.log('URL 参数变化:', keyword);
-      
+
       if (keyword && keyword !== searchKeyword) {
         // URL 中有 keyword 参数，执行搜索
         loadArticles({ keyword: keyword as string, page: 1 });
@@ -216,15 +216,15 @@ export default function BlogsPage() {
 
     const newPublishStatus =
       status === 'authenticated' && permissions.includes('article:review') ? 0 : 2;
-    
+
     console.log('认证状态变化，发布状态:', newPublishStatus);
     setPublishStatus(newPublishStatus);
 
     // 如果 URL 中有搜索参数，使用 URL 参数
     if (isReady && query.keyword) {
-      loadArticles({ 
+      loadArticles({
         keyword: query.keyword as string,
-        publish_status: newPublishStatus 
+        publish_status: newPublishStatus
       });
     } else {
       loadArticles({ publish_status: newPublishStatus });
@@ -249,7 +249,7 @@ export default function BlogsPage() {
       {/* Header Section */}
       <div className={styles.header}>
         <div className={styles.headerContent}>
-          {status === 'authenticated' && permissions.includes('article:write') && (
+          {status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/blogs/new" className={styles.createButton}>
               <Plus size={20} />
               发布博客
@@ -348,12 +348,11 @@ export default function BlogsPage() {
                       preview={false}
                     />
                     <div className={styles.coverOverlay}>
-                      {article.publish_status === 1 && (
+                      {/* {article.publish_status === 1 && (
                         <Tag className={styles.noPublishStatus}>待审核</Tag>
-                      )}
+                      )} */}
                       <div className={styles.cardActions}>
-                        {status === 'authenticated' &&
-                          article.publisher_id.toString() === session?.user?.uid && (
+                        {status === 'authenticated' && permissions.includes('event:write') && (
                           <Button
                             className={styles.actionIconButton}
                             onClick={(e) => {
@@ -429,7 +428,6 @@ export default function BlogsPage() {
               <div className={styles.listHeaderCell}>作者</div>
               <div className={styles.listHeaderCell}>时间</div>
               <div className={styles.listHeaderCell}>浏览量</div>
-              <div className={styles.listHeaderCell}>状态</div>
               <div className={styles.listHeaderCell}>操作</div>
             </div>
             {currentArticles.map((article) => (
@@ -469,7 +467,7 @@ export default function BlogsPage() {
                     </span>
                   </div>
                 </div>
-                <div className={styles.listCell}>
+                {/* <div className={styles.listCell}>
                   <div className={styles.publishStatusInfo}>
                     {article.publish_status === 1 && (
                       <Tag color="warning">待审核</Tag>
@@ -478,11 +476,10 @@ export default function BlogsPage() {
                       <Tag color="success">已发布</Tag>
                     )}
                   </div>
-                </div>
+                </div> */}
                 <div className={styles.listCell}>
                   <div className={styles.listActions}>
-                    {status === 'authenticated' &&
-                      article.publisher_id.toString() === session?.user?.uid && (
+                    {status === 'authenticated' && permissions.includes('event:write') && (
                       <Button
                         type="text"
                         size="small"
@@ -502,10 +499,9 @@ export default function BlogsPage() {
                         message.success('链接已复制到剪贴板');
                       }}
                       icon={<Share2 className={styles.listActionIcon} />}
-                      title="分享活动"
+                      title="分享博客"
                     />
-                    {status === 'authenticated' &&
-                      article.publisher_id?.toString() === session?.user?.uid && (
+                    {status === 'authenticated' && permissions.includes('event:write') && (
                       <Popconfirm
                         title="删除博客"
                         description="你确定删除这个博客吗？"

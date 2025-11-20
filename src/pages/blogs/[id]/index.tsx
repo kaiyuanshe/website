@@ -114,7 +114,7 @@ export default function ArticleDetailPage() {
           </Link>
           <div className={styles.headerActions}>
             {status === 'authenticated' &&
-              article.publisher_id.toString() === session?.user?.uid ? (
+              permissions.includes('event:review')  ? (
               <Button
                 icon={<Edit size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
@@ -123,7 +123,7 @@ export default function ArticleDetailPage() {
                 编辑
               </Button>
             ) : null}
-            {article.publish_status === 1 &&
+            {/* {article.publish_status === 1 &&
               status === 'authenticated' &&
               permissions.includes('article:review') ? (
               <Button
@@ -133,7 +133,7 @@ export default function ArticleDetailPage() {
               >
                 审核通过
               </Button>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>

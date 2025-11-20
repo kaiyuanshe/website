@@ -113,8 +113,7 @@ export default function ArticleDetailPage() {
             返回公告列表
           </Link>
           <div className={styles.headerActions}>
-            {status === 'authenticated' &&
-              article.publisher_id.toString() === session?.user?.uid ? (
+            {status === 'authenticated' && permissions.includes('event:write') ? (
               <Button
                 icon={<Edit size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
@@ -123,9 +122,9 @@ export default function ArticleDetailPage() {
                 编辑
               </Button>
             ) : null}
-            {article.publish_status === 1 &&
+            {/* {article.publish_status === 1 &&
               status === 'authenticated' &&
-              permissions.includes('article:review') ? (
+              permissions.includes('event:review') ? (
               <Button
                 icon={<CheckCircle size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
@@ -133,7 +132,7 @@ export default function ArticleDetailPage() {
               >
                 审核通过
               </Button>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </div>
@@ -161,13 +160,13 @@ export default function ArticleDetailPage() {
                   发布时间：{formatTime(article.publish_time || article.CreatedAt)}
                 </div>
               </div>
-               <div className={styles.metaItem}>
+              <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
                   原文连接：{article.source_link || ''}
                 </div>
               </div>
-               <div className={styles.metaItem}>
+              <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
                   版权声明： {article.license || ''}
@@ -224,9 +223,9 @@ export default function ArticleDetailPage() {
             dangerouslySetInnerHTML={{ __html: articleContent }}
           />
         </div>
-        
+
         {/* 评论区域 */}
-        <CommentSection 
+        <CommentSection
           repo="dajiangjunok/kaiyuanshe"
           repoId="R_kgDOPveyWQ"
           category="General"

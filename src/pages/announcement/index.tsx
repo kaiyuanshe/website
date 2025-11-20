@@ -175,7 +175,7 @@ export default function AnnouncementPage() {
             <h1 className={styles.title}>公告</h1>
             <p className={styles.subtitle}>写下所思所感，遇见共鸣之人</p>
           </div> */}
-          {status === 'authenticated' && permissions.includes('article:write') && (
+          {status === 'authenticated' && permissions.includes('event:write') && (
             <Link href="/announcement/new" className={styles.createButton}>
               <Plus size={20} />
               发布公告
@@ -276,13 +276,11 @@ export default function AnnouncementPage() {
                       preview={false}
                     />
                     <div className={styles.coverOverlay}>
-                      {article.publish_status === 1 && (
+                      {/* {article.publish_status === 1 && (
                         <Tag className={styles.noPublishStatus}>待审核</Tag>
-                      )}
+                      )} */}
                       <div className={styles.cardActions}>
-                        {/* 只有公告作者才可以编辑 */}
-                        {status === 'authenticated' &&
-                          article.publisher_id.toString() === session?.user?.uid ? (
+                        {status === 'authenticated' && permissions.includes('event:write') ? (
                           <Button
                             className={styles.actionIconButton}
                             onClick={(e) => {
@@ -361,7 +359,7 @@ export default function AnnouncementPage() {
               <div className={styles.listHeaderCell}>作者</div>
               <div className={styles.listHeaderCell}>时间</div>
               <div className={styles.listHeaderCell}>浏览量</div>
-              <div className={styles.listHeaderCell}>状态</div>
+              {/* <div className={styles.listHeaderCell}>状态</div> */}
               <div className={styles.listHeaderCell}>操作</div>
             </div>
             {currentArticles.map((article) => (
@@ -402,7 +400,7 @@ export default function AnnouncementPage() {
                     </span>
                   </div>
                 </div>
-                <div className={styles.listCell}>
+                {/* <div className={styles.listCell}>
                   <div className={styles.publishStatusInfo}>
                     {article.publish_status === 1 && (
                       <Tag color="warning">待审核</Tag>
@@ -411,19 +409,17 @@ export default function AnnouncementPage() {
                       <Tag color="success">已发布</Tag>
                     )}
                   </div>
-                </div>
+                </div> */}
 
                 <div className={styles.listCell}>
                   <div className={styles.listActions}>
-                    {/* 只有公告发布者才可以编辑 */}
-                    {status === 'authenticated' &&
-                      article.publisher_id.toString() === session?.user?.uid ? (
+                   {status === 'authenticated' && permissions.includes('event:write') ? (
                       <Button
                         type="text"
                         size="small"
                         icon={<Edit className={styles.listActionIcon} />}
                         title="编辑公告"
-                        onClick={() => router.push(`/articles/${article.ID}/edit`)}
+                        onClick={() => router.push(`/announcement/${article.ID}/edit`)}
                       />
                     ) : null}
                     <Button
@@ -439,9 +435,7 @@ export default function AnnouncementPage() {
                       icon={<Share2 className={styles.listActionIcon} />}
                       title="分享公告"
                     />
-                    {/* 只有公告发布者才可以删除*/}
-                    {status === 'authenticated' &&
-                      article.publisher_id?.toString() === session?.user?.uid ? (
+                   {status === 'authenticated' && permissions.includes('event:write') ? (
                       <Popconfirm
                         title="删除公告"
                         description="你确定删除这个公告吗？"

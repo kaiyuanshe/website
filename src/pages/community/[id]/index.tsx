@@ -8,12 +8,13 @@ import {
   Edit,
   Trash2
 } from "lucide-react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRouter } from "next/router"
 import styles from "./index.module.css"
 import { getCommunity, Community } from "../../api/comunity"
 import AvatarEdit from "@/components/settings/AvatarEdit"
 import { createMember, deleteMember, updateMember } from "@/pages/api/member"
+import { useAuth } from "@/contexts/AuthContext"
 
 // 根据接口返回的数据结构定义接口
 interface Event {
@@ -71,6 +72,11 @@ const CommunityDetailPage: React.FC = () => {
   const [editingMember, setEditingMember] = useState<CommunityMember | null>(null);
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editForm] = Form.useForm();
+
+
+   const { session, status } = useAuth();
+  
+    const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
 
   // 获取社区详情数据
   useEffect(() => {
@@ -357,22 +363,22 @@ const CommunityDetailPage: React.FC = () => {
                 {community.isInternational && <Globe size={20} className={styles.internationalIcon} />}
               </h1>
             </div>
-           
+
 
             {/* 社区统计 */}
             <div className={styles.statsContainer}>
               <div className={styles.stat}>
-               
+
                 <span className={styles.statNumber}>{community.members?.length || 0}</span>
                 <span className={styles.statLabel}>成员</span>
               </div>
               <div className={styles.stat}>
-                
+
                 <span className={styles.statNumber}>0</span>
                 <span className={styles.statLabel}>项目</span>
               </div>
               <div className={styles.stat}>
-              
+
                 <span className={styles.statNumber}>{community.events?.length || 0}</span>
                 <span className={styles.statLabel}>活动</span>
               </div>
@@ -391,15 +397,17 @@ const CommunityDetailPage: React.FC = () => {
               <Users size={24} />
               社区成员 ({community.members?.length || 0})
             </h2>
-            <Button
-              type="primary"
-              size="large"
-              icon={<UserPlus size={18} />}
-              onClick={handleOpenAddMember}
-              className={styles.joinButton}
-            >
-              添加成员
-            </Button>
+            {status === 'authenticated' && permissions.includes('event:write') && (
+              <Button
+                type="primary"
+                size="large"
+                icon={<UserPlus size={18} />}
+                onClick={handleOpenAddMember}
+                className={styles.joinButton}
+              >
+                添加成员
+              </Button>
+            )}
           </div>
 
           {community.members && community.members.length > 0 ? (
@@ -470,6 +478,7 @@ const CommunityDetailPage: React.FC = () => {
               <Calendar size={24} />
               社区活动 ({community.events?.length || 0})
             </h2>
+             {status === 'authenticated' && permissions.includes('event:write') && (
             <Button
               type="primary"
               size="large"
@@ -477,6 +486,7 @@ const CommunityDetailPage: React.FC = () => {
             >
               创建活动
             </Button>
+             )}
           </div>
 
           {community.events && community.events.length > 0 ? (
