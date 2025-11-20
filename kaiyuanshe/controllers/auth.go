@@ -82,13 +82,14 @@ func HandleLogin(c *gin.Context) {
 		// user.Avatar = resp.Data.Avatar
 		// user.Username = resp.Data.UserName
 		user.Email = resp.Email
-		user.Username = resp.Name
+		user.Github = resp.Login
 		user.Avatar = resp.AvatarURL
 		err = models.UpdateUser(user)
 	} else {
 		var u models.User
 		u.Uid = uint(resp.ID)
 		u.Avatar = resp.AvatarURL
+		u.Github = resp.Login
 		u.Email = resp.Email
 		u.Username = resp.Name
 		user = &u
