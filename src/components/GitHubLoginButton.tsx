@@ -19,7 +19,7 @@ interface GitHubLoginButtonProps {
   const handleGitHubSignIn = () => {
     onLoading?.(true);
     const currentUrl = window.location.origin + router.pathname;
-    const oauthUrl = `${process.env.NEXT_PUBLIC_OAUTH}&redirect_uri=${currentUrl}&scope=read:user`;
+    const oauthUrl = `${process.env.NEXT_PUBLIC_OAUTH}&redirect_uri=${currentUrl}&scope=read:user user:email`;
     router.push(oauthUrl); // 跳转 OAuth 授权页
   };
 
