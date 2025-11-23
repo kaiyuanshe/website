@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
   // 使用简化的认证上下文，利用 NextAuth 内置缓存机制
   const { session } = useAuth();
   const router = useRouter()
-  const { code } = router.query;
+  const { code, uid, token } = router.query;
   const hasTriedLogin = useRef(false); // 防止重复登录
 
   const { set, get } = useLocalStorage('user')
@@ -52,39 +52,59 @@ const LoginPage: React.FC = () => {
   }
 
 
-  // 页面初次加载时检测 query 中的 code 并尝试登录
+  // 页面初次加载时检测 query 中的 code 或 uid/token 并尝试登录
   useEffect(() => {
     const tryLogin = async () => {
-      // 如果已经尝试过登录、已有session、没有code，则跳过
-      if (hasTriedLogin.current || session || !code) {
+      // 如果已经尝试过登录、已有session、没有code且没有uid/token，则跳过
+      if (hasTriedLogin.current || session || (!code && (!uid || !token))) {
         return;
       }
 
       hasTriedLogin.current = true;
       setLoading(true);
 
-
       try {
         const authManager = AuthManager.getInstance();
 
-        // 使用 AuthManager 确保只有一个登录请求在执行
-        const res = await authManager.ensureLogin(async () => {
-          return await signIn('code-login', {
-            redirect: false,
-            code: code as string,
+        let res: any;
+        // 如果有 uid 和 token，则使用注册验证登录
+        if (uid && token) {
+          res = await authManager.ensureLogin(async () => {
+            return await signIn('register-verify', {
+              redirect: false,
+              uid: uid as string,
+              token: token as string,
+            });
           });
-        });
+        } 
+        // 否则使用 code 登录
+        else if (code) {
+          res = await authManager.ensureLogin(async () => {
+            return await signIn('code-login', {
+              redirect: false,
+              code: code as string,
+            });
+          });
+        }
 
         if (res) {
           // 防止 React Strict Mode 导致的重复消息显示
           if (authManager.shouldShowSuccessMessage()) {
-            message.success('登录成功');
+            if (uid && token) {
+              message.success('邮箱验证成功，欢迎登录');
+            } else {
+              message.success('登录成功');
+            }
             router.push("/");
           }
-          // 清除 URL 中的 code 参数，NextAuth 会自动更新 session 状态
+          // 清除 URL 中的参数，NextAuth 会自动更新 session 状态
           router.replace(router.pathname, undefined, { shallow: true });
         } else {
-          message.warning('登录失败...');
+          if (uid && token) {
+            message.warning('邮箱验证失败，链接可能已过期...');
+          } else {
+            message.warning('登录失败...');
+          }
           hasTriedLogin.current = false; // 允许重试
         }
       } catch (error) {
@@ -93,7 +113,6 @@ const LoginPage: React.FC = () => {
         hasTriedLogin.current = false; // 允许重试
       } finally {
         setLoading(false);
-
       }
     };
 
@@ -103,7 +122,7 @@ const LoginPage: React.FC = () => {
     return () => {
       clearTimeout(timer);
     };
-  }, [code, session, router, message]);
+  }, [code, uid, token, session, router, message]);
 
 
   const onLoginFinish = async (values: LoginFieldType) => {
