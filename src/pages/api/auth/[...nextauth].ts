@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GitHubProvider from 'next-auth/providers/github';
-import { loginUser, loginWithEmail } from '../login';
+import { loginUser, loginWithEmail, RegisterVerifyAndLogin } from '../login';
 
 declare module 'next-auth' {
   interface Session {
@@ -99,6 +99,40 @@ export default NextAuth({
         return null;
       },
     }),
+    CredentialsProvider({
+      id: 'register-verify',
+      name: 'Register verify',
+      credentials: {
+        uid: { label: 'Uid', type: 'uid' },
+        token: { label: 'Token', type: 'token' },
+      },
+      async authorize(credentials) {
+        if (!credentials) return null;
+
+        const { uid, token } = credentials;
+        const uidNumber = parseInt(uid, 10);
+        if (isNaN(uidNumber)) {
+          return null;
+        }
+
+        const registerVerifyParams = { uid: uidNumber, token };
+        const res = await RegisterVerifyAndLogin(registerVerifyParams);
+
+        if (res.success && res.data?.ID) {
+          return {
+            id: res.data.ID.toString(),
+            email: res.data.email,
+            username: res.data.username,
+            github: res.data.github,
+            avatar: res.data.avatar,
+            permissions: res.data.permissions,
+            token: res.data.token,
+          };
+        }
+
+        return null;
+      },
+    }),
   ],
 
   session: {
@@ -109,7 +143,7 @@ export default NextAuth({
 
   // 优化客户端配置，减少不必要的请求
   useSecureCookies: process.env.NODE_ENV === 'production',
-  
+
   // 配置 JWT 和 session 的缓存策略
   jwt: {
     maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -151,7 +185,7 @@ export default NextAuth({
           permissions?: string[];
           token?: string;
         };
-        
+
         // 如果是GitHub登录，使用GitHub的用户信息
         if (account?.provider === 'github') {
           token.uid = userWithExtras.id;
@@ -171,7 +205,7 @@ export default NextAuth({
           token.token = userWithExtras.token;
         }
       }
-      
+
       // 当触发update()时，更新token中的用户信息
       if (trigger === 'update' && session?.user) {
         token.username = session.user.username || token.username;
@@ -179,7 +213,7 @@ export default NextAuth({
         token.email = session.user.email || token.email;
         token.github = session.user.github || token.github;
       }
-      
+
       return token;
     },
 

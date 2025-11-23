@@ -11,13 +11,14 @@ func SetupRouter(r *gin.Engine) {
 	r.Use(middlewares.Cors())
 
 	r.POST("/v1/login-email", controllers.HandleLoginV2)
+	r.POST("/v1/register-verify", controllers.HandleLoginV2)
 	r.POST("/v1/login", controllers.HandleLogin)
 	r.POST("/v1/register", controllers.HandleRegister)
 
 	user := r.Group("v1/users")
 	{
 		user.PUT("/:id", middlewares.JWT(""), controllers.UpdateUser)
-		user.GET("/:id", controllers.GetUser)
+		user.GET("/:id", middlewares.JWT(""), controllers.GetUser)
 	}
 
 	event := r.Group("/v1/events")

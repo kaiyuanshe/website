@@ -186,3 +186,57 @@ export const registerUser = async (
     return { success: false, message: errorMessage }
   }
 }
+
+export interface RegisterVerifyLoginParams {
+  uid: number
+  token: string
+}
+
+export const RegisterVerifyAndLogin = async (
+  params: RegisterVerifyLoginParams
+): Promise<LoginResult> => {
+  try {
+    if (!apiUrl) {
+      throw new Error('API URL is not defined')
+    }
+
+    const body = {
+      uid: params.uid,
+      token: params.token
+    }
+
+    const response = await fetch(`${apiUrl}/register-verify`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    })
+
+    // 检查响应的内容类型
+    const contentType = response.headers.get('content-type')
+    
+    if (!contentType || !contentType.includes('application/json')) {
+      const text = await response.text()
+      console.log('Email login non-JSON response:', text.substring(0, 500))
+      throw new Error(`服务器返回非JSON响应: ${response.status} ${response.statusText}。请检查API服务器是否正常运行。`)
+    }
+
+    const data = await response.json()
+
+    if (response.ok && data.code === 200) {
+      return {
+        success: true,
+        message: data.message ?? '登录成功',
+        data: data.data as LoginUser
+      }
+    }
+
+    return { success: false, message: data.message ?? '登录失败' }
+  } catch (error: unknown) {
+    console.error('邮箱登录异常:', error)
+    const errorMessage =
+      error instanceof Error ? error.message : '网络错误，请稍后重试'
+    return { success: false, message: errorMessage }
+  }
+}

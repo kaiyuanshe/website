@@ -74,6 +74,11 @@ type LoginRequestV2 struct {
 	Password string `json:"password" binding:"required,min=6,max=32"`
 }
 
+type LoginVerifyReqesut struct {
+	Uid   uint   `json:"uid" binding:"uid"`
+	Token string `json:"token" binding:"required"`
+}
+
 type LoginResponse struct {
 	models.User
 	Permissions []string `json:"permissions"`

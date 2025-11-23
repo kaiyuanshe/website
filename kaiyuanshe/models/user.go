@@ -1,23 +1,28 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
 type User struct {
 	gorm.Model
-	Email    string    `gorm:"unique;not null" json:"email"`
-	Username string    `json:"username"`
-	Password string    `json:"-"`
-	Avatar   string    `json:"avatar"`
-	Github   string    `json:"github"`
-	Twitter  string    `json:"twitter"`
-	Uid      uint      `json:"-"` // OAUTH
-	RoleID   uint      `json:"-"`
-	Role     *Role     `gorm:"foreignKey:RoleID" json:"-"`
-	Events   []Event   `gorm:"foreignKey:UserId" json:"events"`
-	Articles []Article `gorm:"foreignKey:PublisherId"  json:"articles"`
-	Posts    []Post    `gorm:"foreignKey:UserId" json:"posts"`
+	Email       string     `gorm:"unique;not null" json:"email"`
+	Username    string     `json:"username"`
+	Password    string     `json:"-"`
+	Avatar      string     `json:"avatar"`
+	Github      string     `json:"github"`
+	Twitter     string     `json:"twitter"`
+	IsVerified  bool       `gorm:"default:false" json:"-"`
+	VerifyToken string     `json:"-"`
+	TokenExpiry *time.Time `json:"-"`
+	Uid         uint       `json:"-"` // OAUTH
+	RoleID      uint       `json:"-"`
+	Role        *Role      `gorm:"foreignKey:RoleID" json:"-"`
+	Events      []Event    `gorm:"foreignKey:UserId" json:"events"`
+	Articles    []Article  `gorm:"foreignKey:PublisherId"  json:"articles"`
+	Posts       []Post     `gorm:"foreignKey:UserId" json:"posts"`
 }
 
 func GetUserByUid(uid uint) (*User, error) {
