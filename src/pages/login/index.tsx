@@ -87,7 +87,7 @@ const LoginPage: React.FC = () => {
           });
         }
 
-        if (res) {
+        if (res?.ok) {
           // 防止 React Strict Mode 导致的重复消息显示
           if (authManager.shouldShowSuccessMessage()) {
             if (uid && token) {
