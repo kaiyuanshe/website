@@ -11,7 +11,7 @@ func SetupRouter(r *gin.Engine) {
 	r.Use(middlewares.Cors())
 
 	r.POST("/v1/login-email", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLoginV2)
-	r.POST("/v1/register-verify", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLoginV2)
+	r.POST("/v1/register-verify", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLoginVerify)
 	r.POST("/v1/login", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLogin)
 	r.POST("/v1/register", middlewares.LeakyBucketRateLimiter(100), controllers.HandleRegister)
 
