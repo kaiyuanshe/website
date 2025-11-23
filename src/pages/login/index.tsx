@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react'
-import { Form, Input, Button, App as AntdApp } from 'antd'
+import { Form, Input, Button, App as AntdApp, Modal } from 'antd'
 import { signIn } from 'next-auth/react'
 import styles from './index.module.css'
 import { useRouter } from 'next/router'
@@ -10,7 +10,7 @@ import { registerUser } from '../api/login'
 import GitHubLoginButton from '@/components/GitHubLoginButton'
 import AuthManager from '@/lib/authManager'
 import { useAuth } from '@/contexts/AuthContext'
-import Captcha from '@/components/Captcha'
+import Captcha, { type CaptchaRef } from '@/components/Captcha'
 
 type LoginFieldType = {
   email?: string
@@ -28,8 +28,11 @@ type RegisterFieldType = {
 
 const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false)
+  const [registerLoading, setRegisterLoading] = useState(false)
   const [isRegister, setIsRegister] = useState(false)
   const [captchaId, setCaptchaId] = useState('')
+  const [showSuccessModal, setShowSuccessModal] = useState(false)
+  const captchaRef = useRef<CaptchaRef>(null)
   // const [registerStep, setRegisterStep] = useState<
   //   'email' | 'verification' | 'password'
   // >('email')
@@ -207,6 +210,8 @@ const LoginPage: React.FC = () => {
         return
       }
 
+      setRegisterLoading(true)
+
       // 调用后端验证验证码
       const verifyResponse = await fetch('/api/captcha/verify', {
         method: 'POST',
@@ -222,10 +227,10 @@ const LoginPage: React.FC = () => {
       const verifyResult = await verifyResponse.json()
       if (!verifyResult.success) {
         message.error(verifyResult.message || '验证码错误')
+        // 刷新验证码
+        captchaRef.current?.refreshCaptcha?.()
         return
       }
-
-      setLoading(true)
 
       const res = await registerUser({
         email,
@@ -235,15 +240,18 @@ const LoginPage: React.FC = () => {
       })
 
       if (res.success) {
-        message.success('注册成功！请登录')
-        setIsRegister(false)
+        setShowSuccessModal(true)
       } else {
         message.error(res.message || '注册失败')
+        // 刷新验证码
+        captchaRef.current?.refreshCaptcha?.()
       }
     } catch {
       message.error('网络错误...')
+      // 刷新验证码
+      captchaRef.current?.refreshCaptcha?.()
     } finally {
-      setLoading(false)
+      setRegisterLoading(false)
     }
   }
 
@@ -313,6 +321,7 @@ const LoginPage: React.FC = () => {
                   <Input placeholder="验证码" />
                 </Form.Item>
                 <Captcha 
+                  ref={captchaRef}
                   onChange={setCaptchaId}
                   width={120}
                   height={20}
@@ -326,7 +335,7 @@ const LoginPage: React.FC = () => {
                 htmlType="submit"
                 className={styles.loginButton}
                 block
-                loading={loading}
+                loading={registerLoading}
               >
                 立即注册
               </Button>
@@ -386,13 +395,41 @@ const LoginPage: React.FC = () => {
         <div className={styles.link}>
           {isRegister ? '已有账号？' : '还没有账号？'}
           <a
-            onClick={() => setIsRegister(!isRegister)}
+            onClick={() => {
+              setIsRegister(!isRegister)
+              // 切换到注册模式时刷新验证码
+              if (!isRegister) {
+                setTimeout(() => {
+                  captchaRef.current?.refreshCaptcha?.()
+                }, 100)
+              }
+            }}
             className={styles.switchLink}
           >
             {isRegister ? '立即登录' : '立即注册'}
           </a>
         </div>
       </div>
+
+      {/* 注册成功模态框 */}
+      <Modal
+        title="注册成功"
+        open={showSuccessModal}
+        onOk={() => {
+          setShowSuccessModal(false)
+          setIsRegister(false)
+        }}
+        onCancel={() => {
+          setShowSuccessModal(false)
+          setIsRegister(false)
+        }}
+        okText="去登录"
+        cancelText="关闭"
+      >
+        <p>恭喜您注册成功！</p>
+        <p>请前往您的邮箱查看激活邮件，点击邮件中的链接激活您的账户。</p>
+        <p>激活后即可正常登录使用。</p>
+      </Modal>
     </div>
   )
 }

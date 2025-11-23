@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import Image from 'next/image'
 import { RefreshCw } from 'lucide-react'
 import styles from './index.module.css'
@@ -16,12 +16,16 @@ interface CaptchaData {
   imageData: string
 }
 
-const Captcha: React.FC<CaptchaProps> = ({
+export interface CaptchaRef {
+  refreshCaptcha: () => void
+}
+
+const Captcha = forwardRef<CaptchaRef, CaptchaProps>(({
   width = 120,
   height = 40,
   onChange,
   onRefresh
-}) => {
+}, ref) => {
   const imgRef = useRef<HTMLDivElement>(null)
   const [captchaData, setCaptchaData] = useState<CaptchaData | null>(null)
   const [loading, setLoading] = useState(false)
@@ -57,6 +61,11 @@ const Captcha: React.FC<CaptchaProps> = ({
     fetchCaptcha()
     onRefresh?.()
   }
+
+  // 暴露给父组件的方法
+  useImperativeHandle(ref, () => ({
+    refreshCaptcha
+  }), [])
 
   // 初始化
   useEffect(() => {
@@ -107,6 +116,8 @@ const Captcha: React.FC<CaptchaProps> = ({
       </button>
     </div>
   )
-}
+})
+
+Captcha.displayName = 'Captcha'
 
 export default Captcha
