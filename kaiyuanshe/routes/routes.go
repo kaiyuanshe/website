@@ -10,10 +10,10 @@ import (
 func SetupRouter(r *gin.Engine) {
 	r.Use(middlewares.Cors())
 
-	r.POST("/v1/login-email", controllers.HandleLoginV2)
-	r.POST("/v1/register-verify", controllers.HandleLoginV2)
-	r.POST("/v1/login", controllers.HandleLogin)
-	r.POST("/v1/register", controllers.HandleRegister)
+	r.POST("/v1/login-email", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLoginV2)
+	r.POST("/v1/register-verify", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLoginV2)
+	r.POST("/v1/login", middlewares.LeakyBucketRateLimiter(100), controllers.HandleLogin)
+	r.POST("/v1/register", middlewares.LeakyBucketRateLimiter(100), controllers.HandleRegister)
 
 	user := r.Group("v1/users")
 	{
