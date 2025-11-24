@@ -79,7 +79,7 @@ func HandleLogin(c *gin.Context) {
 
 	var user *models.User
 
-	user, err = models.GetUserByEmail(resp.Email)
+	user, err = models.GetUserByUid(uint(resp.ID))
 	if err == nil {
 		// user.Avatar = resp.Data.Avatar
 		// user.Username = resp.Data.UserName
