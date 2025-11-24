@@ -61,7 +61,7 @@ const EventsCalendar: React.FC = () => {
         page: 1,
         page_size: 1000,
         publish_status: status === 'authenticated' && permissions.includes('event:review') ? 0 : 2,
-        status: 2,
+        // status: 2,
         start_date: startOfMonth,
         end_date: endOfMonth,
       });
