@@ -75,7 +75,7 @@ type LoginRequestV2 struct {
 }
 
 type LoginVerifyReqesut struct {
-	Uid   uint   `json:"uid" binding:"uid"`
+	Uid   uint   `json:"uid" binding:"required"`
 	Token string `json:"token" binding:"required"`
 }
 
