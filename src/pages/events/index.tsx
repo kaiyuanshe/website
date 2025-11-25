@@ -433,9 +433,6 @@ export default function EventsPage() {
                       >
                         {getStatusText(event)}
                       </Tag>
-                      {event.publish_status === 1 && (
-                        <Tag className={styles.noPublishStatus}>未发布</Tag>
-                      )}
                       <div className={styles.cardActions}>
                         {status === 'authenticated' &&
                           permissions.includes('event:write') ? (

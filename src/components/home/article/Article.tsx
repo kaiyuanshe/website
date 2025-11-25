@@ -144,12 +144,7 @@ export default function ArticleSection() {
                       <User className={styles.articleIcon} />
                       {article.author || t('homepage.articles.unknownAuthor')}
                     </div>
-                    <div className={styles.articleInfoItem}>
-                      <Calendar className={styles.articleIcon} />
-                      {article.publish_time
-                        ? formatTime(article.publish_time)
-                        : t('homepage.articles.unpublished')}
-                    </div>
+                    
                     <div className={styles.articleInfoItem}>
                       <BookOpen className={styles.articleIcon} />
                       {article.readingTime || 6} {t('homepage.articles.readingTime')}
