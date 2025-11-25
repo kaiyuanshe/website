@@ -117,7 +117,7 @@ export default function NewEventPage() {
         end_time: formatDateTime(values.endDate, values.endTime),
         cover_img: cloudinaryImg?.secure_url || '',
         tags: tags,
-        event_setting: values.eventSetting,
+        event_setting: values.eventSetting || 1,
         bage_link: values.bageLink,
         twitter: values.twitter,
         registration_link: values.registrationLink,
