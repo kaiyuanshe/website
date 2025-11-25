@@ -30,6 +30,16 @@ import { usePermissionGuard } from '@/hooks/usePermissionGuard';
 
 const { TextArea } = Input;
 
+// 从 Cloudinary URL 中提取 public_id
+function extractPublicIdFromUrl(url: string): string {
+  if (!url) return '';
+  
+  // Cloudinary URL 格式: https://res.cloudinary.com/{cloud_name}/{resource_type}/{type}/{version?}/{folder}/{public_id}.{format}
+  // 提取从 upload/ 后面到文件扩展名之前的部分
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+  return match ? match[1] : '';
+}
+
 export default function EditArticlePage() {
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
@@ -47,7 +57,7 @@ export default function EditArticlePage() {
   const [inputValue, setInputValue] = useState('');
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cloudinaryImg, setCloudinaryImg] = useState<Record<string, unknown>>();
+  const [cloudinaryImg, setCloudinaryImg] = useState<{ public_id: string; secure_url: string } | undefined>();
   const [category] = useState('china_os_annual_report');
 
 
@@ -132,6 +142,17 @@ export default function EditArticlePage() {
           });
           setPreviewUrl(response.data?.cover_img || '');
           setTags(response.data?.tags || []);
+          
+          // 如果有封面图片，从 URL 中提取 public_id 并设置 cloudinaryImg
+          if (response.data?.cover_img) {
+            const publicId = extractPublicIdFromUrl(response.data.cover_img);
+            if (publicId) {
+              setCloudinaryImg({
+                public_id: publicId,
+                secure_url: response.data.cover_img
+              });
+            }
+          }
         }
       } catch {
         message.error('加载失败');
@@ -248,7 +269,7 @@ export default function EditArticlePage() {
                   previewUrl={previewUrl}
                   setPreviewUrl={setPreviewUrl}
                   cloudinaryImg={cloudinaryImg}
-                  setCloudinaryImg={setCloudinaryImg}
+                  setCloudinaryImg={(img) => setCloudinaryImg(img || undefined)}
                   form={form}
                 />
               </Form.Item>
