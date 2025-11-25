@@ -32,7 +32,7 @@ export const boardMembers: CommitteeMember[] = [
     avatar: '/img/board/5.webp',
     twitter: '',
     github: '',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/in/emily-chen-2405a46',
     email: 'emily@kaiyuanshe.org',
     blog: '',
     details: [
@@ -48,7 +48,7 @@ export const boardMembers: CommitteeMember[] = [
     avatar: '/img/board/1.webp',
     twitter: '',
     github: '',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/in/nadiajiang',
     email: 'jiangbo@kaiyuanshe.org',
     blog: '',
     details: [
@@ -91,9 +91,9 @@ export const boardMembers: CommitteeMember[] = [
     title: '开源社 2025 届副理事长',
     organization: '开源社 2025 届副理事长',
     avatar: '/img/board/2.webp',
-    twitter: '',
-    github: '',
-    linkedin: '',
+    twitter: 'https://x.com/richardllin',
+    github: 'https://github.com/richardllin',
+    linkedin: 'https://www.linkedin.com/in/richardllin',
     email: 'richard@kaiyuanshe.org',
     blog: '',
     details: [
@@ -106,9 +106,9 @@ export const boardMembers: CommitteeMember[] = [
     title: '开源社 2025 届理事',
     organization: '开源社 2025 届理事',
     avatar: '/img/board/7.webp',
-    twitter: '',
-    github: '',
-    linkedin: '',
+    twitter: 'https://x.com/imxy007',
+    github: 'https://github.com/jueduizone',
+    linkedin: 'https://www.linkedin.com/in/callmeian',
     email: 'xuyin@kaiyuanshe.org',
     blog: '',
     details: [
@@ -121,11 +121,11 @@ export const boardMembers: CommitteeMember[] = [
     title: '开源社 2025 届理事、项目委员会主席',
     organization: '开源社 2025 届理事、项目委员会主席',
     avatar: '/img/board/3.webp',
-    twitter: '',
-    github: '',
+    twitter: 'https://x.com/zhuangbiaowei',
+    github: 'https://github.com/zhuangbiaowei',
     linkedin: '',
     email: 'zbw@kaiyuanshe.org',
-    blog: '',
+    blog: 'https://zhuangbiaowei.github.io',
     details: [
       '个人简介：1997 年毕业于华东师范大学，曾任盛大创新院的高级研究员，华为内源平台架构师，开源治理专家。目前就职于重庆天工开物开源基金会，担任执行副秘书长。2015 年起加入开源社，担任过理事、执行长、理事长等职务。长期活跃于开源社区，积极参与社区的各项活动，曾在多种技术、开源大会上发表演讲，曾著有《开源思索集》一书。'
     ]
@@ -699,7 +699,7 @@ export const projectMembers: CommitteeMember[] = [
     avatar: '/img/cblecker.png',
     twitter: '',
     github: '',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/in/liuted/',
     email: '',
     blog: '',
     details: []
