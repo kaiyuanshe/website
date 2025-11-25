@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from 'antd';
 import { X, Mail } from 'lucide-react';
-import { FaTwitter, FaGithub, FaLinkedin } from 'react-icons/fa';
+import { FaTwitter, FaGithub, FaLinkedin, FaBlog } from 'react-icons/fa';
 import { SiWechat } from 'react-icons/si';
 import Image from 'next/image';
 import { PersonCardProps } from './PersonCard';
@@ -106,6 +106,17 @@ export default function BoardMemberDetail({
                   title="LinkedIn"
                 >
                   <FaLinkedin size={24} />
+                </a>
+              )}
+              {member.blog && (
+                <a
+                  href={member.blog}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.socialLink}
+                  title="Blog"
+                >
+                  <FaBlog size={24} />
                 </a>
               )}
             </div>
