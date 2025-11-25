@@ -225,11 +225,11 @@ export default function ArticleDetailPage() {
         </div>
 
         {/* 评论区域 */}
-        <CommentSection
-          repo="dajiangjunok/kaiyuanshe"
-          repoId="R_kgDOPveyWQ"
+        <CommentSection 
+          repo="kaiyuanshe/website"
+          repoId="R_kgDOQHmDoA"
           category="General"
-          categoryId="DIC_kwDOPveyWc4CwQj4"
+          categoryId="DIC_kwDOQHmDoM4CxYEV"
           mapping="pathname"
           reactionsEnabled="1"
           emitMetadata="0"
