@@ -856,3 +856,45 @@
 .addCommunityButton:active {
   transform: translateY(0) !important;
 }
+
+
+/* 卡片操作按钮 */
+.cardActions {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: flex;
+  gap: 4px;
+  z-index: 10;
+}
+
+.editBtn,
+.deleteBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e8e8e8;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.editBtn:hover {
+  background: #1890ff;
+  border-color: #1890ff;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background: #ff4d4f;
+  border-color: #ff4d4f;
+  color: white;
+}
+
+/* 确保卡片有相对定位以便按钮定位 */
+.cityCard {
+  position: relative;
+}
