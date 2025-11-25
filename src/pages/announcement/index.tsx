@@ -24,11 +24,10 @@ import {
   UserRound,
 } from 'lucide-react';
 import Link from 'next/link';
-import styles from './index.module.css';
-import { deleteEvent } from '../api/event';
+import styles from './index.module.css'; 
 import router from 'next/router';
 import { useAuth } from '@/contexts/AuthContext';
-import { getArticles } from '../api/article';
+import { getArticles,deleteArticle } from '../api/article';
 
 const { Search: AntSearch } = Input;
 
@@ -135,10 +134,10 @@ export default function AnnouncementPage() {
 
   const currentArticles = articles; // 服务端已经处理了分页
 
-  const handleDeleteEvent = async (id: number) => {
+  const handleDeleteArticle = async (id: number) => {
     // 调用创建公告接口
     try {
-      const result = await deleteEvent(id);
+      const result = await deleteArticle(id);
       if (result.success) {
         message.success(result.message);
         loadArticles();
@@ -304,6 +303,27 @@ export default function AnnouncementPage() {
                           icon={<Share2 className={styles.actionIcon} />}
                           title="分享公告"
                         />
+
+                        {status === 'authenticated' && permissions.includes('event:write') ? (
+                          <Popconfirm
+                            title="删除公告"
+                            description="你确定删除这个公告吗？"
+                            okText="是"
+                            cancelText="否"
+                            onConfirm={(e) => {
+                              e?.preventDefault();
+                              handleDeleteArticle(article.ID);
+                            }}
+                          >
+                            <Button
+                              className={styles.actionIconButton}
+                              danger
+                              icon={<Trash2 className={styles.actionIcon} />}
+                              title="删除公告"
+                              onClick={(e) => e.preventDefault()}
+                            />
+                          </Popconfirm>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -441,7 +461,7 @@ export default function AnnouncementPage() {
                         description="你确定删除这个公告吗？"
                         okText="是"
                         cancelText="否"
-                        onConfirm={() => handleDeleteEvent(article.ID)}
+                        onConfirm={() => handleDeleteArticle(article.ID)}
                       >
                         <Button
                           type="text"
