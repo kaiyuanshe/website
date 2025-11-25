@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react'
 import {
   Form,
   Input,
@@ -9,9 +9,9 @@ import {
   Tag,
   App as AntdApp,
   Select,
-  Spin,
-} from 'antd';
-import type { InputProps } from 'antd';
+  Spin
+} from 'antd'
+import type { InputProps } from 'antd'
 import {
   ArrowLeft,
   Calendar,
@@ -22,30 +22,33 @@ import {
   ImageIcon,
   Save,
   Plus,
-  X,
-} from 'lucide-react';
-import dayjs from 'dayjs';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
-import styles from './edit.module.css';
-import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
+  X
+} from 'lucide-react'
+import dayjs from 'dayjs'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import styles from './edit.module.css'
+import UploadCardImg from '@/components/uploadCardImg/UploadCardImg'
 
-import { getEventById, updateEvent } from '@/pages/api/event';
-import dynamic from 'next/dynamic';
+import { getEventById, updateEvent } from '@/pages/api/event'
+import dynamic from 'next/dynamic'
 
 // const QuillEditor = dynamic(() => import('@/components/quillEditor/QuillEditor'), { ssr: false });
-const VditorEditor = dynamic(() => import('@/components/vditorEditor/VditorEditor'), { ssr: false })
+const VditorEditor = dynamic(
+  () => import('@/components/vditorEditor/VditorEditor'),
+  { ssr: false }
+)
 
 import { usePermissionGuard } from '@/hooks/usePermissionGuard'
 
-type EventMode = '线上活动' | '线下活动';
+type EventMode = '线上活动' | '线下活动'
 
 const LocationInput = ({
   eventMode,
   ...props
 }: {
-  eventMode: EventMode;
-  props: InputProps;
+  eventMode: EventMode
+  props: InputProps
 }) => {
   return (
     <div className={styles.inputWithIcon}>
@@ -62,8 +65,8 @@ const LocationInput = ({
         className={styles.inputWithIconField}
       />
     </div>
-  );
-};
+  )
+}
 
 const XInput = (props: InputProps) => {
   return (
@@ -75,65 +78,102 @@ const XInput = (props: InputProps) => {
         className={styles.inputWithIconField}
       />
     </div>
-  );
-};
+  )
+}
 
 export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format('YYYY-MM-DD HH:mm');
+  return dayjs(isoTime).format('YYYY-MM-DD HH:mm')
 }
 
 // 从 Cloudinary URL 中提取 public_id
 function extractPublicIdFromUrl(url: string): string {
-  if (!url) return '';
-  
+  if (!url) return ''
+
   // Cloudinary URL 格式: https://res.cloudinary.com/{cloud_name}/{resource_type}/{type}/{version?}/{folder}/{public_id}.{format}
   // 提取从 upload/ 后面到文件扩展名之前的部分
-  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
-  return match ? match[1] : '';
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/)
+  return match ? match[1] : ''
 }
 
 export default function EditEventPage() {
-  const { message } = AntdApp.useApp();
-  const [form] = Form.useForm();
-  const router = useRouter();
-  const { id } = router.query; // 路由参数应该叫 id，不是 ids
-  const rId = Array.isArray(id) ? id[0] : id;
-  
-  // 权限检查
-  const { isLoading: permissionLoading, hasPermission } = usePermissionGuard('event:write');
-  
-  const [eventMode, setEventMode] = useState<EventMode>('线上活动');
-  const [tags, setTags] = useState<string[]>(['技术分享']);
-  const [inputVisible, setInputVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [eventType, setEventType] = useState<string>('');
-  const [cloudinaryImg, setCloudinaryImg] = useState<{ public_id: string; secure_url: string } | undefined>();
-  const [event, setEvent] = useState<{ ID: string; title: string; eventSetting: number; bageLink: string; description: string; event_mode: string; event_type: string; link: string; location: string; start_time: string; end_time: string; cover_img: string; tags: string[]; twitter: string; registration_link: string; registration_deadline: string } | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [eventSetting, setEventSetting] = useState<number>();
+  const { message } = AntdApp.useApp()
+  const [form] = Form.useForm()
+  const router = useRouter()
+  const { id } = router.query // 路由参数应该叫 id，不是 ids
+  const rId = Array.isArray(id) ? id[0] : id
 
+  // 权限检查
+  const { isLoading: permissionLoading, hasPermission } =
+    usePermissionGuard('event:write')
+
+  const [eventMode, setEventMode] = useState<EventMode>('线上活动')
+  const [tags, setTags] = useState<string[]>(['技术分享'])
+  const [inputVisible, setInputVisible] = useState(false)
+  const [inputValue, setInputValue] = useState('')
+  const [previewUrl, setPreviewUrl] = useState<string>('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [eventType, setEventType] = useState<string>('')
+  const [cloudinaryImg, setCloudinaryImg] = useState<
+    { public_id: string; secure_url: string } | undefined
+  >()
+  const [event, setEvent] = useState<{
+    ID: string
+    title: string
+    eventSetting: number
+    bageLink: string
+    description: string
+    event_mode: string
+    event_type: string
+    link: string
+    location: string
+    start_time: string
+    end_time: string
+    cover_img: string
+    tags: string[]
+    twitter: string
+    registration_link: string
+    registration_deadline: string
+  } | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [eventSetting, setEventSetting] = useState<number>()
 
   // 格式化时间为字符串
-  const formatDateTime = (date: { format: (format: string) => string }, time: { format: (format: string) => string }) => {
-    if (!date || !time) return '';
+  const formatDateTime = (
+    date: { format: (format: string) => string },
+    time: { format: (format: string) => string }
+  ) => {
+    if (!date || !time) return ''
 
-    const dateStr = date.format('YYYY-MM-DD');
-    const timeStr = time.format('HH:mm:ss');
-    return `${dateStr} ${timeStr}`;
-  };
+    const dateStr = date.format('YYYY-MM-DD')
+    const timeStr = time.format('HH:mm:ss')
+    return `${dateStr} ${timeStr}`
+  }
 
   const handleVditorEditorChange = useCallback(
     (value: string) => {
-      form.setFieldValue('description', value);
+      form.setFieldValue('description', value)
     },
     [form]
-  );
+  )
 
-  const handleSubmit = async (values: { title: string; eventSetting: number; bageLink: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string } }) => {
+  const handleSubmit = async (values: {
+    title: string
+    eventSetting: number
+    bageLink: string
+    description: string
+    eventMode: string
+    eventType: string
+    location: string
+    startDate: { format: (format: string) => string }
+    startTime: { format: (format: string) => string }
+    endDate: { format: (format: string) => string }
+    endTime: { format: (format: string) => string }
+    twitter: string
+    registrationLink: string
+    registrationDeadline?: { format: (format: string) => string }
+  }) => {
     try {
-      setIsSubmitting(true);
+      setIsSubmitting(true)
 
       const updateEventRequest = {
         title: values.title || '',
@@ -152,56 +192,56 @@ export default function EditEventPage() {
         registration_link: values.registrationLink,
         registration_deadline: values.registrationDeadline
           ? values.registrationDeadline.format('YYYY-MM-DD HH:mm:ss')
-          : '',
-      };
+          : ''
+      }
 
-      const result = await updateEvent(event.ID, updateEventRequest);
+      const result = await updateEvent(event.ID, updateEventRequest)
 
       if (result.success) {
-        message.success(result.message);
-        router.push(`/events/${event.ID}`);
+        message.success(result.message)
+        router.push(`/events/${event.ID}`)
       } else {
-        message.error(result.message || '创建活动失败');
+        message.error(result.message || '创建活动失败')
       }
     } catch (error: unknown) {
-      console.error('创建活动失败:', error);
-      message.error('创建活动失败，请重试');
+      console.error('创建活动失败:', error)
+      message.error('创建活动失败，请重试')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const handleAddTag = () => {
     if (inputValue && !tags.includes(inputValue)) {
-      const newTags = [...tags, inputValue];
-      setTags(newTags);
-      setInputValue('');
-      console.log('添加标签后:', newTags);
+      const newTags = [...tags, inputValue]
+      setTags(newTags)
+      setInputValue('')
+      console.log('添加标签后:', newTags)
     }
-    setInputVisible(false);
-  };
+    setInputVisible(false)
+  }
 
   const handleRemoveTag = (tagToRemove: string) => {
-    const newTags = tags.filter((tag) => tag !== tagToRemove);
-    setTags(newTags);
-    console.log('删除标签后:', newTags);
-  };
+    const newTags = tags.filter(tag => tag !== tagToRemove)
+    setTags(newTags)
+    console.log('删除标签后:', newTags)
+  }
 
   useEffect(() => {
-    if (!router.isReady || !rId) return;
+    if (!router.isReady || !rId) return
 
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const response = await getEventById(rId);
-        console.log('获取活动详情:', response);
+        const response = await getEventById(rId)
+
         if (response.success) {
-          const data = response.data;
-          setEvent(data);
+          const data = response.data
+          setEvent(data)
 
           // 动态设置 eventMode，以便正确渲染
-          setEventMode(data?.event_mode as EventMode);
-          setEventSetting(data?.event_setting)
+          setEventMode(data?.event_mode as EventMode)
+          setEventSetting(data?.event_setting === 2 ? 2 : 1)
 
           form.setFieldsValue({
             title: data?.title,
@@ -209,7 +249,8 @@ export default function EditEventPage() {
             eventMode: data?.event_mode,
             eventType: data?.event_type,
             // 根据活动形式来填充 location 字段
-            location: data?.event_mode === '线上活动' ? data?.link : data?.location,
+            location:
+              data?.event_mode === '线上活动' ? data?.link : data?.location,
             cover: data?.cover_img,
             startDate: dayjs(data?.start_time),
             startTime: dayjs(data?.start_time),
@@ -221,52 +262,55 @@ export default function EditEventPage() {
             registrationLink: data?.registration_link,
             registrationDeadline: data?.registration_deadline
               ? dayjs(data?.registration_deadline)
-              : null,
-          });
+              : null
+          })
 
-          setPreviewUrl(data?.cover_img || '');
-          setTags(data?.tags || []);
-          
+          setPreviewUrl(data?.cover_img || '')
+          setTags(data?.tags || [])
+
           // 如果有封面图片，从 URL 中提取 public_id 并设置 cloudinaryImg
           if (data?.cover_img) {
-            const publicId = extractPublicIdFromUrl(data.cover_img);
+            const publicId = extractPublicIdFromUrl(data.cover_img)
             if (publicId) {
               setCloudinaryImg({
                 public_id: publicId,
                 secure_url: data.cover_img
-              });
+              })
             }
           }
         }
       } catch {
-        message.error('加载失败');
-        setEvent(null);
+        message.error('加载失败')
+        setEvent(null)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, [router.isReady, rId, form, message]);
+    fetchData()
+  }, [router.isReady, rId, form, message])
 
   // 初始化时获取 URL 参数
   useEffect(() => {
-    if (!router.isReady) return;
+    if (!router.isReady) return
 
-    const queryEventType = router.query.event_type as string;
+    const queryEventType = router.query.event_type as string
     if (queryEventType) {
-      setEventType(queryEventType);
+      setEventType(queryEventType)
     }
-  }, [router.isReady, router.query.event_type]);
+  }, [router.isReady, router.query.event_type])
 
   // 如果正在加载权限，显示加载状态
   if (permissionLoading) {
     return (
-      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+      <div
+        className={`${styles.container} nav-t-top`}
+        style={{ textAlign: 'center', padding: '100px 0' }}
+      >
         <Spin size="large" />
         <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
       </div>
-    );
+    )
   }
 
   if (loading) {
@@ -275,7 +319,7 @@ export default function EditEventPage() {
         <div className={styles.loadingSpinner}></div>
         <p>加载中...</p>
       </div>
-    );
+    )
   }
 
   if (!loading && !event) {
@@ -287,7 +331,7 @@ export default function EditEventPage() {
           返回活动列表
         </Link>
       </div>
-    );
+    )
   }
 
   return (
@@ -303,10 +347,10 @@ export default function EditEventPage() {
         layout="vertical"
         onFinish={handleSubmit}
         className={styles.form}
-      // initialValues={{
-      //     eventMode: '线上活动',
-      //     publishImmediately: true,
-      // }}
+        // initialValues={{
+        //     eventMode: '线上活动',
+        //     publishImmediately: true,
+        // }}
       >
         <div className={styles.formGrid}>
           {/* 左侧表单 */}
@@ -356,9 +400,9 @@ export default function EditEventPage() {
                     placeholder="请选择活动形式"
                     options={[
                       { label: '线上活动', value: '线上活动' },
-                      { label: '线下活动', value: '线下活动' },
+                      { label: '线下活动', value: '线下活动' }
                     ]}
-                    onChange={(value) => setEventMode(value)}
+                    onChange={value => setEventMode(value)}
                   />
                 </Form.Item>
 
@@ -374,12 +418,12 @@ export default function EditEventPage() {
                     disabled={!!eventType}
                     options={[
                       { label: '社区活动', value: 'community' },
-                      { label: '开源年会', value: 'coscon' },
+                      { label: '开源年会', value: 'coscon' }
                     ]}
                   />
                 </Form.Item>
 
-                {eventType === "coscon" && (
+                {eventType === 'coscon' && (
                   <div className={styles.formRow}>
                     <Form.Item
                       label="活动配置"
@@ -389,11 +433,12 @@ export default function EditEventPage() {
                     >
                       <Select
                         placeholder="请选择活动配置"
+                        value={eventSetting}
                         options={[
                           { label: '自行配置', value: 1 },
-                          { label: '跳转到百格网站', value: 2 },
+                          { label: '跳转到百格网站', value: 2 }
                         ]}
-                        onChange={(value) => setEventSetting(value)}
+                        onChange={value => setEventSetting(value)}
                       />
                     </Form.Item>
 
@@ -401,10 +446,12 @@ export default function EditEventPage() {
                       <Form.Item
                         label="百格链接"
                         name="bageLink"
-                        rules={[{
-                          required: true,
-                          message: '请输入百格链接',
-                        }]}
+                        rules={[
+                          {
+                            required: true,
+                            message: '请输入百格链接'
+                          }
+                        ]}
                         className={styles.flexibleItem}
                       >
                         <Input
@@ -457,8 +504,8 @@ export default function EditEventPage() {
                 rules={[
                   {
                     required: true,
-                    message: `请输入${eventMode === '线上活动' ? '活动链接' : '活动地址'}`,
-                  },
+                    message: `请输入${eventMode === '线上活动' ? '活动链接' : '活动地址'}`
+                  }
                 ]}
               >
                 <LocationInput
@@ -472,8 +519,8 @@ export default function EditEventPage() {
                 rules={[
                   {
                     required: true,
-                    message: `请输入推文链接`,
-                  },
+                    message: `请输入推文链接`
+                  }
                 ]}
               >
                 <XInput />
@@ -497,7 +544,7 @@ export default function EditEventPage() {
                   previewUrl={previewUrl}
                   setPreviewUrl={setPreviewUrl}
                   cloudinaryImg={cloudinaryImg || null}
-                  setCloudinaryImg={(img) => setCloudinaryImg(img || undefined)}
+                  setCloudinaryImg={img => setCloudinaryImg(img || undefined)}
                   form={form as any}
                 />
               </Form.Item>
@@ -527,7 +574,7 @@ export default function EditEventPage() {
                     size="small"
                     className={styles.tagInput}
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={e => setInputValue(e.target.value)}
                     onBlur={handleAddTag}
                     onPressEnter={handleAddTag}
                     autoFocus
@@ -557,8 +604,8 @@ export default function EditEventPage() {
                 rules={[
                   {
                     type: 'url',
-                    message: '请输入有效的链接地址',
-                  },
+                    message: '请输入有效的链接地址'
+                  }
                 ]}
               >
                 <Input
@@ -567,10 +614,7 @@ export default function EditEventPage() {
                 />
               </Form.Item>
 
-              <Form.Item
-                label="报名截止时间"
-                name="registrationDeadline"
-              >
+              <Form.Item label="报名截止时间" name="registrationDeadline">
                 <DatePicker
                   showTime
                   placeholder="请选择报名截止时间（可选）"
@@ -578,7 +622,6 @@ export default function EditEventPage() {
                 />
               </Form.Item>
             </Card>
-
           </div>
         </div>
 
@@ -609,5 +652,5 @@ export default function EditEventPage() {
         </div>
       </Form>
     </div>
-  );
+  )
 }
