@@ -62,29 +62,36 @@ async function deleteImgFromCloud(publicId: string): Promise<boolean> {
       timestamp: number;
     } = await signResponse.json();
 
-    // 调用 Destroy API
+    // 调用 Destroy API - 使用 form-urlencoded 格式
+    const formData = new URLSearchParams();
+    formData.append('invalidate', 'true');
+    formData.append('public_id', publicId);
+    formData.append('timestamp', timestamp.toString());
+    formData.append('api_key', process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY || '');
+    formData.append('signature', signature);
+
     const response = await fetch(CLOUDINARY_DELETE, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        invalidate: true, // 添加缓存失效标志
-        public_id: publicId,
-        timestamp,
-        api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
-        signature,
-      }),
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: formData.toString(),
     });
 
     const data: {
       result?: string;
       error?: string;
     } = await response.json();
-    console.log(data);
+    
+    console.log('Cloudinary 删除响应:', { 
+      status: response.status, 
+      statusText: response.statusText,
+      data,
+      publicId: publicId
+    });
 
     if (response.ok && data.result === 'ok') {
       return true;
     } else {
-      throw new Error(data.error || '删除失败');
+      throw new Error(data.error || `删除失败: ${data.result || 'unknown error'}`);
     }
   } catch (error) {
     console.log('图片上传错误：', error);

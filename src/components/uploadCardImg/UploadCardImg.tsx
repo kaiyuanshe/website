@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { RotateCcw, X, ImageIcon } from 'lucide-react';
 import { App as AntdApp } from 'antd';
 import Image from 'next/image';
-import type { UploadProps, UploadFile, RcFile } from 'antd';
+import type { UploadProps, UploadFile } from 'antd';
+import type { RcFile } from 'antd/es/upload';
 import { uploadImgToCloud, deleteImgFromCloud } from '@/lib/cloudinary';
 import { Upload } from 'antd';
 
@@ -80,16 +81,24 @@ export default function UploadCardImg(props: {
   const handleRemoveImage = async () => {
     try {
       setIsImageLoading(true);
-      const res = await deleteImgFromCloud(cloudinaryImg?.public_id || '');
-      if (!res) {
-        message.error('图片删除失败，请重试');
-        return;
+      
+      // 如果有 public_id，尝试从 Cloudinary 删除图片
+      if (cloudinaryImg?.public_id) {
+        const res = await deleteImgFromCloud(cloudinaryImg.public_id);
+        if (!res) {
+          message.error('图片删除失败，请重试');
+          return;
+        }
       }
 
+      // 清空本地状态
       setCoverImage(null);
       setPreviewUrl('');
+      setCloudinaryImg(null);
       form?.setFieldValue('cover', undefined);
-    } catch {
+      message.success('图片已删除');
+    } catch (error) {
+      console.error('删除图片错误:', error);
       message.error('图片删除失败，请重试');
     } finally {
       setIsImageLoading(false);
@@ -161,14 +170,10 @@ export default function UploadCardImg(props: {
 
       return true; // 始终返回 false，阻止默认上传
     },
-    customRequest: async ({ file, onSuccess, onError }: {
-      file: File | Blob;
-      onSuccess?: (response: unknown) => void;
-      onError?: (error: Error) => void;
-    }) => {
+    customRequest: async ({ file, onSuccess, onError }: any) => {
       try {
         setIsImageLoading(true);
-        const res = await uploadImgToCloud(file);
+        const res = await uploadImgToCloud(file as File);
         if (res && res.secure_url) {
           setCloudinaryImg(res);
           setPreviewUrl(res.secure_url);

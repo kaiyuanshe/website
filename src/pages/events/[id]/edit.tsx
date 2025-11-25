@@ -82,6 +82,16 @@ export function formatTime(isoTime: string): string {
   return dayjs(isoTime).format('YYYY-MM-DD HH:mm');
 }
 
+// 从 Cloudinary URL 中提取 public_id
+function extractPublicIdFromUrl(url: string): string {
+  if (!url) return '';
+  
+  // Cloudinary URL 格式: https://res.cloudinary.com/{cloud_name}/{resource_type}/{type}/{version?}/{folder}/{public_id}.{format}
+  // 提取从 upload/ 后面到文件扩展名之前的部分
+  const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
+  return match ? match[1] : '';
+}
+
 export default function EditEventPage() {
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
@@ -99,7 +109,7 @@ export default function EditEventPage() {
   const [previewUrl, setPreviewUrl] = useState<string>('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [eventType, setEventType] = useState<string>('');
-  const [cloudinaryImg, setCloudinaryImg] = useState<{ secure_url: string } | undefined>();
+  const [cloudinaryImg, setCloudinaryImg] = useState<{ public_id: string; secure_url: string } | undefined>();
   const [event, setEvent] = useState<{ ID: string; title: string; eventSetting: number; bageLink: string; description: string; event_mode: string; event_type: string; link: string; location: string; start_time: string; end_time: string; cover_img: string; tags: string[]; twitter: string; registration_link: string; registration_deadline: string } | null>(null);
   const [loading, setLoading] = useState(true);
   const [eventSetting, setEventSetting] = useState<number>();
@@ -216,6 +226,17 @@ export default function EditEventPage() {
 
           setPreviewUrl(data?.cover_img || '');
           setTags(data?.tags || []);
+          
+          // 如果有封面图片，从 URL 中提取 public_id 并设置 cloudinaryImg
+          if (data?.cover_img) {
+            const publicId = extractPublicIdFromUrl(data.cover_img);
+            if (publicId) {
+              setCloudinaryImg({
+                public_id: publicId,
+                secure_url: data.cover_img
+              });
+            }
+          }
         }
       } catch {
         message.error('加载失败');
@@ -475,9 +496,9 @@ export default function EditEventPage() {
                 <UploadCardImg
                   previewUrl={previewUrl}
                   setPreviewUrl={setPreviewUrl}
-                  cloudinaryImg={cloudinaryImg}
-                  setCloudinaryImg={setCloudinaryImg}
-                  form={form}
+                  cloudinaryImg={cloudinaryImg || null}
+                  setCloudinaryImg={(img) => setCloudinaryImg(img || undefined)}
+                  form={form as any}
                 />
               </Form.Item>
             </Card>
