@@ -1,5 +1,5 @@
 import type React from 'react'
-import { Button, Spin, message } from 'antd'
+import { Button, Popconfirm, Spin, message } from 'antd'
 import {
   MapPin,
   Users,
@@ -7,12 +7,14 @@ import {
   Building2,
   Sparkles,
   ArrowRight,
-  Plus
+  Plus,
+  Edit,
+  Trash2,
 } from 'lucide-react'
 import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useRouter } from 'next/router'
 import styles from './index.module.css'
-import { getCommunities, Community } from '../api/comunity'
+import { getCommunities, Community, deleteCommunity } from '../api/comunity'
 import { useAuth } from '@/contexts/AuthContext'
 
 const CommunityPage: React.FC = () => {
@@ -107,6 +109,27 @@ const CommunityPage: React.FC = () => {
     },
     []
   )
+  // 编辑城市
+  const handleEditCity = (city: any) => {
+    router.push(`/community/${city.ID}/edit`)
+  }
+
+  // 删除城市
+  const handleDeleteCity = async (city: any) => {
+    try {
+      // 调用删除 API
+      const result = await deleteCommunity(city.ID)
+      if (result.success) {
+        message.success('删除成功')
+        // 重新加载数据或从列表中移除
+          loadCommunities()
+      } else {
+        message.error(result.message || '删除失败')
+      }
+    } catch (error) {
+      message.error('删除失败')
+    }
+  }
 
   // 从接口获取社区数据
   useEffect(() => {
@@ -179,7 +202,7 @@ const CommunityPage: React.FC = () => {
       <div className={styles.content}>
         <div className={styles.citiesSection}>
           <div className={styles.sectionHeader}>
-            
+
             <h2 className={styles.sectionTitle}>
               <Building2 size={24} />
               <span>社区分布</span>
@@ -203,7 +226,7 @@ const CommunityPage: React.FC = () => {
               <Building2 size={48} />
               <h3>暂无社区数据</h3>
               <p>还没有社区创建，快来创建第一个社区吧！</p>
-              
+
             </div>
           ) : (
             <div className={styles.citiesGrid}>
@@ -215,6 +238,44 @@ const CommunityPage: React.FC = () => {
                   onClick={() => handleCityClick(city)}
                 >
                   <div className={styles.cardGlow}></div>
+
+                  {/* 编辑和删除按钮 */}
+                  {status === 'authenticated' && permissions.includes('event:write') && (
+
+                    <div className={styles.cardActions}>
+                      <Button
+                        type="text"
+                        icon={<Edit size={14} />}
+                        className={styles.editBtn}
+                        onClick={(e) => {
+                          e.stopPropagation()
+                          handleEditCity(city)
+                        }}
+                        title="编辑"
+                      />
+                      <Popconfirm
+                        title="删除社区"
+                        description={`确定要删除 ${city.city} 社区吗？此操作不可恢复。`}
+                        onConfirm={(e) => {
+                          e?.stopPropagation()
+                          handleDeleteCity(city)
+                        }}
+                        onCancel={(e) => {
+                          e?.stopPropagation()
+                        }}
+                        okText="确认删除"
+                        cancelText="取消"
+                        okType="danger"
+                      >
+                        <Button
+                          type="text"
+                          icon={<Trash2 size={14} />}
+                          className={styles.deleteBtn}
+                          onClick={(e) => e.stopPropagation()}
+                          title="删除"
+                        />
+                      </Popconfirm>
+                    </div>)}
                   <div className={styles.cityLogo}>
                     <div className={styles.coverLogo}>
                       {city.cover ? (

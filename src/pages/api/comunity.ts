@@ -95,7 +95,7 @@ export const createCommunity = async (
 
 // 更新社区活动
 export const updateCommunity = async (
-  communityId: number,
+  communityId: string,
   params: UpdateCommunityParams
 ): Promise<CommunityResult> => {
   try {
@@ -175,7 +175,7 @@ export const getCommunities = async (
 };
 
 // 获取单个社区活动详情
-export const getCommunity = async (communityId: number): Promise<CommunityResult> => {
+export const getCommunity = async (communityId: string): Promise<CommunityResult> => {
   try {
     if (!communityId) {
       return { success: false, message: '社区ID不能为空' };
