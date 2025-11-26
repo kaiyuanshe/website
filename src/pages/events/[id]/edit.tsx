@@ -337,8 +337,11 @@ export default function EditEventPage() {
       <div className={styles.error}>
         <h2>活动不存在</h2>
         <p>抱歉，找不到您要查看的活动</p>
-        <Link href="/events" className={styles.backButton}>
-          返回活动列表
+        <Link 
+          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'} 
+          className={styles.backButton}
+        >
+          {router.query.event_type === 'coscon' ? '返回中国开源年会' : '返回活动列表'}
         </Link>
       </div>
     )
@@ -347,9 +350,12 @@ export default function EditEventPage() {
   return (
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.header}>
-        <Link href="/events" className={styles.backButton}>
+        <Link 
+          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'} 
+          className={styles.backButton}
+        >
           <ArrowLeft className={styles.backIcon} />
-          返回活动列表
+          {router.query.event_type === 'coscon' ? '返回中国开源年会' : '返回活动列表'}
         </Link>
       </div>
       <Form
