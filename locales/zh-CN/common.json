@@ -73,7 +73,7 @@
       "description": "发现精彩活动，链接更多开源",
       "status": {
         "notStarted": "未开始",
-        "inProgress": "进行中", 
+        "inProgress": "进行中",
         "ended": "已结束"
       },
       "mode": {
@@ -88,19 +88,18 @@
       "description": "深度好文，启发思考，助力成长",
       "categories": {
         "original": "原创",
-        "translation": "翻译", 
+        "translation": "翻译",
         "archive": "归档"
       },
       "readArticle": "阅读文章",
       "viewMore": "查看更多文章",
-      "readingTime": "分钟阅读",
+
       "unknownAuthor": "未知作者"
- 
     },
     "mission": {
       "title": "我们的使命",
       "blockNumber01": "01",
-      "blockNumber02": "02", 
+      "blockNumber02": "02",
       "blockNumber03": "03",
       "ourMission": "我们的使命",
       "ourPrinciples": "我们的原则",

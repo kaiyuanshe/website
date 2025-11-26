@@ -12,31 +12,6 @@ export function formatTime(isoTime: string): string {
   return dayjs(isoTime).format('YYYY年M月D日')
 }
 
-// 分类映射配置，现在使用翻译函数
-const getCategoryConfig = (t: any) => ({
-  original: {
-    label: t('homepage.articles.categories.original'),
-    className: styles.original
-  },
-  translation: {
-    label: t('homepage.articles.categories.translation'),
-    className: styles.translation
-  },
-  archive: {
-    label: t('homepage.articles.categories.archive'),
-    className: styles.archive
-  }
-})
-
-// 获取分类信息的辅助函数
-const getCategoryInfo = (category: string, t: any) => {
-  const categoryConfig = getCategoryConfig(t)
-  return (
-    categoryConfig[category as keyof typeof categoryConfig] ||
-    categoryConfig.original
-  )
-}
-
 export default function ArticleSection() {
   const { status } = useAuth()
   const { t } = useTranslation()
@@ -61,7 +36,7 @@ export default function ArticleSection() {
         page: 1,
         page_size: 3,
         publish_status: 2,
-        category:'blog'
+        category: 'blog'
       }
 
       const result = await getArticles(queryParams)
@@ -96,41 +71,25 @@ export default function ArticleSection() {
     <section className={styles.articles}>
       <div className={styles.container}>
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>{t('homepage.articles.title')}</h2>
+          <h2 className={styles.sectionTitle}>
+            {t('homepage.articles.title')}
+          </h2>
           <p className={styles.sectionDescription}>
             {t('homepage.articles.description')}
           </p>
         </div>
         <div className={styles.articlesGrid}>
           {articles.map((article, index) => {
-            // 获取分类信息
-            const categoryInfo = getCategoryInfo(article.category, t)
-
             return (
               <div key={article.ID || index} className={styles.articleCard}>
                 <div className={styles.articleCardGlow}></div>
                 <div className={styles.articleCardHeader}>
                   <div className={styles.articleMeta}>
-                    {/* 修改分类标签部分 */}
-                    <span
-                      className={`${styles.categoryBadge} ${categoryInfo.className}`}
-                    >
-                      {categoryInfo.label}
-                    </span>
                     <div className={styles.articleStats}>
                       <div className={styles.statItem}>
                         <Eye className={styles.articleIcon} />
                         {article.view_count || 0}
                       </div>
-                      {/* 注释掉暂时不需要的统计信息 */}
-                      {/* <div className={styles.statItem}>
-                                                <Star className={styles.articleIcon} />
-                                                {article.likeCount}
-                                            </div>
-                                            <div className={styles.statItem}>
-                                                <MessageCircle className={styles.articleIcon} />
-                                                {article.commentCount}
-                                            </div> */}
                     </div>
                   </div>
                   <h3 className={styles.articleTitle}>{article.title}</h3>
@@ -144,15 +103,10 @@ export default function ArticleSection() {
                       <User className={styles.articleIcon} />
                       {article.author || t('homepage.articles.unknownAuthor')}
                     </div>
-                    
+
                     <div className={styles.articleInfoItem}>
                       <Calendar className={styles.articleIcon} />
                       {formatTime(article.CreatedAt)}
-                    </div>
-                    
-                    <div className={styles.articleInfoItem}>
-                      <BookOpen className={styles.articleIcon} />
-                      {article.readingTime || 6} {t('homepage.articles.readingTime')}
                     </div>
                   </div>
                   {article.tags && article.tags.length > 0 && (

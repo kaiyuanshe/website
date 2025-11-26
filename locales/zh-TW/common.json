@@ -57,7 +57,7 @@
   "language": {
     "switch": "切換語言",
     "traditional_chinese": "繁體中文",
-    "simplified_chinese": "简体中文", 
+    "simplified_chinese": "简体中文",
     "english": "English"
   },
   "homepage": {
@@ -72,7 +72,7 @@
       "description": "發現精彩活動，連結更多開源",
       "status": {
         "notStarted": "未開始",
-        "inProgress": "進行中", 
+        "inProgress": "進行中",
         "ended": "已結束"
       },
       "mode": {
@@ -87,19 +87,18 @@
       "description": "深度好文，啟發思考，助力成長",
       "categories": {
         "original": "原創",
-        "translation": "翻譯", 
+        "translation": "翻譯",
         "archive": "歸檔"
       },
       "readArticle": "閱讀文章",
       "viewMore": "查看更多文章",
-      "readingTime": "分鐘閱讀",
+
       "unknownAuthor": "未知作者"
- 
     },
     "mission": {
       "title": "我們的使命",
       "blockNumber01": "01",
-      "blockNumber02": "02", 
+      "blockNumber02": "02",
       "blockNumber03": "03",
       "ourMission": "我們的使命",
       "ourPrinciples": "我們的原則",

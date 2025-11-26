@@ -73,7 +73,7 @@
       "description": "Discover exciting events, connect with more open source",
       "status": {
         "notStarted": "Not Started",
-        "inProgress": "In Progress", 
+        "inProgress": "In Progress",
         "ended": "Ended"
       },
       "mode": {
@@ -88,18 +88,18 @@
       "description": "In-depth articles, inspiring thoughts, empowering growth",
       "categories": {
         "original": "Original",
-        "translation": "Translation", 
+        "translation": "Translation",
         "archive": "Archive"
       },
       "readArticle": "Read Article",
       "viewMore": "View More Articles",
-      "readingTime": "minute read",
+
       "unknownAuthor": "Unknown Author"
     },
     "mission": {
       "title": "Our Mission",
       "blockNumber01": "01",
-      "blockNumber02": "02", 
+      "blockNumber02": "02",
       "blockNumber03": "03",
       "ourMission": "Our Mission",
       "ourPrinciples": "Our Principles",
