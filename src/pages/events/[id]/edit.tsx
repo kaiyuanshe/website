@@ -25,6 +25,9 @@ import {
   X
 } from 'lucide-react'
 import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc'
+
+dayjs.extend(utc)
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import styles from './edit.module.css'
@@ -117,10 +120,8 @@ export default function EditEventPage() {
     { public_id: string; secure_url: string } | undefined
   >()
   const [event, setEvent] = useState<{
-    ID: string
+    ID: number
     title: string
-    eventSetting: number
-    bageLink: string
     description: string
     event_mode: string
     event_type: string
@@ -131,13 +132,15 @@ export default function EditEventPage() {
     cover_img: string
     tags: string[]
     twitter: string
+    event_setting: number
+    bage_link: string
     registration_link: string
     registration_deadline: string
   } | null>(null)
   const [loading, setLoading] = useState(true)
   const [eventSetting, setEventSetting] = useState<number>()
 
-  // 格式化时间为字符串
+  // 格式化时间为字符串，保持UTC格式
   const formatDateTime = (
     date: { format: (format: string) => string },
     time: { format: (format: string) => string }
@@ -178,8 +181,8 @@ export default function EditEventPage() {
       const updateEventRequest = {
         title: values.title || '',
         description: values.description || '',
-        event_mode: values.eventMode,
-        event_type: values.eventType,
+        event_mode: values.eventMode as '线上活动' | '线下活动',
+        event_type: values.eventType as 'meetup' | 'ama' | 'hackathon' | 'workshop',
         location: eventMode === '线下活动' ? values.location || '' : '',
         link: eventMode === '线上活动' ? values.location || '' : '',
         start_time: formatDateTime(values.startDate, values.startTime),
@@ -195,7 +198,7 @@ export default function EditEventPage() {
           : ''
       }
 
-      const result = await updateEvent(event.ID, updateEventRequest)
+      const result = await updateEvent(String(event.ID), updateEventRequest)
 
       if (result.success) {
         message.success(result.message)
@@ -243,6 +246,13 @@ export default function EditEventPage() {
           setEventMode(data?.event_mode as EventMode)
           setEventSetting(data?.event_setting === 2 ? 2 : 1)
 
+          // 直接使用UTC时间，不进行时区转换
+          const startTime = dayjs.utc(data?.start_time)
+          const endTime = dayjs.utc(data?.end_time)
+          
+          console.log('原始 start_time:', data?.start_time, '-> 显示为:', startTime.format('YYYY-MM-DD HH:mm:ss'))
+          console.log('原始 end_time:', data?.end_time, '-> 显示为:', endTime.format('YYYY-MM-DD HH:mm:ss'))
+          
           form.setFieldsValue({
             title: data?.title,
             description: data?.description,
@@ -252,16 +262,16 @@ export default function EditEventPage() {
             location:
               data?.event_mode === '线上活动' ? data?.link : data?.location,
             cover: data?.cover_img,
-            startDate: dayjs(data?.start_time),
-            startTime: dayjs(data?.start_time),
-            endDate: dayjs(data?.end_time),
-            endTime: dayjs(data?.end_time),
+            startDate: startTime,
+            startTime: startTime,
+            endDate: endTime,
+            endTime: endTime,
             twitter: data?.twitter,
             eventSetting: data?.event_setting,
             bageLink: data?.bage_link,
             registrationLink: data?.registration_link,
             registrationDeadline: data?.registration_deadline
-              ? dayjs(data?.registration_deadline)
+              ? dayjs.utc(data?.registration_deadline)
               : null
           })
 
