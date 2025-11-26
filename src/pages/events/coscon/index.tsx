@@ -92,27 +92,6 @@ export default function CosconEventsPage() {
     loadEvents()
   }, [publishStatus, loadEvents, router.isReady])
 
-  // 获取事件状态显示文本
-  const getStatusText = (event: any) => {
-    if (event.status === 0) {
-      return '未开始'
-    } else if (event.status === 1) {
-      return '进行中'
-    } else {
-      return '已结束'
-    }
-  }
-
-  // 获取事件状态类名
-  const getStatusClass = (event: any) => {
-    if (event.status === 0) {
-      return styles.upcoming
-    } else if (event.status === 1) {
-      return styles.ongoing
-    } else {
-      return styles.ended
-    }
-  }
 
   const handleDeleteEvent = async (id: number) => {
     try {
@@ -209,12 +188,6 @@ export default function CosconEventsPage() {
                       preview={false}
                     />
                     <div className={styles.coverOverlay}>
-                      <Tag
-                        className={`${styles.statusTag} ${getStatusClass(event)}`}
-                      >
-                        {getStatusText(event)}
-                      </Tag>
-                     
                       <div className={styles.cardActions}>
                         {status === 'authenticated' &&
                         permissions.includes('event:write') ? (
@@ -254,7 +227,7 @@ export default function CosconEventsPage() {
                           title="查看推文"
                         />
                         {status === 'authenticated' &&
-                        permissions.includes('event:delete') ? (
+                        permissions.includes('event:write') ? (
                           <Popconfirm
                             title="删除活动"
                             description="你确定删除这个活动吗？"

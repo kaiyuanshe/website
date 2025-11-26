@@ -58,13 +58,12 @@ export default function EventDetailPage() {
     const checkMobile = () => {
       setIsMobile(window.innerWidth <= 768)
     }
-    
+
     checkMobile()
     window.addEventListener('resize', checkMobile)
-    
+
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [event, setEvent] = useState<any>(null)
@@ -186,80 +185,6 @@ export default function EventDetailPage() {
     )
   }
 
-  const getEventStatus = () => {
-    if (event.status === 0) {
-      return { text: '即将开始', type: 'upcoming', color: '#10b981' }
-    } else if (event.status === 1) {
-      return { text: '进行中', type: 'ongoing', color: '#3b82f6' }
-    } else {
-      return { text: '已结束', type: 'ended', color: '#6b7280' }
-    }
-  }
-
-  const formatDateTime = (dateTime: string) => {
-    const date = new Date(dateTime)
-    return {
-      date: date.toLocaleDateString('zh-CN', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        weekday: 'long'
-      }),
-      time: date.toLocaleTimeString('zh-CN', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
-    }
-  }
-
-  const formatDateTimeRange = (startTime: string, endTime: string) => {
-    const startDate = new Date(startTime)
-    const endDate = new Date(endTime)
-
-    // 检查是否跨天
-    const startDay = startDate.toDateString()
-    const endDay = endDate.toDateString()
-    const isSameDay = startDay === endDay
-
-    if (isSameDay) {
-      // 同一天：显示日期和时间范围
-      return {
-        date: startDate.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-          weekday: 'long'
-        }),
-        timeRange: `${startDate.toLocaleTimeString('zh-CN', {
-          hour: '2-digit',
-          minute: '2-digit'
-        })} - ${endDate.toLocaleTimeString('zh-CN', {
-          hour: '2-digit',
-          minute: '2-digit'
-        })}`,
-        isSameDay: true
-      }
-    } else {
-      // 跨天：只显示日期范围
-      return {
-        date: `${startDate.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })} - ${endDate.toLocaleDateString('zh-CN', {
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
-        })}`,
-        timeRange: '',
-        isSameDay: false
-      }
-    }
-  }
-
-  const eventStatus = getEventStatus()
-  const dateTimeRange = formatDateTimeRange(event.start_time, event.end_time)
-
   if (event?.event_type === 'community') {
     return (
       <div className={`${styles.container} nav-t-top`}>
@@ -345,8 +270,8 @@ export default function EventDetailPage() {
 
       <div className={styles.actionButtons}>
         <div className={styles.buttonContainer}>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             icon={<UserPlus size={18} />}
             size="large"
             className={styles.actionButton}
@@ -354,23 +279,23 @@ export default function EventDetailPage() {
           >
             志愿者/讲师报名注册
           </Button>
-          <Button 
+          <Button
             icon={<FileText size={18} />}
-            size="large" 
+            size="large"
             className={styles.actionButton}
             onClick={() => window.open(`/`, '_blank')}
           >
             议题征集
           </Button>
-          <Button 
+          <Button
             icon={<Upload size={18} />}
             size="large"
-            className={styles.actionButton} 
+            className={styles.actionButton}
             onClick={() => window.open(`/`, '_blank')}
           >
             议题课件提交
           </Button>
-          <Button 
+          <Button
             icon={<Users size={18} />}
             size="large"
             className={styles.actionButton}
@@ -401,7 +326,7 @@ const DetailSection = ({
   const router = useRouter()
   const { id } = router.query
   const rId = Array.isArray(id) ? id[0] : id
-  
+
   const onChange = (key: string) => {
     console.log(key)
   }
@@ -551,7 +476,7 @@ const DetailSection = ({
     <div className={styles.tabContent}>
       <div className={styles.tabHeader}>
         {permissions.includes('event:write') && (
-          <Button 
+          <Button
             icon={<Settings size={16} />}
             className={styles.configButton}
             onClick={() => router.push(`/events/${rId}/venues`)}
@@ -565,10 +490,9 @@ const DetailSection = ({
         size="large"
         items={items}
         onChange={onChange}
-        tabPosition={isMobile ? "top" : "left"}
+        tabPosition={isMobile ? 'top' : 'left'}
         className={isMobile ? styles.mobileTabs : ''}
       />
     </div>
   )
 }
-

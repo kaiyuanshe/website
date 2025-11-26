@@ -418,6 +418,27 @@ export default function EventsPage() {
                           icon={<SiX className={styles.actionIcon} />}
                           title="查看推文"
                         />
+                        {status === 'authenticated' &&
+                          permissions.includes('event:write') ? (
+                          <Popconfirm
+                            title="删除活动"
+                            description="你确定删除这个活动吗？"
+                            okText="是"
+                            cancelText="否"
+                            onConfirm={(e) => {
+                              e?.preventDefault();
+                              handleDeleteEvent(event.ID);
+                            }}
+                          >
+                            <Button
+                              className={styles.actionIconButton}
+                              danger
+                              icon={<Trash2 className={styles.actionIcon} />}
+                              title="删除活动"
+                              onClick={(e) => e.preventDefault()}
+                            />
+                          </Popconfirm>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -577,7 +598,7 @@ export default function EventsPage() {
                       title="分享活动"
                     />
                     {status === 'authenticated' &&
-                      permissions.includes('event:delete') ? (
+                      permissions.includes('event:write') ? (
                       <Popconfirm
                         title="删除活动"
                         description="你确定删除这个活动吗？"
