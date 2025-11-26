@@ -146,6 +146,11 @@ export default function ArticleSection() {
                     </div>
                     
                     <div className={styles.articleInfoItem}>
+                      <Calendar className={styles.articleIcon} />
+                      {formatTime(article.CreatedAt)}
+                    </div>
+                    
+                    <div className={styles.articleInfoItem}>
                       <BookOpen className={styles.articleIcon} />
                       {article.readingTime || 6} {t('homepage.articles.readingTime')}
                     </div>
