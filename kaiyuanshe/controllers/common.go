@@ -47,7 +47,7 @@ type UpdateEventRequest struct {
 	Twitter              string   `json:"twitter" binding:"required"`
 	RegistrationLink     string   `json:"registration_link"`
 	RegistrationDeadline string   `json:"registration_deadline"`
-	EventSetting         uint     `json:"event_setting" binging:"event_setting"`
+	EventSetting         uint     `json:"event_setting" binging:"required"`
 	BageLink             string   `json:"bage_link"`
 }
 

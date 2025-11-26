@@ -607,37 +607,6 @@ export default function EditEventPage() {
                 )}
               </div>
             </Card>
-
-            <Card className={styles.section}>
-              <h2 className={styles.sectionTitle}>
-                <Users className={styles.sectionIcon} />
-                报名设置
-              </h2>
-
-              <Form.Item
-                label="报名链接"
-                name="registrationLink"
-                rules={[
-                  {
-                    type: 'url',
-                    message: '请输入有效的链接地址'
-                  }
-                ]}
-              >
-                <Input
-                  placeholder="请输入报名链接（可选）"
-                  className={styles.input}
-                />
-              </Form.Item>
-
-              <Form.Item label="报名截止时间" name="registrationDeadline">
-                <DatePicker
-                  showTime
-                  placeholder="请选择报名截止时间（可选）"
-                  className={styles.input}
-                />
-              </Form.Item>
-            </Card>
           </div>
         </div>
 
