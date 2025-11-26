@@ -62,7 +62,6 @@ export default function EventsPage() {
   const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
 
   // 新增筛选状态
-  const [statusFilter, setStatusFilter] = useState('3');
   const [locationKeyword, setLocationKeyword] = useState('');
   const [eventModeFilter, setEventModeFilter] = useState('');
   const [eventTypeFilter] = useState('community'); // 社区活动
@@ -74,7 +73,6 @@ export default function EventsPage() {
     order?: 'asc' | 'desc';
     page?: number;
     page_size?: number;
-    status?: string | number;
     location?: string;
     event_mode?: string;
     event_type?: string;
@@ -89,7 +87,6 @@ export default function EventsPage() {
         order: params?.order || sortOrder,
         page: params?.page || currentPage,
         page_size: params?.page_size || pageSize,
-        status: params?.status || statusFilter,
         location: params?.location || locationKeyword,
         event_mode: params?.event_mode || eventModeFilter,
         event_type: params?.event_type || eventTypeFilter,
@@ -124,7 +121,7 @@ export default function EventsPage() {
     } finally {
       setLoading(false);
     }
-  }, [searchKeyword, selectedTag, sortOrder, currentPage, pageSize, statusFilter, locationKeyword, eventModeFilter, eventTypeFilter, publishStatus]);
+  }, [searchKeyword, selectedTag, sortOrder, currentPage, pageSize, locationKeyword, eventModeFilter, eventTypeFilter, publishStatus]);
 
 
   // 根据登录状态更新 publishStatus
@@ -147,7 +144,6 @@ export default function EventsPage() {
     sortOrder,
     currentPage,
     pageSize,
-    statusFilter,
     locationKeyword,
     eventModeFilter,
     eventTypeFilter,
@@ -168,11 +164,6 @@ export default function EventsPage() {
     setCurrentPage(1);
   };
 
-  // 状态筛选
-  const handleStatusFilter = async (status: string) => {
-    setStatusFilter(status);
-    setCurrentPage(1);
-  };
 
   // 地址搜索
   const handleLocationSearch = async (location: string) => {
@@ -200,7 +191,6 @@ export default function EventsPage() {
     setSearchKeyword('');
     setSelectedTag('');
     setSortOrder('desc');
-    setStatusFilter('3');
     setLocationKeyword('');
     setEventModeFilter('');
     setCurrentPage(1);
@@ -218,27 +208,6 @@ export default function EventsPage() {
 
   const currentEvents = events;
 
-  // 获取事件状态显示文本
-  const getStatusText = (event: any) => {
-    if (event.status === 0) {
-      return '未开始';
-    } else if (event.status === 1) {
-      return '进行中';
-    } else {
-      return '已结束';
-    }
-  };
-
-  // 获取事件状态类名
-  const getStatusClass = (event: any) => {
-    if (event.status === 0) {
-      return styles.upcoming;
-    } else if (event.status === 1) {
-      return styles.ongoing;
-    } else {
-      return styles.ended;
-    }
-  };
 
   const handleDeleteEvent = async (id: number) => {
     try {
@@ -297,19 +266,6 @@ export default function EventsPage() {
           >
             <Option value="desc">最新</Option>
             <Option value="asc">最早</Option>
-          </Select>
-          <Select
-            placeholder="活动状态"
-            allowClear
-            size="large"
-            style={{ width: 120 }}
-            value={statusFilter || undefined}
-            onChange={handleStatusFilter}
-          >
-            <Option value="3">所有</Option>
-            <Option value="0">未开始</Option>
-            <Option value="1">进行中</Option>
-            <Option value="2">已结束</Option>
           </Select>
 
           <Select
@@ -385,8 +341,7 @@ export default function EventsPage() {
           <div className={styles.emptyDescription}>
             {searchKeyword ||
               selectedTag ||
-              statusFilter ||
-              locationKeyword ||
+                        locationKeyword ||
               eventModeFilter ||
               eventTypeFilter
               ? '没有找到符合条件的活动'
@@ -394,8 +349,7 @@ export default function EventsPage() {
           </div>
           {!searchKeyword &&
             !selectedTag &&
-            !statusFilter &&
-            !locationKeyword &&
+                    !locationKeyword &&
             !eventModeFilter &&
             !eventTypeFilter &&
             permissions.includes('event:write') && (
@@ -428,11 +382,6 @@ export default function EventsPage() {
                       preview={false}
                     />
                     <div className={styles.coverOverlay}>
-                      <Tag
-                        className={`${styles.statusTag} ${getStatusClass(event)}`}
-                      >
-                        {getStatusText(event)}
-                      </Tag>
                       <div className={styles.cardActions}>
                         {status === 'authenticated' &&
                           permissions.includes('event:write') ? (
@@ -539,7 +488,6 @@ export default function EventsPage() {
               <div className={styles.listHeaderCell}>时间</div>
               <div className={styles.listHeaderCell}>地点</div>
               <div className={styles.listHeaderCell}>参与人数</div>
-              <div className={styles.listHeaderCell}>状态</div>
               <div className={styles.listHeaderCell}>操作</div>
             </div>
             {currentEvents.map((event) => (
@@ -596,13 +544,6 @@ export default function EventsPage() {
                     <Users className={styles.listIcon} />
                     <span>{event.participants || 0}</span>
                   </div>
-                </div>
-                <div className={styles.listCell}>
-                  <Tag
-                    className={`${styles.listStatusBadge} ${getStatusClass(event)}`}
-                  >
-                    {getStatusText(event)}
-                  </Tag>
                 </div>
                 <div className={styles.listCell}>
                   <div className={styles.listActions}>

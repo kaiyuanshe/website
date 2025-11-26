@@ -18,7 +18,6 @@ interface Event {
   start_time: string
   event_mode: string
   location?: string
-  status: number
   participants: number
   tags?: string[]
 }
@@ -37,7 +36,6 @@ export default function EventSection() {
         page: 1,
         page_size: 3,
         publish_status: 2,
-        status: 3,
         //  event_type:'community'
 
       };
@@ -86,20 +84,6 @@ export default function EventSection() {
               <div className={styles.activityCardGlow}></div>
               <div className={styles.activityCardHeader}>
                 <div className={styles.activityMeta}>
-                  <span
-                    className={`${styles.activityBadge} ${event.status === 0
-                      ? styles.activityBadgeInactive
-                      : event.status === 1
-                        ? styles.activityBadgeActive
-                        : styles.activityBadgeEnded
-                      }`}
-                  >
-                    {event.status === 0
-                      ? t('homepage.events.status.notStarted')
-                      : event.status === 1
-                        ? t('homepage.events.status.inProgress')
-                        : t('homepage.events.status.ended')}
-                  </span>
                   {event.participants !== 0 && (
                     <div className={styles.activityParticipants}>
                       <Users className={styles.activityIcon} />
