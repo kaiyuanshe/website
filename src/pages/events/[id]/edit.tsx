@@ -202,7 +202,12 @@ export default function EditEventPage() {
 
       if (result.success) {
         message.success(result.message)
-        router.push(`/events/${event.ID}`)
+        // 如果活动配置是跳转到百格网站则跳转回路由/events/coscon
+        if (values.eventSetting === 2) {
+          router.push('/events/coscon')
+        } else {
+          router.push(`/events/${event.ID}`)
+        }
       } else {
         message.error(result.message || '创建活动失败')
       }
