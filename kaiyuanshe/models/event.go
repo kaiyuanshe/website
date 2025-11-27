@@ -17,7 +17,6 @@ type Event struct {
 	Location             string              `json:"location"`
 	Link                 string              `json:"link"`
 	RegistrationDeadline *time.Time          `json:"registration_deadline"`
-	RegistrationLink     string              `json:"registration_link"`
 	StartTime            time.Time           `json:"start_time"`
 	EndTime              time.Time           `json:"end_time"`
 	CoverImg             string              `json:"cover_img"`
@@ -36,6 +35,10 @@ type Event struct {
 	Gifts                []Gift              `gorm:"foreignKey:EventID" json:"gifts"`
 	BageLink             string              `json:"bage_link"`
 	EventSetting         uint                `gorm:"default:1" json:"event_setting" ` // 1: 自行配置 2: 跳转到百格
+	ApplyLink            string              `json:"apply_link"`
+	TopicCollectionLink  string              `json:"topic_collection_link"`
+	CoursewareSubmitLink string              `json:"courseware_submit_link"`
+	RegistrationLink     string              `json:"registration_link"`
 }
 
 func (e *Event) Create() error {

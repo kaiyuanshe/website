@@ -270,39 +270,47 @@ export default function EventDetailPage() {
 
       <div className={styles.actionButtons}>
         <div className={styles.buttonContainer}>
-          <Button
-            type="primary"
-            icon={<UserPlus size={18} />}
-            size="large"
-            className={styles.actionButton}
-            onClick={() => window.open(`/`, '_blank')}
-          >
-            志愿者/讲师报名注册
-          </Button>
-          <Button
-            icon={<FileText size={18} />}
-            size="large"
-            className={styles.actionButton}
-            onClick={() => window.open(`/`, '_blank')}
-          >
-            议题征集
-          </Button>
-          <Button
-            icon={<Upload size={18} />}
-            size="large"
-            className={styles.actionButton}
-            onClick={() => window.open(`/`, '_blank')}
-          >
-            议题课件提交
-          </Button>
-          <Button
-            icon={<Users size={18} />}
-            size="large"
-            className={styles.actionButton}
-            onClick={() => window.open(`/`, '_blank')}
-          >
-            参会注册
-          </Button>
+          {event.apply_link &&
+            <Button
+              type="primary"
+              icon={<UserPlus size={18} />}
+              size="large"
+              className={styles.actionButton}
+              onClick={() => window.open(event.apply_link , '_blank')}
+            >
+              志愿者/讲师报名注册
+            </Button>
+          }
+          {event.topic_collection_link &&
+            <Button
+              icon={<FileText size={18} />}
+              size="large"
+              className={styles.actionButton}
+              onClick={() => window.open(event.topic_collection_link, '_blank')}
+            >
+              议题征集
+            </Button>
+          }
+          {event.courseware_submit_link &&
+            <Button
+              icon={<Upload size={18} />}
+              size="large"
+              className={styles.actionButton}
+              onClick={() => window.open(event.courseware_submit_link, '_blank')}
+            >
+              议题课件提交
+            </Button>
+          }
+          {event.registration_link &&
+            <Button
+              icon={<Users size={18} />}
+              size="large"
+              className={styles.actionButton}
+              onClick={() => window.open(event.registration_link, '_blank')}
+            >
+              参会注册
+            </Button>
+          }
         </div>
       </div>
       <div className={styles.content}>{renderDetailSection()}</div>
@@ -343,9 +351,9 @@ const DetailSection = ({
     // 将志愿者字符串转换为数组
     const volunteerArray = volunteer
       ? volunteer
-          .split(/[,;]/)
-          .map(v => v.trim())
-          .filter(v => v)
+        .split(/[,;]/)
+        .map(v => v.trim())
+        .filter(v => v)
       : []
 
     return (

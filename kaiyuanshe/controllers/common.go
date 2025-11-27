@@ -15,8 +15,6 @@ type CreateEventRequest struct {
 	EventType            string   `json:"event_type" binding:"required"`
 	Location             string   `json:"location"`
 	Link                 string   `json:"link"`
-	RegistrationLink     string   `json:"registration_link"`
-	RegistrationDeadline string   `json:"registration_deadline"`
 	StartTime            string   `json:"start_time" binding:"required"`
 	EndTime              string   `json:"end_time" binding:"required"`
 	CoverImg             string   `json:"cover_img" binding:"required"`
@@ -24,6 +22,10 @@ type CreateEventRequest struct {
 	Twitter              string   `json:"twitter" binding:"required"`
 	EventSetting         uint     `json:"event_setting" binding:"required"`
 	BageLink             string   `json:"bage_link"`
+	ApplyLink            string   `json:"apply_link"`
+	TopicCollectionLink  string   `json:"topic_collection_link"`
+	CoursewareSubmitLink string   `json:"courseware_submit_link"`
+	RegistrationLink     string   `json:"registration_link"`
 }
 
 type QueryEventsResponse struct {
@@ -45,10 +47,12 @@ type UpdateEventRequest struct {
 	CoverImg             string   `json:"cover_img" binding:"required"`
 	Tags                 []string `json:"tags"`
 	Twitter              string   `json:"twitter" binding:"required"`
-	RegistrationLink     string   `json:"registration_link"`
-	RegistrationDeadline string   `json:"registration_deadline"`
 	EventSetting         uint     `json:"event_setting" binging:"required"`
 	BageLink             string   `json:"bage_link"`
+	ApplyLink            string   `json:"apply_link"`
+	TopicCollectionLink  string   `json:"topic_collection_link"`
+	CoursewareSubmitLink string   `json:"courseware_submit_link"`
+	RegistrationLink     string   `json:"registration_link"`
 }
 
 type UpdateEventPublishStatusRequest struct {
