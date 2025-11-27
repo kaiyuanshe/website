@@ -129,7 +129,16 @@ export default function ArticleDetailPage() {
               <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  原文连接：{article.source_link || ''}
+                  原文连接：{article.source_link ? (
+                    <a 
+                      href={article.source_link as string} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.sourceLink}
+                    >
+                      {article.source_link as string}
+                    </a>
+                  ) : ''}
                 </div>
               </div>
               <div className={styles.metaItem}>

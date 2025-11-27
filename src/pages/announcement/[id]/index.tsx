@@ -27,7 +27,7 @@ export default function ArticleDetailPage() {
   const { id } = router.query; // 路由参数应该叫 id，不是 ids
   const rId = Array.isArray(id) ? id[0] : id;
 
-  const [article, setArticle] = useState<Record<string, unknown> | null>(null);
+  const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   // 使用统一的认证上下文，避免重复调用 useSession
   const { session, status } = useAuth();
@@ -163,7 +163,16 @@ export default function ArticleDetailPage() {
               <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  原文连接：{article.source_link || ''}
+                  原文连接：{article.source_link ? (
+                    <a 
+                      href={article.source_link as string} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className={styles.sourceLink}
+                    >
+                      {article.source_link as string}
+                    </a>
+                  ) : ''}
                 </div>
               </div>
               <div className={styles.metaItem}>
