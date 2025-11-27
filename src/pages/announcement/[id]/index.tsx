@@ -193,6 +193,18 @@ export default function ArticleDetailPage() {
                   发布者：{article.publisher?.username || ''}
                 </div>
               </div>
+               <div className={styles.metaItem}>
+                <User className={styles.metaIcon} />
+                <div className={styles.metaText}>
+                  翻译：{article.translator || ''}
+                </div>
+              </div>
+              <div className={styles.metaItem}>
+                <User className={styles.metaIcon} />
+                <div className={styles.metaText}>
+                  编辑：{article.editor || ''}
+                </div>
+              </div>
               <div className={styles.metaItem}>
                 <Eye className={styles.metaIcon} />
                 <div className={styles.metaText}>

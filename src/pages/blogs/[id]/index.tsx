@@ -129,16 +129,19 @@ export default function ArticleDetailPage() {
               <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  原文连接：{article.source_link ? (
-                    <a 
-                      href={article.source_link as string} 
-                      target="_blank" 
+                  原文连接：
+                  {article.source_link ? (
+                    <a
+                      href={article.source_link as string}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className={styles.sourceLink}
                     >
                       {article.source_link as string}
                     </a>
-                  ) : ''}
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
               <div className={styles.metaItem}>
@@ -157,6 +160,18 @@ export default function ArticleDetailPage() {
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
                   发布者：{article.publisher?.username || ''}
+                </div>
+              </div>
+              <div className={styles.metaItem}>
+                <User className={styles.metaIcon} />
+                <div className={styles.metaText}>
+                  翻译：{article.translator || ''}
+                </div>
+              </div>
+              <div className={styles.metaItem}>
+                <User className={styles.metaIcon} />
+                <div className={styles.metaText}>
+                  编辑：{article.editor || ''}
                 </div>
               </div>
               <div className={styles.metaItem}>
