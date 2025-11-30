@@ -180,6 +180,29 @@
   gap: 1rem;
 }
 
+/* 加入我们按钮样式 */
+.joinUsButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: transparent;
+  color: #2563eb;
+  text-decoration: none;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.joinUsButton:hover {
+  background-color: #2563eb;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+}
+
 /* 登录按钮样式 */
 .loginButton {
   display: inline-flex;
@@ -698,6 +721,30 @@
 .mobileMenuItem:hover {
   color: #2563eb;
   background: rgba(37, 99, 235, 0.05);
+}
+
+/* 移动端加入我们按钮样式 */
+.mobileJoinUsButton {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: transparent;
+  color: #2563eb;
+  text-decoration: none;
+  border: 2px solid #2563eb;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  transition: all 0.2s ease;
+  margin-bottom: 1rem;
+}
+
+.mobileJoinUsButton:hover {
+  background-color: #2563eb;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
 }
 
 /* 移动端登录按钮样式 */

@@ -935,6 +935,11 @@ export default function Header() {
 
           {/* 右侧操作区 */}
           <div className={styles.headerActions}>
+            {/* 加入我们按钮 */}
+            <Link href="#" className={styles.joinUsButton}>
+              加入我们
+            </Link>
+
             {/* 用户认证区域 */}
             {isLoading ? (
               <div className={styles.loginButton}>加载中...</div>
@@ -1069,6 +1074,17 @@ export default function Header() {
               </button>
             </div>
             <div className={styles.mobileMenuBody}>
+              {/* 移动端加入我们按钮 */}
+              <div className={styles.mobileMenuSection}>
+                <Link
+                  href="/join"
+                  className={styles.mobileJoinUsButton}
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  加入我们
+                </Link>
+              </div>
+
               {/* 移动端用户认证区域 */}
               <div className={styles.mobileMenuSection}>
                 {isLoading ? (
