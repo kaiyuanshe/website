@@ -84,6 +84,33 @@
   align-items: center;
 }
 
+.volunteerSection {
+  margin-top: 1.5rem;
+}
+
+.volunteerButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.volunteerButton:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+  transform: translateY(-1px);
+  color: white;
+}
+
 /* Right section with navigation menu */
 .footerRight {
   flex: 2;
@@ -173,6 +200,11 @@
     justify-content: center;
   }
   
+  .volunteerSection {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
   .footerRight {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
@@ -203,6 +235,11 @@
   
   .footerLogo {
     max-width: 150px;
+  }
+  
+  .volunteerButton {
+    padding: 0.625rem 1.25rem;
+    font-size: 0.8rem;
   }
 }
 

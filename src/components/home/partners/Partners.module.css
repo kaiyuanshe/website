@@ -88,11 +88,20 @@
   margin-bottom: 5rem;
 }
 
+/* Partners Carousel Container */
+.partnersCarouselContainer {
+  width: 100%;
+  margin-top: 2rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
 /* Partners Carousel */
 .partnersCarousel {
   width: 100%;
   overflow: hidden;
-  margin-top: 2rem;
   position: relative;
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.05);
@@ -262,6 +271,10 @@
     font-size: 2rem;
   }
 
+  .partnersCarouselContainer {
+    gap: 1.25rem;
+  }
+  
   .partnersCarousel {
     padding: 0.75rem 0;
   }
@@ -294,6 +307,10 @@
     font-size: 1.8rem;
   }
 
+  .partnersCarouselContainer {
+    gap: 1rem;
+  }
+  
   .partnersCarousel {
     padding: 0.5rem 0;
   }

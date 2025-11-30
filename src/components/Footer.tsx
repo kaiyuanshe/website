@@ -160,6 +160,17 @@ export default function Footer() {
                   <SiWechat className={styles.socialIcon} />
                 </button>
               </div>
+              
+              {/* Volunteer button */}
+              <div className={styles.volunteerSection}>
+                <Link
+                  href="#"
+                  className={styles.volunteerButton}
+                  aria-label="成为志愿者"
+                >
+                  成为志愿者
+                </Link>
+              </div>
             </div>
           </div>
 
