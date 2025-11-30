@@ -149,6 +149,7 @@ func HandleRegister(c *gin.Context) {
 	verifyToken, err := utils.GenerateEmailVerificationToken(24)
 	if err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Internal server error", nil)
+		return
 	}
 
 	user := models.User{
@@ -172,6 +173,7 @@ func HandleRegister(c *gin.Context) {
 		logger.Log.Errorf("发送验证邮件失败: %v", err)
 		// 可以选择继续返回成功，但记录错误
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Could not send email", nil)
+		return
 	}
 
 	utils.SuccessResponse(c, http.StatusOK, "Registration successful", nil)

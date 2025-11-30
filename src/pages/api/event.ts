@@ -15,8 +15,10 @@ export interface CreateEventParams {
   twitter: string;
   event_setting: number;
   bage_link: string;
-  registration_deadline?: string;
   registration_link?: string;
+  apply_link?: string;
+  topic_collection_link?: string;
+  courseware_submit_link?: string;
 }
 
 export interface UpdateEventParams {
@@ -33,8 +35,10 @@ export interface UpdateEventParams {
   twitter: string;
   event_setting: number;
   bage_link: string;
-  registration_deadline?: string;
   registration_link?: string;
+  apply_link?: string;
+  topic_collection_link?: string;
+  courseware_submit_link?: string;
 }
 
 export interface GetEventsParams {
@@ -70,8 +74,11 @@ export interface Event {
   event_setting: number;
   bage_link: string;
   participants: number;
-  registration_link: string;
-  registration_deadline: string;
+  registration_link?: string;
+  apply_link?: string;
+  topic_collection_link?: string;
+  courseware_submit_link?: string;
+
 }
 
 // 分页返回数据结构
@@ -114,7 +121,9 @@ export const createEvent = async (
       event_setting: params.event_setting,
       bage_link: params.bage_link,
       registration_link: params.registration_link ?? '',
-      registration_deadline: params.registration_deadline ?? '',
+      apply_link: params.apply_link ?? '',
+      topic_collection_link: params.topic_collection_link ?? '',
+      courseware_submit_link: params.courseware_submit_link ?? '',
     };
 
     const response = await apiRequest<EventResult>('/events', 'POST', body);
@@ -209,8 +218,10 @@ export const updateEventDraft = async (
       twitter: params.twitter ?? '',
       event_setting: params.event_setting,
       bage_link: params.bage_link,
-      registration_deadline: params.registration_deadline,
-      registration_link: params.registration_link,
+      registration_link: params.registration_link ?? '',
+      apply_link: params.apply_link ?? '',
+      topic_collection_link: params.topic_collection_link ?? '',
+      courseware_submit_link: params.courseware_submit_link ?? '',
     };
 
     const response = await apiRequest<EventResult>(
@@ -256,8 +267,10 @@ export const updateEvent = async (
       event_setting: params.event_setting,
       bage_link: params.bage_link,
       twitter: params.twitter ?? '',
-      registration_deadline: params.registration_deadline,
       registration_link: params.registration_link,
+      apply_link: params.apply_link ?? '',
+      topic_collection_link: params.topic_collection_link ?? '',
+      courseware_submit_link: params.courseware_submit_link ?? '',
     };
 
     const response = await apiRequest<EventResult>(

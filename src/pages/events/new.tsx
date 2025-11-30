@@ -40,7 +40,7 @@ export default function NewEventPage() {
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
   const router = useRouter();
-  
+
   // 权限检查
   const { isLoading, hasPermission } = usePermissionGuard('event:write');
   const [eventMode, setEventMode] = useState<'线上活动' | '线下活动'>(
@@ -100,6 +100,9 @@ export default function NewEventPage() {
   );
 
   const handleSubmit = async (values: {
+    coursewareLink: string;
+    topicLink: string;
+    applyLink: string;
     bageLink: string;
     eventSetting: number; title: string; description: string; eventMode: string; eventType: string; location: string; startDate: { format: (format: string) => string }; startTime: { format: (format: string) => string }; endDate: { format: (format: string) => string }; endTime: { format: (format: string) => string }; twitter: string; registrationLink: string; registrationDeadline?: { format: (format: string) => string }
   }) => {
@@ -121,9 +124,9 @@ export default function NewEventPage() {
         bage_link: values.bageLink,
         twitter: values.twitter,
         registration_link: values.registrationLink,
-        registration_deadline: values.registrationDeadline
-          ? values.registrationDeadline.format('YYYY-MM-DD HH:mm:ss')
-          : '',
+        apply_link: values.applyLink,
+        topic_collection_link: values.topicLink ?? '',
+        courseware_submit_link: values.coursewareLink ?? '',
       };
 
       // 调用创建事件接口
@@ -423,6 +426,74 @@ export default function NewEventPage() {
                   cloudinaryImg={cloudinaryImg}
                   setCloudinaryImg={setCloudinaryImg}
                   form={form}
+                />
+              </Form.Item>
+            </Card>
+
+            <Card className={styles.section}>
+              <h2 className={styles.sectionTitle}>
+                <Users className={styles.sectionIcon} />
+                其他设置
+              </h2>
+
+              <Form.Item
+                label="志愿者/讲师报名注册链接"
+                name="applyLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="议题征集链接"
+                name="topicLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="议题课件提交链接"
+                name="coursewareLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="参会注册链接"
+                name="registrationLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
                 />
               </Form.Item>
             </Card>

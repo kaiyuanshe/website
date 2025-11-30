@@ -135,7 +135,10 @@ export default function EditEventPage() {
     event_setting: number
     bage_link: string
     registration_link: string
-    registration_deadline: string
+    apply_link: string
+    topic_collection_link: string
+    courseware_submit_link: string
+
   } | null>(null)
   const [loading, setLoading] = useState(true)
   const [eventSetting, setEventSetting] = useState<number>()
@@ -160,6 +163,9 @@ export default function EditEventPage() {
   )
 
   const handleSubmit = async (values: {
+    coursewareLink: string
+    topicLink: string
+    applyLink: string
     title: string
     eventSetting: number
     bageLink: string
@@ -193,9 +199,9 @@ export default function EditEventPage() {
         event_setting: values.eventSetting,
         bage_link: values.bageLink,
         registration_link: values.registrationLink,
-        registration_deadline: values.registrationDeadline
-          ? values.registrationDeadline.format('YYYY-MM-DD HH:mm:ss')
-          : ''
+        apply_link: values.applyLink,
+        topic_collection_link: values.topicLink ?? '',
+        courseware_submit_link: values.coursewareLink ?? '',
       }
 
       const result = await updateEvent(String(event.ID), updateEventRequest)
@@ -254,10 +260,10 @@ export default function EditEventPage() {
           // 直接使用UTC时间，不进行时区转换
           const startTime = dayjs.utc(data?.start_time)
           const endTime = dayjs.utc(data?.end_time)
-          
+
           console.log('原始 start_time:', data?.start_time, '-> 显示为:', startTime.format('YYYY-MM-DD HH:mm:ss'))
           console.log('原始 end_time:', data?.end_time, '-> 显示为:', endTime.format('YYYY-MM-DD HH:mm:ss'))
-          
+
           form.setFieldsValue({
             title: data?.title,
             description: data?.description,
@@ -275,9 +281,9 @@ export default function EditEventPage() {
             eventSetting: data?.event_setting,
             bageLink: data?.bage_link,
             registrationLink: data?.registration_link,
-            registrationDeadline: data?.registration_deadline
-              ? dayjs.utc(data?.registration_deadline)
-              : null
+            applyLink: data?.apply_link,
+            topicLink: data?.topic_collection_link ?? '',
+            coursewareLink: data?.courseware_submit_link ?? '',
           })
 
           setPreviewUrl(data?.cover_img || '')
@@ -342,8 +348,8 @@ export default function EditEventPage() {
       <div className={styles.error}>
         <h2>活动不存在</h2>
         <p>抱歉，找不到您要查看的活动</p>
-        <Link 
-          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'} 
+        <Link
+          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'}
           className={styles.backButton}
         >
           {router.query.event_type === 'coscon' ? '返回中国开源年会' : '返回活动列表'}
@@ -355,8 +361,8 @@ export default function EditEventPage() {
   return (
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.header}>
-        <Link 
-          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'} 
+        <Link
+          href={router.query.event_type === 'coscon' ? '/events/coscon' : '/events'}
           className={styles.backButton}
         >
           <ArrowLeft className={styles.backIcon} />
@@ -368,10 +374,10 @@ export default function EditEventPage() {
         layout="vertical"
         onFinish={handleSubmit}
         className={styles.form}
-        // initialValues={{
-        //     eventMode: '线上活动',
-        //     publishImmediately: true,
-        // }}
+      // initialValues={{
+      //     eventMode: '线上活动',
+      //     publishImmediately: true,
+      // }}
       >
         <div className={styles.formGrid}>
           {/* 左侧表单 */}
@@ -570,6 +576,75 @@ export default function EditEventPage() {
                 />
               </Form.Item>
             </Card>
+
+            <Card className={styles.section}>
+              <h2 className={styles.sectionTitle}>
+                <Users className={styles.sectionIcon} />
+                其他设置
+              </h2>
+
+              <Form.Item
+                label="志愿者/讲师报名注册链接"
+                name="applyLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="议题征集链接"
+                name="topicLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="议题课件提交链接"
+                name="coursewareLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+              <Form.Item
+                label="参会注册链接"
+                name="registrationLink"
+                rules={[
+                  {
+                    type: 'url',
+                    message: '请输入有效的链接地址'
+                  }
+                ]}
+              >
+                <Input
+                  placeholder="请输入链接"
+                  className={styles.input}
+                />
+              </Form.Item>
+            </Card>
+
 
             {/* 标签 */}
             <Card className={styles.section}>

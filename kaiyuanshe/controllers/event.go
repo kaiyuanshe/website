@@ -29,30 +29,23 @@ func CreateEvent(c *gin.Context) {
 	}
 
 	var event = models.Event{
-		Title:            req.Title,
-		Description:      req.Desc,
-		EventMode:        req.EventMode,
-		EventType:        req.EventType,
-		Location:         req.Location,
-		Link:             req.Link,
-		RegistrationLink: req.RegistrationLink,
-		StartTime:        startT,
-		EndTime:          endT,
-		CoverImg:         req.CoverImg,
-		Tags:             req.Tags,
-		Twitter:          req.Twitter,
-		BageLink:         req.BageLink,
-		EventSetting:     req.EventSetting,
-	}
-
-	if req.RegistrationDeadline != "" {
-		regisDeadline, err := utils.ParseTime(req.RegistrationDeadline)
-		if err != nil {
-			utils.ErrorResponse(c, http.StatusBadRequest, "invalid args", nil)
-			return
-		}
-		event.RegistrationDeadline = &regisDeadline
-
+		Title:                req.Title,
+		Description:          req.Desc,
+		EventMode:            req.EventMode,
+		EventType:            req.EventType,
+		Location:             req.Location,
+		Link:                 req.Link,
+		StartTime:            startT,
+		EndTime:              endT,
+		CoverImg:             req.CoverImg,
+		Tags:                 req.Tags,
+		Twitter:              req.Twitter,
+		BageLink:             req.BageLink,
+		EventSetting:         req.EventSetting,
+		ApplyLink:            req.ApplyLink,
+		RegistrationLink:     req.RegistrationLink,
+		TopicCollectionLink:  req.TopicCollectionLink,
+		CoursewareSubmitLink: req.CoursewareSubmitLink,
 	}
 
 	uid, ok := c.Get("uid")
@@ -220,17 +213,10 @@ func UpdateEvent(c *gin.Context) {
 	event.Twitter = req.Twitter
 	event.EventSetting = req.EventSetting
 	event.BageLink = req.BageLink
-
+	event.ApplyLink = req.ApplyLink
 	event.RegistrationLink = req.RegistrationLink
-
-	if req.RegistrationDeadline != "" {
-		regisDeadline, err := utils.ParseTime(req.RegistrationDeadline)
-		if err != nil {
-			utils.ErrorResponse(c, http.StatusBadRequest, "Invalid arg", nil)
-			return
-		}
-		event.RegistrationDeadline = &regisDeadline
-	}
+	event.TopicCollectionLink = req.TopicCollectionLink
+	event.CoursewareSubmitLink = req.CoursewareSubmitLink
 
 	if err := event.Update(); err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Failed to update event", nil)
