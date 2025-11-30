@@ -47,6 +47,29 @@
     margin-bottom: 0;
 }
 
+.filterContainer {
+    margin-top: 32px;
+    padding: 20px 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.filterRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filterLabel {
+    font-size: 16px;
+    font-weight: 500;
+    color: #334155;
+    margin: 0;
+}
+
+.yearSelect {
+    min-width: 200px;
+}
+
 .link {
     color: #3b82f6;
     text-decoration: none;
@@ -81,6 +104,26 @@
     
     .details {
         font-size: 15px;
+    }
+    
+    .filterContainer {
+        margin-top: 24px;
+        padding: 16px 0;
+    }
+    
+    .filterRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .filterLabel {
+        font-size: 15px;
+    }
+    
+    .yearSelect {
+        width: 100% !important;
+        min-width: unset;
     }
 }
 
