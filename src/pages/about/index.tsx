@@ -359,32 +359,7 @@ const AboutPage = () => {
             </div>
           </section>
 
-          {/* Brief Introduction Box */}
-          <section className={styles.briefSection}>
-            <div className={styles.briefBox}>
-              <h3 className={styles.briefTitle}>开源社简介</h3>
-              <p className={styles.briefText}>
-                开源社（英文名称为"KAIYUANSHE®"）成立于 2014 年，是由志愿贡献于开源事业的个人志愿者，依 "贡献、共识、共治" 原则所组成的开源社区。开源社始终维持 "厂商中立、公益、非营利" 的理念，以 "立足中国、贡献全球，推动开源成为新时代的生活方式" 为愿景，以 "开源治理、国际接轨、社区发展、项目孵化" 为使命，旨在共创健康可持续发展的开源生态体系。
-              </p>
-              
-              <p className={styles.briefText}>
-                开源社积极与支持开源的社区、高校、企业、社会组织以及政府相关单位紧密合作，同时也是全球开源许可证认证组织 OSI 在中国的首个成员，获选由中国科协科学技术传播中心、中国计算机学会、中国通信学会、中国科学院软件研究所联合评选的"开源创新榜单-年度开源社区"。
-              </p>
-              
-              <p className={styles.briefText}>
-                自2016年起连续举办中国开源年会（COSCon），持续发布《中国开源年度报告》，联合发起了"中国开源先锋榜"、"中国开源码力榜"等，在海内外产生了广泛的影响力。十余年来，开源社链接了数万名开源人，集聚了上千名社区成员及志愿者、海内外数百位讲师，合作了数百家赞助、媒体、社区伙伴，在各方支持下持续发展壮大。
-              </p>
-            </div>
-          </section>
-
-          {/* Help Section */}
-          <section id="help" className={styles.section}>
-            <img
-              src="/img/about/help.gif"
-              alt="帮助"
-              className={styles.heroImage}
-            />
-          </section>
+        
         </main>
       </div>
       
