@@ -1,9 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './index.module.css'
 
 const AboutPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [imageAlt, setImageAlt] = useState<string>('')
+  const [currentSlide, setCurrentSlide] = useState(0)
+
+  // 轮播图片数组
+  const heroImages = [
+    {
+      src: "/img/about/banner.jpeg",
+      alt: "开源社"
+    },
+    {
+      src: "/img/about/where.webp", 
+      alt: "开源社四大使命"
+    },
+    {
+      src: "/img/about/how.webp",
+      alt: "开源社的工作"
+    },
+    {
+      src: "/img/about/COSCon.webp",
+      alt: "中国开源年会"
+    }
+  ]
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length)
+    }, 5000) // 每5秒切换一次
+
+    return () => clearInterval(timer)
+  }, [heroImages.length])
 
   const openModal = (imageSrc: string, alt: string = '') => {
     setSelectedImage(imageSrc)
@@ -14,20 +43,43 @@ const AboutPage = () => {
     setSelectedImage(null)
     setImageAlt('')
   }
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index)
+  }
+
   return (
     <div className={styles.aboutPage}>
       {/* Hero Section */}
       <div className={styles.heroSection}>
-        <img
-          src="/img/about/banner.jpeg"
-          alt="开源社"
-          className={styles.heroImage}
-        />
+        <div className={styles.heroSlider}>
+          {heroImages.map((image, index) => (
+            <img
+              key={index}
+              src={image.src}
+              alt={image.alt}
+              className={`${styles.heroImage} ${
+                index === currentSlide ? styles.active : ''
+              }`}
+            />
+          ))}
+        </div>
         <div className={styles.heroOverlay}>
           <h1 className={styles.heroTitle}>你好， 开源社</h1>
           <p className={styles.heroSubtitle}>
             KAIYUANSHE - 致力于推动开源发展的社区
           </p>
+        </div>
+        <div className={styles.heroIndicators}>
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.indicator} ${
+                index === currentSlide ? styles.active : ''
+              }`}
+              onClick={() => goToSlide(index)}
+            />
+          ))}
         </div>
       </div>
 
