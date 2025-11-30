@@ -22,6 +22,7 @@ interface MenuItem {
   children?: MenuItem[]
   group?: string
   target?: string
+  hot?: boolean
 }
 
 interface SearchResult {
@@ -138,7 +139,8 @@ export default function Header() {
             label: '开源社年度报告',
             href: '/kysreports',
             description: '查看开源社的年度工作报告和成果',
-            group: 'policies'
+            group: 'policies',
+            hot: true
           }
         ]
       },
@@ -196,20 +198,21 @@ export default function Header() {
             group: 'cooperation'
           },
 
-
           {
             key: 'china-oss-report',
             label: '中国开源年度报告',
             href: '/osreports',
             description: '中国开源年度报告',
             group: 'reports',
+            hot: true
           },
           {
             key: 'china-oss-pioneer',
             label: '中国开源先锋榜',
             href: '/community/pioneer',
             description: '中国开源先锋榜',
-            group: 'reports'
+            group: 'reports',
+            hot: true
           },
           {
             key: 'china-oss-power',
@@ -230,7 +233,8 @@ export default function Header() {
             label: '中国开源年会',
             href: '/events/coscon',
             description: '中国最大的开源技术年度盛会',
-            group: 'annual'
+            group: 'annual',
+            hot: true
           },
           {
             key: 'cooperation-activities',
@@ -474,13 +478,11 @@ export default function Header() {
     }
   }
 
-
   const handleSearchChange = useCallback((e: any) => {
     console.log(e.target.value)
-    setSearchQuery(e.target.value);
-    router.push("/blogs?keyword=" + e.target.value)
-  }, []);
-
+    setSearchQuery(e.target.value)
+    router.push('/blogs?keyword=' + e.target.value)
+  }, [])
 
   // CNCF风格下拉菜单组件
   const NavDropdown = ({ item }: { item: MenuItem }) => {
@@ -512,11 +514,11 @@ export default function Header() {
               <div
                 className={
                   item.key === 'about' ||
-                    item.key === 'governance' ||
-                    item.key === 'community-development' ||
-                    item.key === 'events' ||
-                    item.key === 'projects' ||
-                    item.key === 'articles-media'
+                  item.key === 'governance' ||
+                  item.key === 'community-development' ||
+                  item.key === 'events' ||
+                  item.key === 'projects' ||
+                  item.key === 'articles-media'
                     ? styles.dropdownLeftTwoColumn
                     : styles.dropdownLeft
                 }
@@ -553,13 +555,18 @@ export default function Header() {
                             <Link
                               key={child.key}
                               href={child.href || '/'}
-                              className={styles.navDropdownItem}
+                              className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                               onClick={() => setActiveDropdown(null)}
                               target={child.target}
                             >
                               <div className={styles.dropdownItemContent}>
                                 <span className={styles.dropdownItemTitle}>
                                   {child.label}
+                                  {child.hot && (
+                                    <span className={styles.hotIndicator}>
+                                      Hot
+                                    </span>
+                                  )}
                                 </span>
                                 {child.description && (
                                   <span className={styles.dropdownItemDesc}>
@@ -578,13 +585,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -606,13 +618,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -630,13 +647,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -658,13 +680,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -682,13 +709,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -706,13 +738,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -734,13 +771,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -758,13 +800,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -786,13 +833,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -810,13 +862,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -838,13 +895,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -862,13 +924,18 @@ export default function Header() {
                           <Link
                             key={child.key}
                             href={child.href || '/'}
-                            className={styles.navDropdownItem}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
                             <div className={styles.dropdownItemContent}>
                               <span className={styles.dropdownItemTitle}>
                                 {child.label}
+                                {child.hot && (
+                                  <span className={styles.hotIndicator}>
+                                    Hot
+                                  </span>
+                                )}
                               </span>
                               {child.description && (
                                 <span className={styles.dropdownItemDesc}>
@@ -886,12 +953,15 @@ export default function Header() {
                     <Link
                       key={child.key}
                       href={child.href || '/'}
-                      className={styles.navDropdownItem}
+                      className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
                       onClick={() => setActiveDropdown(null)}
                     >
                       <div className={styles.dropdownItemContent}>
                         <span className={styles.dropdownItemTitle}>
                           {child.label}
+                          {child.hot && (
+                            <span className={styles.hotIndicator}>Hot</span>
+                          )}
                         </span>
                         {child.description && (
                           <span className={styles.dropdownItemDesc}>
@@ -1041,7 +1111,6 @@ export default function Header() {
                 </div>
               )}
             </div> */}
-    
           </div>
 
           {/* 移动端菜单按钮 */}
@@ -1175,6 +1244,9 @@ export default function Header() {
                             target={child.target}
                           >
                             {child.label}
+                            {child.hot && (
+                              <span className={styles.hotIndicator}>Hot</span>
+                            )}
                           </Link>
                         )
                       )}
