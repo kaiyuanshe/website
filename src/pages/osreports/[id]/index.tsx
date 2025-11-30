@@ -1,82 +1,75 @@
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import { Button, Tag, App as AntdApp, Image } from 'antd';
-import {
-  ArrowLeft,
-  Calendar,
-  CheckCircle,
-  Edit,
-  Eye,
-  User,
-} from 'lucide-react';
-import Link from 'next/link';
-import styles from './index.module.css';
-import { useAuth } from '@/contexts/AuthContext';
-import { getArticleById, updateArticlePublishStatus } from '@/pages/api/article';
-import dayjs from 'dayjs';
-import { sanitizeMarkdown } from '@/lib/markdown';
-import CommentSection from '@/components/comments/CommentSection';
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import { Button, Tag, App as AntdApp, Image } from 'antd'
+import { ArrowLeft, Calendar, CheckCircle, Edit, Eye, User } from 'lucide-react'
+import Link from 'next/link'
+import styles from './index.module.css'
+import { useAuth } from '@/contexts/AuthContext'
+import { getArticleById, updateArticlePublishStatus } from '@/pages/api/article'
+import dayjs from 'dayjs'
+import { sanitizeMarkdown } from '@/lib/markdown'
+import CommentSection from '@/components/comments/CommentSection'
 
 export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format('YYYY-MM-DD HH:MM');
+  return dayjs(isoTime).format('YYYY-MM-DD HH:MM')
 }
 
 export default function ArticleDetailPage() {
-  const { message } = AntdApp.useApp();
-  const router = useRouter();
-  const { id } = router.query; // 路由参数应该叫 id，不是 ids
-  const rId = Array.isArray(id) ? id[0] : id;
+  const { message } = AntdApp.useApp()
+  const router = useRouter()
+  const { id } = router.query // 路由参数应该叫 id，不是 ids
+  const rId = Array.isArray(id) ? id[0] : id
 
-  const [article, setArticle] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
+  const [article, setArticle] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
   // 使用统一的认证上下文，避免重复调用 useSession
-  const { session, status } = useAuth();
+  const { session, status } = useAuth()
 
-  const permissions = session?.user?.permissions || [];
+  const permissions = session?.user?.permissions || []
 
   // parseMarkdown将返回的markdown转为html展示
-  const [articleContent, setArticleContent] = useState<string>('');
+  const [articleContent, setArticleContent] = useState<string>('')
 
   useEffect(() => {
     if (article?.content) {
-      sanitizeMarkdown(article.content).then((htmlContent) => {
-        setArticleContent(htmlContent);
-      });
+      sanitizeMarkdown(article.content).then(htmlContent => {
+        setArticleContent(htmlContent)
+      })
     }
-  }, [article?.content]);
+  }, [article?.content])
 
   const handleUpdatePublishStatus = async () => {
     try {
-      const result = await updateArticlePublishStatus(article.ID, 2);
+      const result = await updateArticlePublishStatus(article.ID, 2)
       if (result.success) {
-        router.reload();
-        message.success(result.message);
+        router.reload()
+        message.success(result.message)
       } else {
-        message.error(result.message || '审核出错');
+        message.error(result.message || '审核出错')
       }
     } catch {
-      message.error('审核出错，请重试');
+      message.error('审核出错，请重试')
     }
-  };
+  }
 
   useEffect(() => {
-    if (!router.isReady || !rId) return;
+    if (!router.isReady || !rId) return
 
     const fetchData = async () => {
-      setLoading(true);
+      setLoading(true)
       try {
-        const response = await getArticleById(rId);
-        setArticle(response?.data);
+        const response = await getArticleById(rId)
+        setArticle(response?.data)
       } catch {
-        message.error('加载失败');
-        setArticle(null);
+        message.error('加载失败')
+        setArticle(null)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, [router.isReady, id, message, rId]);
+    fetchData()
+  }, [router.isReady, id, message, rId])
 
   if (loading) {
     return (
@@ -84,7 +77,7 @@ export default function ArticleDetailPage() {
         <div className={styles.loadingSpinner}></div>
         <p>加载中...</p>
       </div>
-    );
+    )
   }
 
   // const isUnderReview = article?.publish_status === 1;
@@ -99,7 +92,7 @@ export default function ArticleDetailPage() {
           返回年度报告列表
         </Link>
       </div>
-    );
+    )
   }
 
   return (
@@ -113,7 +106,7 @@ export default function ArticleDetailPage() {
           </Link>
           <div className={styles.headerActions}>
             {status === 'authenticated' &&
-             permissions.includes('event:write') ? (
+            permissions.includes('event:write') ? (
               <Button
                 icon={<Edit size={16} className={styles.actionIcon} />}
                 className={styles.actionButton}
@@ -157,42 +150,52 @@ export default function ArticleDetailPage() {
               <div className={styles.metaItem}>
                 <Calendar className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  发布时间：{formatTime(article.publish_time || article.CreatedAt)}
+                  发布时间：
+                  {formatTime(article.publish_time || article.CreatedAt)}
                 </div>
               </div>
-               <div className={styles.metaItem}>
+              <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  原文连接：{article.source_link ? (
-                    <a 
-                      href={article.source_link as string} 
-                      target="_blank" 
+                  原文连接：
+                  {article.source_link ? (
+                    <a
+                      href={article.source_link as string}
+                      target="_blank"
                       rel="noopener noreferrer"
                       className={styles.sourceLink}
                     >
                       {article.source_link as string}
                     </a>
-                  ) : ''}
+                  ) : (
+                    ''
+                  )}
                 </div>
               </div>
-               <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  版权声明： {article.license || ''}
+              {article.license && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    版权声明： {article.license}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  作者：{article.author || article.publisher?.username || ''}
+              )}
+              {(article.author || article.publisher?.username) && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    作者：{article.author || article.publisher?.username}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  发布者：{article.publisher?.username || ''}
+              )}
+              {article.publisher?.username && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    发布者：{article.publisher.username}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles.metaItem}>
                 <Eye className={styles.metaIcon} />
                 <div className={styles.metaText}>
@@ -232,9 +235,9 @@ export default function ArticleDetailPage() {
             dangerouslySetInnerHTML={{ __html: articleContent }}
           />
         </div>
-        
+
         {/* 评论区域 */}
-        <CommentSection 
+        <CommentSection
           repo="kaiyuanshe/website"
           repoId="R_kgDOQHmDoA"
           category="General"
@@ -248,5 +251,5 @@ export default function ArticleDetailPage() {
         />
       </div>
     </div>
-  );
+  )
 }

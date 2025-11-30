@@ -45,20 +45,6 @@ export default function ArticleDetailPage() {
     }
   }, [article?.content]);
 
-  const handleUpdatePublishStatus = async () => {
-    try {
-      const result = await updateArticlePublishStatus(article.ID, 2);
-      if (result.success) {
-        router.reload();
-        message.success(result.message);
-      } else {
-        message.error(result.message || '审核出错');
-      }
-    } catch {
-      message.error('审核出错，请重试');
-    }
-  };
-
   useEffect(() => {
     if (!router.isReady || !rId) return;
 
@@ -122,17 +108,6 @@ export default function ArticleDetailPage() {
                 编辑
               </Button>
             ) : null}
-            {/* {article.publish_status === 1 &&
-              status === 'authenticated' &&
-              permissions.includes('event:review') ? (
-              <Button
-                icon={<CheckCircle size={16} className={styles.actionIcon} />}
-                className={styles.actionButton}
-                onClick={() => handleUpdatePublishStatus()}
-              >
-                审核通过
-              </Button>
-            ) : null} */}
           </div>
         </div>
       </div>
@@ -160,10 +135,11 @@ export default function ArticleDetailPage() {
                   发布时间：{formatTime(article.publish_time || article.CreatedAt)}
                 </div>
               </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  原文连接：{article.source_link ? (
+              {article.source_link && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    原文连接：
                     <a 
                       href={article.source_link as string} 
                       target="_blank" 
@@ -172,39 +148,49 @@ export default function ArticleDetailPage() {
                     >
                       {article.source_link as string}
                     </a>
-                  ) : ''}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  版权声明： {article.license || ''}
+              )}
+              {article.license && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    版权声明：{article.license}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  作者：{article.author || article.publisher?.username || ''}
+              )}
+              {(article.author || article.publisher?.username) && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    作者：{article.author || article.publisher?.username}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  发布者：{article.publisher?.username || ''}
+              )}
+              {article.publisher?.username && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    发布者：{article.publisher.username}
+                  </div>
                 </div>
-              </div>
-               <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  翻译：{article.translator || ''}
+              )}
+              {article.translator && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    翻译：{article.translator}
+                  </div>
                 </div>
-              </div>
-              <div className={styles.metaItem}>
-                <User className={styles.metaIcon} />
-                <div className={styles.metaText}>
-                  编辑：{article.editor || ''}
+              )}
+              {article.editor && (
+                <div className={styles.metaItem}>
+                  <User className={styles.metaIcon} />
+                  <div className={styles.metaText}>
+                    编辑：{article.editor}
+                  </div>
                 </div>
-              </div>
+              )}
               <div className={styles.metaItem}>
                 <Eye className={styles.metaIcon} />
                 <div className={styles.metaText}>

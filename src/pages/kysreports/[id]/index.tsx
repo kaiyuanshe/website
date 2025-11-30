@@ -161,10 +161,11 @@ export default function ArticleDetailPage() {
                   发布时间：{formatTime(article.publish_time || article.CreatedAt)}
                 </div>
               </div>
+              {article.source_link && (
                <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  原文连接：{article.source_link ? (
+                  原文连接：
                     <a 
                       href={article.source_link as string} 
                       target="_blank" 
@@ -173,27 +174,33 @@ export default function ArticleDetailPage() {
                     >
                       {article.source_link as string}
                     </a>
-                  ) : ''}
                 </div>
               </div>
+              )}
+              {article.license && (
                <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  版权声明： {article.license || ''}
+                  版权声明： {article.license}
                 </div>
               </div>
+              )}
+              {(article.author || article.publisher?.username) && (
               <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  作者：{article.author || article.publisher?.username || ''}
+                  作者：{article.author || article.publisher?.username}
                 </div>
               </div>
+              )}
+              {article.publisher?.username && (
               <div className={styles.metaItem}>
                 <User className={styles.metaIcon} />
                 <div className={styles.metaText}>
-                  发布者：{article.publisher?.username || ''}
+                  发布者：{article.publisher.username}
                 </div>
               </div>
+              )}
               <div className={styles.metaItem}>
                 <Eye className={styles.metaIcon} />
                 <div className={styles.metaText}>
