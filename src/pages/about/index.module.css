@@ -749,6 +749,64 @@
     flex-direction: column;
     align-items: center;
   }
+
+  /* Timeline Mobile Styles */
+  .timeline::before {
+    left: 2rem;
+  }
+  
+  .timelineItem {
+    flex-direction: row !important;
+    align-items: flex-start;
+  }
+  
+  .timelineContent {
+    width: calc(100% - 4rem);
+    margin-left: 4rem !important;
+    margin-right: 0 !important;
+  }
+  
+  .timelineContent::before {
+    left: -20px !important;
+    border-right-color: #e9ecef !important;
+    border-left-color: transparent !important;
+  }
+  
+  .timelineDot {
+    left: 2rem;
+  }
+
+  /* Honor Carousel Mobile Styles */
+  .honorCarousel {
+    margin-top: 1.5rem;
+  }
+  
+  .honorGrid {
+    gap: 1rem;
+    padding: 0.5rem 0 1.5rem 0;
+  }
+  
+  .honorImageContainer {
+    height: 120px;
+  }
+  
+  .honorTitle {
+    font-size: 0.9rem;
+  }
+  
+  .honorDescription {
+    font-size: 0.8rem;
+  }
+  
+  .honorIndicators {
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  
+  .honorIndicator {
+    width: 10px;
+    height: 10px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -852,4 +910,337 @@
   color: #6c757d;
   text-align: center;
   font-style: italic;
+}
+
+/* Timeline Styles */
+.timeline {
+  position: relative;
+  margin: 3rem 0;
+  padding: 2rem 0;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, #3498db, #2980b9);
+  transform: translateX(-50%);
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 3rem;
+  display: flex;
+  align-items: center;
+}
+
+.timelineLeft {
+  flex-direction: row-reverse;
+}
+
+.timelineRight {
+  flex-direction: row;
+}
+
+.timelineContent {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 45%;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.timelineContent:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.timelineLeft .timelineContent {
+  margin-right: 5%;
+}
+
+.timelineRight .timelineContent {
+  margin-left: 5%;
+}
+
+.timelineContent::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  transform: translateY(-50%);
+}
+
+.timelineLeft .timelineContent::before {
+  right: -20px;
+  border-left-color: #e9ecef;
+}
+
+.timelineRight .timelineContent::before {
+  left: -20px;
+  border-right-color: #e9ecef;
+}
+
+.timelineYear {
+  display: inline-block;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  letter-spacing: 0.5px;
+}
+
+.timelineTitle {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.timelineDescription {
+  color: #495057;
+  line-height: 1.6;
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.timelineDot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  background: #3498db;
+  border: 3px solid white;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 3px #3498db;
+  z-index: 10;
+}
+
+/* Honor Wall Styles - Carousel */
+.honorCarousel {
+  margin-top: 2rem;
+  position: relative;
+}
+
+.honorControls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.honorControlBtn {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+}
+
+.honorControlBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+}
+
+.honorPlayBtn {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+}
+
+.honorPlayBtn.playing {
+  background: linear-gradient(135deg, #27ae60, #229954);
+  box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
+}
+
+.honorPlayBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+}
+
+.honorPlayBtn.playing:hover {
+  box-shadow: 0 6px 16px rgba(39, 174, 96, 0.4);
+}
+
+.honorGridContainer {
+  overflow: hidden;
+  border-radius: 12px;
+  position: relative;
+}
+
+.honorGrid {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem 0 2rem 0;
+  transition: transform 0.5s ease-in-out;
+  will-change: transform;
+}
+
+.honorIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.honorIndicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #3498db;
+  background: rgba(52, 152, 219, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.honorIndicator.active {
+  background: #3498db;
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+.honorIndicator:hover {
+  background: rgba(52, 152, 219, 0.7);
+  transform: scale(1.1);
+}
+
+.honorCard {
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  flex: 0 0 auto;
+  width: calc(20% - 1.2rem);
+  min-width: 200px;
+}
+
+@media (max-width: 1024px) {
+  .honorCard {
+    width: calc(33.333% - 1rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .honorCard {
+    width: calc(50% - 0.75rem);
+  }
+}
+  
+  .honorGrid {
+    gap: 1rem;
+  }
+  
+  .honorControls {
+    gap: 0.75rem;
+  }
+  
+  .honorControlBtn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .honorPlayBtn {
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
+  }
+
+
+.honorCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.honorImageContainer {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.honorImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.honorImage:hover {
+  transform: scale(1.05);
+}
+
+.honorContent {
+  padding: 1rem;
+}
+
+.honorTitle {
+  color: #2c3e50;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.honorDate {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: white;
+  padding: 0.2rem 0.6rem;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+}
+
+.honorDescription {
+  color: #495057;
+  line-height: 1.5;
+  margin: 0;
+  font-size: 0.85rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }

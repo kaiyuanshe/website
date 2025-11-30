@@ -5,6 +5,9 @@ const AboutPage = () => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [imageAlt, setImageAlt] = useState<string>('')
   const [currentSlide, setCurrentSlide] = useState(0)
+  const [currentHonorIndex, setCurrentHonorIndex] = useState(0)
+  const [isHonorAutoPlaying, setIsHonorAutoPlaying] = useState(true)
+  const [itemsToShow, setItemsToShow] = useState(5)
 
   // 轮播图片数组
   const heroImages = [
@@ -26,6 +29,122 @@ const AboutPage = () => {
     }
   ]
 
+  // 发展历程数据
+  const timelineData = [
+    {
+      year: "2014",
+      title: "开源社成立",
+      description: "开源社（KAIYUANSHE®）成立，以'贡献、共识、共治'原则组成。与欧洲OSS-Watch合作，提供开源治理工具。",
+      position: "left"
+    },
+    {
+      year: "2015",
+      title: "首个年度报告",
+      description: "发布首版《中国开源生态系统年度报告》，主办Apache中国路演。",
+      position: "right"
+    },
+    {
+      year: "2016",
+      title: "加入OSI & 首届COSCon",
+      description: "加入Open Source Initiative(OSI)，成为首家中国成员。举办首届中国开源年会(COSCon)。",
+      position: "left"
+    },
+    {
+      year: "2017",
+      title: "教育组织成立",
+      description: "执委会下设立开源教育组、高校合作组等专注开源教育的工作组。",
+      position: "right"
+    },
+    {
+      year: "2018",
+      title: "开源教育论坛",
+      description: "在第三届中国开源年会上出品最早的开源教育分论坛。",
+      position: "left"
+    },
+    {
+      year: "2019",
+      title: "木兰许可证 & 教育基金",
+      description: "参与编制首个中英双语国际开源许可证'木兰宽松许可证'。在华东师范大学设立'中国开源软件教育基金'。",
+      position: "right"
+    },
+    {
+      year: "2020",
+      title: "开源人宣言 & 开源特训营",
+      description: "发布《开源人宣言》，推出《开源特训营》视频课程，参与首届'开源之夏'活动。",
+      position: "left"
+    },
+    {
+      year: "2021",
+      title: "开源公益计划",
+      description: "联合腾源会发起'WeOpen Good开源公益计划'，推动用开源技术赋能公益组织。",
+      position: "right"
+    },
+    {
+      year: "2022",
+      title: "标准制定参与",
+      description: "参与木兰开放作品许可证编制、《信息技术 开源 开源项目评估模型参考架构》标准制定。",
+      position: "left"
+    },
+    {
+      year: "2023",
+      title: "青少年开源论坛",
+      description: "在COSCon'23发起国内首个青少年开源论坛。连续参与Open Source Congress。",
+      position: "right"
+    },
+    {
+      year: "2024",
+      title: "OpenGood开源公益",
+      description: "发起'OpenGood开源公益'行动，获评'2024年中国开放科学优秀行动'。参与《开源大模型应用指南1.0》编写。",
+      position: "left"
+    },
+    {
+      year: "2025",
+      title: "主权AI圆桌 & 醒源大讲堂",
+      description: "受邀作为Linux基金会'主权AI圆桌'亚太区代表。发起'醒源大讲堂'系列线上专题讲座。",
+      position: "right"
+    }
+  ]
+
+  // 荣誉墙数据
+  const honorsData = [
+    {
+      image: "/img/about/honor-osi.webp",
+      title: "OSI首家中国成员",
+      date: "2016年1月",
+      description: "开源社加入Open Source Initiative(OSI)，成为OSI联盟的首家中国成员"
+    },
+    {
+      image: "/img/about/honor-community.webp", 
+      title: "年度开源社区",
+      date: "2023年",
+      description: "获选'开源创新榜单-年度开源社区'，由中国科协科学技术传播中心等联合评选"
+    },
+    {
+      image: "/img/about/honor-mulan.webp",
+      title: "木兰许可证通过OSI认证",
+      date: "2020年",
+      description: "推动木兰宽松许可证MulanPSL v2通过OSI认证，被批准为国际类别开源许可证"
+    },
+    {
+      image: "/img/about/honor-opengood.webp",
+      title: "中国开放科学优秀行动",
+      date: "2024年",
+      description: "OpenGood开源公益行动获评'2024年中国开放科学优秀行动'"
+    },
+    {
+      image: "/img/about/honor-coscon.webp",
+      title: "最受开发者欢迎技术活动",
+      date: "连续多年",
+      description: "COSCon中国开源年会连续多年荣获思否评选的'中国最受开发者欢迎的技术活动'"
+    },
+    {
+      image: "/img/about/honor-sovereign-ai.webp",
+      title: "主权AI圆桌亚太区代表",
+      date: "2025年",
+      description: "受邀作为Linux基金会'主权AI圆桌'的亚太区代表，参与国际议题对话"
+    }
+  ]
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroImages.length)
@@ -33,6 +152,36 @@ const AboutPage = () => {
 
     return () => clearInterval(timer)
   }, [heroImages.length])
+
+  // 响应式处理
+  useEffect(() => {
+    const handleResize = () => {
+      const newItemsToShow = window.innerWidth <= 768 ? 2 : window.innerWidth <= 1024 ? 3 : 5
+      setItemsToShow(newItemsToShow)
+      // 调整当前索引，防止超出范围
+      const maxIndex = Math.max(0, honorsData.length - newItemsToShow)
+      setCurrentHonorIndex(prev => Math.min(prev, maxIndex))
+    }
+    
+    handleResize() // 初始设置
+    window.addEventListener('resize', handleResize)
+    
+    return () => window.removeEventListener('resize', handleResize)
+  }, [honorsData.length])
+  
+  // 荣誉墙自动轮播
+  useEffect(() => {
+    if (!isHonorAutoPlaying) return
+    
+    const timer = setInterval(() => {
+      setCurrentHonorIndex((prev) => {
+        const maxIndex = Math.max(0, honorsData.length - itemsToShow)
+        return prev >= maxIndex ? 0 : prev + 1
+      })
+    }, 3000) // 每3秒切换一次
+
+    return () => clearInterval(timer)
+  }, [honorsData.length, isHonorAutoPlaying, itemsToShow])
 
   const openModal = (imageSrc: string, alt: string = '') => {
     setSelectedImage(imageSrc)
@@ -47,6 +196,16 @@ const AboutPage = () => {
   const goToSlide = (index: number) => {
     setCurrentSlide(index)
   }
+
+  // 荣誉墙轮播控制
+  const goToHonorSlide = (index: number) => {
+    setCurrentHonorIndex(index)
+    setIsHonorAutoPlaying(false)
+    setTimeout(() => setIsHonorAutoPlaying(true), 5000) // 5秒后恢复自动播放
+  }
+
+   
+ 
 
   return (
     <div className={styles.aboutPage}>
@@ -396,6 +555,86 @@ const AboutPage = () => {
               <h3>近期重要活动：</h3>
               <p>12月6至7日将举办第十届中国开源年会（COSCon'25）</p>
               <p>Open Source, Open Intelligence｜第十届中国开源年会议题征集正式启动！</p>
+            </div>
+          </section>
+
+          {/* Development Timeline Section */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitleCentered}>发展历程</h2>
+            <p className={styles.description}>
+              开源社自2014年成立以来，在开源治理、国际接轨、社区发展、项目孵化等方面取得了一系列重要进展
+            </p>
+            
+            <div className={styles.timeline}>
+              {timelineData.map((item, index) => (
+                <div 
+                  key={index} 
+                  className={`${styles.timelineItem} ${
+                    item.position === 'left' ? styles.timelineLeft : styles.timelineRight
+                  }`}
+                >
+                  <div className={styles.timelineContent}>
+                    <div className={styles.timelineYear}>{item.year}</div>
+                    <h4 className={styles.timelineTitle}>{item.title}</h4>
+                    <p className={styles.timelineDescription}>{item.description}</p>
+                  </div>
+                  <div className={styles.timelineDot}></div>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Honor Wall Section */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitleCentered}>荣誉墙</h2>
+            <p className={styles.description}>
+              十余年来，开源社获得了社会各界的认可，在开源领域取得了一系列重要荣誉和成就
+            </p>
+            
+            <div className={styles.honorCarousel}>
+              
+              
+              {/* 轮播容器 */}
+              <div className={styles.honorGridContainer}>
+                <div 
+                  className={styles.honorGrid}
+                  style={{
+                    transform: `translateX(-${currentHonorIndex * (100 / itemsToShow)}%)`
+                  }}
+                >
+                  {honorsData.map((honor, index) => (
+                    <div key={index} className={styles.honorCard}>
+                      <div className={styles.honorImageContainer}>
+                        <img 
+                          src={honor.image} 
+                          alt={honor.title} 
+                          className={styles.honorImage}
+                          onClick={() => openModal(honor.image, honor.title)}
+                        />
+                      </div>
+                      <div className={styles.honorContent}>
+                        <h4 className={styles.honorTitle}>{honor.title}</h4>
+                        <div className={styles.honorDate}>{honor.date}</div>
+                        <p className={styles.honorDescription}>{honor.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              
+              {/* 指示器 */}
+              <div className={styles.honorIndicators}>
+                {Array.from({ length: Math.max(1, honorsData.length - itemsToShow + 1) }).map((_, index) => (
+                  <button
+                    key={index}
+                    className={`${styles.honorIndicator} ${
+                      index === currentHonorIndex ? styles.active : ''
+                    }`}
+                    onClick={() => goToHonorSlide(index)}
+                    aria-label={`跳转到第${index + 1}组`}
+                  />
+                ))}
+              </div>
             </div>
           </section>
 
