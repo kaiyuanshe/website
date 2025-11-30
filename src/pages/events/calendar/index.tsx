@@ -244,11 +244,15 @@ const EventsCalendar: React.FC = () => {
                   hoverable
                   actions={[
                      <Button 
-                      key="share" 
+                      key="detail" 
                       type="text" 
                       icon={<Eye size={16} />}
                       onClick={() => {
-                       router.push(`/events/${event.ID}`)
+                        if (event.event_setting === 2 && event.bage_link) {
+                          window.open(event.bage_link, '_blank');
+                        } else {
+                          router.push(`/events/${event.ID}`);
+                        }
                       }}
                     >
                       查看详情
@@ -258,7 +262,10 @@ const EventsCalendar: React.FC = () => {
                       type="text" 
                       icon={<Share2 size={16} />}
                       onClick={() => {
-                        navigator.clipboard.writeText(`${window.location.origin}/events/${event.ID}`);
+                        const shareUrl = event.event_setting === 2 && event.bage_link 
+                          ? event.bage_link 
+                          : `${window.location.origin}/events/${event.ID}`;
+                        navigator.clipboard.writeText(shareUrl);
                       }}
                     >
                       分享
@@ -348,11 +355,21 @@ const EventsCalendar: React.FC = () => {
               </Button>
             ),
             selectedEvent && (
-              <Link href={`/events/${selectedEvent.ID}`} key="view">
-                <Button type="primary">
+              selectedEvent.event_setting === 2 && selectedEvent.bage_link ? (
+                <Button 
+                  key="view" 
+                  type="primary"
+                  onClick={() => window.open(selectedEvent.bage_link, '_blank')}
+                >
                   查看完整详情
                 </Button>
-              </Link>
+              ) : (
+                <Link href={`/events/${selectedEvent.ID}`} key="view">
+                  <Button type="primary">
+                    查看完整详情
+                  </Button>
+                </Link>
+              )
             ),
           ]}
           width={600}
