@@ -609,6 +609,9 @@
   color: #3498db;
   text-decoration: none;
   transition: color 0.3s ease;
+  word-break: break-all;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .list a:hover {
@@ -751,29 +754,59 @@
   }
 
   /* Timeline Mobile Styles */
+  .timeline {
+    margin: 2rem 0;
+    padding: 1rem 0;
+  }
+
   .timeline::before {
-    left: 2rem;
+    left: 1.5rem;
+    width: 1px;
   }
   
   .timelineItem {
     flex-direction: row !important;
     align-items: flex-start;
+    margin-bottom: 2rem;
   }
   
   .timelineContent {
-    width: calc(100% - 4rem);
-    margin-left: 4rem !important;
+    width: calc(100% - 3.5rem);
+    margin-left: 3.5rem !important;
     margin-right: 0 !important;
+    padding: 1rem;
+    border-radius: 8px;
   }
   
   .timelineContent::before {
-    left: -20px !important;
+    left: -15px !important;
     border-right-color: #e9ecef !important;
     border-left-color: transparent !important;
+    border-width: 8px;
   }
   
   .timelineDot {
-    left: 2rem;
+    left: 1.5rem;
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
+  }
+
+  .timelineYear {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .timelineTitle {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .timelineDescription {
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   /* Honor Carousel Mobile Styles */
@@ -782,30 +815,50 @@
   }
   
   .honorGrid {
-    gap: 1rem;
-    padding: 0.5rem 0 1.5rem 0;
+    gap: 0.75rem;
+    padding: 0.75rem 0 1rem 0;
+  }
+
+  .honorCard {
+    width: calc(50% - 0.375rem);
+    min-width: 160px;
   }
   
   .honorImageContainer {
-    height: 120px;
+    height: 100px;
+  }
+
+  .honorContent {
+    padding: 0.75rem;
   }
   
   .honorTitle {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+
+  .honorDate {
+    font-size: 0.7rem;
+    padding: 0.15rem 0.5rem;
+    margin-bottom: 0.5rem;
   }
   
   .honorDescription {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
   }
   
   .honorIndicators {
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
   }
   
   .honorIndicator {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
+    border-width: 1px;
   }
 }
 
@@ -843,6 +896,106 @@
   .indicator {
     width: 10px;
     height: 10px;
+  }
+
+  /* Ultra Mobile Timeline Styles */
+  .timeline {
+    margin: 1.5rem 0;
+    padding: 0.5rem 0;
+  }
+
+  .timeline::before {
+    left: 1rem;
+  }
+  
+  .timelineItem {
+    margin-bottom: 1.5rem;
+  }
+  
+  .timelineContent {
+    width: calc(100% - 2.5rem);
+    margin-left: 2.5rem !important;
+    padding: 0.75rem;
+  }
+  
+  .timelineDot {
+    left: 1rem;
+    width: 10px;
+    height: 10px;
+  }
+
+  .timelineYear {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .timelineTitle {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .timelineDescription {
+    font-size: 0.85rem;
+  }
+
+  /* Ultra Mobile Honor Carousel Styles */
+  .honorCarousel {
+    margin-top: 1rem;
+  }
+
+  .honorGrid {
+    gap: 0.5rem;
+    padding: 0.5rem 0;
+  }
+
+  .honorCard {
+    width: calc(100% - 0.25rem);
+    min-width: unset;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+  
+  .honorImageContainer {
+    height: 80px;
+  }
+
+  .honorContent {
+    padding: 0.5rem;
+  }
+  
+  .honorTitle {
+    font-size: 0.8rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .honorDate {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .honorDescription {
+    font-size: 0.7rem;
+    line-height: 1.2;
+  }
+
+  .honorIndicators {
+    gap: 0.3rem;
+    margin-top: 0.25rem;
+  }
+  
+  .honorIndicator {
+    width: 6px;
+    height: 6px;
+  }
+
+  .description {
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  .sectionTitleCentered {
+    font-size: 1.8rem;
   }
 }
 
