@@ -2,20 +2,13 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { ChevronLeft, ChevronRight, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import styles from './Carousel.module.css'
-
-const images = [
-  '/img/rotation/activity1.png',
-  '/img/rotation/activity2.png', 
-  '/img/rotation/activity3.png',
-  '/img/rotation/activity4.png',
-  '/img/rotation/activity5.png'
-]
+import { CarouselImage, carouselImages } from '@/data/home'
 
 export default function Carousel() {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
   const scrollLeft = () => {
@@ -32,12 +25,22 @@ export default function Carousel() {
     }
   }
 
-  const openImageModal = (imageSrc: string) => {
-    setSelectedImage(imageSrc)
+  const openImageModal = (image: CarouselImage) => {
+    setSelectedImage(image)
   }
 
   const closeImageModal = () => {
     setSelectedImage(null)
+  }
+
+  const handleDetailClick = () => {
+    if (selectedImage) {
+      if (selectedImage.openInNewTab) {
+        window.open(selectedImage.detailUrl, '_blank')
+      } else {
+        window.location.href = selectedImage.detailUrl
+      }
+    }
   }
 
   return (
@@ -53,15 +56,15 @@ export default function Carousel() {
         
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
           <div className={styles.imageGrid}>
-            {images.map((src, index) => (
+            {carouselImages.map((image, index) => (
               <div 
                 key={index} 
                 className={styles.imageWrapper}
-                onClick={() => openImageModal(src)}
+                onClick={() => openImageModal(image)}
               >
                 <Image 
-                  src={src} 
-                  alt={`Activity ${index + 1}`}
+                  src={image.src} 
+                  alt={image.alt || `Activity ${index + 1}`}
                   width={400}
                   height={300}
                   className={styles.image}
@@ -90,13 +93,23 @@ export default function Carousel() {
             >
               <X size={24} />
             </button>
-            <Image 
-              src={selectedImage} 
-              alt="Enlarged view"
-              width={800}
-              height={600}
-              className={styles.modalImage}
-            />
+            <div className={styles.imageContainer}>
+              <Image 
+                src={selectedImage.src} 
+                alt={selectedImage.alt || "Enlarged view"}
+                width={800}
+                height={600}
+                className={styles.modalImage}
+              />
+              <button 
+                className={styles.detailButton}
+                onClick={handleDetailClick}
+                aria-label="View details"
+              >
+                <ExternalLink size={16} />
+                查看详情
+              </button>
+            </div>
           </div>
         </div>
       )}
