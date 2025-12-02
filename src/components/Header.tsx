@@ -1,11 +1,12 @@
 import {
   ChevronDown,
   Menu as MenuIcon,
-  Search,
-  X,
   User,
   LogOut
 } from 'lucide-react'
+
+import { Avatar } from 'antd'
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
@@ -1031,7 +1032,7 @@ export default function Header() {
                       className={styles.userAvatar}
                     />
                   ) : (
-                    <User className={styles.userIcon} />
+                    <Avatar  icon={<User />} />
                   )}
                 </div>
 

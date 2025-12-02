@@ -44,11 +44,10 @@
 }
 
 .navItem {
- 
   display: flex;
   align-items: center;
   gap: 0.25rem;
-  padding:1.5rem 1rem;
+  padding: 1.5rem 1rem;
   color: #4b5563;
   font-size: 0.95rem;
   font-weight: 600;
@@ -186,9 +185,9 @@
   align-items: center;
   padding: 0.5rem 1rem;
   background-color: transparent;
-  color: #2563eb;
+  color: var(--primary-500);
   text-decoration: none;
-  border: 2px solid #2563eb;
+  border: 2px solid var(--primary-500);
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 600;
@@ -197,7 +196,7 @@
 }
 
 .joinUsButton:hover {
-  background-color: #2563eb;
+  background-color: var(--primary-500);
   color: white;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
@@ -807,7 +806,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
