@@ -101,6 +101,9 @@
     "simplified_chinese": "简体中文",
     "english": "English"
   },
+  "common": {
+    "join_us": "Join Us"
+  },
   "homepage": {
     "hero": {
       "title": "KaiYuanShe",
@@ -233,7 +236,11 @@
   "footer": {
     "title": "KaiYuanShe",
     "description": "KaiYuanShe is a one-stop plaza that aggregates open source events, communities, articles, and developer data.",
-    "copyright": "&copy; 2025 KaiYuanShe. All rights reserved"
+    "copyright": "© 2025 KaiYuanShe. All rights reserved",
+    "become_volunteer": "Become a Volunteer",
+    "follow_wechat_title": "Follow KaiYuanShe WeChat",
+    "wechat_qr_alt": "KaiYuanShe WeChat QR Code",
+    "wechat_qr_description": "Scan QR code to follow KaiYuanShe WeChat"
   },
   "errors": {
     "fetchDapps": "Failed to get DApps list:"

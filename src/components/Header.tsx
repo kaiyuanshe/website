@@ -1,9 +1,4 @@
-import {
-  ChevronDown,
-  Menu as MenuIcon,
-  User,
-  LogOut
-} from 'lucide-react'
+import { ChevronDown, Menu as MenuIcon, User, LogOut } from 'lucide-react'
 
 import { Avatar } from 'antd'
 
@@ -17,7 +12,6 @@ import LanguageSwitcher from './LanguageSwitcher'
 import { useTranslation } from '../hooks/useTranslation'
 import { mainNavItems, type MenuItem } from '../data/navigation'
 import styles from './Header.module.css'
-
 
 interface SearchResult {
   item: MenuItem & { label: string; description?: string }
@@ -49,7 +43,7 @@ export default function Header() {
       description: item.descriptionKey ? t(item.descriptionKey) : undefined,
       children: item.children?.map(translateMenuItem)
     })
-    
+
     return mainNavItems.map(translateMenuItem)
   }, [t])
 
@@ -89,59 +83,6 @@ export default function Header() {
 
     return 0
   }
-
-  // 扁平化菜单项并搜索 (目前已注释，保留逻辑以备后用)
-  // const searchResults = useMemo(() => {
-  //   if (!searchQuery.trim()) return []
-
-  //   const results: SearchResult[] = []
-
-  //   const searchInItems = (items: (MenuItem & { label: string; description?: string })[], parentLabel?: string) => {
-  //     items.forEach(item => {
-  //       // 搜索标签
-  //       const labelScore = fuzzySearch(searchQuery, item.label)
-  //       if (labelScore > 0) {
-  //         results.push({
-  //           item,
-  //           parentLabel,
-  //           matchType: 'label',
-  //           score: labelScore
-  //         })
-  //       }
-
-  //       // 搜索描述
-  //       if (item.description) {
-  //         const descScore = fuzzySearch(searchQuery, item.description)
-  //         if (descScore > 0) {
-  //           results.push({
-  //             item,
-  //             parentLabel,
-  //             matchType: 'description',
-  //             score: descScore * 0.8 // 描述匹配权重略低
-  //           })
-  //         }
-  //       }
-
-  //       // 递归搜索子菜单
-  //       if (item.children) {
-  //         searchInItems(item.children, item.label)
-  //       }
-  //     })
-  //   }
-
-  //   searchInItems(translatedNavItems)
-
-  //   // 按分数排序，去重
-  //   const uniqueResults = results.reduce((acc, current) => {
-  //     const existing = acc.find(r => r.item.key === current.item.key)
-  //     if (!existing || existing.score < current.score) {
-  //       return [...acc.filter(r => r.item.key !== current.item.key), current]
-  //     }
-  //     return acc
-  //   }, [] as SearchResult[])
-
-  //   return uniqueResults.sort((a, b) => b.score - a.score).slice(0, 8) // 最多显示8个结果
-  // }, [searchQuery, translatedNavItems])
 
   // 处理下拉菜单鼠标事件
   const handleMouseEnter = useCallback((key: string) => {
@@ -248,7 +189,15 @@ export default function Header() {
   // }, [router])
 
   // CNCF风格下拉菜单组件
-  const NavDropdown = ({ item }: { item: MenuItem & { label: string; description?: string; children?: (MenuItem & { label: string; description?: string })[] } }) => {
+  const NavDropdown = ({
+    item
+  }: {
+    item: MenuItem & {
+      label: string
+      description?: string
+      children?: (MenuItem & { label: string; description?: string })[]
+    }
+  }) => {
     const isActive = activeDropdown === item.key
 
     return (
@@ -292,7 +241,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'basic')
-                        .map(child =>
+                        .map((child: any) =>
                           child.key === 'contact' ? (
                             <a
                               key={child.key}
@@ -344,7 +293,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'brand')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -377,7 +326,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'basic')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -406,7 +355,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'policies')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -439,7 +388,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'recognition')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -468,7 +417,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'cooperation')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -497,7 +446,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'reports')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -530,7 +479,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'annual')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -559,7 +508,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'calendar')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -592,7 +541,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'main')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -621,7 +570,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'tech')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -654,7 +603,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'content')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -683,7 +632,7 @@ export default function Header() {
                     <div className={styles.aboutColumn}>
                       {item.children
                         ?.filter(child => child.group === 'brand')
-                        .map(child => (
+                        .map((child: any) => (
                           <Link
                             key={child.key}
                             href={child.href || '/'}
@@ -712,7 +661,7 @@ export default function Header() {
                   </>
                 ) : (
                   // 其他菜单的正常布局
-                  item.children?.map(child => (
+                  item.children?.map((child: any) => (
                     <Link
                       key={child.key}
                       href={child.href || '/'}
@@ -770,7 +719,7 @@ export default function Header() {
           <div className={styles.headerActions}>
             {/* 加入我们按钮 */}
             <Link href="#" className={styles.joinUsButton}>
-              加入我们
+              {t('common.join_us')}
             </Link>
 
             {/* 语言切换器 */}
@@ -797,7 +746,7 @@ export default function Header() {
                       className={styles.userAvatar}
                     />
                   ) : (
-                    <Avatar  icon={<User />} />
+                    <Avatar icon={<User />} />
                   )}
                 </div>
 
@@ -916,7 +865,7 @@ export default function Header() {
                   className={styles.mobileJoinUsButton}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  加入我们
+                  {t('common.join_us')}
                 </Link>
               </div>
 
@@ -993,33 +942,39 @@ export default function Header() {
                   </div>
                   {item.children && (
                     <div className={styles.mobileMenuItems}>
-                      {item.children.map((child: MenuItem & { label: string; description?: string }) =>
-                        child.key === 'contact' ? (
-                          <a
-                            key={child.key}
-                            href={child.href || '/about'}
-                            className={styles.mobileMenuItem}
-                            onClick={e => {
-                              setMobileMenuOpen(false)
-                              handleContactClick(e)
-                            }}
-                          >
-                            {child.label}
-                          </a>
-                        ) : (
-                          <Link
-                            key={child.key}
-                            href={child.href || '/'}
-                            className={styles.mobileMenuItem}
-                            onClick={() => setMobileMenuOpen(false)}
-                            target={child.target}
-                          >
-                            {child.label}
-                            {child.hot && (
-                              <span className={styles.hotIndicator}>Hot</span>
-                            )}
-                          </Link>
-                        )
+                      {item.children.map(
+                        (
+                          child: MenuItem & {
+                            label: string
+                            description?: string
+                          }
+                        ) =>
+                          child.key === 'contact' ? (
+                            <a
+                              key={child.key}
+                              href={child.href || '/about'}
+                              className={styles.mobileMenuItem}
+                              onClick={e => {
+                                setMobileMenuOpen(false)
+                                handleContactClick(e)
+                              }}
+                            >
+                              {child.label}
+                            </a>
+                          ) : (
+                            <Link
+                              key={child.key}
+                              href={child.href || '/'}
+                              className={styles.mobileMenuItem}
+                              onClick={() => setMobileMenuOpen(false)}
+                              target={child.target}
+                            >
+                              {child.label}
+                              {child.hot && (
+                                <span className={styles.hotIndicator}>Hot</span>
+                              )}
+                            </Link>
+                          )
                       )}
                     </div>
                   )}

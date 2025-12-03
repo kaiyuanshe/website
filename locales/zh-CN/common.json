@@ -101,6 +101,9 @@
     "simplified_chinese": "简体中文",
     "english": "English"
   },
+  "common": {
+    "join_us": "加入我们"
+  },
   "homepage": {
     "hero": {
       "title": "开源社",
@@ -233,7 +236,11 @@
   "footer": {
     "title": "开源社",
     "description": "开源社是一个聚合开源活动、社区、文章和开发者数据的一站式广场。",
-    "copyright": "&copy; 2025 开源社. 保留所有权利"
+    "copyright": "© 2025 开源社. 保留所有权利",
+    "become_volunteer": "成为志愿者",
+    "follow_wechat_title": "关注开源社公众号",
+    "wechat_qr_alt": "开源社公众号二维码",
+    "wechat_qr_description": "扫描二维码关注开源社公众号"
   },
   "errors": {
     "fetchDapps": "获取 DApps 列表失败:"
