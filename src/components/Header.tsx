@@ -14,21 +14,13 @@ import { signOut } from 'next-auth/react'
 import { useAuth } from '../contexts/AuthContext'
 import { useRouter } from 'next/router'
 import LanguageSwitcher from './LanguageSwitcher'
+import { useTranslation } from '../hooks/useTranslation'
+import { mainNavItems, type MenuItem } from '../data/navigation'
 import styles from './Header.module.css'
 
-interface MenuItem {
-  key: string
-  label: string
-  href?: string
-  description?: string
-  children?: MenuItem[]
-  group?: string
-  target?: string
-  hot?: boolean
-}
 
 interface SearchResult {
-  item: MenuItem
+  item: MenuItem & { label: string; description?: string }
   parentLabel?: string
   matchType: 'label' | 'description'
   score: number
@@ -45,252 +37,21 @@ export default function Header() {
   const userMenuRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
-  // 获取用户认证状态
+  // 获取用户认证状态和翻译函数
   const { session, isAuthenticated, isLoading } = useAuth()
+  const { t } = useTranslation()
 
-  // 主导航菜单配置 - 按照开源社新结构
-  const mainNavItems = useMemo(
-    () => [
-      {
-        key: 'about',
-        label: '关于我们',
-        children: [
-          {
-            key: 'intro',
-            label: '开源社简介',
-            href: '/about',
-            description: '了解开源社的历史、使命和发展历程',
-            group: 'basic'
-          },
-
-          {
-            key: 'board',
-            label: '理事会',
-            href: '/department/board',
-            description: '开源社理事会成员介绍',
-            group: 'basic'
-          },
-          {
-            key: 'advisory',
-            label: '顾问委员会',
-            href: '/department/advisory',
-            description: '顾问委员会成员介绍',
-            group: 'basic'
-          },
-          {
-            key: 'legal',
-            label: '法律咨询委员会',
-            href: '/department/legal',
-            description: '法律咨询委员会介绍',
-            group: 'basic'
-          },
-
-          {
-            key: 'executive',
-            label: '执行委员会',
-            href: '/department/executive',
-            description: '执行委员会介绍',
-            group: 'brand'
-          },
-          {
-            key: 'project-committee',
-            label: '项目委员会',
-            href: '/department/project',
-            description: '项目委员会介绍',
-            group: 'brand'
-          },
-
-          {
-            key: 'brand',
-            label: '品牌资源',
-            href: '/brand',
-            description: '开源社品牌资源',
-            group: 'brand'
-          }
-        ]
-      },
-      {
-        key: 'governance',
-        label: '社区治理',
-        children: [
-          {
-            key: 'charter',
-            label: '开源社章程',
-            href: '/charter',
-            description: '开源社的章程和管理制度',
-            group: 'basic'
-          },
-          {
-            key: 'open-source-manifesto',
-            label: '开源人宣言',
-            href: '/governance/open-source-manifesto',
-            description: '开源人宣言',
-            group: 'basic'
-          },
-
-          {
-            key: 'code-of-conduct',
-            label: '开源社行为守则',
-            href: '/governance/code-of-conduct',
-            description: '社区行为准则和规范',
-            group: 'policies'
-          },
-
-          {
-            key: 'annual-report',
-            label: '开源社年度报告',
-            href: '/kysreports',
-            description: '查看开源社的年度工作报告和成果',
-            group: 'policies',
-            hot: true
-          }
-        ]
-      },
-      {
-        key: 'community-development',
-        label: '社区发展',
-        children: [
-          {
-            key: 'partners',
-            label: '合作伙伴',
-            href: '/partners',
-            description: '年度伙伴、合作媒体、合作社区',
-            group: 'recognition'
-          },
-          {
-            key: 'members',
-            label: '正式成员',
-            href: '/department/members',
-            description: '查看开源社正式成员列表',
-            group: 'recognition'
-          },
-          {
-            key: 'star',
-            label: '开源之星',
-            href: '/community/star',
-            description: '开源之星获奖者',
-            group: 'recognition'
-          },
-          {
-            key: 'volunteers',
-            label: '年度优秀志愿者',
-            href: '/community/volunteer',
-            description: '年度优秀志愿者表彰',
-            group: 'recognition'
-          },
-          {
-            key: 'coscon-star',
-            label: 'COSCon之星',
-            href: '/community/coscon',
-            description: 'COSCon会议之星',
-            group: 'cooperation'
-          },
-          {
-            key: 'cooperation-star',
-            label: '社区合作之星',
-            href: '/community/cooperation',
-            description: '社区合作之星获奖者',
-            group: 'cooperation'
-          },
-          {
-            key: 'kcc',
-            label: '开源社城市社区（KCC）',
-            href: '/community',
-            description: '各地开源社城市社区',
-            group: 'cooperation'
-          },
-
-          {
-            key: 'china-oss-report',
-            label: '中国开源年度报告',
-            href: '/osreports',
-            description: '中国开源年度报告',
-            group: 'reports',
-            hot: true
-          },
-          {
-            key: 'china-oss-pioneer',
-            label: '中国开源先锋榜',
-            href: '/community/pioneer',
-            description: '中国开源先锋榜',
-            group: 'reports',
-            hot: true
-          },
-          {
-            key: 'china-oss-power',
-            label: '中国开源码力榜',
-            href: 'https://opensource.win/',
-            description: '中国开源码力榜',
-            group: 'reports',
-            target: '_blank'
-          }
-        ]
-      },
-      {
-        key: 'events',
-        label: '开源活动',
-        children: [
-          {
-            key: 'coscon',
-            label: '中国开源年会',
-            href: '/events/coscon',
-            description: '中国最大的开源技术年度盛会',
-            group: 'annual',
-            hot: true
-          },
-          {
-            key: 'cooperation-activities',
-            label: '社区合作活动',
-            href: '/events',
-            description: '与其他开源社区的合作项目和活动',
-            group: 'annual'
-          },
-          {
-            key: 'calendar',
-            label: '活动日历',
-            href: '/events/calendar',
-            description: '查看即将举行的开源活动和会议',
-            group: 'calendar'
-          }
-        ]
-      },
-      // {
-      //   key: 'projects',
-      //   label: '开源项目',
-      //   children: [
-      //     {
-      //       key: 'china-oss-map',
-      //       label: '中国开源地图',
-      //       href: '/organization',
-      //       description: '展示中国开源项目和组织的分布情况',
-      //       group: 'main'
-      //     },
-
-      //   ]
-      // },
-      {
-        key: 'articles-media',
-        label: '博客&公告',
-        children: [
-          {
-            key: 'articles',
-            label: '博客',
-            href: '/blogs',
-            description: '阅读最新的博客信息',
-            group: 'content'
-          },
-          {
-            key: 'notice',
-            label: '公告',
-            href: '/announcement',
-            description: '获取最新公告',
-            group: 'brand'
-          }
-        ]
-      }
-    ],
-    []
-  )
+  // 将导航数据转换为包含翻译的格式
+  const translatedNavItems = useMemo(() => {
+    const translateMenuItem = (item: MenuItem) => ({
+      ...item,
+      label: t(item.labelKey),
+      description: item.descriptionKey ? t(item.descriptionKey) : undefined,
+      children: item.children?.map(translateMenuItem)
+    })
+    
+    return mainNavItems.map(translateMenuItem)
+  }, [t])
 
   // 模糊搜索算法
   const fuzzySearch = (query: string, text: string): number => {
@@ -329,58 +90,58 @@ export default function Header() {
     return 0
   }
 
-  // 扁平化菜单项并搜索
-  const searchResults = useMemo(() => {
-    if (!searchQuery.trim()) return []
+  // 扁平化菜单项并搜索 (目前已注释，保留逻辑以备后用)
+  // const searchResults = useMemo(() => {
+  //   if (!searchQuery.trim()) return []
 
-    const results: SearchResult[] = []
+  //   const results: SearchResult[] = []
 
-    const searchInItems = (items: MenuItem[], parentLabel?: string) => {
-      items.forEach(item => {
-        // 搜索标签
-        const labelScore = fuzzySearch(searchQuery, item.label)
-        if (labelScore > 0) {
-          results.push({
-            item,
-            parentLabel,
-            matchType: 'label',
-            score: labelScore
-          })
-        }
+  //   const searchInItems = (items: (MenuItem & { label: string; description?: string })[], parentLabel?: string) => {
+  //     items.forEach(item => {
+  //       // 搜索标签
+  //       const labelScore = fuzzySearch(searchQuery, item.label)
+  //       if (labelScore > 0) {
+  //         results.push({
+  //           item,
+  //           parentLabel,
+  //           matchType: 'label',
+  //           score: labelScore
+  //         })
+  //       }
 
-        // 搜索描述
-        if (item.description) {
-          const descScore = fuzzySearch(searchQuery, item.description)
-          if (descScore > 0) {
-            results.push({
-              item,
-              parentLabel,
-              matchType: 'description',
-              score: descScore * 0.8 // 描述匹配权重略低
-            })
-          }
-        }
+  //       // 搜索描述
+  //       if (item.description) {
+  //         const descScore = fuzzySearch(searchQuery, item.description)
+  //         if (descScore > 0) {
+  //           results.push({
+  //             item,
+  //             parentLabel,
+  //             matchType: 'description',
+  //             score: descScore * 0.8 // 描述匹配权重略低
+  //           })
+  //         }
+  //       }
 
-        // 递归搜索子菜单
-        if (item.children) {
-          searchInItems(item.children, item.label)
-        }
-      })
-    }
+  //       // 递归搜索子菜单
+  //       if (item.children) {
+  //         searchInItems(item.children, item.label)
+  //       }
+  //     })
+  //   }
 
-    searchInItems(mainNavItems)
+  //   searchInItems(translatedNavItems)
 
-    // 按分数排序，去重
-    const uniqueResults = results.reduce((acc, current) => {
-      const existing = acc.find(r => r.item.key === current.item.key)
-      if (!existing || existing.score < current.score) {
-        return [...acc.filter(r => r.item.key !== current.item.key), current]
-      }
-      return acc
-    }, [] as SearchResult[])
+  //   // 按分数排序，去重
+  //   const uniqueResults = results.reduce((acc, current) => {
+  //     const existing = acc.find(r => r.item.key === current.item.key)
+  //     if (!existing || existing.score < current.score) {
+  //       return [...acc.filter(r => r.item.key !== current.item.key), current]
+  //     }
+  //     return acc
+  //   }, [] as SearchResult[])
 
-    return uniqueResults.sort((a, b) => b.score - a.score).slice(0, 8) // 最多显示8个结果
-  }, [searchQuery, mainNavItems])
+  //   return uniqueResults.sort((a, b) => b.score - a.score).slice(0, 8) // 最多显示8个结果
+  // }, [searchQuery, translatedNavItems])
 
   // 处理下拉菜单鼠标事件
   const handleMouseEnter = useCallback((key: string) => {
@@ -480,14 +241,14 @@ export default function Header() {
     }
   }
 
-  const handleSearchChange = useCallback((e: any) => {
-    console.log(e.target.value)
-    setSearchQuery(e.target.value)
-    router.push('/blogs?keyword=' + e.target.value)
-  }, [])
+  // const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+  //   console.log(e.target.value)
+  //   setSearchQuery(e.target.value)
+  //   router.push('/blogs?keyword=' + e.target.value)
+  // }, [router])
 
   // CNCF风格下拉菜单组件
-  const NavDropdown = ({ item }: { item: MenuItem }) => {
+  const NavDropdown = ({ item }: { item: MenuItem & { label: string; description?: string; children?: (MenuItem & { label: string; description?: string })[] } }) => {
     const isActive = activeDropdown === item.key
 
     return (
@@ -1000,7 +761,7 @@ export default function Header() {
 
           {/* 桌面导航菜单 */}
           <nav className={styles.nav}>
-            {mainNavItems.map(item => (
+            {translatedNavItems.map(item => (
               <NavDropdown key={item.key} item={item} />
             ))}
           </nav>
@@ -1225,14 +986,14 @@ export default function Header() {
                 )}
               </div>
 
-              {mainNavItems.map(item => (
+              {translatedNavItems.map(item => (
                 <div key={item.key} className={styles.mobileMenuSection}>
                   <div className={styles.mobileMenuSectionTitle}>
                     {item.label}
                   </div>
                   {item.children && (
                     <div className={styles.mobileMenuItems}>
-                      {item.children.map(child =>
+                      {item.children.map((child: MenuItem & { label: string; description?: string }) =>
                         child.key === 'contact' ? (
                           <a
                             key={child.key}
