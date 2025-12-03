@@ -102,7 +102,13 @@
     "english": "English"
   },
   "common": {
-    "join_us": "加入我们"
+    "join_us": "加入我们",
+    "loading": "加载中...",
+    "user_avatar": "用户头像",
+    "profile": "个人中心",
+    "sign_out": "退出登录",
+    "login": "登录",
+    "menu": "菜单"
   },
   "homepage": {
     "hero": {

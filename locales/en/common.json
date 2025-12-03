@@ -102,7 +102,13 @@
     "english": "English"
   },
   "common": {
-    "join_us": "Join Us"
+    "join_us": "Join Us",
+    "loading": "Loading...",
+    "user_avatar": "User avatar",
+    "profile": "Profile",
+    "sign_out": "Sign out",
+    "login": "Login",
+    "menu": "Menu"
   },
   "homepage": {
     "hero": {

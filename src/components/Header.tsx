@@ -727,7 +727,7 @@ export default function Header() {
 
             {/* 用户认证区域 */}
             {isLoading ? (
-              <div className={styles.loginButton}>加载中...</div>
+              <div className={styles.loginButton}>{t('common.loading')}</div>
             ) : isAuthenticated && session?.user ? (
               <div className={styles.userMenu} ref={userMenuRef}>
                 <div
@@ -739,7 +739,7 @@ export default function Header() {
                     <Image
                       src={session.user.avatar || session.user.image!}
                       alt={
-                        session.user.name || session.user.username || '用户头像'
+                        session.user.name || session.user.username || t('common.user_avatar')
                       }
                       width={38}
                       height={38}
@@ -770,14 +770,14 @@ export default function Header() {
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <User className={styles.userDropdownIcon} />
-                        个人中心
+                        {t('common.profile')}
                       </Link>
                       <button
                         className={styles.userDropdownItem}
                         onClick={handleSignOut}
                       >
                         <LogOut className={styles.userDropdownIcon} />
-                        退出登录
+                        {t('common.sign_out')}
                       </button>
                     </div>
                   </div>
@@ -785,7 +785,7 @@ export default function Header() {
               </div>
             ) : (
               <Link href="/login" className={styles.loginButton}>
-                登录
+                {t('common.login')}
               </Link>
             )}
 
@@ -849,7 +849,7 @@ export default function Header() {
           />
           <div className={styles.mobileMenuContent}>
             <div className={styles.mobileMenuHeader}>
-              <div className={styles.mobileMenuTitle}>菜单</div>
+              <div className={styles.mobileMenuTitle}>{t('common.menu')}</div>
               <button
                 className={styles.mobileMenuClose}
                 onClick={() => setMobileMenuOpen(false)}
@@ -877,7 +877,7 @@ export default function Header() {
               {/* 移动端用户认证区域 */}
               <div className={styles.mobileMenuSection}>
                 {isLoading ? (
-                  <div className={styles.mobileLoginButton}>加载中...</div>
+                  <div className={styles.mobileLoginButton}>{t('common.loading')}</div>
                 ) : isAuthenticated && session?.user ? (
                   <div className={styles.mobileUserSection}>
                     <div className={styles.mobileUserInfo}>
@@ -887,7 +887,7 @@ export default function Header() {
                           alt={
                             session.user.name ||
                             session.user.username ||
-                            '用户头像'
+                            t('common.user_avatar')
                           }
                           width={40}
                           height={40}
@@ -911,7 +911,7 @@ export default function Header() {
                         className={styles.mobileUserAction}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        个人中心
+                        {t('common.profile')}
                       </Link>
                       <button
                         className={styles.mobileUserAction}
@@ -920,7 +920,7 @@ export default function Header() {
                           handleSignOut()
                         }}
                       >
-                        退出登录
+                        {t('common.sign_out')}
                       </button>
                     </div>
                   </div>
@@ -930,7 +930,7 @@ export default function Header() {
                     className={styles.mobileLoginButton}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    登录
+                    {t('common.login')}
                   </Link>
                 )}
               </div>
