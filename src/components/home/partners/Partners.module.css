@@ -121,6 +121,7 @@
 
 .partnersTrack {
   display: flex;
+  padding: 20px 0 0;
   gap: 3rem;
   width: max-content;
 }
