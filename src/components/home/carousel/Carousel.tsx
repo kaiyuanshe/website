@@ -6,8 +6,10 @@ import { ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import styles from './Carousel.module.css'
 import { CarouselImage, carouselImages } from '@/data/home'
+import { useTranslation } from '../../../hooks/useTranslation'
 
 export default function Carousel() {
+  const { t } = useTranslation()
   const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
 
@@ -107,7 +109,7 @@ export default function Carousel() {
                 aria-label="View details"
               >
                 <ExternalLink size={16} />
-                查看详情
+{t('homepage.carousel.viewDetails')}
               </button>
             </div>
           </div>

@@ -68,6 +68,9 @@
       "heroHighlight": "Rooted in China, contributing globally,",
       "heroSubtext": "promoting open source"
     },
+    "carousel": {
+      "viewDetails": "View Details"
+    },
     "events": {
       "title": "Community Events",
       "description": "Discover exciting events, connect with more open source",
@@ -101,9 +104,11 @@
       "blockNumber01": "01",
       "blockNumber02": "02",
       "blockNumber03": "03",
+      "blockNumber04": "04",
       "ourMission": "Our Mission",
       "ourPrinciples": "Our Principles",
       "ourProjects": "Our Projects",
+      "ourPartners": "Our Partners",
       "missions": {
         "governance": {
           "title": "Open Source Governance",

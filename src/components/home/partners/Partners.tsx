@@ -3,8 +3,10 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { partnersRawData } from '@/data/partners'
 import styles from './Partners.module.css'
+import { useTranslation } from '../../../hooks/useTranslation'
 
 export default function PartnersSection() {
+  const { t } = useTranslation()
   const scrollRef1 = useRef<HTMLDivElement>(null)
   const scrollRef2 = useRef<HTMLDivElement>(null)
 
@@ -107,8 +109,8 @@ export default function PartnersSection() {
       <div className={styles.container}>
         <div className={styles.partnersBlock}>
           <div className={styles.blockHeader}>
-            <div className={styles.blockNumber}>04</div>
-            <h2 className={styles.blockTitle}>我们的合作伙伴</h2>
+            <div className={styles.blockNumber}>{t('homepage.mission.blockNumber04')}</div>
+            <h2 className={styles.blockTitle}>{t('homepage.mission.ourPartners')}</h2>
             <div className={styles.blockDivider}></div>
           </div>
           

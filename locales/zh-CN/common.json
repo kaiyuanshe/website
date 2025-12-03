@@ -68,6 +68,9 @@
       "heroHighlight": "立足中国，贡献全球，",
       "heroSubtext": "推动开源成为新时代生活方式。"
     },
+    "carousel": {
+      "viewDetails": "查看详情"
+    },
     "events": {
       "title": "社区活动",
       "description": "发现精彩活动，链接更多开源",
@@ -101,9 +104,11 @@
       "blockNumber01": "01",
       "blockNumber02": "02",
       "blockNumber03": "03",
+      "blockNumber04": "04",
       "ourMission": "我们的使命",
       "ourPrinciples": "我们的原则",
       "ourProjects": "我们的项目",
+      "ourPartners": "我们的合作伙伴",
       "missions": {
         "governance": {
           "title": "开源治理",
