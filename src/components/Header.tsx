@@ -13,6 +13,7 @@ import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
 import { signOut } from 'next-auth/react'
 import { useAuth } from '../contexts/AuthContext'
 import { useRouter } from 'next/router'
+import LanguageSwitcher from './LanguageSwitcher'
 import styles from './Header.module.css'
 
 interface MenuItem {
@@ -1011,6 +1012,9 @@ export default function Header() {
               加入我们
             </Link>
 
+            {/* 语言切换器 */}
+            <LanguageSwitcher />
+
             {/* 用户认证区域 */}
             {isLoading ? (
               <div className={styles.loginButton}>加载中...</div>
@@ -1153,6 +1157,11 @@ export default function Header() {
                 >
                   加入我们
                 </Link>
+              </div>
+
+              {/* 移动端语言切换器 */}
+              <div className={styles.mobileMenuSection}>
+                <LanguageSwitcher />
               </div>
 
               {/* 移动端用户认证区域 */}
