@@ -123,6 +123,15 @@
   margin-bottom: 0;
 }
 
+/* PC端第五和第六个menuSection的特殊定位 */
+@media (min-width: 769px) {
+  .footerRight .menuSection:nth-child(4),
+  .footerRight .menuSection:nth-child(5) {
+    position: relative;
+    top: -70px;
+  }
+}
+
 .menuTitle {
   color: white;
   font-size: 0.875rem;
