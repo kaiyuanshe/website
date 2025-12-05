@@ -2,6 +2,9 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
+  experimental: {
+    turbo: false,
+  },
   typescript: {
     ignoreBuildErrors: true, // 忽略 TypeScript 检查
   },
