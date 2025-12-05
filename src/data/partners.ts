@@ -102,18 +102,8 @@ export const partnersRawData: Partner[] = [
     tag: '累计合作4年'
   },
   {
-    title: '龙蜥社区',
-    organization: '龙蜥社区',
-    person: '',
-    year: '2025',
-    level: '星牌合作',
-    link: 'https://openanolis.cn/',
-    logo: '/img/partners/openanolis.png',
-    tag: ''
-  },
-  {
-    title: '迪玛科技',
-    organization: '迪玛科技',
+    title: '迪码科技',
+    organization: '迪码科技',
     person: '',
     year: '2025',
     level: '星牌合作',
@@ -172,6 +162,116 @@ export const partnersRawData: Partner[] = [
     tag: '累计合作2年'
   },
   {
+    title: '龙蜥社区',
+    organization: '龙蜥社区',
+    person: '',
+    year: '2025',
+    level: '星牌合作',
+    link: 'https://openanolis.cn/',
+    logo: '/img/partners/openanolis.png',
+    tag: ''
+  },
+  {
+    title: 'CSDN',
+    organization: 'CSDN',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.csdn.net/',
+    logo: '/img/media/csdn.png',
+    tag: ''
+  },
+  {
+    title: '量子位',
+    organization: '量子位',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.qbitai.com/',
+    logo: '/img/media/liangziwei.jpg',
+    tag: ''
+  },
+  {
+    title: 'infoQ 极客传媒',
+    organization: 'infoQ 极客传媒',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.infoq.cn/',
+    logo: '/img/media/infoq.png',
+    tag: ''
+  },
+  {
+    title: 'SegmentFault 思否',
+    organization: 'SegmentFault 思否',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://segmentfault.com/',
+    logo: '/img/media/segmentfault.png',
+    tag: ''
+  },
+  {
+    title: '硅星人',
+    organization: '硅星人',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.zhihu.com/org/pingwest-pin-wan',
+    logo: '/img/media/gxr.png',
+    tag: ''
+  },
+  {
+    title: 'dbaplus',
+    organization: 'dbaplus',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://dbaplus.cn/',
+    logo: '/img/media/dbaplus.png',
+    tag: ''
+  },
+  {
+    title: 'OSCHINA',
+    organization: '开源中国',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.oschina.net/',
+    logo: '/img/media/oschina.png',
+    tag: ''
+  },
+  {
+    title: '稀土掘金',
+    organization: '稀土掘金',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://juejin.cn/',
+    logo: '/img/media/juejin.png',
+    tag: ''
+  },
+  {
+    title: '51CTO',
+    organization: '51CTO',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.51cto.com/',
+    logo: '/img/media/51cto.png',
+    tag: ''
+  },
+  {
+    title: 'ITPUB',
+    organization: 'ITPUB',
+    person: '',
+    year: '2025',
+    level: '合作媒体',
+    link: 'https://www.itpub.net/',
+    logo: '/img/media/itpub.png',
+    tag: ''
+  },
+  {
     title: '浪潮 KaiwuDB & KWDB 社区',
     organization: '浪潮集团',
     person: '',
@@ -182,7 +282,7 @@ export const partnersRawData: Partner[] = [
     tag: '累计合作3年'
   },
   {
-    title: '2024 金牌合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2024',
@@ -282,7 +382,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2024 星牌合作 Seafile',
+    title: 'Seafile',
     organization: 'Seafile',
     person: '',
     year: '2024',
@@ -382,7 +482,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2023 铜牌合作 Seafile',
+    title: 'Seafile',
     organization: 'Seafile',
     person: '',
     year: '2023',
@@ -392,7 +492,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2023 白金合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2023',
@@ -562,7 +662,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2022 白金合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2022',
@@ -782,7 +882,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2021 白金合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2021',
@@ -982,7 +1082,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2020 战略合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2020',
@@ -1152,7 +1252,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2019 战略合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2019',
@@ -1392,7 +1492,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2018 战略合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2018',
@@ -1502,7 +1602,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2018 国际讲师差旅赞助 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2018',
@@ -1672,7 +1772,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2017 银牌合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2017',
@@ -1802,7 +1902,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2017 讲师合作 华为',
+    title: '华为',
     organization: '华为',
     person: '',
     year: '2017',
@@ -1872,7 +1972,7 @@ export const partnersRawData: Partner[] = [
     tag: ''
   },
   {
-    title: '2016 铜牌合作 Seafile',
+    title: 'Seafile',
     organization: 'Seafile',
     person: '',
     year: '2016',
