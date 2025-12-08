@@ -1,12 +1,20 @@
 import { useState, useEffect, useCallback, useMemo } from 'react'
-import { Button, Tag, Card, Modal, Image, App as AntdApp } from 'antd'
+import {
+  Button,
+  Tag,
+  Card,
+  Popconfirm,
+  Modal,
+  Image,
+  App as AntdApp
+} from 'antd'
 import dayjs from 'dayjs'
-import { Plus, Edit, Share2, Eye } from 'lucide-react'
+import { Plus, Edit, Trash2, Share2, Eye } from 'lucide-react'
 import Link from 'next/link'
 import styles from './index.module.css'
 import router from 'next/router'
 import { useAuth } from '@/contexts/AuthContext'
-import { getArticles } from '../api/article'
+import { getArticles, deleteArticle } from '../api/article'
 
 export default function KysreportsPage() {
   const [articles, setArticles] = useState<Record<string, any>[]>([])
@@ -64,12 +72,24 @@ export default function KysreportsPage() {
     [publishStatus]
   )
 
+  const handleDeleteArticle = async (id: number) => {
+    try {
+      const result = await deleteArticle(id)
+      if (result.success) {
+        message.success(result.message)
+        loadArticles()
+      } else {
+        message.error(result.message || '删除年度报告失败')
+      }
+    } catch {
+      message.error('删除失败，请重试')
+    }
+  }
+
   useEffect(() => {
     if (status === 'loading') return // 等待认证状态确定
     const newPublishStatus =
-      status === 'authenticated' && permissions.includes('event:write')
-        ? 0
-        : 2
+      status === 'authenticated' && permissions.includes('event:write') ? 0 : 2
     setPublishStatus(newPublishStatus)
 
     // 直接调用 loadarticles，避免 publishStatus 状态更新延迟
@@ -166,6 +186,28 @@ export default function KysreportsPage() {
                           icon={<Share2 className={styles.actionIcon} />}
                           title="分享年度报告"
                         />
+
+                        {status === 'authenticated' &&
+                        permissions.includes('event:write') ? (
+                          <Popconfirm
+                            title="删除年度报告"
+                            description="你确定删除这个年度报告吗？"
+                            okText="是"
+                            cancelText="否"
+                            onConfirm={e => {
+                              e?.preventDefault()
+                              handleDeleteArticle(article.ID)
+                            }}
+                          >
+                            <Button
+                              className={styles.actionIconButton}
+                              danger
+                              icon={<Trash2 className={styles.actionIcon} />}
+                              title="删除年度报告"
+                              onClick={e => e.preventDefault()}
+                            />
+                          </Popconfirm>
+                        ) : null}
                       </div>
                     </div>
                   </div>

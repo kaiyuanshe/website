@@ -25,10 +25,9 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import styles from './index.module.css';
-import { deleteEvent } from '../api/event';
+import styles from './index.module.css'; 
 import { useAuth } from '@/contexts/AuthContext';
-import { getArticles } from '../api/article';
+import { getArticles,deleteArticle } from '../api/article';
 
 const { Search: AntSearch } = Input;
 
@@ -179,9 +178,9 @@ export default function BlogsPage() {
   }, []);
 
   // 删除博客
-  const handleDeleteEvent = useCallback(async (id: number) => {
+  const handleDeleteArticle = useCallback(async (id: number) => {
     try {
-      const result = await deleteEvent(id);
+      const result = await deleteArticle(id);
       if (result.success) {
         message.success(result.message);
         loadArticles();
@@ -375,6 +374,28 @@ export default function BlogsPage() {
                           icon={<Share2 className={styles.actionIcon} />}
                           title="分享博客"
                         />
+                        {status === 'authenticated' && permissions.includes('event:write') && (
+                          <Popconfirm
+                            title="删除博客"
+                            description="你确定删除这个博客吗？"
+                            okText="是"
+                            cancelText="否"
+                            onConfirm={(e) => {
+                              e?.preventDefault();
+                              handleDeleteArticle(article.ID);
+                            }}
+                          >
+                            <Button
+                              className={styles.actionIconButton}
+                              onClick={(e) => {
+                                e.preventDefault();
+                              }}
+                              icon={<Trash2 className={styles.actionIcon} />}
+                              title="删除博客"
+                              danger
+                            />
+                          </Popconfirm>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -507,7 +528,7 @@ export default function BlogsPage() {
                         description="你确定删除这个博客吗？"
                         okText="是"
                         cancelText="否"
-                        onConfirm={() => handleDeleteEvent(article.ID)}
+                        onConfirm={() => handleDeleteArticle(article.ID)}
                       >
                         <Button
                           type="text"
