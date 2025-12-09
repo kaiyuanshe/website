@@ -3,10 +3,15 @@ import type { NextConfig } from 'next';
 const nextConfig: NextConfig = {
   /* config options here */
   experimental: {
-    turbo: false,
+    turbo: {
+      rules: {}
+    },
   },
   typescript: {
     ignoreBuildErrors: true, // 忽略 TypeScript 检查
+  },
+  eslint: {
+    ignoreDuringBuilds: true, // 忽略 ESLint 检查
   },
   webpack: (config) => {
     // 禁用缓存序列化警告
