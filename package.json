@@ -1,6 +1,6 @@
 {
   "name": "kaiyuanshe",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,7 +13,7 @@
   },
   "dependencies": {
     "@giscus/react": "^3.1.0",
-    "@next/third-parties": "^15.3.3",
+    "@next/third-parties": "^16.0.7",
     "@types/leaflet": "^1.9.20",
     "antd": "^5.25.4",
     "cloudinary": "^2.6.1",
