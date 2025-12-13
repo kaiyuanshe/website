@@ -265,6 +265,221 @@
   color: #2c3e50;
 }
 
+/* Enforcement Measures Styles */
+.measuresList {
+  margin: 2rem 0;
+}
+
+.measureItem {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: #f8fbff;
+  border-radius: 12px;
+  border-left: 4px solid #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  transition: all 0.3s ease;
+}
+
+.measureItem:hover {
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.measureTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #1e40af;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.measureTitle::before {
+  content: '●';
+  color: #3b82f6;
+  font-size: 0.8rem;
+  margin-right: 0.8rem;
+}
+
+.measureContent {
+  color: #374151;
+  line-height: 1.7;
+}
+
+.measureContent p {
+  margin-bottom: 1rem;
+}
+
+.measureContent p:last-child {
+  margin-bottom: 0;
+}
+
+.emailLink {
+  color: #3b82f6;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.emailLink:hover {
+  color: #1d4ed8;
+}
+
+.subsection {
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.subsectionTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 1rem;
+}
+
+.targetList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.targetItem {
+  margin-bottom: 1.2rem;
+  padding: 1rem;
+  background: #f9fafb;
+  border-radius: 6px;
+  border-left: 3px solid #6b7280;
+}
+
+.targetItem:last-child {
+  margin-bottom: 0;
+}
+
+.targetItem strong {
+  color: #374151;
+  font-weight: 600;
+}
+
+.permissionList {
+  margin-top: 0.8rem;
+  margin-bottom: 0;
+  padding-left: 1.5rem;
+}
+
+.permissionList li {
+  margin-bottom: 0.5rem;
+  color: #4b5563;
+  line-height: 1.6;
+}
+
+.actionList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.actionItem {
+  margin-bottom: 1rem;
+  padding: 1.2rem;
+  background: linear-gradient(135deg, #fef7f0 0%, #fed7aa 100%);
+  border-radius: 8px;
+  border-left: 4px solid #f59e0b;
+  transition: all 0.3s ease;
+}
+
+.actionItem:hover {
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+  transform: translateY(-1px);
+}
+
+.actionItem:last-child {
+  margin-bottom: 0;
+}
+
+.actionItem strong {
+  color: #92400e;
+  font-weight: 600;
+}
+
+.principleList {
+  margin: 1rem 0 0 0;
+  padding-left: 1.5rem;
+}
+
+.principleList li {
+  margin-bottom: 0.8rem;
+  color: #374151;
+  line-height: 1.6;
+  position: relative;
+}
+
+.principleList li::marker {
+  color: #3b82f6;
+  font-weight: bold;
+}
+
+.specialList {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0 0;
+}
+
+.specialList li {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  background: #fef3c7;
+  border-radius: 6px;
+  border-left: 3px solid #d97706;
+}
+
+.specialList li:last-child {
+  margin-bottom: 0;
+}
+
+.specialList li strong {
+  color: #92400e;
+  font-weight: 600;
+}
+
+.finalityBox {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  border-radius: 12px;
+  border: 2px solid #d1d5db;
+  text-align: center;
+}
+
+.finalityTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.finalityTitle::after {
+  content: '';
+  position: absolute;
+  bottom: -0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #6b7280, #4b5563);
+  border-radius: 2px;
+}
+
+.finalityText {
+  color: #374151;
+  line-height: 1.7;
+  margin: 0;
+  font-size: 1.05rem;
+}
+
 /* Information Boxes */
 .infoBox {
   background: #f8f9fa;
@@ -362,6 +577,24 @@
   .conductImage {
     border-radius: 6px;
   }
+  
+  .measureItem {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .measureTitle {
+    font-size: 1.3rem;
+  }
+  
+  .subsection {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .finalityBox {
+    padding: 1.5rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -400,5 +633,46 @@
   
   .conductImage {
     border-radius: 4px;
+  }
+  
+  .measureItem {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .measureTitle {
+    font-size: 1.2rem;
+  }
+  
+  .measureTitle::before {
+    font-size: 0.6rem;
+    margin-right: 0.6rem;
+  }
+  
+  .subsection {
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+  }
+  
+  .subsectionTitle {
+    font-size: 1rem;
+  }
+  
+  .targetItem,
+  .actionItem {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .finalityBox {
+    padding: 1rem;
+  }
+  
+  .finalityTitle {
+    font-size: 1.2rem;
+  }
+  
+  .finalityText {
+    font-size: 0.95rem;
   }
 }

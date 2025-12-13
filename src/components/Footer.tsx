@@ -29,10 +29,16 @@ export default function Footer() {
       items: [
         { labelKey: 'navigation.intro', href: '/about' },
         { labelKey: 'navigation.governance.board', href: '/department/board' },
-        { labelKey: 'navigation.governance.advisory', href: '/department/advisory' },
+        {
+          labelKey: 'navigation.governance.advisory',
+          href: '/department/advisory'
+        },
         { labelKey: 'navigation.governance.legal', href: '/department/legal' },
         { labelKey: 'navigation.executive', href: '/department/executive' },
-        { labelKey: 'navigation.project_committee', href: '/department/project' },
+        {
+          labelKey: 'navigation.project_committee',
+          href: '/department/project'
+        },
         { labelKey: 'navigation.brand_resources', href: '/brand' }
       ]
     },
@@ -40,8 +46,14 @@ export default function Footer() {
       titleKey: 'navigation.governance.title',
       items: [
         { labelKey: 'navigation.charter', href: '/charter' },
-        { labelKey: 'navigation.open_source_manifesto', href: '/governance/open-source-manifesto' },
-        { labelKey: 'navigation.code_of_conduct', href: '/governance/code-of-conduct' },
+        {
+          labelKey: 'navigation.open_source_manifesto',
+          href: '/governance/open-source-manifesto'
+        },
+        {
+          labelKey: 'navigation.code_of_conduct',
+          href: '/governance/code-of-conduct'
+        },
         { labelKey: 'navigation.annual_report_full', href: '/kysreports' }
       ]
     },
@@ -49,14 +61,35 @@ export default function Footer() {
       titleKey: 'navigation.community_development',
       items: [
         { labelKey: 'navigation.partners', href: '/partners' },
-        { labelKey: 'navigation.governance.formal_members', href: '/department/members' },
-        { labelKey: 'navigation.honors.open_source_star', href: '/community/star' },
-        { labelKey: 'navigation.honors.annual_volunteer', href: '/community/volunteer' },
-        { labelKey: 'navigation.honors.coscon_star', href: '/community/coscon' },
-        { labelKey: 'navigation.honors.community_cooperation_star', href: '/community/cooperation' },
+        {
+          labelKey: 'navigation.governance.formal_members',
+          href: '/department/members'
+        },
+        {
+          labelKey: 'navigation.honors.open_source_star',
+          href: '/community/star'
+        },
+        {
+          labelKey: 'navigation.honors.annual_volunteer',
+          href: '/community/volunteer'
+        },
+        {
+          labelKey: 'navigation.honors.coscon_star',
+          href: '/community/coscon'
+        },
+        {
+          labelKey: 'navigation.honors.community_cooperation_star',
+          href: '/community/cooperation'
+        },
         { labelKey: 'navigation.governance.kcc', href: '/community' },
-        { labelKey: 'navigation.knowledge.china_open_source_annual_report', href: '/osreports' },
-        { labelKey: 'navigation.honors.china_open_source_pioneer', href: '/community/pioneer' },
+        {
+          labelKey: 'navigation.knowledge.china_open_source_annual_report',
+          href: '/osreports'
+        },
+        {
+          labelKey: 'navigation.honors.china_open_source_pioneer',
+          href: '/community/pioneer'
+        },
         {
           labelKey: 'navigation.honors.china_open_source_power_list',
           href: 'https://opensource.win/',
@@ -67,9 +100,15 @@ export default function Footer() {
     {
       titleKey: 'navigation.activities.title',
       items: [
-        { labelKey: 'navigation.china_open_source_conference', href: '/events/coscon' },
+        {
+          labelKey: 'navigation.china_open_source_conference',
+          href: '/events/coscon'
+        },
         { labelKey: 'navigation.cooperation_activities', href: '/events' },
-        { labelKey: 'navigation.activities.activity_calendar', href: '/events/calendar' }
+        {
+          labelKey: 'navigation.activities.activity_calendar',
+          href: '/events/calendar'
+        }
       ]
     },
     {
@@ -156,11 +195,12 @@ export default function Footer() {
                   <SiWechat className={styles.socialIcon} />
                 </button>
               </div>
-              
+
               {/* Volunteer button */}
               <div className={styles.volunteerSection}>
                 <Link
-                  href="#"
+                  href="https://kaiyuanshe.feishu.cn/share/base/form/shrcntepbkm5aYu8wnhhXRgej0b"
+                  target="_blank"
                   className={styles.volunteerButton}
                   aria-label={t('footer.become_volunteer')}
                 >

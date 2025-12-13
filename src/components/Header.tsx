@@ -718,7 +718,11 @@ export default function Header() {
           {/* 右侧操作区 */}
           <div className={styles.headerActions}>
             {/* 加入我们按钮 */}
-            <Link href="#" className={styles.joinUsButton}>
+            <Link
+              href="https://kaiyuanshe.feishu.cn/share/base/form/shrcntepbkm5aYu8wnhhXRgej0b"
+              target="_blank"
+              className={styles.joinUsButton}
+            >
               {t('common.join_us')}
             </Link>
 
@@ -739,7 +743,9 @@ export default function Header() {
                     <Image
                       src={session.user.avatar || session.user.image!}
                       alt={
-                        session.user.name || session.user.username || t('common.user_avatar')
+                        session.user.name ||
+                        session.user.username ||
+                        t('common.user_avatar')
                       }
                       width={38}
                       height={38}
@@ -877,7 +883,9 @@ export default function Header() {
               {/* 移动端用户认证区域 */}
               <div className={styles.mobileMenuSection}>
                 {isLoading ? (
-                  <div className={styles.mobileLoginButton}>{t('common.loading')}</div>
+                  <div className={styles.mobileLoginButton}>
+                    {t('common.loading')}
+                  </div>
                 ) : isAuthenticated && session?.user ? (
                   <div className={styles.mobileUserSection}>
                     <div className={styles.mobileUserInfo}>

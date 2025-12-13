@@ -86,6 +86,121 @@ const CodeOfConductPage = () => {
             </div>
           </section>
 
+          {/* Enforcement and Handling Measures Section */}
+          <section className={styles.section}>
+            <h2 className={styles.sectionTitle}>执行与处理措施</h2>
+            <div className={styles.sectionContent}>
+              <div className={styles.introText}>
+                <p>
+                  我们坚信在开源社的社区中，每一位成员都怀有善意并致力于共同建设。为维护开源社社区的健康发展与所有成员的共同利益，我们制定了本行为准则。我们坚信预防与教育优于惩罚，但对于任何经确认违反本行为准则的行为，开源社理事会有权采取其认为必要的措施，以维护社区的安全与尊严。
+                </p>
+              </div>
+
+              <div className={styles.measuresList}>
+                <div className={styles.measureItem}>
+                  <h3 className={styles.measureTitle}>1. 反馈流程</h3>
+                  <div className={styles.measureContent}>
+                    <p>
+                      我们鼓励任何人反馈其遭遇或目睹的违规行为。反馈可以通过邮件发送至指定的理事会邮箱：
+                      <a href="mailto:board@kaiyuanshe.org" className={styles.emailLink}>board@kaiyuanshe.org</a>
+                      或其他由开源社官方公布的渠道。我们将对反馈人信息严格保密，并为需要帮助的成员提供支持。
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.measureItem}>
+                  <h3 className={styles.measureTitle}>2. 调查与处理</h3>
+                  <div className={styles.measureContent}>
+                    <p>
+                      收到反馈后，理事会将启动调查程序。整个过程将遵循公正、保密和及时的原则。基于调查结果和违规行为的严重程度，可能采取的措施针对两类对象：身份与权限。
+                    </p>
+                    
+                    <div className={styles.subsection}>
+                      <h4 className={styles.subsectionTitle}>适用对象包括：</h4>
+                      <ul className={styles.targetList}>
+                        <li className={styles.targetItem}>
+                          <strong>身份：</strong> 包括但不限于开源社正式成员、工作组组员/组长、项目维护者、理事会成员、顾问，以及任何在开源社担任其他正式职务的人员。
+                        </li>
+                        <li className={styles.targetItem}>
+                          <strong>权限：</strong> 包括但不限于在开源社管理的各类平台与场合中的权限，例如：
+                          <ul className={styles.permissionList}>
+                            <li>社群交流平台的参与和管理权（如邮件列表、微信群等群组的发言与成员管理权限）。</li>
+                            <li>代码仓库的访问、提交、审查与维护权限（如GitHub/Gitee组织成员权限）。</li>
+                            <li>官方维基、博客平台、网站的内容编辑与发布权限。</li>
+                            <li>活动组织平台（如会议、Meetup）的策划与管理权限。</li>
+                            <li>开源社在各类开源托管平台（如GitHub, Gitee）官方账户下的其他任何权限。</li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div className={styles.subsection}>
+                      <h4 className={styles.subsectionTitle}>可能采取的处理措施包括但不限于：</h4>
+                      <ul className={styles.actionList}>
+                        <li className={styles.actionItem}>
+                          <strong>纠正与警告：</strong> 对于情节轻微、非恶意的初次违规，通常以私下警告、要求删除不当内容并道歉为主。
+                        </li>
+                        <li className={styles.actionItem}>
+                          <strong>暂停职务与权限：</strong> 要求违规者在一定时间内（例如，30天至90天）暂停其担任的社区职务，并冻结相应的平台权限。
+                        </li>
+                        <li className={styles.actionItem}>
+                          <strong>临时封禁：</strong> 在特定期限内（例如，6个月至1年）取消其在社区的所有参与权限与职务身份。
+                        </li>
+                        <li className={styles.actionItem}>
+                          <strong>永久封禁：</strong> 对于严重违规、恶意行为、屡教不改或对社区安全构成重大威胁的行为，社区将立即并永久地撤销其所有职务身份与平台权限，终止其与开源社的正式关联。
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={styles.measureItem}>
+                  <h3 className={styles.measureTitle}>3. 分级处理原则</h3>
+                  <div className={styles.measureContent}>
+                    <p>处理措施将遵循比例原则，综合考虑以下因素：</p>
+                    <ul className={styles.principleList}>
+                      <li>行为的严重性和影响。</li>
+                      <li>是初犯还是屡次违规。</li>
+                      <li>违规者事后是否表现出悔意并积极补救。</li>
+                      <li>行为是否对社区成员或集体荣誉造成重大侮辱。</li>
+                      <li>行为是否对社区成员或集体安全构成直接威胁。</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className={styles.measureItem}>
+                  <h3 className={styles.measureTitle}>4. 申诉机制</h3>
+                  <div className={styles.measureContent}>
+                    <p>
+                      若当事人对处理决定有异议，可在收到决定通知后的15天内，向指定的申诉邮箱或理事会提出书面申诉，阐明理由并提供新的证据。理事会将重新审议并做出最终决定。
+                    </p>
+                  </div>
+                </div>
+
+                <div className={styles.measureItem}>
+                  <h3 className={styles.measureTitle}>5. 特殊情况处理</h3>
+                  <div className={styles.measureContent}>
+                    <ul className={styles.specialList}>
+                      <li>
+                        <strong>紧急情况：</strong> 对于正在发生的严重违规行为（如骚扰、威胁），理事会有权立即采取临时措施，事后再补调查程序。
+                      </li>
+                      <li>
+                        <strong>组织代表：</strong> 以开源社名义参与外部活动的成员，其违规行为将依据本守则从严处理。
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className={styles.finalityBox}>
+                  <h3 className={styles.finalityTitle}>效力与最终解释权</h3>
+                  <p className={styles.finalityText}>
+                    本行为准则及处罚措施自公布之日起生效，并对所有社区成员具有约束力。开源社理事会保留对本文件及具体案例的最终解释权与执行权。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
           {/* Community References Section */}
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>社区借镜</h2>
