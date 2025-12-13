@@ -22,6 +22,8 @@ echo "📦 构建前端到临时目录..."
 cp -r $BASE_DIR $TMP_DIR/frontend
 cd $TMP_DIR/frontend
 npm install --force
+# 清理 Next.js 缓存
+rm -rf .next
 npm run build
 
 echo "🚀 同步前端到生产目录..."
