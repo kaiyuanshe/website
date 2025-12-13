@@ -1,41 +1,44 @@
-import React, { useState } from 'react';
-import { RotateCcw, X, ImageIcon } from 'lucide-react';
-import { App as AntdApp } from 'antd';
-import Image from 'next/image';
-import type { UploadProps, UploadFile } from 'antd';
-import type { RcFile } from 'antd/es/upload';
-import { uploadImgToCloud, deleteImgFromCloud } from '@/lib/cloudinary';
-import { Upload } from 'antd';
+import React, { useState } from 'react'
+import { RotateCcw, X, ImageIcon } from 'lucide-react'
+import { App as AntdApp } from 'antd'
+import Image from 'next/image'
+import type { UploadProps, UploadFile } from 'antd'
+import type { RcFile } from 'antd/es/upload'
+import { uploadImgToCloud } from '@/lib/cloudinary'
+import { Upload } from 'antd'
 
-import styles from './UploadCardImg.module.css';
+import styles from './UploadCardImg.module.css'
 
-const { Dragger } = Upload;
+const { Dragger } = Upload
 
 interface CloudinaryImage {
-  public_id: string;
-  secure_url: string;
-  [key: string]: unknown;
+  public_id: string
+  secure_url: string
+  [key: string]: unknown
 }
 
 interface FormInstance {
-  setFieldValue: (field: string, value: unknown) => void;
-  [key: string]: unknown;
+  setFieldValue: (field: string, value: unknown) => void
+  [key: string]: unknown
 }
 
 export default function UploadCardImg(props: {
-  previewUrl: string;
-  setPreviewUrl: (url: string) => void;
-  cloudinaryImg: CloudinaryImage | null;
-  setCloudinaryImg: (img: CloudinaryImage | null) => void;
-  form?: FormInstance;
+  previewUrl: string
+  setPreviewUrl: (url: string) => void
+  cloudinaryImg: CloudinaryImage | null
+  setCloudinaryImg: (img: CloudinaryImage | null) => void
+  form?: FormInstance
 }) {
   const { previewUrl, setPreviewUrl, cloudinaryImg, setCloudinaryImg, form } =
-    props;
-  const { message } = AntdApp.useApp();
-  const [coverImage, setCoverImage] = useState<UploadFile | null>(null);
-  const [isImageLoading, setIsImageLoading] = useState(false);
+    props
+  const { message } = AntdApp.useApp()
+  const [coverImage, setCoverImage] = useState<UploadFile | null>(null)
+  const [isImageLoading, setIsImageLoading] = useState(false)
 
-  const handleImageChange = async (info: { file: UploadFile; fileList: UploadFile[] }) => {
+  const handleImageChange = async (info: {
+    file: UploadFile
+    fileList: UploadFile[]
+  }) => {
     // const { file, fileList } = info;
 
     // // 只处理上传完成的文件
@@ -64,57 +67,47 @@ export default function UploadCardImg(props: {
     //   message.error('图片上传失败，请检查网络连接');
     //   setIsImageLoading(false);
     // }
-     const { file, fileList } = info;
-     console.log(info);
-     
+    const { file, fileList } = info
+    console.log(info)
 
     // 只处理上传完成的文件
     if (file.status === 'done') {
-      const latestFile = fileList[fileList.length - 1];
-      setCoverImage(latestFile);
+      const latestFile = fileList[fileList.length - 1]
+      setCoverImage(latestFile)
     } else if (file.status === 'error') {
-      message.error('图片上传失败，请检查网络连接');
-      setIsImageLoading(false);
+      message.error('图片上传失败，请检查网络连接')
+      setIsImageLoading(false)
     }
-  };
+  }
 
   const handleRemoveImage = async () => {
     try {
-      setIsImageLoading(true);
-      
-      // 如果有 public_id，尝试从 Cloudinary 删除图片
-      if (cloudinaryImg?.public_id) {
-        const res = await deleteImgFromCloud(cloudinaryImg.public_id);
-        if (!res) {
-          message.error('图片删除失败，请重试');
-          return;
-        }
-      }
+      setIsImageLoading(true)
 
       // 清空本地状态
-      setCoverImage(null);
-      setPreviewUrl('');
-      setCloudinaryImg(null);
-      form?.setFieldValue('cover', undefined);
-      message.success('图片已删除');
+      setCoverImage(null)
+      setPreviewUrl('')
+      setCloudinaryImg(null)
+      form?.setFieldValue('cover', undefined)
+      message.success('图片已删除')
     } catch (error) {
-      console.error('删除图片错误:', error);
-      message.error('图片删除失败，请重试');
+      console.error('删除图片错误:', error)
+      message.error('图片删除失败，请重试')
     } finally {
-      setIsImageLoading(false);
+      setIsImageLoading(false)
     }
-  };
+  }
 
   const handleReplaceImage = () => {
     // 触发文件选择
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = async (e) => {
-      const file = (e.target as HTMLInputElement).files?.[0];
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = 'image/*'
+    input.onchange = async e => {
+      const file = (e.target as HTMLInputElement).files?.[0]
       if (file) {
         try {
-          setIsImageLoading(true);
+          setIsImageLoading(true)
           // 创建一个符合 UploadFile 接口的对象
           const uploadFile: UploadFile = {
             uid: Date.now().toString(),
@@ -126,28 +119,28 @@ export default function UploadCardImg(props: {
             status: 'done',
             percent: 100,
             // 使用类型断言来处理 originFileObj
-            originFileObj: file as RcFile,
-          };
+            originFileObj: file as RcFile
+          }
 
-          setCoverImage(uploadFile);
+          setCoverImage(uploadFile)
 
-          const res = await uploadImgToCloud(file);
+          const res = await uploadImgToCloud(file)
           if (res && res.secure_url) {
-            setCloudinaryImg(res);
-            setPreviewUrl(res.secure_url);
-            form?.setFieldValue('cover', res.secure_url);
+            setCloudinaryImg(res)
+            setPreviewUrl(res.secure_url)
+            form?.setFieldValue('cover', res.secure_url)
           } else {
-            message.error('图片上传失败，请重试');
+            message.error('图片上传失败，请重试')
           }
         } catch {
-          message.error('图片上传失败，请重试');
+          message.error('图片上传失败，请重试')
         } finally {
-          setIsImageLoading(false);
+          setIsImageLoading(false)
         }
       }
-    };
-    input.click();
-  };
+    }
+    input.click()
+  }
 
   const uploadProps: UploadProps = {
     name: 'file',
@@ -155,43 +148,43 @@ export default function UploadCardImg(props: {
     accept: 'image/*',
     showUploadList: false,
     action: '', // 设置为空，阻止默认上传请求
-    beforeUpload: async (file) => {
-      const isImage = file.type.startsWith('image/');
+    beforeUpload: async file => {
+      const isImage = file.type.startsWith('image/')
       if (!isImage) {
-        message.error('只能上传图片文件!');
-        return false;
+        message.error('只能上传图片文件!')
+        return false
       }
 
-      const isLt5M = file.size / 1024 / 1024 < 5;
+      const isLt5M = file.size / 1024 / 1024 < 5
       if (!isLt5M) {
-        message.error('图片大小不能超过 5MB!');
-        return false;
+        message.error('图片大小不能超过 5MB!')
+        return false
       }
 
-      return true; // 始终返回 false，阻止默认上传
+      return true // 始终返回 false，阻止默认上传
     },
     customRequest: async ({ file, onSuccess, onError }: any) => {
       try {
-        setIsImageLoading(true);
-        const res = await uploadImgToCloud(file as File);
+        setIsImageLoading(true)
+        const res = await uploadImgToCloud(file as File)
         if (res && res.secure_url) {
-          setCloudinaryImg(res);
-          setPreviewUrl(res.secure_url);
-          form?.setFieldValue('cover', res.secure_url);
-          onSuccess?.(res); // 通知 Upload 组件上传成功
+          setCloudinaryImg(res)
+          setPreviewUrl(res.secure_url)
+          form?.setFieldValue('cover', res.secure_url)
+          onSuccess?.(res) // 通知 Upload 组件上传成功
         } else {
-          message.error('图片上传失败，请重试');
-          onError?.(new Error('Upload failed'));
+          message.error('图片上传失败，请重试')
+          onError?.(new Error('Upload failed'))
         }
       } catch (error) {
-        message.error('图片上传失败，请检查网络连接');
-        onError?.(error as Error);
+        message.error('图片上传失败，请检查网络连接')
+        onError?.(error as Error)
       } finally {
-        setIsImageLoading(false);
+        setIsImageLoading(false)
       }
     },
-    onChange: handleImageChange,
-  };
+    onChange: handleImageChange
+  }
 
   return (
     <div className={styles.imageUpload}>
@@ -262,5 +255,5 @@ export default function UploadCardImg(props: {
         </Dragger>
       )}
     </div>
-  );
+  )
 }
