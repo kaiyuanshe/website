@@ -73,6 +73,9 @@ const CodeOfConductPage = () => {
                 <li className={styles.negativeItem}>
                   人身攻击，特别是那些使用种族主义或性别歧视术语的侮辱
                 </li>
+                   <li className={styles.negativeItem}>
+                  公开或恶意地对开源社、其项目、其他成员进行侮辱、诽谤、诋毁，损害社区声誉的行为。
+                </li>
                 <li className={styles.negativeItem}>
                   不友好或是带着恶意的关注（如性暗示等）和脏话
                 </li>

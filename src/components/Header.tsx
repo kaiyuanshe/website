@@ -867,7 +867,8 @@ export default function Header() {
               {/* 移动端加入我们按钮 */}
               <div className={styles.mobileMenuSection}>
                 <Link
-                  href="/join"
+                  href="https://kaiyuanshe.feishu.cn/share/base/form/shrcntepbkm5aYu8wnhhXRgej0b"
+                  target="_blank"
                   className={styles.mobileJoinUsButton}
                   onClick={() => setMobileMenuOpen(false)}
                 >
