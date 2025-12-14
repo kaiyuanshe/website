@@ -28,7 +28,7 @@ export default function COSConStarPage() {
         <div className={styles.titleSection}>
           <h1 className={styles.title}>COSCon之星</h1>
           <p className={styles.subtitle}>
-            "COSCon之星"是从2019年开始，中国开源年会组委会（COSCon 组委会）为鼓励对中国开源年会有卓越贡献的志愿者而设立的奖项，希望通过此奖项感谢各位积极参与并贡献COSCon的小伙伴。评选范围为COSCon志愿者。
+            &quot;COSCon之星&ldquo;是从2019年开始，中国开源年会组委会（COSCon 组委会）为鼓励对中国开源年会有卓越贡献的志愿者而设立的奖项，希望通过此奖项感谢各位积极参与并贡献COSCon的小伙伴。评选范围为COSCon志愿者。
           </p>
         </div>
 

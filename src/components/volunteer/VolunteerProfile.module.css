@@ -76,6 +76,12 @@
   text-align: left;
   word-wrap: break-word;
   hyphens: auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.7em * 7);
 }
 
 
