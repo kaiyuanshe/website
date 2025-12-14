@@ -12,17 +12,6 @@ export function formatTime(isoTime: string): string {
   return dayjs(isoTime).format('YYYY年M月D日')
 }
 
-interface Event {
-  ID: number
-  title: string
-  start_time: string
-  event_mode: string
-  location?: string
-  participants: number
-  tags?: string[]
-}
-
-
 export default function EventSection() {
   // 使用统一的认证上下文，避免重复调用 useSession
   const { status } = useAuth()
@@ -35,32 +24,31 @@ export default function EventSection() {
       const queryParams = {
         page: 1,
         page_size: 3,
-        publish_status: 2,
+        publish_status: 2
         //  event_type:'community'
+      }
 
-      };
-
-      const result = await getEvents(queryParams);
+      const result = await getEvents(queryParams)
 
       if (result.success && result.data) {
         // 处理后端返回的数据结构
         if (result.data.events && Array.isArray(result.data.events)) {
-          setEvents(result.data.events);
+          setEvents(result.data.events)
         } else if (Array.isArray(result.data)) {
-          setEvents(result.data);
+          setEvents(result.data)
         } else {
-          console.warn('API 返回的数据格式不符合预期:', result.data);
-          setEvents([]);
+          console.warn('API 返回的数据格式不符合预期:', result.data)
+          setEvents([])
         }
       } else {
-        console.error('获取事件列表失败:', result.message);
-        setEvents([]);
+        console.error('获取事件列表失败:', result.message)
+        setEvents([])
       }
     } catch (error) {
-      console.error('加载事件列表异常:', error);
-      setEvents([]);
+      console.error('加载事件列表异常:', error)
+      setEvents([])
     }
-  };
+  }
 
   // 组件挂载时加载数据，但避免在认证过程中重复请求
   useEffect(() => {
@@ -92,7 +80,9 @@ export default function EventSection() {
                   )}
                 </div>
                 <h3 className={styles.activityTitle}>{event.title}</h3>
-                <p className={styles.activityDescription}>{event.description}</p>
+                <p className={styles.activityDescription}>
+                  {event.description}
+                </p>
               </div>
               <div className={styles.activityCardContent}>
                 <div className={styles.activityInfo}>
@@ -124,11 +114,27 @@ export default function EventSection() {
                     {/* {event.tags.length > 3 && <Tag className={styles.moreTag}>+{event.tags.length - 3}</Tag>} */}
                   </div>
                 )}
-                <Link href={event.event_setting === 2 && event.bage_link ? event.bage_link : `/events/${event.ID}`}
-                  target={event.event_setting === 2 && event.bage_link ? '_blank' : '_self'}
-                  rel={event.event_setting === 2 && event.bage_link ? 'noopener noreferrer' : undefined}
-                  passHref>
-                  <button className={styles.activityButton}>{t('homepage.events.learnMore')}</button>
+                <Link
+                  href={
+                    event.event_setting === 2 && event.bage_link
+                      ? event.bage_link
+                      : `/events/${event.ID}`
+                  }
+                  target={
+                    event.event_setting === 2 && event.bage_link
+                      ? '_blank'
+                      : '_self'
+                  }
+                  rel={
+                    event.event_setting === 2 && event.bage_link
+                      ? 'noopener noreferrer'
+                      : undefined
+                  }
+                  passHref
+                >
+                  <button className={styles.activityButton}>
+                    {t('homepage.events.learnMore')}
+                  </button>
                 </Link>
               </div>
             </div>

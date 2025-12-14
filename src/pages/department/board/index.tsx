@@ -13,7 +13,7 @@ export default function BoardPage() {
     null
   )
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(undefined)
+  const [selectedYear, setSelectedYear] = useState<number | undefined>(new Date().getFullYear())
 
   const handleMemberClick = (member: PersonCardProps) => {
     setSelectedMember(member)
@@ -61,7 +61,7 @@ export default function BoardPage() {
           <p className={styles.intro}>开源社理事会（GB）（按姓氏排序）</p>
 
           <p className={styles.details}>
-            展望未来，我们相信在新一届理事会的领导下，开源社将继续围绕"开源治理、社区发展、国际接轨、项目孵化"四大使命，立足中国、贡献全球，为推动开源成为新时代的生活方式而不懈努力。
+            展望未来，我们相信在新一届理事会的领导下，开源社将继续围绕&quot;开源治理、社区发展、国际接轨、项目孵化&ldquo;四大使命，立足中国、贡献全球，为推动开源成为新时代的生活方式而不懈努力。
           </p>
         </div>
 

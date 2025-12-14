@@ -1,7 +1,6 @@
- 
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import styles from './Carousel.module.css'
@@ -11,19 +10,51 @@ import { useTranslation } from '../../../hooks/useTranslation'
 export default function Carousel() {
   const { t } = useTranslation()
   const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null)
+  const [isAtStart, setIsAtStart] = useState(true)
+  const [isAtEnd, setIsAtEnd] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+
+  const checkScrollPosition = () => {
+    if (scrollContainerRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
+      setIsAtStart(scrollLeft === 0)
+      setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 1)
+    }
+  }
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (container) {
+      checkScrollPosition()
+      container.addEventListener('scroll', checkScrollPosition)
+      window.addEventListener('resize', checkScrollPosition)
+      
+      return () => {
+        container.removeEventListener('scroll', checkScrollPosition)
+        window.removeEventListener('resize', checkScrollPosition)
+      }
+    }
+  }, [])
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
-      const scrollDistance = window.innerWidth >= 1800 ? 425 : window.innerWidth >= 1300 ? 320 : 407
-      scrollContainerRef.current.scrollBy({ left: -scrollDistance, behavior: 'smooth' })
+      const scrollDistance =
+        window.innerWidth >= 1800 ? 425 : window.innerWidth >= 1300 ? 320 : 407
+      scrollContainerRef.current.scrollBy({
+        left: -scrollDistance,
+        behavior: 'smooth'
+      })
     }
   }
 
   const scrollRight = () => {
     if (scrollContainerRef.current) {
-      const scrollDistance = window.innerWidth >= 1800 ? 425 : window.innerWidth >= 1300 ? 320 : 407
-      scrollContainerRef.current.scrollBy({ left: scrollDistance, behavior: 'smooth' })
+      const scrollDistance =
+        window.innerWidth >= 1800 ? 425 : window.innerWidth >= 1300 ? 320 : 407
+      scrollContainerRef.current.scrollBy({
+        left: scrollDistance,
+        behavior: 'smooth'
+      })
     }
   }
 
@@ -48,24 +79,25 @@ export default function Carousel() {
   return (
     <section className={styles.carousel}>
       <div className={styles.container}>
-        <button 
-          className={styles.navButton + ' ' + styles.navLeft}
+        <button
+          className={`${styles.navButton} ${styles.navLeft} ${isAtStart ? styles.disabled : ''}`}
           onClick={scrollLeft}
+          disabled={isAtStart}
           aria-label="Previous images"
         >
           <ChevronLeft size={24} />
         </button>
-        
+
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
           <div className={styles.imageGrid}>
             {carouselImages.map((image, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className={styles.imageWrapper}
                 onClick={() => openImageModal(image)}
               >
-                <Image 
-                  src={image.src} 
+                <Image
+                  src={image.src}
                   alt={image.alt || `Activity ${index + 1}`}
                   width={400}
                   height={300}
@@ -76,9 +108,10 @@ export default function Carousel() {
           </div>
         </div>
 
-        <button 
-          className={styles.navButton + ' ' + styles.navRight}
+        <button
+          className={`${styles.navButton} ${styles.navRight} ${isAtEnd ? styles.disabled : ''}`}
           onClick={scrollRight}
+          disabled={isAtEnd}
           aria-label="Next images"
         >
           <ChevronRight size={24} />
@@ -87,8 +120,11 @@ export default function Carousel() {
 
       {selectedImage && (
         <div className={styles.modal} onClick={closeImageModal}>
-          <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-            <button 
+          <div
+            className={styles.modalContent}
+            onClick={e => e.stopPropagation()}
+          >
+            <button
               className={styles.closeButton}
               onClick={closeImageModal}
               aria-label="Close image"
@@ -96,20 +132,20 @@ export default function Carousel() {
               <X size={24} />
             </button>
             <div className={styles.imageContainer}>
-              <Image 
-                src={selectedImage.src} 
-                alt={selectedImage.alt || "Enlarged view"}
+              <Image
+                src={selectedImage.src}
+                alt={selectedImage.alt || 'Enlarged view'}
                 width={800}
                 height={600}
                 className={styles.modalImage}
               />
-              <button 
+              <button
                 className={styles.detailButton}
                 onClick={handleDetailClick}
                 aria-label="View details"
               >
                 <ExternalLink size={16} />
-{t('homepage.carousel.viewDetails')}
+                {t('homepage.carousel.viewDetails')}
               </button>
             </div>
           </div>
