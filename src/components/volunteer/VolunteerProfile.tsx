@@ -44,7 +44,7 @@ export default function VolunteerProfile({
             
             <div className={styles.recommendation}>
               <div className={styles.recommendationContent}>
-                <p>{recommendation}</p>
+                <div dangerouslySetInnerHTML={{ __html: recommendation }} />
               </div>
             </div>
           </div>
@@ -83,7 +83,7 @@ export default function VolunteerProfile({
               <span className={styles.modalRecommendationTitle}>推荐语</span>
             </div>
             <div className={styles.modalRecommendationContent}>
-              <p>{recommendation}</p>
+              <div dangerouslySetInnerHTML={{ __html: recommendation }} />
             </div>
           </div>
         </div>

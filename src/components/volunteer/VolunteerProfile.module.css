@@ -74,6 +74,23 @@
   color: #374151;
   margin: 0;
   text-align: left;
+  text-indent: 2em;
+  word-wrap: break-word;
+  hyphens: auto;
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-height: calc(1.7em * 7);
+}
+
+.recommendationContent div {
+  font-size: 14px;
+  line-height: 1.7;
+  color: #374151;
+  margin: 0;
+  text-align: left;
   word-wrap: break-word;
   hyphens: auto;
   display: -webkit-box;
@@ -126,6 +143,21 @@
     font-size: 13px;
     line-height: 1.6;
     margin: 0;
+    text-indent: 2em;
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: calc(1.6em * 8);
+  }
+  
+  .recommendationContent div {
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+    word-wrap: break-word;
+    hyphens: auto;
     display: -webkit-box;
     -webkit-line-clamp: 8;
     -webkit-box-orient: vertical;
@@ -222,6 +254,7 @@
   color: #374151;
   margin: 0;
   text-align: left;
+  text-indent: 2em;
   font-style: italic;
   word-wrap: break-word;
   hyphens: auto;
