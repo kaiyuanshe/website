@@ -7,7 +7,7 @@ const CodeOfConductPage = () => {
       {/* Hero Section */}
       <div className={styles.heroSection}>
         <div className={styles.heroOverlay}>
-          <h1 className={styles.heroTitle}>开源社行为守则</h1>
+          <h1 className={styles.heroTitle}>开源社行为守则（公示版）</h1>
           <p className={styles.heroSubtitle}>
             基于开源人宣言精神的社区行为准则
           </p>
