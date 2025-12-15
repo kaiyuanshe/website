@@ -20,6 +20,21 @@ export interface Pioneer {
 // 开源之星数据
 export const openSourceStars: AwardRecipient[] = [
   {
+    name: '崔晨洋',
+    nickname: '',
+    avatar: '/img/cblecker.png',
+    date: 2025,
+    recommendation:
+      '啊 Q 是开源社长期的贡献者， 以立志打造一场 0 bug 的开源大会为目标，对开源社每年的 COSCon 从志愿者管理，赞助商对接，飞到现场活动紧急支援等，都能看到啊 Q 的身影。在家庭生活需要她投入的时候，也意外看到她百忙之中抽出时间来照顾开源社这个十岁的孩子。'
+  },
+  {
+    name: '惠世冀',
+    nickname: '小惠',
+    avatar: '/img/cblecker.png',
+    date: 2025,
+    recommendation: '连续两年线下组织、支持 KCC 读书会活动。'
+  },
+  {
     name: '晁倩',
     nickname: '啊Q',
     avatar: '/img/volunteers/1.webp',

@@ -161,7 +161,7 @@ export default function Footer() {
                   <X className={styles.socialIcon} />
                 </Link>
                 <Link
-                  href="https://www.facebook.com/kaiyuanshe.china"
+                  href="https://www.facebook.com/kaiyuanshe/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={styles.socialButton}
