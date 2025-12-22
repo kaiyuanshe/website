@@ -1,9 +1,11 @@
-import React from 'react'
+import SEO from '@/components/SEO'
 import styles from './index.module.css'
 
 const CharterPage = () => {
   return (
-    <div className={styles.charterPage}>
+    <>
+      <SEO />
+      <div className={styles.charterPage}>
       {/* Hero Section */}
       <div className={styles.heroSection}>
         <div className={styles.heroOverlay}>
@@ -24,14 +26,14 @@ const CharterPage = () => {
               <div className={styles.article}>
                 <span className={styles.articleNumber}>第一条</span>
                 <span className={styles.articleContent}>
-                  开源社是由志愿贡献于开源事业的个人志愿者，依 <span className={styles.highlight}>"贡献、共识、共治"</span> 原则所组成的开源社区。
+                  开源社是由志愿贡献于开源事业的个人志愿者，依 <span className={styles.highlight}>&quot;贡献、共识、共治&ldquo;</span> 原则所组成的开源社区。
                 </span>
               </div>
               
               <div className={styles.article}>
                 <span className={styles.articleNumber}>第二条</span>
                 <span className={styles.articleContent}>
-                  开源社的英文名称为<span className={styles.emphasis}>"KAIYUANSHE"</span>，官方网站地址为： https://kaiyuanshe.cn 。
+                  开源社的英文名称为<span className={styles.emphasis}>&quot;KAIYUANSHE&ldquo;</span>，官方网站地址为： https://kaiyuanshe.cn 。
                 </span>
               </div>
               
@@ -132,7 +134,7 @@ const CharterPage = () => {
               </div>
               
               <ul className={styles.rightsList}>
-                <li className={styles.rightsItem}>享有"开源社正式成员"的称号</li>
+                <li className={styles.rightsItem}>享有&quot;开源社正式成员&ldquo;的称号</li>
                 <li className={styles.rightsItem}>享有在开源社官网正式成员名单中进行展示的权利</li>
                 <li className={styles.rightsItem}>可申请获得开源社的官方邮箱账号</li>
                 <li className={styles.rightsItem}>可申请获得开源社名片，并印制在开源社所担任的志愿者职衔（如组长、副组长、秘书、正式成员等）</li>
@@ -154,8 +156,8 @@ const CharterPage = () => {
               
               <ul className={styles.dutiesList}>
                 <li className={styles.dutiesItem}>理解并认同开源社愿景</li>
-                <li className={styles.dutiesItem}>支持并践行开源社"开源治理、国际接轨、社区发展、项目孵化"的核心使命</li>
-                <li className={styles.dutiesItem}>理解并认同开源社"贡献、共识、共治"的原则及《开源人宣言》</li>
+                <li className={styles.dutiesItem}>支持并践行开源社&quot;开源治理、国际接轨、社区发展、项目孵化&ldquo;的核心使命</li>
+                <li className={styles.dutiesItem}>理解并认同开源社&quot;贡献、共识、共治&ldquo;的原则及《开源人宣言》</li>
                 <li className={styles.dutiesItem}>理解并拥护开源社的章程</li>
                 <li className={styles.dutiesItem}>选择至少一个工作组或项目组加入，并做出相应贡献</li>
                 <li className={styles.dutiesItem}>积极参与正式成员纳新投票及理事选举投票等开源社重要活动</li>
@@ -366,7 +368,8 @@ const CharterPage = () => {
           </section>
         </main>
       </div>
-    </div>
+      </div>
+    </>
   )
 }
 
