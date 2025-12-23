@@ -1,8 +1,11 @@
 import React from 'react'
+import SEO from '@/components/SEO'
 import styles from './index.module.css'
 
 const CodeOfConductPage = () => {
   return (
+  <>
+    <SEO />
     <div className={styles.codeOfConductPage}>
       {/* Hero Section */}
       <div className={styles.heroSection}>
@@ -295,6 +298,7 @@ const CodeOfConductPage = () => {
         </main>
       </div>
     </div>
+  </>
   )
 }
 

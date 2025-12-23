@@ -4,6 +4,29 @@ import { ChevronDown } from 'lucide-react'
 import VolunteerProfile from '../../../components/volunteer/VolunteerProfile'
 import styles from './index.module.css'
 
+const cooperationStars2025 = [
+  {
+    name: '孟迎霞',
+    nickname: '',
+    avatar: '/img/cblecker.png',
+    recommendation: '孟迎霞老师自2014年开源社创立以来，始终陪伴着开源社区的成长。在每一个关键节点，她都以沉静而坚定的支持，润物细无声般推动着开源社向前发展。每当社区需要助力时，CSDN与孟老师总是我们最先想到、也最信赖的同行者。'
+  },
+  {
+    name: 'Nick Vidal',
+    nickname: '',
+    avatar: '/img/cblecker.png',
+    recommendation: 'Nick Vidal 以其“全球开源社区最值得信赖的推动者”之名，将世界各地的开源力量紧密相连。作为 OSI 的社区与市场负责人，他不仅搭建起跨地域的开源网络，更亲身成为连接全球开源生态与中国开源发展的关键桥梁。此次到访中国，他以“穷则变，变则通，通则达”这句充满智慧的中国古语，精准诠释了中国开源当下的发展脉搏与应变精神。他本人，正是这句话在开源世界中的生动实践。'
+  },
+  {
+    name: 'Mario Behling',
+    nickname: 'Mario',
+    avatar: '/img/cblecker.png',
+    recommendation: 'Mario 是开源社的老朋友。早在 2015 年，他就在 FOSSASIA 的全球开源舞台上向世界介绍了开源社，并展示了特制的开源社限量版魔方。多年来，FOSSASIA 始终与开源社如兄弟般相互扶持、并肩同行。2025 COSCon 十周年之际，Mario 以个人名义对开源社和COSCon大会的鼎力支持，也期待未来开源社与 FOSSASIA 友谊长存、携手共进。'
+  }
+]
+
+
+
 const cooperationStars2023 = [
   {
     name: 'Hong Phuc Dang',

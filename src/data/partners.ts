@@ -396,9 +396,9 @@ export const partnersRawData: Partner[] = [
     organization: 'SegmentFault 思否',
     person: '',
     year: '2024',
-    level: '战略合作社区',
+    level: '战略合作媒体',
     link: 'https://segmentfault.com/',
-    logo: '/logo.png',
+    logo: '/img/media/segmentfault.png',
     tag: '累计合作5年'
   },
   {
@@ -858,7 +858,7 @@ export const partnersRawData: Partner[] = [
     year: '2022',
     level: '战略合作媒体',
     link: 'https://segmentfault.com/',
-    logo: '/logo.png',
+    logo: '/img/media/segmentfault.png',
     tag: ''
   },
   {
@@ -1078,7 +1078,7 @@ export const partnersRawData: Partner[] = [
     year: '2021',
     level: '战略合作媒体',
     link: 'https://segmentfault.com/',
-    logo: '/logo.png',
+    logo: '/img/media/segmentfault.png',
     tag: ''
   },
   {
@@ -1208,7 +1208,7 @@ export const partnersRawData: Partner[] = [
     year: '2020',
     level: '战略合作媒体',
     link: 'https://segmentfault.com/',
-    logo: '/logo.png',
+    logo: '/img/media/segmentfault.png',
     tag: ''
   },
   {
@@ -1848,7 +1848,7 @@ export const partnersRawData: Partner[] = [
     year: '2017',
     level: '合作媒体',
     link: 'https://segmentfault.com/',
-    logo: '/logo.png',
+    logo: '/img/media/segmentfault.png',
     tag: ''
   },
   {
@@ -2126,7 +2126,7 @@ export const levelOrder = [
   '亮点赞助',
   '成员赞助',
   '战略合作媒体',
-  '媒体合作',
+  '合作媒体',
   '战略合作社区',
   '大会合作单位',
   '特别支持',
