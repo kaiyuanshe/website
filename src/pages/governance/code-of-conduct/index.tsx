@@ -7,9 +7,9 @@ const CodeOfConductPage = () => {
       {/* Hero Section */}
       <div className={styles.heroSection}>
         <div className={styles.heroOverlay}>
-          <h1 className={styles.heroTitle}>开源社行为守则（公示版）</h1>
+          <h1 className={styles.heroTitle}>开源社行为守则</h1>
           <p className={styles.heroSubtitle}>
-            基于开源人宣言精神的社区行为准则
+            2025年修订版-基于开源人宣言精神的社区行为准则
           </p>
         </div>
       </div>
@@ -248,7 +248,7 @@ const CodeOfConductPage = () => {
                   </a>
                 </li>
                 <li className={styles.referenceItem}>
-                  <a href="https://wiki.mozilla.org/Code_of_Conduct/Draft#Conflicts_of_Interest" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.mozilla.org/zh-CN/about/governance/policies/participation/" target="_blank" rel="noopener noreferrer">
                     Mozilla Code of Conduct/Draft
                   </a>
                 </li>
@@ -273,7 +273,7 @@ const CodeOfConductPage = () => {
               <div className={styles.infoBox}>
                 <h3 className={styles.infoTitle}>开源人宣言</h3>
                 <p className={styles.infoText}>
-                  了解开源社的核心价值观和开源人宣言，理解我们的社区精神和理念。
+                  了解开源社的核心价值观和<a href="https://kaiyuanshe.cn/governance/open-source-manifesto" target="_blank" rel="noopener noreferrer">开源人宣言</a>，理解我们的社区精神和理念。
                 </p>
               </div>
               
@@ -287,7 +287,7 @@ const CodeOfConductPage = () => {
               <div className={styles.infoBox}>
                 <h3 className={styles.infoTitle}>联系我们</h3>
                 <p className={styles.infoText}>
-                  如有任何关于行为守则的疑问或建议，欢迎通过开源社官方渠道联系我们。
+                  如有任何关于行为守则的疑问或建议，欢迎通过开源社官方渠道 board@kaiyaunshe.org 联系我们。
                 </p>
               </div>
             </div>
