@@ -105,13 +105,14 @@ const cooperationStars2021 = [
 ]
 
 const yearlyStars = [
+  { year: '2023', stars: cooperationStars2025 },
   { year: '2023', stars: cooperationStars2023 },
   { year: '2022', stars: cooperationStars2022 },
   { year: '2021', stars: cooperationStars2021 }
 ]
 
 export default function CooperationPage() {
-  const [selectedYear, setSelectedYear] = useState('2023')
+  const [selectedYear, setSelectedYear] = useState('2025')
   
   const uniqueYears = useMemo(() => {
     return yearlyStars.map(item => item.year).sort((a, b) => parseInt(b) - parseInt(a))

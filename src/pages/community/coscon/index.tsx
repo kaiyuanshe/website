@@ -6,7 +6,7 @@ import { yearlyStars, getStarsByYear } from '@/data/awards'
 import styles from './index.module.css'
 
 export default function COSConStarPage() {
-  const [selectedYear, setSelectedYear] = useState('2023')
+  const [selectedYear, setSelectedYear] = useState('2025')
   
   const uniqueYears = useMemo(() => {
     return yearlyStars.map(item => item.year).sort((a, b) => parseInt(b) - parseInt(a))
