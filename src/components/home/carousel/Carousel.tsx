@@ -1,23 +1,73 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react'
 import Image from 'next/image'
 import styles from './Carousel.module.css'
-import { CarouselImage, carouselImages } from '@/data/home'
 import { useTranslation } from '../../../hooks/useTranslation'
 
-export default function Carousel() {
+type EventItem = {
+  ID: number
+  title?: string
+  cover_img?: string
+  event_setting?: number
+  bage_link?: string
+}
+
+type ArticleItem = {
+  ID: number
+  title?: string
+  cover_img?: string
+}
+
+type CarouselImage = {
+  src: string
+  detailUrl: string
+  openInNewTab: boolean
+  alt?: string
+}
+
+export default function Carousel({
+  events,
+  articles
+}: {
+  events: EventItem[]
+  articles: ArticleItem[]
+}) {
   const { t } = useTranslation()
   const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(null)
   const [isAtStart, setIsAtStart] = useState(true)
   const [isAtEnd, setIsAtEnd] = useState(false)
   const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const carouselImages = useMemo(() => {
+    const eventImages = events
+      .map(event => {
+        const isExternal = event.event_setting === 2 && event.bage_link
+        return {
+          src: event.cover_img || '',
+          alt: event.title,
+          detailUrl: isExternal ? event.bage_link || '' : `/events/${event.ID}`,
+          openInNewTab: Boolean(isExternal)
+        }
+      })
+      .filter(image => Boolean(image.src))
+
+    const articleImages = articles
+      .map(article => ({
+        src: article.cover_img || '',
+        alt: article.title,
+        detailUrl: `/blogs/${article.ID}`,
+        openInNewTab: false
+      }))
+      .filter(image => Boolean(image.src))
+
+    return [...eventImages, ...articleImages]
+  }, [events, articles])
 
   const checkScrollPosition = () => {
     if (scrollContainerRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollContainerRef.current
-      setIsAtStart(scrollLeft === 0)
+      setIsAtStart(scrollLeft <= 1)
       setIsAtEnd(scrollLeft + clientWidth >= scrollWidth - 1)
     }
   }
@@ -35,6 +85,18 @@ export default function Carousel() {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (!scrollContainerRef.current) {
+      return
+    }
+
+    const rafId = requestAnimationFrame(() => {
+      checkScrollPosition()
+    })
+
+    return () => cancelAnimationFrame(rafId)
+  }, [carouselImages.length])
 
   const scrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -102,6 +164,7 @@ export default function Carousel() {
                   width={400}
                   height={300}
                   className={styles.image}
+                  unoptimized
                 />
               </div>
             ))}
@@ -138,6 +201,7 @@ export default function Carousel() {
                 width={800}
                 height={600}
                 className={styles.modalImage}
+                unoptimized
               />
               <button
                 className={styles.detailButton}

@@ -1,71 +1,28 @@
 import { Calendar, User, Eye, ArrowRight, BookOpen } from 'lucide-react'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { Tag } from 'antd'
-import { useAuth } from '@/contexts/AuthContext'
 import styles from './Article.module.css'
-import { getArticles } from '@/pages/api/article'
 import { useTranslation } from '../../../hooks/useTranslation'
+
+type Article = {
+  ID: number
+  title: string
+  description: string
+  cover_img: string
+  category: string
+  tags: string[]
+  CreatedAt: string
+  author: string
+  view_count?: number
+}
 
 export function formatTime(isoTime: string): string {
   return dayjs(isoTime).format('YYYY年M月D日')
 }
 
-export default function ArticleSection() {
-  const { status } = useAuth()
+export default function ArticleSection({ articles }: { articles: Article[] }) {
   const { t } = useTranslation()
-  const [articles, setArticles] = useState<
-    Array<{
-      ID: number
-      title: string
-      description: string
-      cover_img: string
-      category: string
-      tags: string[]
-      CreatedAt: string
-      author: string
-      view_count?: number
-    }>
-  >([])
-
-  // 加载文章列表
-  const loadArticles = async () => {
-    try {
-      const queryParams = {
-        page: 1,
-        page_size: 3,
-        publish_status: 2,
-        category: 'blog'
-      }
-
-      const result = await getArticles(queryParams)
-      if (result.success && result.data) {
-        // 处理后端返回的数据结构
-        if (result.data.articles && Array.isArray(result.data.articles)) {
-          console.log(result.data.articles)
-          setArticles(result.data.articles)
-        } else if (Array.isArray(result.data)) {
-          setArticles(result.data)
-        } else {
-          console.warn('API 返回的数据格式不符合预期:', result.data)
-          setArticles([])
-        }
-      } else {
-        console.error('获取文章列表失败:', result.message)
-        setArticles([])
-      }
-    } catch (error) {
-      console.error('加载文章列表异常:', error)
-      setArticles([])
-    }
-  }
-
-  useEffect(() => {
-    if (!status || status !== 'loading') {
-      loadArticles()
-    }
-  }, [status])
 
   return (
     <section className={styles.articles}>
