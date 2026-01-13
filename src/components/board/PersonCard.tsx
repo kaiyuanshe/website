@@ -56,6 +56,7 @@ export default function PersonCard({
             fill
             className={styles.avatar}
             priority
+            unoptimized
           />
         </div>
 

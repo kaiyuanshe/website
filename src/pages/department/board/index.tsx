@@ -13,7 +13,17 @@ export default function BoardPage() {
     null
   )
   const [modalVisible, setModalVisible] = useState(false)
-  const [selectedYear, setSelectedYear] = useState<number | undefined>(new Date().getFullYear())
+
+  // Get available years from board members
+  const availableYears = useMemo(() => {
+    const years = boardMembers
+      .map(member => member.year)
+      .filter((year): year is number => year !== undefined)
+    return [...new Set(years)].sort((a, b) => b - a)
+  }, [])
+  const [selectedYear, setSelectedYear] = useState<number | undefined>(
+    () => availableYears[0]
+  )
 
   const handleMemberClick = (member: PersonCardProps) => {
     setSelectedMember(member)
@@ -24,14 +34,6 @@ export default function BoardPage() {
     setModalVisible(false)
     setSelectedMember(null)
   }
-
-  // Get available years from board members
-  const availableYears = useMemo(() => {
-    const years = boardMembers
-      .map(member => member.year)
-      .filter((year): year is number => year !== undefined)
-    return [...new Set(years)].sort((a, b) => b - a)
-  }, [])
 
   // Filter members by selected year
   const filteredMembers = useMemo(() => {
