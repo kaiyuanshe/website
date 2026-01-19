@@ -26,7 +26,6 @@ const cooperationStars2025 = [
 ]
 
 
-
 const cooperationStars2023 = [
   {
     name: 'Hong Phuc Dang',
@@ -105,7 +104,7 @@ const cooperationStars2021 = [
 ]
 
 const yearlyStars = [
-  { year: '2023', stars: cooperationStars2025 },
+  { year: '2025', stars: cooperationStars2025 },
   { year: '2023', stars: cooperationStars2023 },
   { year: '2022', stars: cooperationStars2022 },
   { year: '2021', stars: cooperationStars2021 }

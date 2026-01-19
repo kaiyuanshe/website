@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useTranslation } from '../hooks/useTranslation'
-import { FacebookIcon, LinkedinIcon, X, Github } from 'lucide-react'
-import { SiBilibili, SiWechat } from 'react-icons/si'
+import { FacebookIcon, LinkedinIcon, Github } from 'lucide-react'
+import { SiBilibili, SiWechat, SiX } from 'react-icons/si'
 import { useState } from 'react'
 import { Modal } from 'antd'
 import styles from '../styles/Footer.module.css'
@@ -158,7 +158,7 @@ export default function Footer() {
                   className={styles.socialButton}
                   aria-label="X (Twitter)"
                 >
-                  <X className={styles.socialIcon} />
+                  <SiX className={styles.socialIcon} />
                 </Link>
                 <Link
                   href="https://www.facebook.com/kaiyuanshe/"
