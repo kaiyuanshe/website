@@ -38,15 +38,6 @@ export const members: Member[] = [
     details: []
   },
   {
-    name: '陈莉君',
-    gender: '女',
-    avatar: '/img/cblecker.png',
-    city: '西安',
-    github: 'https://github.com/cljcore',
-    githubUsername: 'cljcore',
-    details: []
-  },
-  {
     name: '陈玄',
     gender: '男',
     avatar: '/img/cblecker.png',
@@ -161,18 +152,6 @@ export const members: Member[] = [
     details: []
   },
   {
-    name: '高天贺',
-    gender: '男',
-    avatar: '/img/cblecker.png',
-    city: '阜阳',
-    email: 'i@tianheg.co',
-    website: 'https://tianheg.co',
-    github: 'https://github.com/tianheg',
-    skills: ['编程', '写作'],
-    bio: '学习技术，热爱生活',
-    details: []
-  },
-  {
     name: '高须正和',
     gender: '男',
     avatar: '/img/cblecker.png',
@@ -281,25 +260,6 @@ export const members: Member[] = [
     avatar: '/img/cblecker.png',
     city: '英国',
     email: 'hying1201@kaiyuanshe.org',
-    details: []
-  },
-  {
-    name: '和灿阳',
-    gender: '女',
-    avatar: '/img/cblecker.png',
-    city: '上海',
-    email: 'hecanyang@kaiyuanshe.org',
-    bio: '撰写人生笔记本正在进行时 动静多面体 乐于思考探索世界的ENFJ！',
-    details: []
-  },
-  {
-    name: '胡欣元',
-    gender: '女',
-    avatar: '/img/cblecker.png',
-    city: '上海',
-    email: 'sowllwos@foxmail.com',
-    skills: ['剪辑'],
-    bio: '一位熬夜蘑菇',
     details: []
   },
   {
@@ -758,15 +718,6 @@ export const members: Member[] = [
     details: []
   },
   {
-    name: '苏子馨',
-    gender: '女',
-    avatar: '/img/cblecker.png',
-    city: '江苏',
-    email: 'suzixin@kaiyuanshe.org',
-    bio: '沉迷游戏游泳的深漂打工人，目标是攒够Money回家撸猫',
-    details: []
-  },
-  {
     name: '孙乐',
     gender: '男',
     avatar: '/img/cblecker.png',
@@ -853,17 +804,6 @@ export const members: Member[] = [
     nickname: 'Juni',
     githubUsername: 'juniwang',
     alternativeEmail: 'wangjunbo924@hotmail.com',
-    details: []
-  },
-  {
-    name: '王梦玉',
-    gender: '女',
-    avatar: '/img/cblecker.png',
-    city: '上海',
-    email: 'wangmengyu@kaiyuanshe.org',
-    bio: '努力早睡早起，喜欢美食和追剧，偶尔发呆但热爱生活的i人',
-    nickname: 'www.yi',
-    alternativeEmail: '18439475718@139.com',
     details: []
   },
   {
@@ -1104,15 +1044,6 @@ export const members: Member[] = [
     nickname: 'Jack',
     githubUsername: 'JackYu_UbuntuKylin',
     alternativeEmail: 'jackyu@ubuntukylin.com',
-    details: []
-  },
-  {
-    name: '袁睿斌',
-    gender: '男',
-    avatar: '/img/cblecker.png',
-    city: '上海',
-    email: 'yuanruibin@kaiyuanshe.org',
-    nickname: '小袁',
     details: []
   },
   {
