@@ -76,9 +76,9 @@ export default function LeafletMap({
     // 使用多个CDN源，优先国内可访问的CDN
     const iconSources = [
       {
-        iconRetinaUrl: 'https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-        iconUrl: 'https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-        shadowUrl: 'https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconRetinaUrl: 'https://s4.zstatic.net/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
+        iconUrl: 'https://s4.zstatic.net/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
+        shadowUrl: 'https://s4.zstatic.net/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
       },
       {
         iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',

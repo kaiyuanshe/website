@@ -27,9 +27,10 @@ export default function Document() {
         {/* Leaflet CSS - 优先使用国内CDN */}
         <link 
           rel="stylesheet" 
-          href="https://cdn.bootcdn.net/ajax/libs/leaflet/1.9.4/leaflet.css" 
-          integrity="sha384-BBQL4gKfA4GLjCgJ8c3VJ0B7+9Z8JkJPnTxDg4g6jKwD+UzFVmgE+pGvqQ+X5Qz2"
-          crossOrigin="anonymous"
+          href="https://s4.zstatic.net/ajax/libs/leaflet/1.9.4/leaflet.css" 
+          integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==" 
+          crossOrigin="anonymous" 
+          referrerPolicy="no-referrer" 
         />
         {/* 备用CDN */}
         <link 
