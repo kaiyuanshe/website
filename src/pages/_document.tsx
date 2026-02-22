@@ -24,21 +24,7 @@ export default function Document() {
         <meta property="og:site_name" content="开源社" />
         <link rel="icon" href="/logo.png" />
         
-        {/* Leaflet CSS - 优先使用国内CDN */}
-        <link 
-          rel="stylesheet" 
-          href="https://s4.zstatic.net/ajax/libs/leaflet/1.9.4/leaflet.css" 
-          integrity="sha512-Zcn6bjR/8RZbLEpLIeOwNtzREBAJnUKESxces60Mpoj+2okopSAcSUIUOseddDm0cxnGQzxIR7vJgsLZbdLE3w==" 
-          crossOrigin="anonymous" 
-          referrerPolicy="no-referrer" 
-        />
-        {/* 备用CDN */}
-        <link 
-          rel="preload" 
-          href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" 
-          as="style"
-          crossOrigin="anonymous"
-        />
+      
       </Head>
       <body>
         <Main />
