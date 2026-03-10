@@ -28,6 +28,86 @@ export const boardMembers: CommitteeMember[] = [
   {
     name: '陈阳',
     pronouns: 'Emily',
+    title: '开源社 2026 届理事。',
+    organization: '开源社 2026 届理事。',
+    avatar: '/img/board/5.webp',
+    twitter: '',
+    github: '',
+    linkedin: 'https://www.linkedin.com/in/emily-chen-2405a46',
+    email: 'emily@kaiyuanshe.org',
+    blog: '',
+    year: 2026,
+    details: [
+      `个人简介： 陈阳（Emily Chen），开源社联合创始人，Dexmal 原力灵机开源战略生态总经理。她是深耕开源社区多年的实践者、组织者与连接者，致力于推动开源文化在全球与中国的发展与融合。2008 年，陈阳创立了 GNOME.Asia 社区，将 GNOME.Asia 峰会成功带到十多个亚洲国家和地区。2010 年，她担任 GNOME 基金会董事会总监，并于 2014 年在瑞典 GUADEC 大会上荣获 GNOME 基金会年度最高荣誉——“GNOME Pants Award”。自 2017 年起，陈阳多次组织 GitHub CEO、COO 及全球开源领袖的访华之行，积极推动国际平台与中国开源生态的交流与合作。她带领开源社加入OSI成为中国首家联盟代表，在国际标准组织沟通方面发挥了重要作用。她发起了多个在中国极具影响力的开源项目，包括开源社年度报告、中国开源年会（COSCon）以及“开源先锋33人”榜单。此外，她还是 Mozilla 的核心贡献者、Google Summer of Code（GSoC）导师，曾任中国开源促进联盟副秘书长，也是开放原子开源基金会 TOC 导师。陈阳在 IT 行业中有着 20 年的经验，曾供职 SUN，Oracle， 微软跨国 IT 公司核心研发岗位，技术领域涵盖开源技术和社区治理，公有云，行业AI解决方案，知识图谱，智能对话，数据集成，具身测评。2019 年获得美国人工智能专利一项， O'REILLY 《Beautiful Testing》联合撰稿人。`
+    ]
+  },
+  {
+    name: '李明康',
+    pronouns: '李小明',
+    title: '开源社 2026 届理事，执行委员会执行长',
+    organization: '开源社 2026 届理事，执行委员会执行长',
+    avatar: '/img/board/6.webp',
+    twitter: 'https://twitter.com/Bright_OSOP',
+    github: 'https://github.com/Nliver',
+    linkedin: '',
+    email: 'slibre@kaiyuanshe.org',
+    blog: '',
+    year: 2026,
+    details: [
+      '个人简介：李明康（Bright Li），历任开源社社区合作组组长、顾问委员会秘书、项目委员会委员、理事等职，长期负责社区发展与合作事务，是多届中国开源年会 COSCon 的核心组织者，主导社区/媒体合作与开源集市板块，累计与上百家社区建立联动；他深度参与中国开源年度报告、中国开源发展蓝皮书、CCF开源战略动态月报及中国开源发展深度报告等开源报告的编写工作；在他的积极推动下，开源社参选并获评由中国科协科学技术传播中心、中国计算机学会、中国通信学会及中国科学院软件研究所联合评选的“开源创新榜单—年度开源社区”。李明康是软件工程师，资深开发者关系（DevRel）和开源运营专家，“明说开源”专栏作者，现任七牛开发者教育负责人。曾任开放原子开源基金会教培顾问，负责以贡献为导向的开源人才评价机制，牵头25所高校和科研院所组建首批试点工作组，探索在高校落地基于开源贡献的人才评价路径；深度参与开放原子校源行项目的运作和升级，策划发起“开源春耕计划”、“开源技术培训公开课”等系列开源教育活动，覆盖上百所高校师生。目前主要致力于 AI 时代下的开源教育与工程师培养、开发者关系、开源项目运营、开源生态建设和 OSPO 等事宜。李明康同时也在多个开源/技术社区中活跃贡献，是 Linux 基金会亚太区开源布道者、Apache 软件基金会Local Community Shanghai Member、CCF中国计算机学会开源发展技术委员会执行委员、AWS User Group Leader、OSPO Summit 筹备组成员。他曾在多个知名开源峰会上担任分论坛出品人、主持人和发表演讲，获得中国开源先锋 33 人、LF 开源软件学园开源明星奖、社区合作之星等荣誉。'
+    ]
+  },
+  {
+    name: '梁尧',
+    pronouns: 'Leon',
+    title: '开源社 2026 届副理事长。',
+    organization: '开源社 2025 届副理事长',
+    avatar: '/img/board/4.webp',
+    twitter: '',
+    github: '',
+    linkedin: '',
+    email: 'ly@kaiyuanshe.org',
+    blog: '',
+    year: 2026,
+    details: [
+      '个人简介：梁尧（Leon），目前主要从事具身智能领域产业生态合作、开源治理、标准和知识产权。在开源社主要负责开源治理（法律咨询委员会）、开源创新（公益、OPC）、开源产业（机器人、汽车）相关工作。2016年加入开源社，2018年起加入COSCon组委会，2019年度开源之星，2020年起加入开源社理事会，2024届副理事长，2025届执行长。参与中国开源年度报告、中国开源发展蓝皮书、木兰开源许可证、开放原子开放硬件许可证、CCF开源战略动态月报、中国信通院开源相关报告、标准等的编写，在多个开源、知识产权大会上代表开源社进行议题分享；支撑开源社章程/协议条款修改完善及组织主体、商标的注册等；启动开源社“醒源大讲堂”，会同国家知识产权局专利开源项目组等单位组织专利开源相关研讨会；推出开源社年度合作伙伴权益包机制并落地多家合作伙伴的合作事宜；在COSCon发起并出品过开源硬件、开源公益、开源商业、汽车开源论坛，联合出品过开源治理论坛、具身智能开源论坛；发起 “OpenGood 开源公益” 计划，获选为2024年“中国开放科学优秀行动”，并完成业界首批开源公益优秀案例的评选发布；推动开源社成为中关村AI北纬社区人工智能OPC友好社区首批生态合作伙伴等。此外，还在多个开源社区/组织中持续进行贡献，也是CCF中国计算机学会开源发展技术委员会执委、木兰开源社区IPC委员、OpenSDV汽车开源社区运营总监，担任多届开源创新榜评委，获选2024中国开源先锋33人、2025杰出知识产权经理人，获聘上海、重庆、雄安、海南、黑龙江、广东、深圳、广州、珠海等多个地区组织机构专家，致力于推动科技、社会开放式创新生态的发展。'
+    ]
+  },
+  {
+    name: '林旅强',
+    pronouns: 'Richard',
+    title: '开源社 2026 届理事长',
+    organization: '开源社 2025 届理事长',
+    avatar: '/img/board/2.webp',
+    twitter: 'https://x.com/richardllin',
+    github: 'https://github.com/richardllin',
+    linkedin: 'https://www.linkedin.com/in/richardllin',
+    email: 'richard@kaiyuanshe.org',
+    blog: '',
+    year: 2026,
+    details: [
+      `个人简介： 林旅强（Richard Lin）是开源社联合创始人（2014），2026 届理事长、2025 届副理事长，长期活跃于亚太及国际开源社区。他现任 Datastrato 生态副总裁，参与 Apache Gravitino 项目的开源生态建设，专注于 AI 与数据基础设施领域的开源生态发展。在开源领域拥有近 20 年经验，他长期从事 开发者关系（DevRel）与开源生态建设，通过技术演讲、写作、翻译与社区运营等方式推动开源理念的传播，并持续关注 「开源 × AI」时代的技术趋势与社区实践。他译有《开源项目成功之道》《开发者关系：方法与实践》等作品。在社区层面，他是 Data for AI 社区 与 RTE 开发者社区 的主理人，并担任 Datawhale、OpenBuild 等社区顾问，持续推动 AI 与开源技术的交流与产业协作。在产业实践方面，他曾担任 华为云 AI 开发者生态负责人，以及 零一万物全球开源与开发者生态负责人，致力于在企业、创业项目与开源社区之间建立合作机制，推动开源从项目到生态、从社区到商业化的可持续发展路径。近年来，他致力于中文开源社区与国际开源生态的交流合作，连接 FOSDEM、FOSSASIA、COSCUP 等海外社区活动，以及 Linux Foundation、Apache Software Foundation、Open Source Initiative 等国际组织，促进中文开源项目与开发者更好地走向国际，同时也将全球开源治理与社区经验引入中文开源生态圈。`
+    ]
+  },
+  {
+    name: '许银',
+    pronouns: 'Ian',
+    title: '开源社 2026 届理事',
+    organization: '开源社 2026 届理事',
+    avatar: '/img/board/7.webp',
+    twitter: 'https://x.com/imxy007',
+    github: 'https://github.com/jueduizone',
+    linkedin: 'https://www.linkedin.com/in/callmeian',
+    email: 'xuyin@kaiyuanshe.org',
+    blog: '',
+    year: 2026,
+    details: [
+      '个人简介：许银（lan Xu），OpenBuild 开源社区发起人，17 年加入开源社，担任过活动组组长，开源社副执行长等职，成功负责多届开源年会的落地执行。长期活跃于开源社区，参与社区贡献，曾获 中国开源先锋 33 人，开源之星 等殊荣。目前是 PyChina， RustCC 社区组委会成员，ALC Beijing Member。'
+    ]
+  },
+  {
+    name: '陈阳',
+    pronouns: 'Emily',
     title: '开源社 2025 届理事。',
     organization: '开源社 2025 届理事。',
     avatar: '/img/board/5.webp',
