@@ -59,7 +59,7 @@ export const members: Member[] = [
     github: 'https://github.com/sssuyx',
     position: '开源战略总监',
     nickname: 'Emily',
-    bio："开源最好的时代是十年前，其次就是现在。",
+    bio: "开源最好的时代是十年前，其次就是现在。",
     githubUsername: 'sssuyx',
     alternativeEmail: 'emilychen522@gmail.com',
     details: []
