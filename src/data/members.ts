@@ -95,7 +95,7 @@ export const members: Member[] = [
     avatar: 'https://res.cloudinary.com/drqfxt4jl/image/upload/v1780312145/ccy_kyaedf.png',
     city: '上海',
     email: 'cuichenyang@kaiyuanshe.org',
-    nickname：'yoshino-s',
+    nickname: 'yoshino-s',
     github: 'https://github.com/yoshino-s',
     bio: '赛博保安',
     details: []
@@ -131,7 +131,7 @@ export const members: Member[] = [
     avatar: 'https://res.cloudinary.com/drqfxt4jl/image/upload/v1780312575/dx_dmugwd.jpg',
     city: '北京',
     email: '515959440@qq.com',
-    nickname：'Kyra',
+    nickname: 'Kyra',
     bio: '开源拥抱者，人类观察员',
     details: []
   },
@@ -151,7 +151,7 @@ export const members: Member[] = [
     avatar: 'https://res.cloudinary.com/drqfxt4jl/image/upload/v1780312717/dxh_xzqghs.jpg',
     city: '新加坡',
     github: 'https://github.com/xihuaduan',
-    nickname：'老段、焦木',
+    nickname: '老段、焦木',
     bio: 'IT老兵，AI新手。曾任阿里集团开源计划办公室 (OSPO)',
     githubUsername: 'xihuaduan',
     details: []
