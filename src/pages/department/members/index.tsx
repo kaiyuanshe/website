@@ -51,7 +51,7 @@ export default function MembersPage() {
         <div className={styles.memberHeader}>
           <div className={styles.memberAvatar}>
             <img 
-              src={selectedMember.avatar ? `/img/members/${selectedMember.avatar}` : "/img/cblecker.png"} 
+              src={selectedMember.avatar ? selectedMember.avatar : "/img/cblecker.png"} 
               alt={selectedMember.name}
               onError={(e) => {
                 const target = e.target as HTMLImageElement
