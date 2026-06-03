@@ -31,6 +31,9 @@ npm run build
 echo "🚀 同步前端到生产目录..."
 rsync -a --delete $TMP_DIR/frontend/ $BASE_DIR/
 
+
+cd $BASE_DIR
+
 echo "♻️ 热重载前端服务..."
 pm2 describe frontend >/dev/null 2>&1 \
   && pm2 reload frontend \
