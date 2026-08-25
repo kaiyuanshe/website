@@ -188,6 +188,16 @@ export function extractText(content: string): string {
   return text.trim();
 }
 
+export function stripMarkdown(content: string): string {
+  return content
+    .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/[*_`~#>|]/g, '')
+    .replace(/-{3,}/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export function getTableOfContents(content: string): Array<{ level: number; text: string; id: string }> {
   const headings = extractHeadings(content);
   const toc: Array<{ level: number; text: string; id: string }> = [];

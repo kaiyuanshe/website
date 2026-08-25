@@ -32,6 +32,7 @@ import styles from './index.module.css';
 import { getEvents, deleteEvent } from '../api/event';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/contexts/AuthContext';
+import { stripMarkdown } from '@/lib/markdown';
 
 const { Search: AntSearch } = Input;
 const { Option } = Select;
@@ -40,6 +41,12 @@ type ViewMode = 'grid' | 'list';
 
 export function formatTime(isoTime: string): string {
   return dayjs(isoTime).format('YYYY-MM-DD');
+}
+
+function previewDescription(desc?: string): string {
+  if (!desc) return '';
+  const text = stripMarkdown(desc);
+  return text.length > 100 ? `${text.slice(0, 100)}…` : text;
 }
 
 
@@ -528,7 +535,9 @@ export default function EventsPage() {
                       <Star className={styles.listFeaturedIcon} />
                     )}
                   </div>
-                  <p className={styles.listEventDescription}>{event.desc}</p>
+                  <p className={styles.listEventDescription}>
+                    {previewDescription(event.desc || event.description)}
+                  </p>
                 </div>
                 <div className={styles.listCell}>
                   <div className={styles.timeInfo}>
