@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from "react";
 import {
   Form,
   Input,
@@ -8,8 +8,8 @@ import {
   App as AntdApp,
   Select,
   Spin,
-} from 'antd';
-import { useRouter } from 'next/router';
+} from "antd";
+import { useRouter } from "next/router";
 import {
   ArrowLeft,
   Users,
@@ -17,56 +17,64 @@ import {
   ImageIcon,
   Save,
   Plus,
-} from 'lucide-react';
-import Link from 'next/link';
-import styles from './edit.module.css';
+} from "lucide-react";
+import Link from "next/link";
+import styles from "./edit.module.css";
 
-import VditorEditor from '@/components/vditorEditor/VditorEditor';
+import VditorEditor from "@/components/vditorEditor/VditorEditor";
 // import QuillEditor from '@/components/quillEditor/QuillEditor';
-import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
+import UploadCardImg from "@/components/uploadCardImg/UploadCardImg";
+import ContentLocaleFields, {
+  getContentLocaleValues,
+} from "@/components/ContentLocaleFields";
 
-import { getArticleById, updateArticle } from '@/pages/api/article';
-import { usePermissionGuard } from '@/hooks/usePermissionGuard';
+import { getArticleById, updateArticle } from "@/pages/api/article";
+import { usePermissionGuard } from "@/hooks/usePermissionGuard";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { TextArea } = Input;
 
 // 从 Cloudinary URL 中提取 public_id
 function extractPublicIdFromUrl(url: string): string {
-  if (!url) return '';
-  
+  if (!url) return "";
+
   // Cloudinary URL 格式: https://res.cloudinary.com/{cloud_name}/{resource_type}/{type}/{version?}/{folder}/{public_id}.{format}
   // 提取从 upload/ 后面到文件扩展名之前的部分
   const match = url.match(/\/upload\/(?:v\d+\/)?(.+?)(?:\.[^.]+)?$/);
-  return match ? match[1] : '';
+  return match ? match[1] : "";
 }
 
 export default function EditArticlePage() {
+  const { translateText: translateUiText } = useTranslation();
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
   const router = useRouter();
   const { id } = router.query;
   const rId = Array.isArray(id) ? id[0] : id;
   const [loading, setLoading] = useState(true);
-  
+
   // 权限检查
-  const { isLoading: permissionLoading, hasPermission } = usePermissionGuard('event:write');
+  const { isLoading: permissionLoading, hasPermission } =
+    usePermissionGuard("event:write");
 
   const [article, setArticle] = useState<Record<string, unknown>>();
   const [tags, setTags] = useState<string[]>([]);
   const [inputVisible, setInputVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [inputValue, setInputValue] = useState("");
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [cloudinaryImg, setCloudinaryImg] = useState<{ public_id: string; secure_url: string } | undefined>();
-  const [category] = useState('announcement');
-
+  const [cloudinaryImg, setCloudinaryImg] = useState<
+    { public_id: string; secure_url: string } | undefined
+  >();
+  const [category] = useState("announcement");
 
   // 编辑器处理
   const handleVditorEditorChange = useCallback(
     (value: string) => {
-      form.setFieldValue('content', value);
+      form.setFieldValue("content", value);
     },
-    [form]
+    [form],
   );
 
   const handleSubmit = async (values: Record<string, unknown>) => {
@@ -75,29 +83,30 @@ export default function EditArticlePage() {
       setIsSubmitting(true);
 
       const updateArticleRequest = {
-        title: values.title || '',
-        description: values.description || '',
-        content: values.content || '',
-        source_link: values.source || '',
+        title: values.title || "",
+        description: values.description || "",
+        content: values.content || "",
+        source_link: values.source || "",
         category: category,
         cover_img: cloudinaryImg?.secure_url || previewUrl, // 当用户未修改封面则使用详情返回的previewUrl
         tags: tags,
-        license: values.license || '',
-        author: values.author || '',
-        editor: values.editor || '',
-        translator: values.translator || '',
+        license: values.license || "",
+        author: values.author || "",
+        editor: values.editor || "",
+        translator: values.translator || "",
+        ...getContentLocaleValues(values),
       };
 
       const result = await updateArticle(article.ID, updateArticleRequest);
       if (result.success) {
         message.success(result.message);
-        router.push('/announcement');
+        router.push("/announcement");
       } else {
-        message.error(result.message || '更新公告失败');
+        message.error(result.message || "更新公告失败");
       }
     } catch (error: unknown) {
-      console.error('更新公告失败:', error);
-      message.error('更新公告出错，请重试');
+      console.error("更新公告失败:", error);
+      message.error("更新公告出错，请重试");
     } finally {
       setIsSubmitting(false);
     }
@@ -107,8 +116,8 @@ export default function EditArticlePage() {
     if (inputValue && !tags.includes(inputValue)) {
       const newTags = [...tags, inputValue];
       setTags(newTags);
-      setInputValue('');
-      console.log('添加标签后:', newTags);
+      setInputValue("");
+      console.log("添加标签后:", newTags);
     }
     setInputVisible(false);
   };
@@ -116,7 +125,7 @@ export default function EditArticlePage() {
   const handleRemoveTag = (tagToRemove: string) => {
     const newTags = tags.filter((tag) => tag !== tagToRemove);
     setTags(newTags);
-    console.log('删除标签后:', newTags);
+    console.log("删除标签后:", newTags);
   };
 
   useEffect(() => {
@@ -136,26 +145,28 @@ export default function EditArticlePage() {
             category: response.data?.category,
             cover: response.data?.cover_img,
             author: response.data?.author,
-            translator: response.data?.translator || '',
+            translator: response.data?.translator || "",
             editor: response.data?.editor,
             license: response.data?.license,
+            locale: response.data?.locale,
+            translationOf: response.data?.translation_of,
           });
-          setPreviewUrl(response.data?.cover_img || '');
+          setPreviewUrl(response.data?.cover_img || "");
           setTags(response.data?.tags || []);
-          
+
           // 如果有封面图片，从 URL 中提取 public_id 并设置 cloudinaryImg
           if (response.data?.cover_img) {
             const publicId = extractPublicIdFromUrl(response.data.cover_img);
             if (publicId) {
               setCloudinaryImg({
                 public_id: publicId,
-                secure_url: response.data.cover_img
+                secure_url: response.data.cover_img,
               });
             }
           }
         }
       } catch {
-        message.error('加载失败');
+        message.error("加载失败");
         setArticle(null);
       } finally {
         setLoading(false);
@@ -168,9 +179,14 @@ export default function EditArticlePage() {
   // 如果正在加载权限，显示加载状态
   if (permissionLoading) {
     return (
-      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+      <div
+        className={`${styles.container} nav-t-top`}
+        style={{ textAlign: "center", padding: "100px 0" }}
+      >
         <Spin size="large" />
-        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+        <p style={{ marginTop: "16px" }}>
+          <LocalizedText>{"正在验证访问权限..."}</LocalizedText>
+        </p>
       </div>
     );
   }
@@ -178,10 +194,14 @@ export default function EditArticlePage() {
   if (!loading && !article) {
     return (
       <div className={styles.error}>
-        <h2>公告不存在</h2>
-        <p>抱歉，找不到您要查看的公告</p>
+        <h2>
+          <LocalizedText>{"公告不存在"}</LocalizedText>
+        </h2>
+        <p>
+          <LocalizedText>{"抱歉，找不到您要查看的公告"}</LocalizedText>
+        </p>
         <Link href="/announcement" className={styles.backButton}>
-          返回公告列表
+          <LocalizedText>{"返回公告列表"}</LocalizedText>
         </Link>
       </div>
     );
@@ -192,7 +212,7 @@ export default function EditArticlePage() {
       <div className={styles.header}>
         <Link href="/announcement" className={styles.backButton}>
           <ArrowLeft className={styles.backIcon} />
-          返回公告列表
+          <LocalizedText>{"返回公告列表"}</LocalizedText>
         </Link>
       </div>
 
@@ -212,40 +232,40 @@ export default function EditArticlePage() {
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <FileText className={styles.sectionIcon} />
-                基本信息
+                <LocalizedText>{"基本信息"}</LocalizedText>
               </h2>
 
               <Form.Item
-                label="公告标题"
+                label={translateUiText("公告标题")}
                 name="title"
-                rules={[{ required: true, message: '请输入公告标题' }]}
+                rules={[{ required: true, message: "请输入公告标题" }]}
               >
                 <Input
-                  placeholder="请输入公告标题"
+                  placeholder={translateUiText("请输入公告标题")}
                   className={styles.input}
                   maxLength={30}
                   showCount
                 />
               </Form.Item>
               <Form.Item
-                label="公告描述"
+                label={translateUiText("公告描述")}
                 name="description"
-                rules={[{ required: true, message: '请输入公告描述' }]}
+                rules={[{ required: true, message: "请输入公告描述" }]}
               >
                 <TextArea
                   rows={2}
                   maxLength={60}
                   showCount
-                  placeholder="请输入公告描述"
+                  placeholder={translateUiText("请输入公告描述")}
                 />
               </Form.Item>
               <Form.Item
-                label="公告内容"
+                label={translateUiText("公告内容")}
                 name="content"
-                rules={[{ required: true, message: '请输入公告内容' }]}
+                rules={[{ required: true, message: "请输入公告内容" }]}
               >
                 <VditorEditor
-                  value={form.getFieldValue('content')}
+                  value={form.getFieldValue("content")}
                   onChange={handleVditorEditorChange}
                   height={820}
                 />
@@ -255,15 +275,18 @@ export default function EditArticlePage() {
 
           {/* 右侧表单 */}
           <div className={styles.rightColumn}>
+            <Card className={styles.section}>
+              <ContentLocaleFields />
+            </Card>
             {/* 公告封面 */}
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <ImageIcon className={styles.sectionIcon} />
-                公告封面
+                <LocalizedText>{"公告封面"}</LocalizedText>
               </h2>
               <Form.Item
                 name="cover"
-                rules={[{ required: true, message: '请上传公告封面' }]}
+                rules={[{ required: true, message: "请上传公告封面" }]}
               >
                 <UploadCardImg
                   previewUrl={previewUrl}
@@ -278,70 +301,83 @@ export default function EditArticlePage() {
             {/* 原文链接 */}
             <Card className={styles.section}>
               <Form.Item
-                label="原文链接"
+                label={translateUiText("原文链接")}
                 name="source"
                 rules={[
                   {
-                    type: 'url',
-                    message: '请输入有效的链接地址',
+                    type: "url",
+                    message: "请输入有效的链接地址",
                   },
                 ]}
               >
-                <Input placeholder="请输入原文链接" className={styles.input} />
+                <Input
+                  placeholder={translateUiText("请输入原文链接")}
+                  className={styles.input}
+                />
               </Form.Item>
               <Form.Item
-                label="版权声明"
+                label={translateUiText("版权声明")}
                 name="license"
-                rules={[{ message: '请选择版权声明' }]}
+                rules={[{ message: "请选择版权声明" }]}
               >
-                <Select placeholder="请选择版权声明">
-                  <Select.Option value="CCO">CCO(公共领域贡献)</Select.Option>
-                  <Select.Option value="CC-4.0">CC-4.0(知识共享 4.0 国际许可协议)</Select.Option>
+                <Select placeholder={translateUiText("请选择版权声明")}>
+                  <Select.Option value="CCO">
+                    <LocalizedText>{"CCO(公共领域贡献)"}</LocalizedText>
+                  </Select.Option>
+                  <Select.Option value="CC-4.0">
+                    <LocalizedText>
+                      {"CC-4.0(知识共享 4.0 国际许可协议)"}
+                    </LocalizedText>
+                  </Select.Option>
                 </Select>
               </Form.Item>
               {/* <Form.Item
-                label="分类"
-                name="category"
-                rules={[{ required: true, message: '请选择分类' }]}
-              >
-                <Select placeholder="请选择分类">
-                  <Select.Option value="original">原创</Select.Option>
-                  <Select.Option value="translation">翻译</Select.Option>
-                  <Select.Option value="archive">归档</Select.Option>
-                </Select>
-              </Form.Item> */}
+                  label="分类"
+                  name="category"
+                  rules={[{ required: true, message: '请选择分类' }]}
+                 >
+                  <Select placeholder="请选择分类">
+                    <Select.Option value="original">原创</Select.Option>
+                    <Select.Option value="translation">翻译</Select.Option>
+                    <Select.Option value="archive">归档</Select.Option>
+                  </Select>
+                 </Form.Item> */}
             </Card>
 
             {/* 参与人员 */}
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <Users className={styles.sectionIcon} />
-                作者与协作者
+                <LocalizedText>{"作者与协作者"}</LocalizedText>
               </h2>
 
               <div className={styles.formRow}>
                 <Form.Item
-                  label="作者"
+                  label={translateUiText("作者")}
                   name="author"
-                  rules={[{ required: true, message: '请输入作者姓名' }]}
+                  rules={[{ required: true, message: "请输入作者姓名" }]}
                 >
-                  <Input placeholder="请输入作者" maxLength={10} showCount />
+                  <Input
+                    placeholder={translateUiText("请输入作者")}
+                    maxLength={10}
+                    showCount
+                  />
                 </Form.Item>
               </div>
 
               <div className={styles.formRow}>
-                <Form.Item label="翻译" name="translator">
+                <Form.Item label={translateUiText("翻译")} name="translator">
                   <Input
-                    placeholder="请输入翻译（可选）"
+                    placeholder={translateUiText("请输入翻译（可选）")}
                     maxLength={10}
                     showCount
                   />
                 </Form.Item>
               </div>
               <div className={styles.formRow}>
-                <Form.Item label="编辑" name="editor">
+                <Form.Item label={translateUiText("编辑")} name="editor">
                   <Input
-                    placeholder="请输入编辑"
+                    placeholder={translateUiText("请输入编辑")}
                     maxLength={10}
                     showCount
                   />
@@ -353,7 +389,7 @@ export default function EditArticlePage() {
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <Plus className={styles.sectionIcon} />
-                公告标签
+                <LocalizedText>{"公告标签"}</LocalizedText>
               </h2>
 
               <div className={styles.tagsContainer}>
@@ -385,19 +421,18 @@ export default function EditArticlePage() {
                     className={styles.addTagButton}
                   >
                     <Plus className={styles.addTagIcon} />
-                    添加标签
+                    <LocalizedText>{"添加标签"}</LocalizedText>
                   </button>
                 )}
               </div>
             </Card>
-
           </div>
         </div>
 
         {/* 提交按钮 */}
         <div className={styles.submitSection}>
           <Button onClick={() => router.back()} className={styles.cancelButton}>
-            取消
+            <LocalizedText>{"取消"}</LocalizedText>
           </Button>
           <Button
             type="primary"
@@ -407,7 +442,9 @@ export default function EditArticlePage() {
             disabled={isSubmitting}
           >
             <Save className={styles.submitIcon} />
-            {isSubmitting ? '更新中...' : '更新公告'}
+            {isSubmitting
+              ? translateUiText("更新中...")
+              : translateUiText("更新公告")}
           </Button>
         </div>
       </Form>

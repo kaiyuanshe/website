@@ -1,193 +1,211 @@
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { App as AntdApp, Image, Button } from 'antd'
-import { User, UserPlus, FileText, Upload, Users, Settings } from 'lucide-react'
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { App as AntdApp, Image, Button } from "antd";
+import {
+  User,
+  UserPlus,
+  FileText,
+  Upload,
+  Users,
+  Settings,
+} from "lucide-react";
 
-import { Tabs } from 'antd'
-import type { TabsProps } from 'antd'
+import { Tabs } from "antd";
+import type { TabsProps } from "antd";
 
-import Link from 'next/link'
-import styles from './index.module.css'
-import { useAuth } from '@/contexts/AuthContext'
+import Link from "next/link";
+import styles from "./index.module.css";
+import { useAuth } from "@/contexts/AuthContext";
 import {
   getEventById,
   updateEventPublishStatus,
-  getSessionsByEvent
-} from '@/pages/api/event'
-import { sanitizeMarkdown } from '@/lib/markdown'
+  getSessionsByEvent,
+} from "@/pages/api/event";
+import { sanitizeMarkdown } from "@/lib/markdown";
+import LocalizedText from "@/components/LocalizedText";
+import TranslationFallbackNotice from "@/components/TranslationFallbackNotice";
+import { useTranslation } from "@/hooks/useTranslation";
 
-type ContentTab = 'detail'
+type ContentTab = "detail";
 
 // 定义类型
 interface Speaker {
-  name: string
-  title: string
-  avatar?: string
+  name: string;
+  title: string;
+  avatar?: string;
 }
 
 interface AgendaItem {
-  start_time: string
-  end_time: string
-  topic: string
-  speakers: Speaker[]
+  start_time: string;
+  end_time: string;
+  topic: string;
+  speakers: Speaker[];
 }
 
 interface Session {
-  ID: number
-  title: string
-  address: string
-  description: string
-  producer: string
-  volunteer: string
-  agendas: AgendaItem[]
+  ID: number;
+  title: string;
+  address: string;
+  description: string;
+  producer: string;
+  volunteer: string;
+  agendas: AgendaItem[];
 }
 
 export default function EventDetailPage() {
-  const { message } = AntdApp.useApp()
-  const router = useRouter()
-  const { id } = router.query
-  const rId = Array.isArray(id) ? id[0] : id
+  const { message } = AntdApp.useApp();
+  const router = useRouter();
+  const { locale } = useTranslation();
+  const { id } = router.query;
+  const rId = Array.isArray(id) ? id[0] : id;
 
-  const [activeContentTab] = useState<ContentTab>('detail')
-  const [sessions, setSessions] = useState<Session[]>([])
-  const [sessionsLoading, setSessionsLoading] = useState(false)
-  const [isMobile, setIsMobile] = useState(false)
+  const [activeContentTab] = useState<ContentTab>("detail");
+  const [sessions, setSessions] = useState<Session[]>([]);
+  const [sessionsLoading, setSessionsLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   // 检测屏幕尺寸
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
-    }
+      setIsMobile(window.innerWidth <= 768);
+    };
 
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
 
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [event, setEvent] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'intro' | 'recap'>('intro')
+  const [event, setEvent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"intro" | "recap">("intro");
 
   // 使用统一的认证上下文，避免重复调用 useSession
-  const { session, status } = useAuth()
+  const { session, status } = useAuth();
 
-  const permissions = session?.user?.permissions || []
+  const permissions = session?.user?.permissions || [];
 
   // parseMarkdown将返回的markdown转为html展示
-  const [eventContent, setEventContent] = useState<string>('')
+  const [eventContent, setEventContent] = useState<string>("");
 
   useEffect(() => {
     if (event?.description) {
-      sanitizeMarkdown(event.description).then(htmlContent => {
-        setEventContent(htmlContent)
-      })
+      sanitizeMarkdown(event.description).then((htmlContent) => {
+        setEventContent(htmlContent);
+      });
     }
-  }, [event?.description])
+  }, [event?.description]);
 
   // 获取会场数据
   const fetchSessions = async () => {
-    if (!rId) return
+    if (!rId) return;
 
     try {
-      setSessionsLoading(true)
-      const result = await getSessionsByEvent(rId)
+      setSessionsLoading(true);
+      const result = await getSessionsByEvent(rId);
       if (result.success && result.data) {
-        setSessions(result.data)
+        setSessions(result.data);
       } else {
-        message.error(result.message || '获取会场数据失败')
-        setSessions([])
+        message.error(result.message || "获取会场数据失败");
+        setSessions([]);
       }
     } catch (error) {
-      console.error('获取会场数据异常:', error)
-      message.error('获取会场数据失败')
-      setSessions([])
+      console.error("获取会场数据异常:", error);
+      message.error("获取会场数据失败");
+      setSessions([]);
     } finally {
-      setSessionsLoading(false)
+      setSessionsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    if (activeContentTab === 'detail' && rId) {
-      fetchSessions()
+    if (activeContentTab === "detail" && rId) {
+      fetchSessions();
     }
-  }, [activeContentTab, rId])
+  }, [activeContentTab, rId]);
 
   const handleUpdatePublishStatus = async () => {
     try {
-      const result = await updateEventPublishStatus(event.ID, 2)
+      const result = await updateEventPublishStatus(event.ID, 2);
       if (result.success) {
-        router.reload()
-        message.success(result.message)
+        router.reload();
+        message.success(result.message);
       } else {
-        message.error(result.message || '审核出错')
+        message.error(result.message || "审核出错");
       }
     } catch {
-      message.error('审核出错，请重试')
+      message.error("审核出错，请重试");
     }
-  }
+  };
 
   useEffect(() => {
-    if (!router.isReady || !rId) return
+    if (!router.isReady || !rId) return;
 
     const fetchData = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         // 获取活动详情
-        const eventRes = await getEventById(rId)
-        console.log('获取活动详情:', eventRes)
-        setEvent(eventRes?.data ?? null)
+        const eventRes = await getEventById(rId, locale);
+        console.log("获取活动详情:", eventRes);
+        setEvent(eventRes?.data ?? null);
       } catch {
-        message.error('加载失败')
-        setEvent(null)
+        message.error("加载失败");
+        setEvent(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [router.isReady, rId, message])
+    fetchData();
+  }, [router.isReady, rId, locale, message]);
 
   const handleShare = (platform?: string) => {
-    if (platform === 'copy') {
-      navigator.clipboard.writeText(window.location.href)
-      message.success('链接已复制到剪贴板')
-    } else if (platform === 'twitter') {
-      const text = `${event.title} - ${window.location.href}`
+    if (platform === "copy") {
+      navigator.clipboard.writeText(window.location.href);
+      message.success("链接已复制到剪贴板");
+    } else if (platform === "twitter") {
+      const text = `${event.title} - ${window.location.href}`;
       window.open(
-        `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`
-      )
+        `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,
+      );
     }
-  }
+  };
 
   if (loading) {
     return (
       <div className={styles.loading}>
         <div className={styles.loadingSpinner}></div>
-        <p>加载中...</p>
+        <p>
+          <LocalizedText>{"加载中..."}</LocalizedText>
+        </p>
       </div>
-    )
+    );
   }
 
   if (
     !event ||
-    (event.publish_status === 1 && !permissions.includes('event:write'))
+    (event.publish_status === 1 && !permissions.includes("event:write"))
   ) {
     return (
       <div className={styles.error}>
-        <h2>活动不存在</h2>
-        <p>抱歉，找不到您要查看的活动</p>
+        <h2>
+          <LocalizedText>{"活动不存在"}</LocalizedText>
+        </h2>
+        <p>
+          <LocalizedText>{"抱歉，找不到您要查看的活动"}</LocalizedText>
+        </p>
         <Link href="/events" className={styles.backButton}>
-          返回活动列表
+          <LocalizedText>{"返回活动列表"}</LocalizedText>
         </Link>
       </div>
-    )
+    );
   }
 
-  if (event?.event_type === 'community') {
+  if (event?.event_type === "community") {
     return (
       <div className={`${styles.container} nav-t-top`}>
+        <TranslationFallbackNotice contentLocale={event.locale} />
         {/* ======== 社区活动专属布局 ======== */}
         <div className={styles.communityLayout}>
           {/* 活动标题与关键信息 */}
@@ -198,15 +216,15 @@ export default function EventDetailPage() {
               <span className={styles.metaItem}>📍 {event.location}</span>
               <span className={styles.metaDivider}>·</span>
               <span className={styles.metaItem}>
-                🗓️{' '}
-                {new Date(event.start_time).toLocaleDateString('zh-CN', {
-                  month: 'long',
-                  day: 'numeric'
-                })}{' '}
-                —{' '}
-                {new Date(event.end_time).toLocaleDateString('zh-CN', {
-                  month: 'long',
-                  day: 'numeric'
+                🗓️{" "}
+                {new Date(event.start_time).toLocaleDateString(locale, {
+                  month: "long",
+                  day: "numeric",
+                })}{" "}
+                —{" "}
+                {new Date(event.end_time).toLocaleDateString(locale, {
+                  month: "long",
+                  day: "numeric",
                 })}
               </span>
             </div>
@@ -222,26 +240,25 @@ export default function EventDetailPage() {
           </div>
 
           {/* <div className={styles.communityActions}>
-      <Button
-        type="primary"
-        size="large"
-        onClick={() => window.open(event.twitter, '_blank')}
-      >
-        查看详情
-      </Button>
-
-      {event.registration_link && (
-        <Button
-          size="large"
-          onClick={() => window.open(event.registration_link, '_blank')}
-        >
-          立即报名
-        </Button>
-      )}
-    </div> */}
+            <Button
+            type="primary"
+            size="large"
+            onClick={() => window.open(event.twitter, '_blank')}
+            >
+            查看详情
+            </Button>
+            {event.registration_link && (
+            <Button
+            size="large"
+            onClick={() => window.open(event.registration_link, '_blank')}
+            >
+            立即报名
+            </Button>
+            )}
+            </div> */}
         </div>
       </div>
-    )
+    );
   }
 
   // 渲染活动详情组件
@@ -249,95 +266,99 @@ export default function EventDetailPage() {
     const sectionProps = {
       sessions,
       sessionsLoading,
-      isMobile
-    }
-    return <DetailSection {...sectionProps} />
-  }
+      isMobile,
+    };
+    return <DetailSection {...sectionProps} />;
+  };
 
   return (
     <div className={`${styles.container} nav-t-top`}>
+      <TranslationFallbackNotice contentLocale={event.locale} />
       <div className={styles.mainImage}>
         <Image
-          src={event.cover_img || '/placeholder.svg'}
+          src={event.cover_img || "/placeholder.svg"}
           alt={event.title}
           className={styles.coverImage}
           preview={false}
           width="100%"
           height={360}
-          style={{ objectFit: 'cover' }}
+          style={{ objectFit: "cover" }}
         />
       </div>
 
       <div className={styles.actionButtons}>
         <div className={styles.buttonContainer}>
-          {event.apply_link &&
+          {event.apply_link && (
             <Button
               type="primary"
               icon={<UserPlus size={18} />}
               size="large"
               className={styles.actionButton}
-              onClick={() => window.open(event.apply_link , '_blank')}
+              onClick={() => window.open(event.apply_link, "_blank")}
             >
-              志愿者/讲师报名注册
+              <LocalizedText>{"志愿者/讲师报名注册"}</LocalizedText>
             </Button>
-          }
-          {event.topic_collection_link &&
+          )}
+          {event.topic_collection_link && (
             <Button
               icon={<FileText size={18} />}
               size="large"
               className={styles.actionButton}
-              onClick={() => window.open(event.topic_collection_link, '_blank')}
+              onClick={() => window.open(event.topic_collection_link, "_blank")}
             >
-              议题征集
+              <LocalizedText>{"议题征集"}</LocalizedText>
             </Button>
-          }
-          {event.courseware_submit_link &&
+          )}
+          {event.courseware_submit_link && (
             <Button
               icon={<Upload size={18} />}
               size="large"
               className={styles.actionButton}
-              onClick={() => window.open(event.courseware_submit_link, '_blank')}
+              onClick={() =>
+                window.open(event.courseware_submit_link, "_blank")
+              }
             >
-              议题课件提交
+              <LocalizedText>{"议题课件提交"}</LocalizedText>
             </Button>
-          }
-          {event.registration_link &&
+          )}
+          {event.registration_link && (
             <Button
               icon={<Users size={18} />}
               size="large"
               className={styles.actionButton}
-              onClick={() => window.open(event.registration_link, '_blank')}
+              onClick={() => window.open(event.registration_link, "_blank")}
             >
-              参会注册
+              <LocalizedText>{"参会注册"}</LocalizedText>
             </Button>
-          }
+          )}
         </div>
       </div>
       <div className={styles.content}>{renderDetailSection()}</div>
     </div>
-  )
+  );
 }
 
 // 定义各个组件的 Props 接口
 interface SectionProps {
-  sessions?: Session[]
-  sessionsLoading?: boolean
-  isMobile?: boolean
+  sessions?: Session[];
+  sessionsLoading?: boolean;
+  isMobile?: boolean;
 }
 
 // 活动详情组件
 const DetailSection = ({
   sessions = [],
   sessionsLoading,
-  isMobile = false
+  isMobile = false,
 }: SectionProps) => {
-  const router = useRouter()
-  const { id } = router.query
-  const rId = Array.isArray(id) ? id[0] : id
+  const router = useRouter();
+  const { locale, translateText } = useTranslation();
+  const { id } = router.query;
+  const rId = Array.isArray(id) ? id[0] : id;
 
   const onChange = (key: string) => {
-    console.log(key)
-  }
+    console.log(key);
+  };
 
   // 会场组件
   const SessionContent: React.FC<Session> = ({
@@ -346,15 +367,15 @@ const DetailSection = ({
     description,
     producer,
     volunteer,
-    agendas
+    agendas,
   }) => {
     // 将志愿者字符串转换为数组
     const volunteerArray = volunteer
       ? volunteer
-        .split(/[,;]/)
-        .map(v => v.trim())
-        .filter(v => v)
-      : []
+          .split(/[,;]/)
+          .map((v) => v.trim())
+          .filter((v) => v)
+      : [];
 
     return (
       <div className={styles.sessionContent}>
@@ -363,24 +384,30 @@ const DetailSection = ({
         <p className={styles.sessionDescription}>{description}</p>
         <div className={styles.sessionAudit}>
           <p className={styles.sessionProducer}>
-            <strong>出品人：</strong>
+            <strong>
+              <LocalizedText>{"出品人："}</LocalizedText>
+            </strong>
             {producer}
           </p>
           <p className={styles.sessionVolunteer}>
-            <strong>志愿者：</strong>
-            {volunteerArray.join('、 ')}
+            <strong>
+              <LocalizedText>{"志愿者："}</LocalizedText>
+            </strong>
+            {volunteerArray.join("、 ")}
           </p>
         </div>
         {/* 议程 */}
         {agendas && agendas.length > 0 && (
           <div className={styles.agendaSection}>
-            <h2 className={styles.agendaTitle}>议程</h2>
+            <h2 className={styles.agendaTitle}>
+              <LocalizedText>{"议程"}</LocalizedText>
+            </h2>
             <div className={styles.agendaList}>
               {agendas.map((item, index) => {
                 return (
                   <div key={index} className={styles.agendaItem}>
                     <div className={styles.agendaTime}>
-                      {formatTime(item.start_time)} -{' '}
+                      {formatTime(item.start_time)} -{" "}
                       {formatTime(item.end_time)}
                     </div>
                     <div className={styles.agendaTopic}>{item.topic}</div>
@@ -394,15 +421,15 @@ const DetailSection = ({
                                 src={speaker.avatar}
                                 alt={speaker.name}
                                 className={styles.speakerAvatar}
-                                onError={e => {
-                                  e.currentTarget.style.display = 'none'
+                                onError={(e) => {
+                                  e.currentTarget.style.display = "none";
                                   const container =
-                                    e.currentTarget.parentElement
+                                    e.currentTarget.parentElement;
                                   if (container) {
                                     container.innerHTML =
                                       '<div class="' +
                                       styles.speakerAvatarIcon +
-                                      '"><svg></svg></div>'
+                                      '"><svg></svg></div>';
                                   }
                                 }}
                               />
@@ -424,83 +451,93 @@ const DetailSection = ({
                       ))}
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   // 格式化时间函数
   const formatTime = (timeString: string) => {
-    if (!timeString) return ''
+    if (!timeString) return "";
     try {
-      const date = new Date(timeString)
-      return date.toLocaleTimeString('zh-CN', {
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+      const date = new Date(timeString);
+      return date.toLocaleTimeString(locale, {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
     } catch {
-      return timeString
+      return timeString;
     }
-  }
+  };
 
   // 将会场数据转换为 Tabs 格式
-  const getSessionTabs = (): TabsProps['items'] => {
+  const getSessionTabs = (): TabsProps["items"] => {
     if (sessionsLoading) {
       return [
         {
-          key: 'loading',
-          label: '加载中...',
-          children: <div className={styles.loading}>会场数据加载中...</div>
-        }
-      ]
+          key: "loading",
+          label: translateText("加载中..."),
+          children: (
+            <div className={styles.loading}>
+              <LocalizedText>{"会场数据加载中..."}</LocalizedText>
+            </div>
+          ),
+        },
+      ];
     }
 
     if (sessions.length === 0) {
       return [
         {
-          key: 'empty',
-          label: '暂无会场',
-          children: <div className={styles.empty}>暂无会场数据</div>
-        }
-      ]
+          key: "empty",
+          label: translateText("暂无会场"),
+          children: (
+            <div className={styles.empty}>
+              <LocalizedText>{"暂无会场数据"}</LocalizedText>
+            </div>
+          ),
+        },
+      ];
     }
 
     return sessions.map((session, index) => ({
       key: session.ID.toString(),
-      label: session.title || `会场${index + 1}`,
-      children: <SessionContent {...session} />
-    }))
-  }
+      label:
+        session.title ||
+        (locale === "en" ? `Venue ${index + 1}` : `会场${index + 1}`),
+      children: <SessionContent {...session} />,
+    }));
+  };
 
-  const items: TabsProps['items'] = getSessionTabs()
-  const { session } = useAuth()
-  const permissions = session?.user?.permissions || []
+  const items: TabsProps["items"] = getSessionTabs();
+  const { session } = useAuth();
+  const permissions = session?.user?.permissions || [];
 
   return (
     <div className={styles.tabContent}>
       <div className={styles.tabHeader}>
-        {permissions.includes('event:write') && (
+        {permissions.includes("event:write") && (
           <Button
             icon={<Settings size={16} />}
             className={styles.configButton}
             onClick={() => router.push(`/events/${rId}/venues`)}
           >
-            年会配置
+            <LocalizedText>{"年会配置"}</LocalizedText>
           </Button>
         )}
       </div>
       <Tabs
-        defaultActiveKey={sessions.length > 0 ? sessions[0].ID.toString() : '1'}
+        defaultActiveKey={sessions.length > 0 ? sessions[0].ID.toString() : "1"}
         size="large"
         items={items}
         onChange={onChange}
-        tabPlacement={isMobile ? 'top' : 'start'}
-        className={isMobile ? styles.mobileTabs : ''}
+        tabPlacement={isMobile ? "top" : "start"}
+        className={isMobile ? styles.mobileTabs : ""}
       />
     </div>
-  )
-}
+  );
+};

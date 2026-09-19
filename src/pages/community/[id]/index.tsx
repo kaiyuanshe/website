@@ -1,22 +1,47 @@
-import type React from "react"
-import { Button, Card, Avatar, Tag, Spin, message, Modal, Input, Form, Upload, Popconfirm } from "antd"
+import type React from "react";
 import {
-  MapPin, Users, Globe, Building2, Mail, Calendar,
-  ArrowLeft, UserPlus, Star,
-  Clock, MapPin as MapIcon, User, Link as LinkIcon,
+  Button,
+  Card,
+  Avatar,
+  Tag,
+  Spin,
+  message,
+  Modal,
+  Input,
+  Form,
+  Upload,
+  Popconfirm,
+} from "antd";
+import {
+  MapPin,
+  Users,
+  Globe,
+  Building2,
+  Mail,
+  Calendar,
+  ArrowLeft,
+  UserPlus,
+  Star,
+  Clock,
+  MapPin as MapIcon,
+  User,
+  Link as LinkIcon,
   Upload as UploadIcon,
   Edit,
-  Trash2
-} from "lucide-react"
-import { useState, useEffect, useMemo } from "react"
-import { useRouter } from "next/router"
-import styles from "./index.module.css"
-import { getCommunity, Community } from "../../api/comunity"
-import AvatarEdit from "@/components/settings/AvatarEdit"
-import { createMember, deleteMember, updateMember } from "@/pages/api/member"
-import { useAuth } from "@/contexts/AuthContext"
+  Trash2,
+} from "lucide-react";
+import { useState, useEffect, useMemo } from "react";
+import { useRouter } from "next/router";
+import styles from "./index.module.css";
+import { getCommunity, Community } from "../../api/comunity";
+import AvatarEdit from "@/components/settings/AvatarEdit";
+import { createMember, deleteMember, updateMember } from "@/pages/api/member";
+import { useAuth } from "@/contexts/AuthContext";
 
 // 根据接口返回的数据结构定义接口
+import LocalizedText from "@/components/LocalizedText";
+import TranslationFallbackNotice from "@/components/TranslationFallbackNotice";
+import { useTranslation } from "@/hooks/useTranslation";
 interface Event {
   ID: number;
   CreatedAt: string;
@@ -62,74 +87,88 @@ interface AddMemberFormData {
 }
 
 const CommunityDetailPage: React.FC = () => {
-  const router = useRouter()
-  const { id } = router.query
-  const [community, setCommunity] = useState<CommunityDetail | null>(null)
-  const [loading, setLoading] = useState(true)
-  const [addMemberModalVisible, setAddMemberModalVisible] = useState(false)
-  const [form] = Form.useForm()
-  const [avatar, setAvatar] = useState<string>("")
-  const [editingMember, setEditingMember] = useState<CommunityMember | null>(null);
+  const { locale, translateText: translateUiText } = useTranslation();
+  const router = useRouter();
+  const { id } = router.query;
+  const [community, setCommunity] = useState<CommunityDetail | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [addMemberModalVisible, setAddMemberModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [avatar, setAvatar] = useState<string>("");
+  const [editingMember, setEditingMember] = useState<CommunityMember | null>(
+    null,
+  );
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [editForm] = Form.useForm();
 
+  const { session, status } = useAuth();
 
-   const { session, status } = useAuth();
-  
-    const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
+  const permissions = useMemo(
+    () => session?.user?.permissions || [],
+    [session?.user?.permissions],
+  );
 
   // 获取社区详情数据
   useEffect(() => {
-    if (!id) return
+    if (!id) return;
 
     const loadCommunityDetail = async () => {
       try {
-        setLoading(true)
+        setLoading(true);
 
-        const result = await getCommunity(Number(id))
+        const result = await getCommunity(Number(id), locale);
 
         if (result.success && result.data) {
           // 直接使用接口返回的数据
           const communityData: CommunityDetail = {
             ...result.data,
             isInternational: isInternationalCity(result.data.city),
-          }
+          };
 
-          setCommunity(communityData)
-          console.log('社区详情数据:', communityData)
+          setCommunity(communityData);
+          console.log("社区详情数据:", communityData);
         } else {
-          console.error('获取社区详情失败:', result.message)
-          message.error(result.message || '获取社区详情失败')
-          setCommunity(null)
+          console.error("获取社区详情失败:", result.message);
+          message.error(result.message || "获取社区详情失败");
+          setCommunity(null);
         }
       } catch (error) {
-        console.error('加载社区详情失败:', error)
-        message.error('加载社区详情失败')
-        setCommunity(null)
+        console.error("加载社区详情失败:", error);
+        message.error("加载社区详情失败");
+        setCommunity(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    loadCommunityDetail()
-  }, [id])
+    loadCommunityDetail();
+  }, [id, locale]);
 
   // 判断是否为国际城市
   const isInternationalCity = (cityName: string): boolean => {
-    const internationalCities = ['新加坡', '东京', '首尔', '纽约', '旧金山', '伦敦', '柏林', '悉尼'];
+    const internationalCities = [
+      "新加坡",
+      "东京",
+      "首尔",
+      "纽约",
+      "旧金山",
+      "伦敦",
+      "柏林",
+      "悉尼",
+    ];
     return internationalCities.includes(cityName);
-  }
+  };
 
   // 格式化日期时间
   const formatDateTime = (dateTime: string) => {
-    return new Date(dateTime).toLocaleString('zh-CN', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateTime).toLocaleString(locale === "en" ? "en" : "zh-CN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
-  }
+  };
 
   // 获取活动状态
   const getEventStatus = (event: Event) => {
@@ -138,44 +177,43 @@ const CommunityDetailPage: React.FC = () => {
     const endTime = new Date(event.end_time);
 
     if (now < startTime) {
-      return { status: 'upcoming', text: '即将开始', color: 'blue' };
+      return { status: "upcoming", text: "即将开始", color: "blue" };
     } else if (now >= startTime && now <= endTime) {
-      return { status: 'ongoing', text: '进行中', color: 'green' };
+      return { status: "ongoing", text: "进行中", color: "green" };
     } else {
-      return { status: 'completed', text: '已结束', color: 'default' };
+      return { status: "completed", text: "已结束", color: "default" };
     }
-  }
+  };
 
   const handleBack = () => {
-    router.back()
-  }
-
+    router.back();
+  };
 
   const handleEventClick = (event: Event) => {
-    router.push(`/events/${event.ID}`)
-  }
+    router.push(`/events/${event.ID}`);
+  };
 
   const handleCreateEvent = () => {
-    router.push(`/events/new?event_type=community&community_id=${id}`)
-  }
+    router.push(`/events/new?event_type=community&community_id=${id}`);
+  };
 
   // 打开添加成员弹窗
   const handleOpenAddMember = () => {
-    setAddMemberModalVisible(true)
-  }
+    setAddMemberModalVisible(true);
+  };
 
   // 关闭添加成员弹窗
   const handleCloseAddMember = () => {
-    setAddMemberModalVisible(false)
-    setAvatar("")
-    form.resetFields()
-  }
+    setAddMemberModalVisible(false);
+    setAvatar("");
+    form.resetFields();
+  };
 
   // 提交添加成员表单
   const handleAddMember = async (values: AddMemberFormData) => {
     try {
       if (!community) {
-        message.error('社区信息不存在');
+        message.error("社区信息不存在");
         return;
       }
 
@@ -184,7 +222,7 @@ const CommunityDetailPage: React.FC = () => {
         name: values.name,
         avatar: avatar,
         title: values.title,
-        community_id: community.ID
+        community_id: community.ID,
       });
 
       if (result.success && result.data) {
@@ -194,24 +232,24 @@ const CommunityDetailPage: React.FC = () => {
             ID: result.data.ID,
             name: result.data.name,
             avatar: result.data.avatar,
-            title: result.data.title
+            title: result.data.title,
           };
 
           const updatedCommunity = {
             ...community,
-            members: [...(community.members || []), newMember]
+            members: [...(community.members || []), newMember],
           };
           setCommunity(updatedCommunity);
         }
 
-        message.success('成员添加成功');
+        message.success("成员添加成功");
         handleCloseAddMember();
       } else {
-        message.error(result.message || '添加成员失败');
+        message.error(result.message || "添加成员失败");
       }
     } catch (error) {
-      message.error('添加成员失败');
-      console.error('添加成员失败:', error);
+      message.error("添加成员失败");
+      console.error("添加成员失败:", error);
     }
 
     setAvatar("");
@@ -222,9 +260,8 @@ const CommunityDetailPage: React.FC = () => {
     // 设置表单中的头像字段
     form.setFieldsValue({ avatar: avatarUrl });
     setAvatar(avatarUrl);
-    message.success('头像上传成功');
-  }
-
+    message.success("头像上传成功");
+  };
 
   const handleDeleteMember = async (member: CommunityMember) => {
     try {
@@ -232,26 +269,26 @@ const CommunityDetailPage: React.FC = () => {
         // 调用删除API
         const result = await deleteMember(member.ID);
 
-
         if (result.success) {
           // 从列表中移除
           if (community) {
-            const updatedMembers = community.members?.filter(m => m.ID !== member.ID) || [];
+            const updatedMembers =
+              community.members?.filter((m) => m.ID !== member.ID) || [];
             setCommunity({
               ...community,
-              members: updatedMembers
+              members: updatedMembers,
             });
           }
-          message.success('成员删除成功');
+          message.success("成员删除成功");
         } else {
-          message.error(result.message || '删除成员失败');
+          message.error(result.message || "删除成员失败");
         }
       } else {
-        message.error('成员ID不存在');
+        message.error("成员ID不存在");
       }
     } catch (error) {
-      message.error('删除成员失败');
-      console.error('删除成员失败:', error);
+      message.error("删除成员失败");
+      console.error("删除成员失败:", error);
     }
   };
 
@@ -261,7 +298,7 @@ const CommunityDetailPage: React.FC = () => {
     editForm.setFieldsValue({
       name: member.name,
       title: member.title,
-      avatar: member.avatar
+      avatar: member.avatar,
     });
     setEditModalVisible(true);
   };
@@ -270,16 +307,15 @@ const CommunityDetailPage: React.FC = () => {
   const handleCloseEditModal = () => {
     setEditModalVisible(false);
     setEditingMember(null);
-    setAvatar("")
+    setAvatar("");
     editForm.resetFields();
   };
-
 
   // 提交编辑表单
   const handleEditMemberSubmit = async (values: AddMemberFormData) => {
     try {
       if (!editingMember?.ID) {
-        message.error('成员信息不完整');
+        message.error("成员信息不完整");
         return;
       }
 
@@ -287,70 +323,81 @@ const CommunityDetailPage: React.FC = () => {
       const result = await updateMember(editingMember.ID, {
         name: values.name,
         title: values.title,
-        avatar: values.avatar
+        avatar: values.avatar,
       });
 
       if (result.success && result.data) {
         // 更新本地数据
         if (community) {
-          const updatedMembers = community.members?.map(member =>
-            member.ID === editingMember.ID
-              ? { ...member, ...result.data }
-              : member
-          ) || [];
+          const updatedMembers =
+            community.members?.map((member) =>
+              member.ID === editingMember.ID
+                ? { ...member, ...result.data }
+                : member,
+            ) || [];
 
           setCommunity({
             ...community,
-            members: updatedMembers
+            members: updatedMembers,
           });
         }
 
-        message.success('成员信息更新成功');
+        message.success("成员信息更新成功");
         handleCloseEditModal();
       } else {
-        message.error(result.message || '更新成员信息失败');
+        message.error(result.message || "更新成员信息失败");
       }
     } catch (error) {
-      message.error('更新成员信息失败');
-      console.error('更新成员信息失败:', error);
+      message.error("更新成员信息失败");
+      console.error("更新成员信息失败:", error);
     }
   };
-
 
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
         <Spin size="large" />
-        <div className={styles.loadingText}>加载社区详情中...</div>
+        <div className={styles.loadingText}>
+          <LocalizedText>{"加载社区详情中..."}</LocalizedText>
+        </div>
       </div>
-    )
+    );
   }
 
   if (!community) {
     return (
       <div className={styles.errorContainer}>
-        <h3>社区信息不存在</h3>
-        <Button onClick={handleBack}>返回</Button>
+        <h3>
+          <LocalizedText>{"社区信息不存在"}</LocalizedText>
+        </h3>
+        <Button onClick={handleBack}>
+          <LocalizedText>{"返回"}</LocalizedText>
+        </Button>
       </div>
-    )
+    );
   }
 
   return (
     <div className={styles.container}>
+      <TranslationFallbackNotice contentLocale={community.locale} />
       {/* 返回按钮 */}
       <Button
         icon={<ArrowLeft size={16} />}
         onClick={handleBack}
         className={styles.backButton}
       >
-        返回社区列表
+        <LocalizedText>{"返回社区列表"}</LocalizedText>
       </Button>
 
       {/* 社区头部信息 */}
       <div className={styles.header}>
         <div className={styles.headerBackground}>
           {community.cover && (
-            <img src={community.cover} alt={community.city} className={styles.coverImage} />
+            <img
+              src={community.cover}
+              alt={community.city}
+              className={styles.coverImage}
+            />
           )}
           <div className={styles.headerOverlay}></div>
         </div>
@@ -359,28 +406,37 @@ const CommunityDetailPage: React.FC = () => {
             <div className={styles.communityTitle}>
               <h1 className={styles.cityName}>
                 <MapPin size={24} />
-                {community.city}开源社区
-                {community.isInternational && <Globe size={20} className={styles.internationalIcon} />}
+                {community.city}
+                <LocalizedText>{"开源社区"}</LocalizedText>
+                {community.isInternational && (
+                  <Globe size={20} className={styles.internationalIcon} />
+                )}
               </h1>
             </div>
-
 
             {/* 社区统计 */}
             <div className={styles.statsContainer}>
               <div className={styles.stat}>
-
-                <span className={styles.statNumber}>{community.members?.length || 0}</span>
-                <span className={styles.statLabel}>成员</span>
+                <span className={styles.statNumber}>
+                  {community.members?.length || 0}
+                </span>
+                <span className={styles.statLabel}>
+                  <LocalizedText>{"成员"}</LocalizedText>
+                </span>
               </div>
               <div className={styles.stat}>
-
                 <span className={styles.statNumber}>0</span>
-                <span className={styles.statLabel}>项目</span>
+                <span className={styles.statLabel}>
+                  <LocalizedText>{"项目"}</LocalizedText>
+                </span>
               </div>
               <div className={styles.stat}>
-
-                <span className={styles.statNumber}>{community.events?.length || 0}</span>
-                <span className={styles.statLabel}>活动</span>
+                <span className={styles.statNumber}>
+                  {community.events?.length || 0}
+                </span>
+                <span className={styles.statLabel}>
+                  <LocalizedText>{"活动"}</LocalizedText>
+                </span>
               </div>
             </div>
           </div>
@@ -389,25 +445,26 @@ const CommunityDetailPage: React.FC = () => {
 
       {/* 社区内容区域 */}
       <div className={styles.content}>
-
         {/* 社区成员列表 */}
         <div className={styles.membersSection}>
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>
               <Users size={24} />
-              社区成员 ({community.members?.length || 0})
+              <LocalizedText>{"社区成员 ("}</LocalizedText>
+              {community.members?.length || 0})
             </h2>
-            {status === 'authenticated' && permissions.includes('event:write') && (
-              <Button
-                type="primary"
-                size="large"
-                icon={<UserPlus size={18} />}
-                onClick={handleOpenAddMember}
-                className={styles.joinButton}
-              >
-                添加成员
-              </Button>
-            )}
+            {status === "authenticated" &&
+              permissions.includes("event:write") && (
+                <Button
+                  type="primary"
+                  size="large"
+                  icon={<UserPlus size={18} />}
+                  onClick={handleOpenAddMember}
+                  className={styles.joinButton}
+                >
+                  <LocalizedText>{"添加成员"}</LocalizedText>
+                </Button>
+              )}
           </div>
 
           {community.members && community.members.length > 0 ? (
@@ -417,47 +474,72 @@ const CommunityDetailPage: React.FC = () => {
                   key={member.ID}
                   className={styles.memberCard}
                   extra={
-                     status === 'authenticated' && permissions.includes('event:write') && (
-                    <div className={styles.cardActions}>
-                      <Button
-                        type="text"
-                        icon={<Edit size={16} />}
-                        onClick={() => handleEditMember(member)}
-                        className={styles.actionButton}
-                      />
-                      <Popconfirm
-                        title="删除成员"
-                        description={
-                          <div>
-                            <div>确定要删除成员 <strong>{member.name}</strong> 吗？</div>
-                            <div style={{ color: '#ff4d4f', fontSize: '12px', marginTop: '4px' }}>
-                              此操作不可撤销
-                            </div>
-                          </div>
-                        }
-                        onConfirm={() => handleDeleteMember(member)}
-                        okText="确认删除"
-                        cancelText="取消"
-                        okType="danger"
-                        placement="topRight"
-                      >
+                    status === "authenticated" &&
+                    permissions.includes("event:write") && (
+                      <div className={styles.cardActions}>
                         <Button
                           type="text"
-                          danger
-                          icon={<Trash2 size={16} />}
+                          icon={<Edit size={16} />}
+                          onClick={() => handleEditMember(member)}
                           className={styles.actionButton}
                         />
-                      </Popconfirm>
-                    </div>)
+
+                        <Popconfirm
+                          title={translateUiText("删除成员")}
+                          description={
+                            <div>
+                              <div>
+                                <LocalizedText>
+                                  {"确定要删除成员"}
+                                </LocalizedText>
+                                <strong>{member.name}</strong>
+                                <LocalizedText>{"吗？"}</LocalizedText>
+                              </div>
+                              <div
+                                style={{
+                                  color: "#ff4d4f",
+                                  fontSize: "12px",
+                                  marginTop: "4px",
+                                }}
+                              >
+                                <LocalizedText>
+                                  {"此操作不可撤销"}
+                                </LocalizedText>
+                              </div>
+                            </div>
+                          }
+                          onConfirm={() => handleDeleteMember(member)}
+                          okText={translateUiText("确认删除")}
+                          cancelText={translateUiText("取消")}
+                          okType="danger"
+                          placement="topRight"
+                        >
+                          <Button
+                            type="text"
+                            danger
+                            icon={<Trash2 size={16} />}
+                            className={styles.actionButton}
+                          />
+                        </Popconfirm>
+                      </div>
+                    )
                   }
                 >
                   <div className={styles.memberHeader}>
-                    <Avatar size={64} src={member.avatar} className={styles.memberAvatar}>
+                    <Avatar
+                      size={64}
+                      src={member.avatar}
+                      className={styles.memberAvatar}
+                    >
                       {member.name?.[0]}
                     </Avatar>
                     <div className={styles.memberInfo}>
-                      <h3 className={styles.memberName}>{member.name || '匿名用户'}</h3>
-                      <Tag color="blue" className={styles.roleTag}>{member.title || '社区成员'}</Tag>
+                      <h3 className={styles.memberName}>
+                        {member.name || "匿名用户"}
+                      </h3>
+                      <Tag color="blue" className={styles.roleTag}>
+                        {member.title || "社区成员"}
+                      </Tag>
                     </div>
                   </div>
                 </Card>
@@ -466,8 +548,12 @@ const CommunityDetailPage: React.FC = () => {
           ) : (
             <div className={styles.emptyState}>
               <Users size={48} />
-              <h3>暂无成员数据</h3>
-              <p>该社区目前还没有成员信息</p>
+              <h3>
+                <LocalizedText>{"暂无成员数据"}</LocalizedText>
+              </h3>
+              <p>
+                <LocalizedText>{"该社区目前还没有成员信息"}</LocalizedText>
+              </p>
             </div>
           )}
         </div>
@@ -477,17 +563,15 @@ const CommunityDetailPage: React.FC = () => {
           <div className={styles.sectionHeader}>
             <h2 className={styles.sectionTitle}>
               <Calendar size={24} />
-              社区活动 ({community.events?.length || 0})
+              <LocalizedText>{"社区活动 ("}</LocalizedText>
+              {community.events?.length || 0})
             </h2>
-             {status === 'authenticated' && permissions.includes('event:write') && (
-            <Button
-              type="primary"
-              size="large"
-              onClick={handleCreateEvent}
-            >
-              创建活动
-            </Button>
-             )}
+            {status === "authenticated" &&
+              permissions.includes("event:write") && (
+                <Button type="primary" size="large" onClick={handleCreateEvent}>
+                  <LocalizedText>{"创建活动"}</LocalizedText>
+                </Button>
+              )}
           </div>
 
           {community.events && community.events.length > 0 ? (
@@ -513,19 +597,19 @@ const CommunityDetailPage: React.FC = () => {
                         onClick={() => handleEventClick(event)}
                         key="view"
                       >
-                        查看详情
+                        <LocalizedText>{"查看详情"}</LocalizedText>
                       </Button>,
                     ]}
                   >
                     <div className={styles.eventContent}>
                       <div className={styles.eventHeader}>
                         <h3 className={styles.eventTitle}>{event.title}</h3>
-                        <Tag color={eventStatus.color}>
-                          {eventStatus.text}
-                        </Tag>
+                        <Tag color={eventStatus.color}>{eventStatus.text}</Tag>
                       </div>
 
-                      <p className={styles.eventDescription}>{event.description}</p>
+                      <p className={styles.eventDescription}>
+                        {event.description}
+                      </p>
 
                       <div className={styles.eventDetails}>
                         <div className={styles.eventDetail}>
@@ -534,13 +618,19 @@ const CommunityDetailPage: React.FC = () => {
                         </div>
                         <div className={styles.eventDetail}>
                           <MapIcon size={14} />
-                          <span>{event.location} · {event.event_mode}</span>
+                          <span>
+                            {event.location} · {event.event_mode}
+                          </span>
                         </div>
                         {event.link && (
                           <div className={styles.eventDetail}>
                             <LinkIcon size={14} />
-                            <a href={event.link} target="_blank" rel="noopener noreferrer">
-                              活动链接
+                            <a
+                              href={event.link}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              <LocalizedText>{"活动链接"}</LocalizedText>
                             </a>
                           </div>
                         )}
@@ -563,8 +653,12 @@ const CommunityDetailPage: React.FC = () => {
           ) : (
             <div className={styles.emptyState}>
               <Calendar size={48} />
-              <h3>暂无活动数据</h3>
-              <p>该社区目前还没有活动信息</p>
+              <h3>
+                <LocalizedText>{"暂无活动数据"}</LocalizedText>
+              </h3>
+              <p>
+                <LocalizedText>{"该社区目前还没有活动信息"}</LocalizedText>
+              </p>
             </div>
           )}
         </div>
@@ -572,7 +666,7 @@ const CommunityDetailPage: React.FC = () => {
 
       {/* 添加成员弹窗 */}
       <Modal
-        title="添加社区成员"
+        title={translateUiText("添加社区成员")}
         open={addMemberModalVisible}
         onCancel={handleCloseAddMember}
         footer={null}
@@ -586,43 +680,42 @@ const CommunityDetailPage: React.FC = () => {
         >
           <Form.Item
             name="avatar"
-            label="头像"
-            rules={[{ required: true, message: '请输入成员头像' }]}
+            label={translateUiText("头像")}
+            rules={[{ required: true, message: "请输入成员头像" }]}
           >
-            <AvatarEdit
-              currentAvatar={avatar}
-              onSave={handleAvatarSave}
-            />
+            <AvatarEdit currentAvatar={avatar} onSave={handleAvatarSave} />
           </Form.Item>
 
           <Form.Item
             name="name"
-            label="成员姓名"
-            rules={[{ required: true, message: '请输入成员姓名' }]}
+            label={translateUiText("成员姓名")}
+            rules={[{ required: true, message: "请输入成员姓名" }]}
           >
-            <Input placeholder="请输入成员姓名" />
+            <Input placeholder={translateUiText("请输入成员姓名")} />
           </Form.Item>
 
           <Form.Item
             name="title"
-            label="职位/头衔"
-            rules={[{ required: true, message: '请输入职位或头衔' }]}
+            label={translateUiText("职位/头衔")}
+            rules={[{ required: true, message: "请输入职位或头衔" }]}
           >
-            <Input placeholder="例如：社区管理员、技术专家等" />
+            <Input
+              placeholder={translateUiText("例如：社区管理员、技术专家等")}
+            />
           </Form.Item>
 
           <Form.Item className={styles.formActions}>
             <Button onClick={handleCloseAddMember}>
-              取消
+              <LocalizedText>{"取消"}</LocalizedText>
             </Button>
             <Button type="primary" htmlType="submit">
-              添加成员
+              <LocalizedText>{"添加成员"}</LocalizedText>
             </Button>
           </Form.Item>
         </Form>
       </Modal>
       <Modal
-        title="编辑成员信息"
+        title={translateUiText("编辑成员信息")}
         open={editModalVisible}
         onCancel={handleCloseEditModal}
         footer={null}
@@ -634,14 +727,11 @@ const CommunityDetailPage: React.FC = () => {
           onFinish={handleEditMemberSubmit}
           className={styles.editMemberForm}
         >
-          <Form.Item
-            name="avatar"
-            label="头像"
-          >
+          <Form.Item name="avatar" label={translateUiText("头像")}>
             <Form.Item
               name="avatar"
-              label="头像"
-              rules={[{ required: true, message: '请输入成员头像' }]}
+              label={translateUiText("头像")}
+              rules={[{ required: true, message: "请输入成员头像" }]}
             >
               <AvatarEdit
                 currentAvatar={editingMember?.avatar}
@@ -652,32 +742,34 @@ const CommunityDetailPage: React.FC = () => {
 
           <Form.Item
             name="name"
-            label="成员姓名"
-            rules={[{ required: true, message: '请输入成员姓名' }]}
+            label={translateUiText("成员姓名")}
+            rules={[{ required: true, message: "请输入成员姓名" }]}
           >
-            <Input placeholder="请输入成员姓名" />
+            <Input placeholder={translateUiText("请输入成员姓名")} />
           </Form.Item>
 
           <Form.Item
             name="title"
-            label="职位/头衔"
-            rules={[{ required: true, message: '请输入职位或头衔' }]}
+            label={translateUiText("职位/头衔")}
+            rules={[{ required: true, message: "请输入职位或头衔" }]}
           >
-            <Input placeholder="例如：社区管理员、技术专家等" />
+            <Input
+              placeholder={translateUiText("例如：社区管理员、技术专家等")}
+            />
           </Form.Item>
 
           <Form.Item className={styles.formActions}>
             <Button onClick={handleCloseEditModal}>
-              取消
+              <LocalizedText>{"取消"}</LocalizedText>
             </Button>
             <Button type="primary" htmlType="submit">
-              保存修改
+              <LocalizedText>{"保存修改"}</LocalizedText>
             </Button>
           </Form.Item>
         </Form>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default CommunityDetailPage
+export default CommunityDetailPage;

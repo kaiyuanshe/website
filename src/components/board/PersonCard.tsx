@@ -1,27 +1,28 @@
-import React from 'react'
-import { Card } from 'antd'
-import { FaTwitter, FaGithub, FaLinkedin, FaBlog } from 'react-icons/fa'
-import { SiWechat } from 'react-icons/si'
-import Image from 'next/image'
-import styles from './PersonCard.module.css'
+import React from "react";
+import { Card } from "antd";
+import { FaTwitter, FaGithub, FaLinkedin, FaBlog } from "react-icons/fa";
+import { SiWechat } from "react-icons/si";
+import Image from "next/image";
+import styles from "./PersonCard.module.css";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface PersonCardProps {
-  name: string
-  pronouns?: string
-  title: string
-  organization: string
-  avatar: string
-  wechat?: string
-  twitter?: string
-  github?: string
-  linkedin?: string
-  email?:string
-  blog?: string
-  details?: string[]
-  onDetailClick?: () => void
-  role?: 'leader' | 'member' | 'secretary' | 'treasurer'
-  tags?: string[]
-  group?: string
+  name: string;
+  pronouns?: string;
+  title: string;
+  organization: string;
+  avatar: string;
+  wechat?: string;
+  twitter?: string;
+  github?: string;
+  linkedin?: string;
+  email?: string;
+  blog?: string;
+  details?: string[];
+  onDetailClick?: () => void;
+  role?: "leader" | "member" | "secretary" | "treasurer";
+  tags?: string[];
+  group?: string;
 }
 
 export default function PersonCard({
@@ -37,15 +38,16 @@ export default function PersonCard({
   blog,
   onDetailClick,
   role,
-  tags
+  tags,
 }: PersonCardProps) {
+  const { translateText } = useTranslation();
   return (
     <Card
       className={styles.personCard}
       styles={{ body: { padding: 0 } }}
       hoverable
       onClick={onDetailClick}
-      style={{ cursor: onDetailClick ? 'pointer' : 'default' }}
+      style={{ cursor: onDetailClick ? "pointer" : "default" }}
     >
       <div className={styles.cardContent}>
         {/* Avatar */}
@@ -67,13 +69,13 @@ export default function PersonCard({
             {pronouns ? `(${pronouns})` : ''}
           </span> */}
 
-          <p className={styles.title}>{title}</p>
+          <p className={styles.title}>{translateText(title)}</p>
 
           {tags && tags.length > 0 && (
             <div className={styles.tagsContainer}>
               {tags.map((tag, index) => (
                 <span key={index} className={styles.tag}>
-                  {tag}
+                  {translateText(tag)}
                 </span>
               ))}
             </div>
@@ -85,10 +87,10 @@ export default function PersonCard({
           {role && (
             <div className={styles.roleContainer}>
               <span className={`${styles.roleBadge} ${styles[role]}`}>
-                {role === 'leader' && '组长'}
-                {role === 'member' && '组员'}
-                {role === 'secretary' && '秘书'}
-                {role === 'treasurer' && '财务'}
+                {role === "leader" && translateText("组长")}
+                {role === "member" && translateText("组员")}
+                {role === "secretary" && translateText("秘书")}
+                {role === "treasurer" && translateText("财务")}
               </span>
             </div>
           )}
@@ -150,5 +152,5 @@ export default function PersonCard({
         </div>
       </div>
     </Card>
-  )
+  );
 }

@@ -39,6 +39,8 @@ type Event struct {
 	TopicCollectionLink  string              `json:"topic_collection_link"`
 	CoursewareSubmitLink string              `json:"courseware_submit_link"`
 	RegistrationLink     string              `json:"registration_link"`
+	Locale               string              `gorm:"size:10;not null;default:zh-CN;index;uniqueIndex:idx_event_translation_locale" json:"locale"`
+	TranslationOf        *uint               `gorm:"index;uniqueIndex:idx_event_translation_locale" json:"translation_of,omitempty"`
 }
 
 func (e *Event) Create() error {
@@ -47,6 +49,36 @@ func (e *Event) Create() error {
 
 func (e *Event) GetByID(id uint) error {
 	return db.First(e, id).Error
+}
+
+// GetLocalizedByID resolves a linked translation for locale when one exists.
+// When it does not, the requested record is returned as a clear fallback.
+func (e *Event) GetLocalizedByID(id uint, locale string) error {
+	var original Event
+	if err := db.First(&original, id).Error; err != nil {
+		return err
+	}
+
+	resolved := original
+	if original.Locale != locale {
+		rootID := original.ID
+		if original.TranslationOf != nil {
+			rootID = *original.TranslationOf
+		}
+
+		var translation Event
+		err := db.
+			Where("locale = ? AND (id = ? OR translation_of = ?)", locale, rootID, rootID).
+			First(&translation).Error
+		if err == nil {
+			resolved = translation
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	*e = resolved
+	return nil
 }
 
 func (e *Event) Update() error {
@@ -76,6 +108,7 @@ type EventFilter struct {
 	PublishStatus int
 	StartDate     *time.Time
 	EndDate       *time.Time
+	Locale        string
 }
 
 func QueryEvents(filter EventFilter) ([]Event, int64, error) {
@@ -107,6 +140,21 @@ func QueryEvents(filter EventFilter) ([]Event, int64, error) {
 
 	if filter.PublishStatus != 0 {
 		query = query.Where("publish_status = ?", filter.PublishStatus)
+	}
+
+	if filter.Locale != "" {
+		query = query.Where(
+			`events.locale = ? OR (
+				events.translation_of IS NULL AND NOT EXISTS (
+					SELECT 1 FROM events translations
+					WHERE translations.translation_of = events.id
+					AND translations.locale = ?
+					AND translations.deleted_at IS NULL
+				)
+			)`,
+			filter.Locale,
+			filter.Locale,
+		)
 	}
 
 	if filter.Location != "" {

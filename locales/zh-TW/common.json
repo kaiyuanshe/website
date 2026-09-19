@@ -1,4 +1,9 @@
 {
+  "site": {
+    "name": "開源社",
+    "description": "開源社是由開源志願者按照貢獻、共識、共治原則組成的廠商中立、公益、非營利開源社群。",
+    "keywords": "開源社,KAIYUANSHE,開源,中國開源年會,開源治理,開源社群,開源項目"
+  },
   "navigation": {
     "about_us": "關於我們",
     "about": "關於我們",
@@ -48,6 +53,7 @@
       "wonderful_activities": "精彩活動",
       "hosted_activities": "主辦活動",
       "activity_calendar": "活動日曆",
+      "coscon_activities": "開源年會",
       "open_source_projects": "開源項目",
       "open_source_toolbox": "開源百寶箱",
       "open_hackathon_platform": "開放黑客松平台",

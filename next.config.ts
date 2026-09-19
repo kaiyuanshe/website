@@ -89,7 +89,17 @@ const nextConfig: NextConfig = {
   i18n: {
     locales: ['zh-CN', 'zh-TW', 'en'],
     defaultLocale: 'zh-CN',
-    localeDetection: false
+    localeDetection: false,
+    domains: [
+      {
+        domain: 'kaiyuanshe.cn',
+        defaultLocale: 'zh-CN'
+      },
+      {
+        domain: 'kaisource.org',
+        defaultLocale: 'en'
+      }
+    ]
   },
   images: {
     remotePatterns: [

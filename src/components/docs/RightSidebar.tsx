@@ -1,4 +1,5 @@
-import styles from '@/pages/docs/[slug]/index.module.css';
+import styles from "@/pages/docs/[slug]/index.module.css";
+import LocalizedText from "@/components/LocalizedText";
 
 interface TocItem {
   level: number;
@@ -18,19 +19,19 @@ export function RightSidebar({ toc }: RightSidebarProps) {
       const offset = 130; // 综合导航栏高度和额外偏移
       window.scrollTo({
         top: element.offsetTop - offset,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     } else {
-      console.warn('Element not found with ID:', id);
-      
+      console.warn("Element not found with ID:", id);
+
       // 显示页面上所有可用的标题 ID 进行比较
-      const allHeadings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-      const headingData = Array.from(allHeadings).map(h => ({
+      const allHeadings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
+      const headingData = Array.from(allHeadings).map((h) => ({
         tag: h.tagName,
         id: h.id,
-        text: h.textContent?.trim().substring(0, 50) + '...'
+        text: h.textContent?.trim().substring(0, 50) + "...",
       }));
-      console.log('All available headings on page:', headingData);
+      console.log("All available headings on page:", headingData);
     }
   };
 
@@ -42,7 +43,9 @@ export function RightSidebar({ toc }: RightSidebarProps) {
   return (
     <aside className={styles.rightSidebar}>
       <div className={styles.sidebarContent}>
-        <h3 className={styles.sidebarTitle}>目录</h3>
+        <h3 className={styles.sidebarTitle}>
+          <LocalizedText>{"目录"}</LocalizedText>
+        </h3>
         <nav className={styles.tocNav}>
           {toc.map((item, index) => (
             <button

@@ -1,12 +1,14 @@
-'use client';
-import React, { useState, useEffect, useCallback } from 'react';
-import { App as AntdApp } from 'antd';
-import dynamic from 'next/dynamic';
-import 'react-quill-new/dist/quill.snow.css';
-import styles from './QuillEditor.module.css';
-import type ReactQuillType from 'react-quill-new';
+"use client";
+import React, { useState, useEffect, useCallback } from "react";
+import { App as AntdApp } from "antd";
+import dynamic from "next/dynamic";
+import "react-quill-new/dist/quill.snow.css";
+import styles from "./QuillEditor.module.css";
+import type ReactQuillType from "react-quill-new";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
-const ReactQuill = dynamic(() => import('react-quill-new'), { ssr: false }); // 直接引入ReactQuill在SSR情况下会报错
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false }); // 直接引入ReactQuill在SSR情况下会报错
 type ReactQuillProps = React.ComponentProps<typeof ReactQuillType>;
 
 interface QuillEditorProps extends ReactQuillProps {
@@ -32,6 +34,7 @@ const FULLSCREEN_ICONS = {
 };
 
 function QuillEditor(props: QuillEditorProps) {
+  const { translateText: translateUiText } = useTranslation();
   const { height, minHeight, autoHeight, ...restProps } = props;
   const [isFullscreen, setIsFullscreen] = useState(false);
   const { message } = AntdApp.useApp();
@@ -41,7 +44,7 @@ function QuillEditor(props: QuillEditorProps) {
     (error: string) => {
       message.error(error);
     },
-    [message]
+    [message],
   );
 
   // 高度样式计算
@@ -51,14 +54,14 @@ function QuillEditor(props: QuillEditorProps) {
     const style: React.CSSProperties = {};
 
     if (autoHeight) {
-      style.height = '100%';
+      style.height = "100%";
     } else if (height !== undefined) {
-      style.height = typeof height === 'number' ? `${height}px` : height;
+      style.height = typeof height === "number" ? `${height}px` : height;
     }
 
     if (minHeight !== undefined) {
       style.minHeight =
-        typeof minHeight === 'number' ? `${minHeight}px` : minHeight;
+        typeof minHeight === "number" ? `${minHeight}px` : minHeight;
     }
 
     return style;
@@ -70,23 +73,23 @@ function QuillEditor(props: QuillEditorProps) {
     const style: React.CSSProperties = {};
 
     if (autoHeight) {
-      style.height = '100%';
-      style.display = 'flex';
-      style.flexDirection = 'column';
+      style.height = "100%";
+      style.display = "flex";
+      style.flexDirection = "column";
     } else if (height !== undefined) {
       const containerHeight =
-        typeof height === 'number' ? `${height}px` : height;
+        typeof height === "number" ? `${height}px` : height;
       style.height = containerHeight;
-      style.display = 'flex';
-      style.flexDirection = 'column';
+      style.display = "flex";
+      style.flexDirection = "column";
     }
 
     if (minHeight !== undefined) {
       style.minHeight =
-        typeof minHeight === 'number' ? `${minHeight}px` : minHeight;
+        typeof minHeight === "number" ? `${minHeight}px` : minHeight;
       if (!style.display) {
-        style.display = 'flex';
-        style.flexDirection = 'column';
+        style.display = "flex";
+        style.flexDirection = "column";
       }
     }
 
@@ -100,16 +103,16 @@ function QuillEditor(props: QuillEditorProps) {
 
     // 创建全屏按钮的函数
     const createFullscreenButton = () => {
-      const toolbar = document.querySelector('.ql-toolbar');
-      if (toolbar && !toolbar.querySelector('.ql-fullscreen-group')) {
+      const toolbar = document.querySelector(".ql-toolbar");
+      if (toolbar && !toolbar.querySelector(".ql-fullscreen-group")) {
         // 创建全屏按钮
-        fullscreenBtn = document.createElement('button');
+        fullscreenBtn = document.createElement("button");
         fullscreenBtn.className = `ql-fullscreen ${styles.fullscreenButton}`;
-        fullscreenBtn.type = 'button';
-        fullscreenBtn.title = '全屏';
+        fullscreenBtn.type = "button";
+        fullscreenBtn.title = "全屏";
 
         // 创建图标容器
-        const iconContainer = document.createElement('span');
+        const iconContainer = document.createElement("span");
         iconContainer.className = styles.iconContainer;
 
         // 设置初始图标
@@ -129,17 +132,17 @@ function QuillEditor(props: QuillEditorProps) {
           });
         };
 
-        fullscreenBtn.addEventListener('click', handleClick);
+        fullscreenBtn.addEventListener("click", handleClick);
 
         // 创建独立的全屏按钮组，确保位置稳定
-        const fullscreenGroup = document.createElement('span');
-        fullscreenGroup.className = 'ql-formats ql-fullscreen-group';
+        const fullscreenGroup = document.createElement("span");
+        fullscreenGroup.className = "ql-formats ql-fullscreen-group";
 
         // 设置按钮组样式，确保位置稳定
         Object.assign(fullscreenGroup.style, {
-          marginLeft: '8px',
-          borderLeft: '1px solid #ccc',
-          paddingLeft: '8px',
+          marginLeft: "8px",
+          borderLeft: "1px solid #ccc",
+          paddingLeft: "8px",
         });
 
         fullscreenGroup.appendChild(fullscreenBtn);
@@ -154,9 +157,9 @@ function QuillEditor(props: QuillEditorProps) {
 
     // 更新按钮状态的函数
     const updateButtonState = (fullscreenState: boolean) => {
-      const btn = document.querySelector('.ql-fullscreen') as HTMLButtonElement;
+      const btn = document.querySelector(".ql-fullscreen") as HTMLButtonElement;
       if (btn) {
-        btn.title = fullscreenState ? '退出全屏' : '全屏';
+        btn.title = fullscreenState ? "退出全屏" : "全屏";
         const iconContainer = btn.querySelector(`.${styles.iconContainer}`);
         if (iconContainer) {
           iconContainer.innerHTML = fullscreenState
@@ -168,7 +171,7 @@ function QuillEditor(props: QuillEditorProps) {
 
     // ESC键处理
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && isFullscreen) {
+      if (event.key === "Escape" && isFullscreen) {
         setIsFullscreen(false);
         // 立即更新按钮状态
         setTimeout(() => updateButtonState(false), 0);
@@ -177,33 +180,33 @@ function QuillEditor(props: QuillEditorProps) {
 
     // 管理页面滚动
     if (isFullscreen) {
-      document.addEventListener('keydown', handleEscape);
+      document.addEventListener("keydown", handleEscape);
       // 更彻底地禁用页面滚动
-      document.body.style.overflow = 'hidden';
-      document.documentElement.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-      document.body.style.height = '100%';
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
+      document.body.style.height = "100%";
     } else {
       // 恢复页面滚动
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.height = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
     }
 
     // 更新按钮状态
     updateButtonState(isFullscreen);
 
     // 如果是首次渲染，创建按钮
-    if (!document.querySelector('.ql-fullscreen-group')) {
+    if (!document.querySelector(".ql-fullscreen-group")) {
       // 使用MutationObserver监听DOM变化
       observer = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.type === 'childList') {
-            const toolbar = document.querySelector('.ql-toolbar');
-            if (toolbar && !toolbar.querySelector('.ql-fullscreen-group')) {
+          if (mutation.type === "childList") {
+            const toolbar = document.querySelector(".ql-toolbar");
+            if (toolbar && !toolbar.querySelector(".ql-fullscreen-group")) {
               createFullscreenButton();
             }
           }
@@ -226,18 +229,18 @@ function QuillEditor(props: QuillEditorProps) {
 
     // 清理函数
     return () => {
-      document.removeEventListener('keydown', handleEscape);
+      document.removeEventListener("keydown", handleEscape);
       // 确保恢复页面滚动
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.height = '';
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
 
       if (timer) clearTimeout(timer);
       if (observer) observer.disconnect();
 
-      const fullscreenGroup = document.querySelector('.ql-fullscreen-group');
+      const fullscreenGroup = document.querySelector(".ql-fullscreen-group");
       if (fullscreenGroup && fullscreenGroup.parentNode) {
         fullscreenGroup.parentNode.removeChild(fullscreenGroup);
       }
@@ -255,7 +258,7 @@ function QuillEditor(props: QuillEditorProps) {
     const initializeModule = async () => {
       try {
         // 使用单例模式的注册管理器
-        const QuillModuleRegistry = (await import('./QuillModuleRegistry'))
+        const QuillModuleRegistry = (await import("./QuillModuleRegistry"))
           .default;
         const registry = QuillModuleRegistry.getInstance();
 
@@ -266,7 +269,7 @@ function QuillEditor(props: QuillEditorProps) {
           setIsEditorReady(true);
         }
       } catch (error) {
-        console.warn('Failed to initialize Quill module:', error);
+        console.warn("Failed to initialize Quill module:", error);
         if (mounted) {
           setIsEditorReady(true); // 即使失败也允许编辑器加载
         }
@@ -288,24 +291,25 @@ function QuillEditor(props: QuillEditorProps) {
           [{ header: [1, 2, 3, 4, 5, false] }],
 
           [
-            'bold',
-            'italic',
-            'underline',
-            'strike',
-            'blockquote',
-            'formula',
+            "bold",
+            "italic",
+            "underline",
+            "strike",
+            "blockquote",
+            "formula",
             { align: [] },
             { color: [] },
             { background: [] },
           ],
+
           [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-            'link',
-            'image',
-            'clean',
+            { list: "ordered" },
+            { list: "bullet" },
+            { indent: "-1" },
+            { indent: "+1" },
+            "link",
+            "image",
+            "clean",
           ],
         ],
       },
@@ -326,20 +330,20 @@ function QuillEditor(props: QuillEditorProps) {
 
   return (
     <div
-      className={`${styles.editorContainer} ${isFullscreen ? styles.fullscreenContainer : ''} ${autoHeight ? styles.autoHeightContainer : ''}`}
+      className={`${styles.editorContainer} ${isFullscreen ? styles.fullscreenContainer : ""} ${autoHeight ? styles.autoHeightContainer : ""}`}
       style={getContainerStyle()}
     >
       {isEditorReady ? (
         <ReactQuill
-          placeholder="请输入..."
+          placeholder={translateUiText("请输入...")}
           {...restProps}
           modules={modulesWithCloudinary()}
-          className={`${isFullscreen ? styles.fullscreenEditor : ''} ${height !== undefined || minHeight !== undefined || autoHeight ? styles.heightControlledEditor : ''}`}
+          className={`${isFullscreen ? styles.fullscreenEditor : ""} ${height !== undefined || minHeight !== undefined || autoHeight ? styles.heightControlledEditor : ""}`}
           style={getEditorStyle()}
         />
       ) : (
-        <div style={{ padding: '20px', textAlign: 'center', color: '#999' }}>
-          正在加载编辑器...
+        <div style={{ padding: "20px", textAlign: "center", color: "#999" }}>
+          <LocalizedText>{"正在加载编辑器..."}</LocalizedText>
         </div>
       )}
     </div>
