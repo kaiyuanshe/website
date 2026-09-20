@@ -32,10 +32,6 @@ export default function Hero() {
   return (
     <section className={styles.hero}>
       <div className={styles.heroBackground}>
-        <div className={styles.heroOrnament} aria-hidden="true">
-          <span />
-          <span />
-        </div>
         <div className={styles.heroSubtitle}>
           <h1 className={styles.heroTitle}>
             <span className={styles.heroLine}>
