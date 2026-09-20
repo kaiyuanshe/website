@@ -20,9 +20,8 @@ interface MenuSection {
 }
 
 export default function Footer() {
-  const { translateText: translateUiText } = useTranslation();
+  const { t, locale, translateText: translateUiText } = useTranslation();
   const [isWeChatModalOpen, setIsWeChatModalOpen] = useState(false);
-  const { t } = useTranslation();
 
   // 基于开源社 Header 组件中的主导航菜单项，使用翻译键
   const menuSections: MenuSection[] = [
@@ -129,13 +128,30 @@ export default function Footer() {
           {/* Left section with logo and description */}
           <div className={styles.footerLeft}>
             <div className={styles.logoSection}>
-              <Image
-                src="/footer-logo.png"
-                alt="KAIYUANSHE Logo"
-                width={200}
-                height={100}
-                className={styles.footerLogo}
-              />
+              {locale === "en" ? (
+                <div className={styles.englishBrand}>
+                  <span className={styles.footerBrandSymbol}>
+                    <Image
+                      src="/logo.png"
+                      alt="KaiSource symbol"
+                      width={48}
+                      height={48}
+                    />
+                  </span>
+                  <span className={styles.footerBrandNames}>
+                    <strong>{t("site.name")}</strong>
+                    <span>{t("site.legacy_name_note")}</span>
+                  </span>
+                </div>
+              ) : (
+                <Image
+                  src="/footer-logo.png"
+                  alt="KAIYUANSHE Logo"
+                  width={200}
+                  height={100}
+                  className={styles.footerLogo}
+                />
+              )}
 
               <p className={styles.aboutDescription}>
                 {t("homepage.introduction.paragraph1")}

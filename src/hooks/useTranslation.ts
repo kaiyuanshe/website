@@ -79,9 +79,9 @@ export function useTranslation() {
       if (!translation) return text;
 
       return translation
-        .replaceAll("Kaiyuan Society", "KaiYuanShe")
-        .replaceAll("Kaiyuanshe", "KaiYuanShe")
-        .replaceAll("Open Source Society", "KaiYuanShe")
+        .replaceAll("Kaiyuan Society", "KaiSource")
+        .replaceAll("Kaiyuanshe", "KaiSource")
+        .replaceAll("Open Source Society", "KaiSource")
         .replaceAll(
           "China Open Source Annual Conference",
           "China Open Source Conference",

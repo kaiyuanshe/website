@@ -21,7 +21,7 @@ interface SearchResult {
 }
 
 export default function Header() {
-  const { translateText: translateUiText } = useTranslation();
+  const { t, locale, translateText: translateUiText } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -34,8 +34,6 @@ export default function Header() {
 
   // 获取用户认证状态和翻译函数
   const { session, isAuthenticated, isLoading } = useAuth();
-  const { t } = useTranslation();
-
   // 将导航数据转换为包含翻译的格式
   const translatedNavItems = useMemo(() => {
     const translateMenuItem = (item: MenuItem) => ({
@@ -702,13 +700,31 @@ export default function Header() {
         <div className={styles.headerContent}>
           {/* Logo 区域 */}
           <Link href="/" className={styles.logoContainer}>
-            <Image
-              src="/logo_2.svg"
-              alt={translateUiText("开源社 Logo")}
-              width={100}
-              height={100}
-              className={styles.logoImage}
-            />
+            {locale === "en" ? (
+              <>
+                <Image
+                  src="/logo.png"
+                  alt="KaiSource symbol"
+                  width={44}
+                  height={44}
+                  className={styles.brandSymbol}
+                />
+                <span className={styles.brandNames}>
+                  <strong className={styles.brandName}>{t("site.name")}</strong>
+                  <span className={styles.legacyName}>
+                    {t("site.legacy_name_note")}
+                  </span>
+                </span>
+              </>
+            ) : (
+              <Image
+                src="/logo_2.svg"
+                alt={translateUiText("开源社 Logo")}
+                width={100}
+                height={100}
+                className={styles.logoImage}
+              />
+            )}
           </Link>
 
           {/* 桌面导航菜单 */}
