@@ -14,13 +14,13 @@ import TranslationFallbackNotice from "@/components/TranslationFallbackNotice";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format("YYYY-MM-DD HH:MM");
+  return dayjs(isoTime).format("YYYY-MM-DD HH:mm");
 }
 
 export default function ArticleDetailPage() {
   const { message } = AntdApp.useApp();
   const router = useRouter();
-  const { locale } = useTranslation();
+  const { locale, translateText } = useTranslation();
   const { id } = router.query; // 路由参数应该叫 id，不是 ids
   const rId = Array.isArray(id) ? id[0] : id;
 
@@ -180,7 +180,7 @@ export default function ArticleDetailPage() {
                   <User className={styles.metaIcon} />
                   <div className={styles.metaText}>
                     <LocalizedText>{"发布者："}</LocalizedText>
-                    {article.publisher.username}
+                    {translateText(article.publisher.username)}
                   </div>
                 </div>
               )}

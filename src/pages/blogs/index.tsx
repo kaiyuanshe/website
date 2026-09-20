@@ -10,7 +10,6 @@ import {
   Image,
   App as AntdApp,
 } from "antd";
-import dayjs from "dayjs";
 import {
   Calendar,
   Plus,
@@ -35,12 +34,16 @@ const { Search: AntSearch } = Input;
 
 type ViewMode = "grid" | "list";
 
-export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format("YYYY-MM-DD HH:mm");
+export function formatTime(isoTime: string, locale = "zh-CN"): string {
+  return new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(isoTime));
 }
 
 export default function BlogsPage() {
-  const { translateText: translateUiText } = useTranslation();
+  const { locale, translateText: translateUiText } = useTranslation();
   const router = useRouter();
   const { query, isReady } = router;
 
@@ -473,14 +476,25 @@ export default function BlogsPage() {
 
                       <div className={styles.authorText}>
                         <span className={styles.authorName}>
-                          {article.publisher?.username || ""}
+                          {article.author ||
+                            translateUiText(article.publisher?.username || "")}
                         </span>
                         <span className={styles.publishTime}>
-                          {dayjs(
+                          {formatTime(
                             article.publish_time || article.CreatedAt,
-                          ).format("YYYY年M月D日")}{" "}
-                          · {article.read_time || "6 分钟"}
-                          <LocalizedText>{"阅读"}</LocalizedText>
+                            locale,
+                          )}{" "}
+                          ·{" "}
+                          {String(article.read_time || "6").match(/\d+/)?.[0] ||
+                            "6"}{" "}
+                          {locale === "en" ? (
+                            "minutes read"
+                          ) : (
+                            <>
+                              <LocalizedText>{"分钟"}</LocalizedText>
+                              <LocalizedText>{"阅读"}</LocalizedText>
+                            </>
+                          )}
                         </span>
                       </div>
                       <div className={styles.viewCount}>
@@ -541,7 +555,12 @@ export default function BlogsPage() {
                   <div className={styles.timeInfo}>
                     <div className={styles.dateTime}>
                       <Calendar className={styles.listIcon} />
-                      <span>{formatTime(article.start_time)}</span>
+                      <span>
+                        {formatTime(
+                          article.publish_time || article.CreatedAt,
+                          locale,
+                        )}
+                      </span>
                     </div>
                   </div>
                 </div>
