@@ -171,7 +171,9 @@ export default function ArticleDetailPage() {
                   <User className={styles.metaIcon} />
                   <div className={styles.metaText}>
                     <LocalizedText>{"作者："}</LocalizedText>
-                    {article.author || article.publisher?.username}
+                    {translateText(
+                      article.author || article.publisher?.username,
+                    )}
                   </div>
                 </div>
               )}
@@ -189,7 +191,7 @@ export default function ArticleDetailPage() {
                   <User className={styles.metaIcon} />
                   <div className={styles.metaText}>
                     <LocalizedText>{"翻译："}</LocalizedText>
-                    {article.translator}
+                    {translateText(article.translator)}
                   </div>
                 </div>
               )}
@@ -198,7 +200,7 @@ export default function ArticleDetailPage() {
                   <User className={styles.metaIcon} />
                   <div className={styles.metaText}>
                     <LocalizedText>{"编辑："}</LocalizedText>
-                    {article.editor}
+                    {translateText(article.editor)}
                   </div>
                 </div>
               )}
