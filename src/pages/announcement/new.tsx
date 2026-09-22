@@ -1,5 +1,14 @@
-import { useCallback, useState } from 'react';
-import { Form, Input, Button, Card, Tag, App as AntdApp, Select, Spin } from 'antd';
+import { useCallback, useState } from "react";
+import {
+  Form,
+  Input,
+  Button,
+  Card,
+  Tag,
+  App as AntdApp,
+  Select,
+  Spin,
+} from "antd";
 import {
   ArrowLeft,
   Users,
@@ -7,42 +16,47 @@ import {
   ImageIcon,
   Save,
   Plus,
-} from 'lucide-react';
-import Link from 'next/link';
-import styles from './new.module.css';
+} from "lucide-react";
+import Link from "next/link";
+import styles from "./new.module.css";
 
-import VditorEditor from '@/components/vditorEditor/VditorEditor';
+import VditorEditor from "@/components/vditorEditor/VditorEditor";
 // import QuillEditor from '@/components/quillEditor/QuillEditor';
-import UploadCardImg from '@/components/uploadCardImg/UploadCardImg';
+import UploadCardImg from "@/components/uploadCardImg/UploadCardImg";
+import ContentLocaleFields, {
+  getContentLocaleValues,
+} from "@/components/ContentLocaleFields";
 
-import { createArticle } from '../api/article';
-import router from 'next/router';
-import { usePermissionGuard } from '@/hooks/usePermissionGuard';
+import { createArticle } from "../api/article";
+import router from "next/router";
+import { usePermissionGuard } from "@/hooks/usePermissionGuard";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { TextArea } = Input;
 
 export default function NewArticlePage() {
+  const { translateText: translateUiText } = useTranslation();
   const { message } = AntdApp.useApp();
   const [form] = Form.useForm();
-  
+
   // 权限检查
-  const { isLoading, hasPermission } = usePermissionGuard('event:write');
+  const { isLoading, hasPermission } = usePermissionGuard("event:write");
 
   const [tags, setTags] = useState<string[]>([]);
   const [inputVisible, setInputVisible] = useState(false);
-  const [inputValue, setInputValue] = useState('');
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [inputValue, setInputValue] = useState("");
+  const [previewUrl, setPreviewUrl] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [cloudinaryImg, setCloudinaryImg] = useState<Record<string, unknown>>();
-  const [category] = useState('announcement');
-
+  const [category] = useState("announcement");
 
   // 编辑器处理
   const handleVditorEditorChange = useCallback(
     (value: string) => {
-      form.setFieldValue('content', value);
+      form.setFieldValue("content", value);
     },
-    [form]
+    [form],
   );
 
   const handleSubmit = async (values: Record<string, unknown>) => {
@@ -51,29 +65,30 @@ export default function NewArticlePage() {
       setIsSubmitting(true);
 
       const createArticleRequest = {
-        title: values.title || '',
-        description: values.description || '',
-        content: values.content || '',
-        source_link: values.source || '',
+        title: values.title || "",
+        description: values.description || "",
+        content: values.content || "",
+        source_link: values.source || "",
         category: category,
-        license: values.license || '',
-        cover_img: cloudinaryImg?.secure_url || '',
+        license: values.license || "",
+        cover_img: cloudinaryImg?.secure_url || "",
         tags: tags,
-        author: values.author || '',
-        translator: values.translator || '',
-        editor: values.editor || '',
+        author: values.author || "",
+        translator: values.translator || "",
+        editor: values.editor || "",
+        ...getContentLocaleValues(values),
       };
 
       const result = await createArticle(createArticleRequest);
       if (result.success) {
         message.success(result.message);
-        router.push('/announcement');
+        router.push("/announcement");
       } else {
-        message.error(result.message || '创建公告失败');
+        message.error(result.message || "创建公告失败");
       }
     } catch (error: unknown) {
-      console.error('创建公告失败:', error);
-      message.error('创建公告出错，请重试');
+      console.error("创建公告失败:", error);
+      message.error("创建公告出错，请重试");
     } finally {
       setIsSubmitting(false);
     }
@@ -83,8 +98,8 @@ export default function NewArticlePage() {
     if (inputValue && !tags.includes(inputValue)) {
       const newTags = [...tags, inputValue];
       setTags(newTags);
-      setInputValue('');
-      console.log('添加标签后:', newTags);
+      setInputValue("");
+      console.log("添加标签后:", newTags);
     }
     setInputVisible(false);
   };
@@ -92,15 +107,20 @@ export default function NewArticlePage() {
   const handleRemoveTag = (tagToRemove: string) => {
     const newTags = tags.filter((tag) => tag !== tagToRemove);
     setTags(newTags);
-    console.log('删除标签后:', newTags);
+    console.log("删除标签后:", newTags);
   };
 
   // 如果正在加载权限，显示加载状态
   if (isLoading) {
     return (
-      <div className={`${styles.container} nav-t-top`} style={{ textAlign: 'center', padding: '100px 0' }}>
+      <div
+        className={`${styles.container} nav-t-top`}
+        style={{ textAlign: "center", padding: "100px 0" }}
+      >
         <Spin size="large" />
-        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+        <p style={{ marginTop: "16px" }}>
+          <LocalizedText>{"正在验证访问权限..."}</LocalizedText>
+        </p>
       </div>
     );
   }
@@ -110,12 +130,14 @@ export default function NewArticlePage() {
       <div className={styles.header}>
         <Link href="/articles" className={styles.backButton}>
           <ArrowLeft className={styles.backIcon} />
-          返回公告列表
+          <LocalizedText>{"返回公告列表"}</LocalizedText>
         </Link>
       </div>
 
       <div className={styles.titleSection}>
-        <h1 className={styles.title}>新建公告</h1>
+        <h1 className={styles.title}>
+          <LocalizedText>{"新建公告"}</LocalizedText>
+        </h1>
       </div>
 
       <Form
@@ -134,44 +156,44 @@ export default function NewArticlePage() {
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <FileText className={styles.sectionIcon} />
-                基本信息
+                <LocalizedText>{"基本信息"}</LocalizedText>
               </h2>
 
               <Form.Item
-                label="公告标题"
+                label={translateUiText("公告标题")}
                 name="title"
-                rules={[{ required: true, message: '请输入公告标题' }]}
+                rules={[{ required: true, message: "请输入公告标题" }]}
               >
                 <Input
-                  placeholder="请输入公告标题"
+                  placeholder={translateUiText("请输入公告标题")}
                   className={styles.input}
                   maxLength={30}
                   showCount
                 />
               </Form.Item>
               <Form.Item
-                label="公告描述"
+                label={translateUiText("公告描述")}
                 name="description"
-                rules={[{ required: true, message: '请输入公告描述' }]}
+                rules={[{ required: true, message: "请输入公告描述" }]}
               >
                 <TextArea
                   rows={2}
                   maxLength={60}
                   showCount
-                  placeholder="请输入公告描述"
+                  placeholder={translateUiText("请输入公告描述")}
                 />
               </Form.Item>
               <Form.Item
-                label="公告内容"
+                label={translateUiText("公告内容")}
                 name="content"
-                rules={[{ required: true, message: '请输入公告内容' }]}
+                rules={[{ required: true, message: "请输入公告内容" }]}
               >
                 {/* <QuillEditor
-                  value={form.getFieldValue('content')}
-                  onChange={handleQuillEditorChange}
-                /> */}
+                    value={form.getFieldValue('content')}
+                    onChange={handleQuillEditorChange}
+                   /> */}
                 <VditorEditor
-                  value={form.getFieldValue('content')}
+                  value={form.getFieldValue("content")}
                   onChange={handleVditorEditorChange}
                   height={900}
                 />
@@ -181,15 +203,18 @@ export default function NewArticlePage() {
 
           {/* 右侧表单 */}
           <div className={styles.rightColumn}>
+            <Card className={styles.section}>
+              <ContentLocaleFields />
+            </Card>
             {/* 公告封面 */}
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <ImageIcon className={styles.sectionIcon} />
-                公告封面
+                <LocalizedText>{"公告封面"}</LocalizedText>
               </h2>
               <Form.Item
                 name="cover"
-                rules={[{ required: true, message: '请上传公告封面' }]}
+                rules={[{ required: true, message: "请上传公告封面" }]}
               >
                 <UploadCardImg
                   previewUrl={previewUrl}
@@ -204,71 +229,84 @@ export default function NewArticlePage() {
             {/* 原文链接 */}
             <Card className={styles.section}>
               <Form.Item
-                label="原文链接"
+                label={translateUiText("原文链接")}
                 name="source"
                 rules={[
                   {
-                    type: 'url',
-                    message: '请输入有效的链接地址',
+                    type: "url",
+                    message: "请输入有效的链接地址",
                   },
                 ]}
               >
-                <Input placeholder="请输入原文链接" className={styles.input} />
+                <Input
+                  placeholder={translateUiText("请输入原文链接")}
+                  className={styles.input}
+                />
               </Form.Item>
               <Form.Item
-                label="版权声明"
+                label={translateUiText("版权声明")}
                 name="license"
-                rules={[{ message: '请选择版权声明' }]}
+                rules={[{ message: "请选择版权声明" }]}
               >
-                 <Select placeholder="请选择版权声明">
-                  <Select.Option value="CCO">CCO(公共领域贡献)</Select.Option>
-                  <Select.Option value="CC-4.0">CC-4.0(知识共享 4.0 国际许可协议)</Select.Option>
+                <Select placeholder={translateUiText("请选择版权声明")}>
+                  <Select.Option value="CCO">
+                    <LocalizedText>{"CCO(公共领域贡献)"}</LocalizedText>
+                  </Select.Option>
+                  <Select.Option value="CC-4.0">
+                    <LocalizedText>
+                      {"CC-4.0(知识共享 4.0 国际许可协议)"}
+                    </LocalizedText>
+                  </Select.Option>
                 </Select>
               </Form.Item>
               {/* <Form.Item
-                label="分类"
-                name="category"
-                rules={[{ required: true, message: '请选择分类' }]}
-              >
-                <Select placeholder="请选择分类">
-                  <Select.Option value="blog">博客</Select.Option>
-                  <Select.Option value="announcement">公告</Select.Option>
-                  <Select.Option value="kys_annual_report">开源社年度报告</Select.Option>
-                  <Select.Option value="china_os_annual_report">中国开源年度报告</Select.Option>
-                </Select>
-              </Form.Item> */}
+                  label="分类"
+                  name="category"
+                  rules={[{ required: true, message: '请选择分类' }]}
+                 >
+                  <Select placeholder="请选择分类">
+                    <Select.Option value="blog">博客</Select.Option>
+                    <Select.Option value="announcement">公告</Select.Option>
+                    <Select.Option value="kys_annual_report">开源社年度报告</Select.Option>
+                    <Select.Option value="china_os_annual_report">中国开源年度报告</Select.Option>
+                  </Select>
+                 </Form.Item> */}
             </Card>
 
             {/* 参与人员 */}
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <Users className={styles.sectionIcon} />
-                作者与协作者
+                <LocalizedText>{"作者与协作者"}</LocalizedText>
               </h2>
 
               <div className={styles.formRow}>
                 <Form.Item
-                  label="作者"
+                  label={translateUiText("作者")}
                   name="author"
-                  rules={[{ required: true, message: '请输入作者姓名' }]}
+                  rules={[{ required: true, message: "请输入作者姓名" }]}
                 >
-                  <Input placeholder="请输入作者" maxLength={10} showCount />
+                  <Input
+                    placeholder={translateUiText("请输入作者")}
+                    maxLength={10}
+                    showCount
+                  />
                 </Form.Item>
               </div>
 
               <div className={styles.formRow}>
-                <Form.Item label="翻译" name="translator">
+                <Form.Item label={translateUiText("翻译")} name="translator">
                   <Input
-                    placeholder="请输入翻译（可选）"
+                    placeholder={translateUiText("请输入翻译（可选）")}
                     maxLength={10}
                     showCount
                   />
                 </Form.Item>
               </div>
               <div className={styles.formRow}>
-                <Form.Item label="编辑" name="editor">
+                <Form.Item label={translateUiText("编辑")} name="editor">
                   <Input
-                    placeholder="请输入编辑"
+                    placeholder={translateUiText("请输入编辑")}
                     maxLength={10}
                     showCount
                   />
@@ -280,7 +318,7 @@ export default function NewArticlePage() {
             <Card className={styles.section}>
               <h2 className={styles.sectionTitle}>
                 <Plus className={styles.sectionIcon} />
-                公告标签
+                <LocalizedText>{"公告标签"}</LocalizedText>
               </h2>
 
               <div className={styles.tagsContainer}>
@@ -312,7 +350,7 @@ export default function NewArticlePage() {
                     className={styles.addTagButton}
                   >
                     <Plus className={styles.addTagIcon} />
-                    添加标签
+                    <LocalizedText>{"添加标签"}</LocalizedText>
                   </button>
                 )}
               </div>
@@ -323,7 +361,7 @@ export default function NewArticlePage() {
         {/* 提交按钮 */}
         <div className={styles.submitSection}>
           <Link href="/announcement" className={styles.cancelButton}>
-            取消
+            <LocalizedText>{"取消"}</LocalizedText>
           </Link>
           <Button
             type="primary"
@@ -333,7 +371,9 @@ export default function NewArticlePage() {
             disabled={isSubmitting}
           >
             <Save className={styles.submitIcon} />
-            {isSubmitting ? '创建中...' : '创建公告'}
+            {isSubmitting
+              ? translateUiText("创建中...")
+              : translateUiText("创建公告")}
           </Button>
         </div>
       </Form>

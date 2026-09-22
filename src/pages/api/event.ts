@@ -1,11 +1,11 @@
-import { apiRequest } from './api';
+import { apiRequest } from "./api";
 
 // 创建事件请求参数接口
 export interface CreateEventParams {
   title: string;
   description: string;
-  event_mode: '线上活动' | '线下活动';
-  event_type: 'meetup' | 'ama' | 'hackathon' | 'workshop';
+  event_mode: "线上活动" | "线下活动";
+  event_type: "meetup" | "ama" | "hackathon" | "workshop";
   location: string;
   link: string;
   start_time: string;
@@ -19,13 +19,15 @@ export interface CreateEventParams {
   apply_link?: string;
   topic_collection_link?: string;
   courseware_submit_link?: string;
+  locale?: string;
+  translation_of?: number;
 }
 
 export interface UpdateEventParams {
   title: string;
   description: string;
-  event_mode: '线上活动' | '线下活动';
-  event_type: 'meetup' | 'ama' | 'hackathon' | 'workshop';
+  event_mode: "线上活动" | "线下活动";
+  event_type: "meetup" | "ama" | "hackathon" | "workshop";
   location: string;
   link: string;
   start_time: string;
@@ -39,12 +41,14 @@ export interface UpdateEventParams {
   apply_link?: string;
   topic_collection_link?: string;
   courseware_submit_link?: string;
+  locale?: string;
+  translation_of?: number;
 }
 
 export interface GetEventsParams {
   keyword?: string;
   tag?: string;
-  order?: 'asc' | 'desc';
+  order?: "asc" | "desc";
   page?: number;
   page_size?: number;
   status?: string | number;
@@ -54,6 +58,7 @@ export interface GetEventsParams {
   publish_status?: number;
   start_date?: string;
   end_date?: string;
+  locale?: string;
 }
 
 export interface Event {
@@ -78,8 +83,14 @@ export interface Event {
   apply_link?: string;
   topic_collection_link?: string;
   courseware_submit_link?: string;
-
+  locale: string;
+  translation_of?: number;
 }
+
+const getCurrentLocale = () =>
+  typeof document === "undefined"
+    ? "zh-CN"
+    : document.documentElement.lang || "zh-CN";
 
 // 分页返回数据结构
 export interface PaginatedEventData {
@@ -103,7 +114,7 @@ export interface EventResult {
 }
 
 export const createEvent = async (
-  params: CreateEventParams
+  params: CreateEventParams,
 ): Promise<EventResult> => {
   try {
     const body = {
@@ -111,37 +122,39 @@ export const createEvent = async (
       desc: params.description.trim(),
       event_mode: params.event_mode,
       event_type: params.event_type,
-      location: params.location ?? '',
-      link: params.link ?? '',
+      location: params.location ?? "",
+      link: params.link ?? "",
       start_time: params.start_time,
       end_time: params.end_time,
       cover_img: params.cover_img,
       tags: params.tags ?? [],
-      twitter: params.twitter ?? '',
+      twitter: params.twitter ?? "",
       event_setting: params.event_setting,
       bage_link: params.bage_link,
-      registration_link: params.registration_link ?? '',
-      apply_link: params.apply_link ?? '',
-      topic_collection_link: params.topic_collection_link ?? '',
-      courseware_submit_link: params.courseware_submit_link ?? '',
+      registration_link: params.registration_link ?? "",
+      apply_link: params.apply_link ?? "",
+      topic_collection_link: params.topic_collection_link ?? "",
+      courseware_submit_link: params.courseware_submit_link ?? "",
+      locale: params.locale || getCurrentLocale(),
+      translation_of: params.translation_of,
     };
 
-    const response = await apiRequest<EventResult>('/events', 'POST', body);
+    const response = await apiRequest<EventResult>("/events", "POST", body);
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '活动创建成功',
+        message: response.message ?? "活动创建成功",
         data: response.data as unknown as Event,
       };
     }
 
-    return { success: false, message: response.message ?? '活动创建失败' };
+    return { success: false, message: response.message ?? "活动创建失败" };
   } catch (error: unknown) {
-    console.error('创建活动异常:', error);
+    console.error("创建活动异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -201,7 +214,7 @@ export const createEvent = async (
 
 export const updateEventDraft = async (
   eventId: string,
-  params: UpdateEventParams
+  params: UpdateEventParams,
 ): Promise<EventResult> => {
   try {
     const body = {
@@ -215,42 +228,44 @@ export const updateEventDraft = async (
       end_time: params.end_time,
       cover_img: params.cover_img,
       tags: params.tags ?? [],
-      twitter: params.twitter ?? '',
+      twitter: params.twitter ?? "",
       event_setting: params.event_setting,
       bage_link: params.bage_link,
-      registration_link: params.registration_link ?? '',
-      apply_link: params.apply_link ?? '',
-      topic_collection_link: params.topic_collection_link ?? '',
-      courseware_submit_link: params.courseware_submit_link ?? '',
+      registration_link: params.registration_link ?? "",
+      apply_link: params.apply_link ?? "",
+      topic_collection_link: params.topic_collection_link ?? "",
+      courseware_submit_link: params.courseware_submit_link ?? "",
+      locale: params.locale || getCurrentLocale(),
+      translation_of: params.translation_of,
     };
 
     const response = await apiRequest<EventResult>(
       `/events/draft/${eventId}`,
-      'PUT',
-      body
+      "PUT",
+      body,
     );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '活动草稿更新成功',
+        message: response.message ?? "活动草稿更新成功",
         data: response.data as unknown as Event,
       };
     }
 
-    return { success: false, message: response.message ?? '活动草稿更新失败' };
+    return { success: false, message: response.message ?? "活动草稿更新失败" };
   } catch (error: unknown) {
-    console.error('活动草稿更新异常:', error);
+    console.error("活动草稿更新异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
 
 export const updateEvent = async (
   eventId: string,
-  params: UpdateEventParams
+  params: UpdateEventParams,
 ): Promise<EventResult> => {
   try {
     const body = {
@@ -266,40 +281,42 @@ export const updateEvent = async (
       tags: params.tags ?? [],
       event_setting: params.event_setting,
       bage_link: params.bage_link,
-      twitter: params.twitter ?? '',
+      twitter: params.twitter ?? "",
       registration_link: params.registration_link,
-      apply_link: params.apply_link ?? '',
-      topic_collection_link: params.topic_collection_link ?? '',
-      courseware_submit_link: params.courseware_submit_link ?? '',
+      apply_link: params.apply_link ?? "",
+      topic_collection_link: params.topic_collection_link ?? "",
+      courseware_submit_link: params.courseware_submit_link ?? "",
+      locale: params.locale || getCurrentLocale(),
+      translation_of: params.translation_of,
     };
 
     const response = await apiRequest<EventResult>(
       `/events/${eventId}`,
-      'PUT',
-      body
+      "PUT",
+      body,
     );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '活动创建成功',
+        message: response.message ?? "活动创建成功",
         data: response.data as unknown as Event,
       };
     }
 
-    return { success: false, message: response.message ?? '活动创建失败' };
+    return { success: false, message: response.message ?? "活动创建失败" };
   } catch (error: unknown) {
-    console.error('创建活动异常:', error);
+    console.error("创建活动异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
 
 export const updateEventPublishStatus = async (
   eventId: string,
-  publishStatus: number
+  publishStatus: number,
 ): Promise<EventResult> => {
   try {
     const body = {
@@ -308,72 +325,75 @@ export const updateEventPublishStatus = async (
 
     const response = await apiRequest<EventResult>(
       `/events/${eventId}/status`,
-      'PUT',
-      body
+      "PUT",
+      body,
     );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '活动状态更新成功',
+        message: response.message ?? "活动状态更新成功",
         data: response.data as unknown as Event,
       };
     }
 
-    return { success: false, message: response.message ?? '活动状态更新失败' };
+    return { success: false, message: response.message ?? "活动状态更新失败" };
   } catch (error: unknown) {
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
 
 export const getEvents = async (
-  params: GetEventsParams = {}
+  params: GetEventsParams = {},
 ): Promise<EventListResult> => {
   try {
     const query = new URLSearchParams();
 
-    if (params.keyword?.trim()) query.append('keyword', params.keyword.trim());
-    if (params.tag?.trim()) query.append('tag', params.tag.trim());
+    if (params.keyword?.trim()) query.append("keyword", params.keyword.trim());
+    if (params.tag?.trim()) query.append("tag", params.tag.trim());
     if (params.location?.trim())
-      query.append('location', params.location.trim());
+      query.append("location", params.location.trim());
     if (params.event_mode?.trim())
-      query.append('event_mode', params.event_mode.trim());
+      query.append("event_mode", params.event_mode.trim());
     if (params.event_type?.trim())
-      query.append('event_type', params.event_type.trim());
+      query.append("event_type", params.event_type.trim());
 
-    if (params.status != null) query.append('status', params.status.toString());
+    if (params.status != null) query.append("status", params.status.toString());
     if (params.publish_status != null)
-      query.append('publish_status', params.publish_status.toString());
+      query.append("publish_status", params.publish_status.toString());
 
-    if (params.start_date?.trim()) query.append('start_date', params.start_date.trim());
-    if (params.end_date?.trim()) query.append('end_date', params.end_date.trim());
+    if (params.start_date?.trim())
+      query.append("start_date", params.start_date.trim());
+    if (params.end_date?.trim())
+      query.append("end_date", params.end_date.trim());
 
-    query.append('order', params.order ?? 'desc');
-    query.append('page', (params.page ?? 1).toString());
-    query.append('page_size', (params.page_size ?? 6).toString());
+    query.append("order", params.order ?? "desc");
+    query.append("page", (params.page ?? 1).toString());
+    query.append("page_size", (params.page_size ?? 6).toString());
+    query.append("locale", params.locale || getCurrentLocale());
 
     const response = await apiRequest<EventListResult>(
       `/events?${query.toString()}`,
-      'GET'
+      "GET",
     );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '获取活动列表成功',
+        message: response.message ?? "获取活动列表成功",
         data: response.data as unknown as PaginatedEventData,
       };
     }
 
-    return { success: false, message: response.message ?? '获取活动列表失败' };
+    return { success: false, message: response.message ?? "获取活动列表失败" };
   } catch (error: unknown) {
-    console.error('获取活动列表异常:', error);
+    console.error("获取活动列表异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -414,28 +434,35 @@ export const getEvents = async (
 // };
 
 // 获取单个事件详情
-export const getEventById = async (eventId: string): Promise<EventResult> => {
+export const getEventById = async (
+  eventId: string,
+  locale?: string,
+): Promise<EventResult> => {
   try {
     if (!eventId) {
-      return { success: false, message: '活动ID不能为空' };
+      return { success: false, message: "活动ID不能为空" };
     }
 
-    const response = await apiRequest<EventResult>(`/events/${eventId}`, 'GET');
+    const query = locale ? `?locale=${encodeURIComponent(locale)}` : "";
+    const response = await apiRequest<EventResult>(
+      `/events/${eventId}${query}`,
+      "GET",
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '获取活动成功',
+        message: response.message ?? "获取活动成功",
         data: response.data as unknown as Event,
       };
     }
 
-    return { success: false, message: response.message ?? '获取活动失败' };
+    return { success: false, message: response.message ?? "获取活动失败" };
   } catch (error: unknown) {
-    console.error('获取活动异常:', error);
+    console.error("获取活动异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -445,19 +472,19 @@ export const deleteEvent = async (eventId: number): Promise<EventResult> => {
   try {
     const response = await apiRequest<EventResult>(
       `/events/${eventId}`,
-      'DELETE'
+      "DELETE",
     );
 
     if (response.code === 200) {
-      return { success: true, message: response.message ?? '删除成功' };
+      return { success: true, message: response.message ?? "删除成功" };
     }
 
-    return { success: false, message: response.message ?? '删除失败' };
+    return { success: false, message: response.message ?? "删除失败" };
   } catch (error: unknown) {
-    console.error('删除活动异常:', error);
+    console.error("删除活动异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -465,32 +492,31 @@ export const deleteEvent = async (eventId: number): Promise<EventResult> => {
 // 工具函数：格式化日期时间
 export const formatDateTime = (date: unknown, time: unknown): string => {
   try {
-    if (!date || !time) return '';
+    if (!date || !time) return "";
 
     if (
-      typeof date?.format === 'function' &&
-      typeof time?.format === 'function'
+      typeof date?.format === "function" &&
+      typeof time?.format === "function"
     ) {
-      return `${date.format('YYYY-MM-DD')} ${time.format('HH:mm:ss')}`;
+      return `${date.format("YYYY-MM-DD")} ${time.format("HH:mm:ss")}`;
     }
 
     if (date instanceof Date && time instanceof Date) {
-      const dateStr = date.toISOString().split('T')[0];
-      const timeStr = time.toTimeString().split(' ')[0];
+      const dateStr = date.toISOString().split("T")[0];
+      const timeStr = time.toTimeString().split(" ")[0];
       return `${dateStr} ${timeStr}`;
     }
 
-    if (typeof date === 'string' && typeof time === 'string') {
+    if (typeof date === "string" && typeof time === "string") {
       return `${date} ${time}`;
     }
 
-    return '';
+    return "";
   } catch (error) {
-    console.error('格式化日期时间失败:', error);
-    return '';
+    console.error("格式化日期时间失败:", error);
+    return "";
   }
 };
-
 
 // venue
 export interface Session {
@@ -564,10 +590,9 @@ export interface SessionsResult {
   data?: Session[];
 }
 
-
 export const createSession = async (
   eventId: string,
-  params: CreateSessionParams
+  params: CreateSessionParams,
 ): Promise<SessionResult> => {
   try {
     const body = {
@@ -578,44 +603,53 @@ export const createSession = async (
       volunteer: params.volunteer.trim(),
     };
 
-    const response = await apiRequest<SessionResult>(`/events/${eventId}/venues`, 'POST', body);
+    const response = await apiRequest<SessionResult>(
+      `/events/${eventId}/venues`,
+      "POST",
+      body,
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '会场创建成功',
+        message: response.message ?? "会场创建成功",
         data: response.data as unknown as Session,
       };
     }
 
-    return { success: false, message: response.message ?? '会场创建失败' };
+    return { success: false, message: response.message ?? "会场创建失败" };
   } catch (error: unknown) {
-    console.error('创建会场异常:', error);
+    console.error("创建会场异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
 
-export const getSessionsByEvent = async (eventId: string): Promise<SessionsResult> => {
+export const getSessionsByEvent = async (
+  eventId: string,
+): Promise<SessionsResult> => {
   try {
-    const response = await apiRequest<SessionsResult>(`/events/${eventId}/venues`, 'GET');
+    const response = await apiRequest<SessionsResult>(
+      `/events/${eventId}/venues`,
+      "GET",
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '获取会场列表成功',
+        message: response.message ?? "获取会场列表成功",
         data: response.data as unknown as Session[],
       };
     }
 
-    return { success: false, message: response.message ?? '获取会场列表失败' };
+    return { success: false, message: response.message ?? "获取会场列表失败" };
   } catch (error: unknown) {
-    console.error('获取会场列表异常:', error);
+    console.error("获取会场列表异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -623,7 +657,7 @@ export const getSessionsByEvent = async (eventId: string): Promise<SessionsResul
 export const updateSession = async (
   eventId: string,
   venueId: string,
-  params: CreateSessionParams
+  params: CreateSessionParams,
 ): Promise<SessionResult> => {
   try {
     const body = {
@@ -633,47 +667,56 @@ export const updateSession = async (
       volunteer: params.volunteer.trim(),
     };
 
-    const response = await apiRequest<SessionResult>(`/events/${eventId}/venues/${venueId}`, 'PUT', body);
+    const response = await apiRequest<SessionResult>(
+      `/events/${eventId}/venues/${venueId}`,
+      "PUT",
+      body,
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '会场更新成功',
+        message: response.message ?? "会场更新成功",
         data: response.data as unknown as Session,
       };
     }
 
-    return { success: false, message: response.message ?? '会场更新失败' };
+    return { success: false, message: response.message ?? "会场更新失败" };
   } catch (error: unknown) {
-    console.error('更新会场异常:', error);
+    console.error("更新会场异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
 
-export const deleteSession = async (eventId: string, venueId: string): Promise<SessionResult> => {
+export const deleteSession = async (
+  eventId: string,
+  venueId: string,
+): Promise<SessionResult> => {
   try {
-    const response = await apiRequest<SessionResult>(`/events/${eventId}/venues/${venueId}`, 'DELETE');
+    const response = await apiRequest<SessionResult>(
+      `/events/${eventId}/venues/${venueId}`,
+      "DELETE",
+    );
 
     if (response.code === 200) {
       return {
         success: true,
-        message: response.message ?? '会场删除成功',
+        message: response.message ?? "会场删除成功",
       };
     }
 
-    return { success: false, message: response.message ?? '会场删除失败' };
+    return { success: false, message: response.message ?? "会场删除失败" };
   } catch (error: unknown) {
-    console.error('删除会场异常:', error);
+    console.error("删除会场异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
-
 
 export interface AddAgendaParams {
   topic: string;
@@ -693,38 +736,42 @@ export interface AgendaResult {
  */
 export const addAgendaToSession = async (
   sessionId: string,
-  params: AddAgendaParams
+  params: AddAgendaParams,
 ): Promise<AgendaResult> => {
   try {
     const body = {
       topic: params.topic.trim(),
       start_time: params.start_time,
       end_time: params.end_time,
-      speakers: params.speakers.map(speaker => ({
+      speakers: params.speakers.map((speaker) => ({
         name: speaker.name.trim(),
-        avatar: speaker.avatar ?? '',
-        title: speaker.title ?? '',
-        description: speaker.description ?? '',
-        company: speaker.company ?? '',
+        avatar: speaker.avatar ?? "",
+        title: speaker.title ?? "",
+        description: speaker.description ?? "",
+        company: speaker.company ?? "",
       })),
     };
 
-    const response = await apiRequest<AgendaResult>(`/venues/${sessionId}/agendas`, 'POST', body);
+    const response = await apiRequest<AgendaResult>(
+      `/venues/${sessionId}/agendas`,
+      "POST",
+      body,
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '议程添加成功',
+        message: response.message ?? "议程添加成功",
         data: response.data as unknown as Agenda,
       };
     }
 
-    return { success: false, message: response.message ?? '议程添加失败' };
+    return { success: false, message: response.message ?? "议程添加失败" };
   } catch (error: unknown) {
-    console.error('添加议程异常:', error);
+    console.error("添加议程异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -733,25 +780,28 @@ export const addAgendaToSession = async (
  * 获取会场的所有议程
  */
 export const getAgendasBySession = async (
-  sessionId: string
+  sessionId: string,
 ): Promise<SessionsResult> => {
   try {
-    const response = await apiRequest<SessionsResult>(`/sessions/${sessionId}/agendas`, 'GET');
+    const response = await apiRequest<SessionsResult>(
+      `/sessions/${sessionId}/agendas`,
+      "GET",
+    );
 
     if (response.code === 200 && response.data) {
       return {
         success: true,
-        message: response.message ?? '获取议程成功',
+        message: response.message ?? "获取议程成功",
         data: response.data as unknown as Session[],
       };
     }
 
-    return { success: false, message: response.message ?? '获取议程失败' };
+    return { success: false, message: response.message ?? "获取议程失败" };
   } catch (error: unknown) {
-    console.error('获取议程异常:', error);
+    console.error("获取议程异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };
@@ -760,27 +810,27 @@ export const getAgendasBySession = async (
  * 删除议程
  */
 export const deleteAgenda = async (
-  agendaId: string
+  agendaId: string,
 ): Promise<{ success: boolean; message: string }> => {
   try {
     const response = await apiRequest<{ success: boolean; message: string }>(
       `/venues/agendas/${agendaId}`,
-      'DELETE'
+      "DELETE",
     );
 
     if (response.code === 200) {
       return {
         success: true,
-        message: response.message ?? '议程删除成功',
+        message: response.message ?? "议程删除成功",
       };
     }
 
-    return { success: false, message: response.message ?? '议程删除失败' };
+    return { success: false, message: response.message ?? "议程删除失败" };
   } catch (error: unknown) {
-    console.error('删除议程异常:', error);
+    console.error("删除议程异常:", error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : '网络错误，请稍后重试',
+      message: error instanceof Error ? error.message : "网络错误，请稍后重试",
     };
   }
 };

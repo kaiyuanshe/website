@@ -1,69 +1,68 @@
-import { ChevronDown, Menu as MenuIcon, User, LogOut } from 'lucide-react'
+import { ChevronDown, Menu as MenuIcon, User, LogOut } from "lucide-react";
 
-import { Avatar } from 'antd'
+import { Avatar } from "antd";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react'
-import { signOut } from 'next-auth/react'
-import { useAuth } from '../contexts/AuthContext'
-import { useRouter } from 'next/router'
-import LanguageSwitcher from './LanguageSwitcher'
-import { useTranslation } from '../hooks/useTranslation'
-import { mainNavItems, type MenuItem } from '../data/navigation'
-import styles from './Header.module.css'
+import Link from "next/link";
+import Image from "next/image";
+import { useState, useMemo, useRef, useEffect, useCallback } from "react";
+import { signOut } from "next-auth/react";
+import { useAuth } from "../contexts/AuthContext";
+import { useRouter } from "next/router";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useTranslation } from "../hooks/useTranslation";
+import { mainNavItems, type MenuItem } from "../data/navigation";
+import styles from "./Header.module.css";
 
 interface SearchResult {
-  item: MenuItem & { label: string; description?: string }
-  parentLabel?: string
-  matchType: 'label' | 'description'
-  score: number
+  item: MenuItem & { label: string; description?: string };
+  parentLabel?: string;
+  matchType: "label" | "description";
+  score: number;
 }
 
 export default function Header() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
-  const [searchOpen, setSearchOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
-  const searchInputRef = useRef<HTMLInputElement>(null)
-  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const userMenuRef = useRef<HTMLDivElement>(null)
-  const router = useRouter()
+  const { t, locale, translateText: translateUiText } = useTranslation();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const dropdownTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // 获取用户认证状态和翻译函数
-  const { session, isAuthenticated, isLoading } = useAuth()
-  const { t } = useTranslation()
-
+  const { session, isAuthenticated, isLoading } = useAuth();
   // 将导航数据转换为包含翻译的格式
   const translatedNavItems = useMemo(() => {
     const translateMenuItem = (item: MenuItem) => ({
       ...item,
       label: t(item.labelKey),
       description: item.descriptionKey ? t(item.descriptionKey) : undefined,
-      children: item.children?.map(translateMenuItem)
-    })
+      children: item.children?.map(translateMenuItem),
+    });
 
-    return mainNavItems.map(translateMenuItem)
-  }, [t])
+    return mainNavItems.map(translateMenuItem);
+  }, [t]);
 
   // 模糊搜索算法
   const fuzzySearch = (query: string, text: string): number => {
-    if (!query || !text) return 0
+    if (!query || !text) return 0;
 
-    const queryLower = query.toLowerCase()
-    const textLower = text.toLowerCase()
+    const queryLower = query.toLowerCase();
+    const textLower = text.toLowerCase();
 
     // 完全匹配得分最高
     if (textLower.includes(queryLower)) {
-      const exactMatch = textLower === queryLower
-      const startsWith = textLower.startsWith(queryLower)
-      return exactMatch ? 100 : startsWith ? 90 : 80
+      const exactMatch = textLower === queryLower;
+      const startsWith = textLower.startsWith(queryLower);
+      return exactMatch ? 100 : startsWith ? 90 : 80;
     }
 
     // 模糊匹配算法
-    let score = 0
-    let queryIndex = 0
+    let score = 0;
+    let queryIndex = 0;
 
     for (
       let i = 0;
@@ -71,49 +70,49 @@ export default function Header() {
       i++
     ) {
       if (textLower[i] === queryLower[queryIndex]) {
-        score += 1
-        queryIndex++
+        score += 1;
+        queryIndex++;
       }
     }
 
     // 如果所有查询字符都匹配，计算匹配度
     if (queryIndex === queryLower.length) {
-      return Math.round((score / textLower.length) * 60) // 最高60分
+      return Math.round((score / textLower.length) * 60); // 最高60分
     }
 
-    return 0
-  }
+    return 0;
+  };
 
   // 处理下拉菜单鼠标事件
   const handleMouseEnter = useCallback((key: string) => {
     if (dropdownTimeoutRef.current) {
-      clearTimeout(dropdownTimeoutRef.current)
-      dropdownTimeoutRef.current = null
+      clearTimeout(dropdownTimeoutRef.current);
+      dropdownTimeoutRef.current = null;
     }
-    setActiveDropdown(key)
-  }, [])
+    setActiveDropdown(key);
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
     dropdownTimeoutRef.current = setTimeout(() => {
-      setActiveDropdown(null)
-    }, 200) // 200ms 延迟，给用户更多时间移动到浮窗
-  }, [])
+      setActiveDropdown(null);
+    }, 200); // 200ms 延迟，给用户更多时间移动到浮窗
+  }, []);
 
   // 清理定时器
   useEffect(() => {
     return () => {
       if (dropdownTimeoutRef.current) {
-        clearTimeout(dropdownTimeoutRef.current)
+        clearTimeout(dropdownTimeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   // 处理搜索框聚焦
   useEffect(() => {
     if (searchOpen && searchInputRef.current) {
-      searchInputRef.current.focus()
+      searchInputRef.current.focus();
     }
-  }, [searchOpen])
+  }, [searchOpen]);
 
   // 点击外部关闭搜索
   useEffect(() => {
@@ -122,16 +121,17 @@ export default function Header() {
         searchInputRef.current &&
         !searchInputRef.current.closest(`.${styles.searchContainer}`)
       ) {
-        setSearchOpen(false)
-        setSearchQuery('')
+        setSearchOpen(false);
+        setSearchQuery("");
       }
-    }
+    };
 
     if (searchOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [searchOpen])
+  }, [searchOpen]);
 
   // 点击外部关闭用户菜单
   useEffect(() => {
@@ -140,47 +140,48 @@ export default function Header() {
         userMenuRef.current &&
         !userMenuRef.current.contains(event.target as Node)
       ) {
-        setUserMenuOpen(false)
+        setUserMenuOpen(false);
       }
-    }
+    };
 
     if (userMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
     }
-  }, [userMenuOpen])
+  }, [userMenuOpen]);
 
   // 处理退出登录
   const handleSignOut = async () => {
     try {
-      await signOut({ callbackUrl: '/' })
+      await signOut({ callbackUrl: "/" });
     } catch (error) {
-      console.error('退出登录失败:', error)
+      console.error("退出登录失败:", error);
     }
-  }
+  };
 
   // 处理联系我们点击 - 跳转到about页面并滚动到底部
   const handleContactClick = async (e: React.MouseEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (router.pathname === '/about') {
+    if (router.pathname === "/about") {
       // 如果已经在about页面，直接滚动到底部
       window.scrollTo({
         top: document.documentElement.scrollHeight,
-        behavior: 'smooth'
-      })
+        behavior: "smooth",
+      });
     } else {
       // 如果不在about页面，先跳转
-      await router.push('/about')
+      await router.push("/about");
       // 延迟滚动，确保页面已加载
       setTimeout(() => {
         window.scrollTo({
           top: document.documentElement.scrollHeight,
-          behavior: 'smooth'
-        })
-      }, 100)
+          behavior: "smooth",
+        });
+      }, 100);
     }
-  }
+  };
 
   // const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
   //   console.log(e.target.value)
@@ -190,15 +191,15 @@ export default function Header() {
 
   // CNCF风格下拉菜单组件
   const NavDropdown = ({
-    item
+    item,
   }: {
     item: MenuItem & {
-      label: string
-      description?: string
-      children?: (MenuItem & { label: string; description?: string })[]
-    }
+      label: string;
+      description?: string;
+      children?: (MenuItem & { label: string; description?: string })[];
+    };
   }) => {
-    const isActive = activeDropdown === item.key
+    const isActive = activeDropdown === item.key;
 
     return (
       <div
@@ -207,11 +208,11 @@ export default function Header() {
         onMouseLeave={handleMouseLeave}
       >
         <div
-          className={`${styles.navItem} ${isActive ? styles.navItemActive : ''}`}
+          className={`${styles.navItem} ${isActive ? styles.navItemActive : ""}`}
         >
           <span>{item.label}</span>
           <ChevronDown
-            className={`${styles.navIcon} ${isActive ? styles.navIconActive : ''}`}
+            className={`${styles.navIcon} ${isActive ? styles.navIconActive : ""}`}
           />
         </div>
 
@@ -225,31 +226,31 @@ export default function Header() {
               {/* 左侧菜单列表 */}
               <div
                 className={
-                  item.key === 'about' ||
-                  item.key === 'governance' ||
-                  item.key === 'community-development' ||
-                  item.key === 'events' ||
-                  item.key === 'projects' ||
-                  item.key === 'articles-media'
+                  item.key === "about" ||
+                  item.key === "governance" ||
+                  item.key === "community-development" ||
+                  item.key === "events" ||
+                  item.key === "projects" ||
+                  item.key === "articles-media"
                     ? styles.dropdownLeftTwoColumn
                     : styles.dropdownLeft
                 }
               >
-                {item.key === 'about' ? (
+                {item.key === "about" ? (
                   // 关于我们的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'basic')
+                        ?.filter((child) => child.group === "basic")
                         .map((child: any) =>
-                          child.key === 'contact' ? (
+                          child.key === "contact" ? (
                             <a
                               key={child.key}
-                              href={child.href || '/about'}
+                              href={child.href || "/about"}
                               className={styles.navDropdownItem}
-                              onClick={e => {
-                                setActiveDropdown(null)
-                                handleContactClick(e)
+                              onClick={(e) => {
+                                setActiveDropdown(null);
+                                handleContactClick(e);
                               }}
                             >
                               <div className={styles.dropdownItemContent}>
@@ -266,8 +267,8 @@ export default function Header() {
                           ) : (
                             <Link
                               key={child.key}
-                              href={child.href || '/'}
-                              className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                              href={child.href || "/"}
+                              className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                               onClick={() => setActiveDropdown(null)}
                               target={child.target}
                             >
@@ -287,17 +288,17 @@ export default function Header() {
                                 )}
                               </div>
                             </Link>
-                          )
+                          ),
                         )}
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'brand')
+                        ?.filter((child) => child.group === "brand")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -320,17 +321,17 @@ export default function Header() {
                         ))}
                     </div>
                   </>
-                ) : item.key === 'governance' ? (
+                ) : item.key === "governance" ? (
                   // 社区治理的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'basic')
+                        ?.filter((child) => child.group === "basic")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -354,12 +355,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'policies')
+                        ?.filter((child) => child.group === "policies")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -382,17 +383,17 @@ export default function Header() {
                         ))}
                     </div>
                   </>
-                ) : item.key === 'community-development' ? (
+                ) : item.key === "community-development" ? (
                   // 社区发展的特殊三列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'recognition')
+                        ?.filter((child) => child.group === "recognition")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -416,12 +417,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'cooperation')
+                        ?.filter((child) => child.group === "cooperation")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -445,12 +446,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'reports')
+                        ?.filter((child) => child.group === "reports")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -473,17 +474,17 @@ export default function Header() {
                         ))}
                     </div>
                   </>
-                ) : item.key === 'events' ? (
+                ) : item.key === "events" ? (
                   // 开源活动的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'annual')
+                        ?.filter((child) => child.group === "annual")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -507,12 +508,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'calendar')
+                        ?.filter((child) => child.group === "calendar")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -535,17 +536,17 @@ export default function Header() {
                         ))}
                     </div>
                   </>
-                ) : item.key === 'projects' ? (
+                ) : item.key === "projects" ? (
                   // 开源项目的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'main')
+                        ?.filter((child) => child.group === "main")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -569,12 +570,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'tech')
+                        ?.filter((child) => child.group === "tech")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -597,17 +598,17 @@ export default function Header() {
                         ))}
                     </div>
                   </>
-                ) : item.key === 'articles-media' ? (
+                ) : item.key === "articles-media" ? (
                   // 文章&媒体的特殊两列布局
                   <>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'content')
+                        ?.filter((child) => child.group === "content")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -631,12 +632,12 @@ export default function Header() {
                     </div>
                     <div className={styles.aboutColumn}>
                       {item.children
-                        ?.filter(child => child.group === 'brand')
+                        ?.filter((child) => child.group === "brand")
                         .map((child: any) => (
                           <Link
                             key={child.key}
-                            href={child.href || '/'}
-                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                            href={child.href || "/"}
+                            className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                             onClick={() => setActiveDropdown(null)}
                             target={child.target}
                           >
@@ -664,8 +665,8 @@ export default function Header() {
                   item.children?.map((child: any) => (
                     <Link
                       key={child.key}
-                      href={child.href || '/'}
-                      className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ''}`}
+                      href={child.href || "/"}
+                      className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                       onClick={() => setActiveDropdown(null)}
                     >
                       <div className={styles.dropdownItemContent}>
@@ -689,8 +690,8 @@ export default function Header() {
           </div>
         )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <>
@@ -699,18 +700,36 @@ export default function Header() {
         <div className={styles.headerContent}>
           {/* Logo 区域 */}
           <Link href="/" className={styles.logoContainer}>
-            <Image
-              src="/logo_2.svg"
-              alt="开源社 Logo"
-              width={100}
-              height={100}
-              className={styles.logoImage}
-            />
+            {locale === "en" ? (
+              <>
+                <Image
+                  src="/logo.png"
+                  alt="KaiSource symbol"
+                  width={44}
+                  height={44}
+                  className={styles.brandSymbol}
+                />
+                <span className={styles.brandNames}>
+                  <strong className={styles.brandName}>{t("site.name")}</strong>
+                  <span className={styles.legacyName}>
+                    {t("site.legacy_name_note")}
+                  </span>
+                </span>
+              </>
+            ) : (
+              <Image
+                src="/logo_2.svg"
+                alt={translateUiText("开源社 Logo")}
+                width={100}
+                height={100}
+                className={styles.logoImage}
+              />
+            )}
           </Link>
 
           {/* 桌面导航菜单 */}
           <nav className={styles.nav}>
-            {translatedNavItems.map(item => (
+            {translatedNavItems.map((item) => (
               <NavDropdown key={item.key} item={item} />
             ))}
           </nav>
@@ -723,7 +742,7 @@ export default function Header() {
               target="_blank"
               className={styles.joinUsButton}
             >
-              {t('common.join_us')}
+              {t("common.join_us")}
             </Link>
 
             {/* 语言切换器 */}
@@ -731,13 +750,13 @@ export default function Header() {
 
             {/* 用户认证区域 */}
             {isLoading ? (
-              <div className={styles.loginButton}>{t('common.loading')}</div>
+              <div className={styles.loginButton}>{t("common.loading")}</div>
             ) : isAuthenticated && session?.user ? (
               <div className={styles.userMenu} ref={userMenuRef}>
                 <div
                   className={styles.userContainer}
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
-                  aria-label="用户菜单"
+                  aria-label={translateUiText("用户菜单")}
                 >
                   {session.user.avatar || session.user.image ? (
                     <Image
@@ -745,7 +764,7 @@ export default function Header() {
                       alt={
                         session.user.name ||
                         session.user.username ||
-                        t('common.user_avatar')
+                        t("common.user_avatar")
                       }
                       width={38}
                       height={38}
@@ -776,14 +795,14 @@ export default function Header() {
                         onClick={() => setUserMenuOpen(false)}
                       >
                         <User className={styles.userDropdownIcon} />
-                        {t('common.profile')}
+                        {t("common.profile")}
                       </Link>
                       <button
                         className={styles.userDropdownItem}
                         onClick={handleSignOut}
                       >
                         <LogOut className={styles.userDropdownIcon} />
-                        {t('common.sign_out')}
+                        {t("common.sign_out")}
                       </button>
                     </div>
                   </div>
@@ -791,47 +810,45 @@ export default function Header() {
               </div>
             ) : (
               <Link href="/login" className={styles.loginButton}>
-                {t('common.login')}
+                {t("common.login")}
               </Link>
             )}
 
             {/* <div className={styles.searchContainer}>
-              <button
-                className={styles.searchButton}
-                onClick={() => setSearchOpen(true)}
-                aria-label="搜索"
-              >
-                <Search className={styles.searchIcon} />
-              </button>
+               <button
+                 className={styles.searchButton}
+                 onClick={() => setSearchOpen(true)}
+                 aria-label="搜索"
+               >
+                 <Search className={styles.searchIcon} />
+               </button>
+                {searchOpen && (
+                 <div className={styles.searchBox}>
+                   <div className={styles.searchInputContainer}>
+                     <Search className={styles.searchInputIcon} />
+                     <input
+                       ref={searchInputRef}
+                       type="text"
+                       placeholder="搜索..."
+                       value={searchQuery}
+                       onChange={handleSearchChange}
+                       className={styles.searchInput}
+                     />
+                     <button
+                       className={styles.searchCloseButton}
+                       onClick={() => {
+                         setSearchOpen(false)
+                         setSearchQuery('')
+                       }}
+                       aria-label="关闭搜索"
+                     >
+                       <X className={styles.searchCloseIcon} />
+                     </button>
+                   </div>
 
-              {searchOpen && (
-                <div className={styles.searchBox}>
-                  <div className={styles.searchInputContainer}>
-                    <Search className={styles.searchInputIcon} />
-                    <input
-                      ref={searchInputRef}
-                      type="text"
-                      placeholder="搜索..."
-                      value={searchQuery}
-                      onChange={handleSearchChange}
-                      className={styles.searchInput}
-                    />
-                    <button
-                      className={styles.searchCloseButton}
-                      onClick={() => {
-                        setSearchOpen(false)
-                        setSearchQuery('')
-                      }}
-                      aria-label="关闭搜索"
-                    >
-                      <X className={styles.searchCloseIcon} />
-                    </button>
-                  </div>
-
-                  
-                </div>
-              )}
-            </div> */}
+                 </div>
+               )}
+              </div> */}
           </div>
 
           {/* 移动端菜单按钮 */}
@@ -853,9 +870,10 @@ export default function Header() {
             className={styles.mobileMenuOverlay}
             onClick={() => setMobileMenuOpen(false)}
           />
+
           <div className={styles.mobileMenuContent}>
             <div className={styles.mobileMenuHeader}>
-              <div className={styles.mobileMenuTitle}>{t('common.menu')}</div>
+              <div className={styles.mobileMenuTitle}>{t("common.menu")}</div>
               <button
                 className={styles.mobileMenuClose}
                 onClick={() => setMobileMenuOpen(false)}
@@ -872,20 +890,20 @@ export default function Header() {
                   className={styles.mobileJoinUsButton}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {t('common.join_us')}
+                  {t("common.join_us")}
                 </Link>
               </div>
 
               {/* 移动端语言切换器 */}
               <div className={styles.mobileMenuSection}>
-                <LanguageSwitcher />
+                <LanguageSwitcher onChange={() => setMobileMenuOpen(false)} />
               </div>
 
               {/* 移动端用户认证区域 */}
               <div className={styles.mobileMenuSection}>
                 {isLoading ? (
                   <div className={styles.mobileLoginButton}>
-                    {t('common.loading')}
+                    {t("common.loading")}
                   </div>
                 ) : isAuthenticated && session?.user ? (
                   <div className={styles.mobileUserSection}>
@@ -896,7 +914,7 @@ export default function Header() {
                           alt={
                             session.user.name ||
                             session.user.username ||
-                            t('common.user_avatar')
+                            t("common.user_avatar")
                           }
                           width={40}
                           height={40}
@@ -920,16 +938,16 @@ export default function Header() {
                         className={styles.mobileUserAction}
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {t('common.profile')}
+                        {t("common.profile")}
                       </Link>
                       <button
                         className={styles.mobileUserAction}
                         onClick={() => {
-                          setMobileMenuOpen(false)
-                          handleSignOut()
+                          setMobileMenuOpen(false);
+                          handleSignOut();
                         }}
                       >
-                        {t('common.sign_out')}
+                        {t("common.sign_out")}
                       </button>
                     </div>
                   </div>
@@ -939,12 +957,12 @@ export default function Header() {
                     className={styles.mobileLoginButton}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    {t('common.login')}
+                    {t("common.login")}
                   </Link>
                 )}
               </div>
 
-              {translatedNavItems.map(item => (
+              {translatedNavItems.map((item) => (
                 <div key={item.key} className={styles.mobileMenuSection}>
                   <div className={styles.mobileMenuSectionTitle}>
                     {item.label}
@@ -954,18 +972,18 @@ export default function Header() {
                       {item.children.map(
                         (
                           child: MenuItem & {
-                            label: string
-                            description?: string
-                          }
+                            label: string;
+                            description?: string;
+                          },
                         ) =>
-                          child.key === 'contact' ? (
+                          child.key === "contact" ? (
                             <a
                               key={child.key}
-                              href={child.href || '/about'}
+                              href={child.href || "/about"}
                               className={styles.mobileMenuItem}
-                              onClick={e => {
-                                setMobileMenuOpen(false)
-                                handleContactClick(e)
+                              onClick={(e) => {
+                                setMobileMenuOpen(false);
+                                handleContactClick(e);
                               }}
                             >
                               {child.label}
@@ -973,7 +991,7 @@ export default function Header() {
                           ) : (
                             <Link
                               key={child.key}
-                              href={child.href || '/'}
+                              href={child.href || "/"}
                               className={styles.mobileMenuItem}
                               onClick={() => setMobileMenuOpen(false)}
                               target={child.target}
@@ -983,7 +1001,7 @@ export default function Header() {
                                 <span className={styles.hotIndicator}>Hot</span>
                               )}
                             </Link>
-                          )
+                          ),
                       )}
                     </div>
                   )}
@@ -994,5 +1012,5 @@ export default function Header() {
         </div>
       )}
     </>
-  )
+  );
 }

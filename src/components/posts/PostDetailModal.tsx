@@ -1,11 +1,13 @@
-import React from 'react';
-import { Modal, Button, Tooltip } from 'antd';
-import { Clock, Eye, Heart, Bookmark, UserPlus, Check } from 'lucide-react';
-import { SiX } from 'react-icons/si';
-import Image from 'next/image';
-import dayjs from 'dayjs';
-import { PostType } from '@/types/posts';
-import styles from '../../pages/posts/index.module.css';
+import React from "react";
+import { Modal, Button, Tooltip } from "antd";
+import { Clock, Eye, Heart, Bookmark, UserPlus, Check } from "lucide-react";
+import { SiX } from "react-icons/si";
+import Image from "next/image";
+import dayjs from "dayjs";
+import { PostType } from "@/types/posts";
+import styles from "../../pages/posts/index.module.css";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PostDetailModalProps {
   visible: boolean;
@@ -44,6 +46,7 @@ export default function PostDetailModal({
   onBookmark,
   onFollow,
 }: PostDetailModalProps) {
+  const { translateText: translateUiText } = useTranslation();
   if (!post) return null;
 
   const user =
@@ -53,8 +56,8 @@ export default function PostDetailModal({
       name?: string;
       avatar?: string;
     }) || {};
-  const userName = user.username || user.name || '未知用户';
-  const userAvatar = user.avatar || '/placeholder.svg';
+  const userName = user.username || user.name || "未知用户";
+  const userAvatar = user.avatar || "/placeholder.svg";
   const userId = user.ID;
 
   return (
@@ -79,6 +82,7 @@ export default function PostDetailModal({
                 alt={userName}
                 className={styles.postDetailAvatar}
               />
+
               {/* 关注按钮 - 只有登录且不是自己的帖子时显示 */}
               {isAuthenticated && userId && currentUserId !== userId && (
                 <Button
@@ -92,11 +96,13 @@ export default function PostDetailModal({
                     )
                   }
                   className={`${styles.followButton} ${
-                    followingState ? styles.following : ''
+                    followingState ? styles.following : ""
                   }`}
                   onClick={(e) => onFollow(userId, e)}
                 >
-                  {followingState ? '已关注' : '关注'}
+                  {followingState
+                    ? translateUiText("已关注")
+                    : translateUiText("关注")}
                 </Button>
               )}
             </div>
@@ -108,15 +114,18 @@ export default function PostDetailModal({
                   <Clock size={16} />
                   <span>
                     {post.CreatedAt
-                      ? dayjs(post.CreatedAt).format('YYYY-MM-DD HH:mm')
-                      : '未知时间'}
+                      ? dayjs(post.CreatedAt).format("YYYY-MM-DD HH:mm")
+                      : translateUiText("未知时间")}
                   </span>
                 </div>
 
                 {(post.view_count || 0) > 0 && (
                   <div className={styles.postDetailStat}>
                     <Eye size={16} />
-                    <span>{post.view_count?.toLocaleString()} 浏览</span>
+                    <span>
+                      {post.view_count?.toLocaleString()}
+                      <LocalizedText>{"浏览"}</LocalizedText>
+                    </span>
                   </div>
                 )}
 
@@ -145,19 +154,21 @@ export default function PostDetailModal({
               className={styles.postDetailXLink}
             >
               <SiX size={18} />
-              <span>查看推文</span>
+              <span>
+                <LocalizedText>{"查看推文"}</LocalizedText>
+              </span>
             </a>
           )}
         </div>
 
         {/* 帖子标题 */}
-        <h1 className={styles.postDetailTitle}>{post.title || '无标题'}</h1>
+        <h1 className={styles.postDetailTitle}>{post.title || "无标题"}</h1>
 
         {/* 帖子内容 */}
         <div className={styles.postDetailBody}>
           <div
             className="prose"
-            dangerouslySetInnerHTML={{ __html: postContent || '' }}
+            dangerouslySetInnerHTML={{ __html: postContent || "" }}
           />
         </div>
 
@@ -169,10 +180,10 @@ export default function PostDetailModal({
               <Tooltip
                 title={
                   !isAuthenticated
-                    ? '登录后可点赞'
+                    ? translateUiText("登录后可点赞")
                     : likeState
-                      ? '取消点赞'
-                      : '点赞'
+                      ? "取消点赞"
+                      : "点赞"
                 }
                 placement="top"
               >
@@ -182,12 +193,12 @@ export default function PostDetailModal({
                   icon={
                     <Heart
                       size={16}
-                      fill={likeState ? 'currentColor' : 'none'}
+                      fill={likeState ? "currentColor" : "none"}
                     />
                   }
                   className={`${styles.postDetailActionBtn} ${
-                    likeState ? styles.liked : ''
-                  } ${!isAuthenticated ? styles.guestBtn : ''}`}
+                    likeState ? styles.liked : ""
+                  } ${!isAuthenticated ? styles.guestBtn : ""}`}
                   onClick={(e) => onLike(post.ID, e)}
                 >
                   {likeCount > 0 && <span>{likeCount}</span>}
@@ -200,10 +211,10 @@ export default function PostDetailModal({
               <Tooltip
                 title={
                   !isAuthenticated
-                    ? '登录后可收藏'
+                    ? translateUiText("登录后可收藏")
                     : bookmarkState
-                      ? '取消收藏'
-                      : '收藏'
+                      ? "取消收藏"
+                      : "收藏"
                 }
                 placement="top"
               >
@@ -213,12 +224,12 @@ export default function PostDetailModal({
                   icon={
                     <Bookmark
                       size={16}
-                      fill={bookmarkState ? 'currentColor' : 'none'}
+                      fill={bookmarkState ? "currentColor" : "none"}
                     />
                   }
                   className={`${styles.postDetailActionBtn} ${
-                    bookmarkState ? styles.bookmarked : ''
-                  } ${!isAuthenticated ? styles.guestBtn : ''}`}
+                    bookmarkState ? styles.bookmarked : ""
+                  } ${!isAuthenticated ? styles.guestBtn : ""}`}
                   onClick={(e) => onBookmark(post.ID, e)}
                 >
                   {favoriteCount > 0 && <span>{favoriteCount}</span>}

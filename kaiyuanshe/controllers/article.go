@@ -20,19 +20,21 @@ func CreateArticle(c *gin.Context) {
 
 	now := time.Now()
 	var article = models.Article{
-		Title:       req.Title,
-		Description: req.Desc,
-		Content:     req.Content,
-		Category:    req.Category,
-		License:     req.License,
-		CoverImg:    req.CoverImg,
-		Tags:        req.Tags,
-		SourceLink:  req.SourceLink,
-		SourceType:  req.SourceType,
-		Author:      req.Author,
-		Translator:  req.Translator,
-		Editor:      req.Editor,
-		PublishTime: &now,
+		Title:         req.Title,
+		Description:   req.Desc,
+		Content:       req.Content,
+		Category:      req.Category,
+		License:       req.License,
+		CoverImg:      req.CoverImg,
+		Tags:          req.Tags,
+		SourceLink:    req.SourceLink,
+		SourceType:    req.SourceType,
+		Author:        req.Author,
+		Translator:    req.Translator,
+		Editor:        req.Editor,
+		PublishTime:   &now,
+		Locale:        normalizeContentLocale(req.Locale),
+		TranslationOf: req.TranslationOf,
 	}
 
 	uid, ok := c.Get("uid")
@@ -65,7 +67,13 @@ func GetArticle(c *gin.Context) {
 	var article models.Article
 	article.ID = uint(id)
 
-	if err = article.GetByID(uint(id)); err != nil {
+	locale := c.Query("locale")
+	if locale != "" {
+		err = article.GetLocalizedByID(uint(id), normalizeContentLocale(locale))
+	} else {
+		err = article.GetByID(uint(id))
+	}
+	if err != nil {
 		utils.ErrorResponse(c, http.StatusBadRequest, "Invalid Article", nil)
 		return
 	}
@@ -81,6 +89,7 @@ func QueryArticles(c *gin.Context) {
 	order := c.DefaultQuery("order", "desc")
 	publishStatus, _ := strconv.Atoi(c.DefaultQuery("publish_status", "0"))
 	userId, _ := strconv.Atoi(c.Query("user_id"))
+	locale := normalizeContentLocale(c.DefaultQuery("locale", "zh-CN"))
 
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "6"))
@@ -95,6 +104,7 @@ func QueryArticles(c *gin.Context) {
 		OrderDesc:     order == "desc",
 		Page:          page,
 		PageSize:      pageSize,
+		Locale:        locale,
 	}
 
 	articles, total, err := models.QueryArticles(filter)
@@ -193,12 +203,23 @@ func UpdateArticle(c *gin.Context) {
 	article.Author = req.Author
 	article.Translator = req.Translator
 	article.Editor = req.Editor
+	article.Locale = normalizeContentLocale(req.Locale)
+	article.TranslationOf = req.TranslationOf
 
 	if err := article.Update(); err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Failed to update article", nil)
 		return
 	}
 	utils.SuccessResponse(c, http.StatusOK, "success", article)
+}
+
+func normalizeContentLocale(locale string) string {
+	switch locale {
+	case "en", "zh-TW":
+		return locale
+	default:
+		return "zh-CN"
+	}
 }
 
 func UpdateArticlePublishStatus(c *gin.Context) {

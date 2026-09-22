@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react";
 import {
   Form,
   Input,
@@ -7,74 +7,86 @@ import {
   Button,
   Card,
   App as AntdApp,
-  Spin
-} from 'antd'
-import { UploadIcon, Save, X } from 'lucide-react'
-import styles from './new.module.css'
-import UploadCardImg from '@/components/uploadCardImg/UploadCardImg'
-import router from 'next/router'
-import { createCommunity } from '../api/comunity'
-import { usePermissionGuard } from '@/hooks/usePermissionGuard'
+  Spin,
+} from "antd";
+import { UploadIcon, Save, X } from "lucide-react";
+import styles from "./new.module.css";
+import UploadCardImg from "@/components/uploadCardImg/UploadCardImg";
+import ContentLocaleFields, {
+  getContentLocaleValues,
+} from "@/components/ContentLocaleFields";
+import router from "next/router";
+import { createCommunity } from "../api/comunity";
+import { usePermissionGuard } from "@/hooks/usePermissionGuard";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
-const { TextArea } = Input
+const { TextArea } = Input;
 
 export default function NewCityPage() {
-  const { message } = AntdApp.useApp()
-  const [form] = Form.useForm()
-  
+  const { translateText: translateUiText } = useTranslation();
+  const { message } = AntdApp.useApp();
+  const [form] = Form.useForm();
+
   // 权限检查
-  const { isLoading, hasPermission } = usePermissionGuard('event:write')
-  const [previewUrl, setPreviewUrl] = useState<string>('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [cloudinaryImg, setCloudinaryImg] = useState<Record<string, unknown>>()
+  const { isLoading, hasPermission } = usePermissionGuard("event:write");
+  const [previewUrl, setPreviewUrl] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [cloudinaryImg, setCloudinaryImg] = useState<Record<string, unknown>>();
 
   const handleSubmit = async (values: Record<string, unknown>) => {
     try {
-      console.log('表单数据:', values)
-      setIsSubmitting(true)
+      console.log("表单数据:", values);
+      setIsSubmitting(true);
 
       // 格式化日期
       const formatDate = (date: any) => {
-        if (!date) return ''
-        return date.format('YYYY-MM-DD HH:MM:ss')
-      }
+        if (!date) return "";
+        return date.format("YYYY-MM-DD HH:MM:ss");
+      };
 
       const createCommunityRequest = {
-        city: String(values.cityName || ''),
-        intro: String(values.description || ''),
-        cover: String(cloudinaryImg?.secure_url || ''),
-        register_link: String(values.applyLink || ''),
-        start_date: formatDate(values.createTime) || ''
-      }
+        city: String(values.cityName || ""),
+        intro: String(values.description || ""),
+        cover: String(cloudinaryImg?.secure_url || ""),
+        register_link: String(values.applyLink || ""),
+        start_date: formatDate(values.createTime) || "",
+        ...getContentLocaleValues(values),
+      };
 
-      console.log('提交数据:', createCommunityRequest)
+      console.log("提交数据:", createCommunityRequest);
 
       // 调用创建社区接口
-      const result = await createCommunity(createCommunityRequest)
+      const result = await createCommunity(createCommunityRequest);
       if (result.success) {
-        message.success(result.message)
-        router.push('/community')
+        message.success(result.message);
+        router.push("/community");
       } else {
-        message.error(result.message || '创建博客失败')
+        message.error(result.message || "创建博客失败");
       }
     } catch (error: unknown) {
-      console.error('创建社区失败:', error)
-      message.error('创建社区出错，请重试')
+      console.error("创建社区失败:", error);
+      message.error("创建社区出错，请重试");
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   const handleReset = () => {
-    router.push('/community')
-  }
+    router.push("/community");
+  };
 
   // 如果正在加载权限，显示加载状态
   if (isLoading) {
     return (
-      <div className={styles.container} style={{ textAlign: 'center', padding: '100px 0' }}>
+      <div
+        className={styles.container}
+        style={{ textAlign: "center", padding: "100px 0" }}
+      >
         <Spin size="large" />
-        <p style={{ marginTop: '16px' }}>正在验证访问权限...</p>
+        <p style={{ marginTop: "16px" }}>
+          <LocalizedText>{"正在验证访问权限..."}</LocalizedText>
+        </p>
       </div>
     );
   }
@@ -82,8 +94,12 @@ export default function NewCityPage() {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h1 className={styles.title}>新增城市社区</h1>
-        <p className={styles.subtitle}>创建一个新的开源社城市社区</p>
+        <h1 className={styles.title}>
+          <LocalizedText>{"新增城市社区"}</LocalizedText>
+        </h1>
+        <p className={styles.subtitle}>
+          <LocalizedText>{"创建一个新的开源社城市社区"}</LocalizedText>
+        </p>
       </div>
 
       <Card className={styles.formCard}>
@@ -93,37 +109,40 @@ export default function NewCityPage() {
           onFinish={handleSubmit}
           className={styles.form}
           initialValues={{
-            publishImmediately: true
+            publishImmediately: true,
           }}
         >
+          <ContentLocaleFields />
           <Form.Item
-            label="城市名称"
+            label={translateUiText("城市名称")}
             name="cityName"
-            rules={[{ required: true, message: '请输入城市名称' }]}
+            rules={[{ required: true, message: "请输入城市名称" }]}
           >
             <Input
               size="large"
-              placeholder="例如：北京、上海、深圳"
+              placeholder={translateUiText("例如：北京、上海、深圳")}
               className={styles.input}
             />
           </Form.Item>
 
           <Form.Item
-            label="社区介绍"
+            label={translateUiText("社区介绍")}
             name="description"
-            rules={[{ required: true, message: '请输入社区介绍' }]}
+            rules={[{ required: true, message: "请输入社区介绍" }]}
           >
             <TextArea
               rows={5}
-              placeholder="请描述这个城市社区的特色、活动和目标..."
+              placeholder={translateUiText(
+                "请描述这个城市社区的特色、活动和目标...",
+              )}
               className={styles.textarea}
             />
           </Form.Item>
 
           <Form.Item
-            label="城市 Logo"
+            label={translateUiText("城市 Logo")}
             name="logo"
-            rules={[{ message: '请上传城市 Logo' }]}
+            rules={[{ message: "请上传城市 Logo" }]}
           >
             <UploadCardImg
               previewUrl={previewUrl}
@@ -135,24 +154,24 @@ export default function NewCityPage() {
           </Form.Item>
 
           <Form.Item
-            label="创建时间"
+            label={translateUiText("创建时间")}
             name="createTime"
-            rules={[{ required: true, message: '请选择创建时间' }]}
+            rules={[{ required: true, message: "请选择创建时间" }]}
           >
             <DatePicker
               size="large"
-              style={{ width: '100%' }}
-              placeholder="选择日期"
+              style={{ width: "100%" }}
+              placeholder={translateUiText("选择日期")}
               className={styles.datePicker}
             />
           </Form.Item>
 
           <Form.Item
-            label="申请链接"
+            label={translateUiText("申请链接")}
             name="applyLink"
             rules={[
-              { required: true, message: '请输入申请链接' },
-              { type: 'url', message: '请输入有效的 URL' }
+              { required: true, message: "请输入申请链接" },
+              { type: "url", message: "请输入有效的 URL" },
             ]}
           >
             <Input
@@ -170,7 +189,7 @@ export default function NewCityPage() {
               className={styles.cancelBtn}
               disabled={isSubmitting}
             >
-              取消
+              <LocalizedText>{"取消"}</LocalizedText>
             </Button>
             <Button
               type="primary"
@@ -181,11 +200,11 @@ export default function NewCityPage() {
               loading={isSubmitting}
               disabled={isSubmitting}
             >
-              创建社区
+              <LocalizedText>{"创建社区"}</LocalizedText>
             </Button>
           </Form.Item>
         </Form>
       </Card>
     </div>
-  )
+  );
 }

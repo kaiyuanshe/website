@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
-import { TrendChartProps, TimeSeriesData } from './types';
-import styles from '../../pages/stats/index.module.css';
+import { useEffect, useRef } from "react";
+import { TrendChartProps, TimeSeriesData } from "./types";
+import styles from "../../pages/stats/index.module.css";
+import LocalizedText from "@/components/LocalizedText";
 
 export function TrendChart({ data }: TrendChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -9,7 +10,7 @@ export function TrendChart({ data }: TrendChartProps) {
     if (!canvasRef.current || !data || !data.length) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // 设置画布尺寸
@@ -26,17 +27,23 @@ export function TrendChart({ data }: TrendChartProps) {
     ctx.clearRect(0, 0, width, height);
 
     // 数据处理
-    const metrics = ['users', 'blogs', 'tutorials', 'events', 'posts'];
-    const colors = ['var(--primary-500)', '#06b6d4', '#10b981', '#f59e0b', '#ef4444'];
+    const metrics = ["users", "blogs", "tutorials", "events", "posts"];
+    const colors = [
+      "var(--primary-500)",
+      "#06b6d4",
+      "#10b981",
+      "#f59e0b",
+      "#ef4444",
+    ];
 
     // 计算最大值用于缩放
     const maxValues = metrics.map((metric) =>
-      Math.max(...data.map((d) => d[metric as keyof TimeSeriesData] as number))
+      Math.max(...data.map((d) => d[metric as keyof TimeSeriesData] as number)),
     );
     const globalMax = Math.max(...maxValues);
 
     // 绘制网格线
-    ctx.strokeStyle = '#f3f4f6';
+    ctx.strokeStyle = "#f3f4f6";
     ctx.lineWidth = 1;
 
     // 水平网格线
@@ -93,10 +100,10 @@ export function TrendChart({ data }: TrendChartProps) {
     });
 
     // 绘制Y轴标签
-    ctx.fillStyle = '#6b7280';
-    ctx.font = '12px sans-serif';
-    ctx.textAlign = 'right';
-    ctx.textBaseline = 'middle';
+    ctx.fillStyle = "#6b7280";
+    ctx.font = "12px sans-serif";
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
 
     for (let i = 0; i <= 5; i++) {
       const y = padding + ((height - 2 * padding) * i) / 5;
@@ -105,8 +112,8 @@ export function TrendChart({ data }: TrendChartProps) {
     }
 
     // 绘制X轴标签
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'top';
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
 
     data.forEach((point, index) => {
       if (
@@ -124,23 +131,26 @@ export function TrendChart({ data }: TrendChartProps) {
   return (
     <div className={styles.chartContainer}>
       <div className={styles.chartHeader}>
-        <h3 className={styles.chartTitle}>周趋势图</h3>
+        <h3 className={styles.chartTitle}>
+          <LocalizedText>{"周趋势图"}</LocalizedText>
+        </h3>
 
         <div className={styles.chartLegend}>
-          {['用户', '博客', '教程', '活动', '帖子'].map((label, index) => (
+          {["用户", "博客", "教程", "活动", "帖子"].map((label, index) => (
             <div key={label} className={styles.legendItem}>
               <div
                 className={styles.legendColor}
                 style={{
                   backgroundColor: [
-                    'var(--primary-500)',
-                    '#06b6d4',
-                    '#10b981',
-                    '#f59e0b',
-                    '#ef4444',
+                    "var(--primary-500)",
+                    "#06b6d4",
+                    "#10b981",
+                    "#f59e0b",
+                    "#ef4444",
                   ][index],
                 }}
               />
+
               <span className={styles.legendLabel}>{label}</span>
             </div>
           ))}

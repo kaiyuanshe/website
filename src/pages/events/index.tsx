@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Pagination,
   Input,
@@ -11,8 +11,8 @@ import {
   Popconfirm,
   Modal,
   App as AntdApp,
-} from 'antd';
-import dayjs from 'dayjs';
+} from "antd";
+import dayjs from "dayjs";
 import {
   Calendar,
   Users,
@@ -25,110 +25,127 @@ import {
   Globe,
   LayoutGrid,
   List,
-} from 'lucide-react';
-import { SiX, } from 'react-icons/si';
-import Link from 'next/link';
-import styles from './index.module.css';
-import { getEvents, deleteEvent } from '../api/event';
-import { useRouter } from 'next/router';
-import { useAuth } from '@/contexts/AuthContext';
+} from "lucide-react";
+import { SiX } from "react-icons/si";
+import Link from "next/link";
+import styles from "./index.module.css";
+import { getEvents, deleteEvent } from "../api/event";
+import { useRouter } from "next/router";
+import { useAuth } from "@/contexts/AuthContext";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { Search: AntSearch } = Input;
 const { Option } = Select;
 
-type ViewMode = 'grid' | 'list';
+type ViewMode = "grid" | "list";
 
 export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format('YYYY-MM-DD');
+  return dayjs(isoTime).format("YYYY-MM-DD");
 }
 
-
 export default function EventsPage() {
+  const { translateText: translateUiText } = useTranslation();
   const { message } = AntdApp.useApp();
-  const [viewMode, setViewMode] = useState<ViewMode>('grid');
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
   const [events, setEvents] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [selectedTag, setSelectedTag] = useState("");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [wechatModalVisible, setWechatModalVisible] = useState(false);
   const [publishStatus, setPublishStatus] = useState(2);
 
   const router = useRouter();
   const { session, status } = useAuth();
-  const permissions = useMemo(() => session?.user?.permissions || [], [session?.user?.permissions]);
+  const permissions = useMemo(
+    () => session?.user?.permissions || [],
+    [session?.user?.permissions],
+  );
 
   // 新增筛选状态
-  const [locationKeyword, setLocationKeyword] = useState('');
-  const [eventModeFilter, setEventModeFilter] = useState('');
-  const [eventTypeFilter] = useState('community'); // 社区活动
+  const [locationKeyword, setLocationKeyword] = useState("");
+  const [eventModeFilter, setEventModeFilter] = useState("");
+  const [eventTypeFilter] = useState("community"); // 社区活动
 
   // 加载事件列表
-  const loadEvents = useCallback(async (params?: {
-    keyword?: string;
-    tag?: string;
-    order?: 'asc' | 'desc';
-    page?: number;
-    page_size?: number;
-    location?: string;
-    event_mode?: string;
-    event_type?: string;
-    publish_status?: number;
-  }) => {
-    try {
-      setLoading(true);
+  const loadEvents = useCallback(
+    async (params?: {
+      keyword?: string;
+      tag?: string;
+      order?: "asc" | "desc";
+      page?: number;
+      page_size?: number;
+      location?: string;
+      event_mode?: string;
+      event_type?: string;
+      publish_status?: number;
+    }) => {
+      try {
+        setLoading(true);
 
-      const queryParams = {
-        keyword: params?.keyword || searchKeyword,
-        tag: params?.tag || selectedTag,
-        order: params?.order || sortOrder,
-        page: params?.page || currentPage,
-        page_size: params?.page_size || pageSize,
-        location: params?.location || locationKeyword,
-        event_mode: params?.event_mode || eventModeFilter,
-        event_type: params?.event_type || eventTypeFilter,
-        publish_status: params?.publish_status || publishStatus,
-      };
+        const queryParams = {
+          keyword: params?.keyword || searchKeyword,
+          tag: params?.tag || selectedTag,
+          order: params?.order || sortOrder,
+          page: params?.page || currentPage,
+          page_size: params?.page_size || pageSize,
+          location: params?.location || locationKeyword,
+          event_mode: params?.event_mode || eventModeFilter,
+          event_type: params?.event_type || eventTypeFilter,
+          publish_status: params?.publish_status || publishStatus,
+        };
 
-      const result = await getEvents(queryParams);
+        const result = await getEvents(queryParams);
 
-      if (result.success && result.data) {
-        if (result.data.events && Array.isArray(result.data.events)) {
-          setEvents(result.data.events);
-          setCurrentPage(result.data.page || 1);
-          setPageSize(result.data.page_size || 6);
-          setTotal(result.data.total || result.data.events.length);
-        } else if (Array.isArray(result.data)) {
-          setEvents(result.data);
-          setTotal(result.data.length);
+        if (result.success && result.data) {
+          if (result.data.events && Array.isArray(result.data.events)) {
+            setEvents(result.data.events);
+            setCurrentPage(result.data.page || 1);
+            setPageSize(result.data.page_size || 6);
+            setTotal(result.data.total || result.data.events.length);
+          } else if (Array.isArray(result.data)) {
+            setEvents(result.data);
+            setTotal(result.data.length);
+          } else {
+            console.warn("API 返回的数据格式不符合预期:", result.data);
+            setEvents([]);
+            setTotal(0);
+          }
         } else {
-          console.warn('API 返回的数据格式不符合预期:', result.data);
+          console.error("获取事件列表失败:", result.message);
           setEvents([]);
           setTotal(0);
         }
-      } else {
-        console.error('获取事件列表失败:', result.message);
+      } catch (error: unknown) {
+        console.error("加载事件列表异常:", error);
         setEvents([]);
         setTotal(0);
+      } finally {
+        setLoading(false);
       }
-    } catch (error: unknown) {
-      console.error('加载事件列表异常:', error);
-      setEvents([]);
-      setTotal(0);
-    } finally {
-      setLoading(false);
-    }
-  }, [searchKeyword, selectedTag, sortOrder, currentPage, pageSize, locationKeyword, eventModeFilter, eventTypeFilter, publishStatus]);
-
+    },
+    [
+      searchKeyword,
+      selectedTag,
+      sortOrder,
+      currentPage,
+      pageSize,
+      locationKeyword,
+      eventModeFilter,
+      eventTypeFilter,
+      publishStatus,
+    ],
+  );
 
   // 根据登录状态更新 publishStatus
   useEffect(() => {
-    if (status === 'authenticated' && permissions.includes('event:review')) {
+    if (status === "authenticated" && permissions.includes("event:review")) {
       setPublishStatus(0);
-    } else if (status === 'unauthenticated') {
+    } else if (status === "unauthenticated") {
       setPublishStatus(2);
     }
   }, [status, permissions]);
@@ -159,11 +176,10 @@ export default function EventsPage() {
   };
 
   // 排序切换
-  const handleSortChange = async (order: 'asc' | 'desc') => {
+  const handleSortChange = async (order: "asc" | "desc") => {
     setSortOrder(order);
     setCurrentPage(1);
   };
-
 
   // 地址搜索
   const handleLocationSearch = async (location: string) => {
@@ -177,7 +193,6 @@ export default function EventsPage() {
     setCurrentPage(1);
   };
 
-
   // 分页处理
   const handlePageChange = async (page: number, size?: number) => {
     setCurrentPage(page);
@@ -188,13 +203,12 @@ export default function EventsPage() {
 
   // 清除筛选 - 同时清除 URL 参数
   const handleClearFilters = async () => {
-    setSearchKeyword('');
-    setSelectedTag('');
-    setSortOrder('desc');
-    setLocationKeyword('');
-    setEventModeFilter('');
+    setSearchKeyword("");
+    setSelectedTag("");
+    setSortOrder("desc");
+    setLocationKeyword("");
+    setEventModeFilter("");
     setCurrentPage(1);
-
   };
 
   const handleSwitchViewMode = (mode: ViewMode) => {
@@ -208,7 +222,6 @@ export default function EventsPage() {
 
   const currentEvents = events;
 
-
   const handleDeleteEvent = async (id: number) => {
     try {
       const result = await deleteEvent(id);
@@ -216,13 +229,12 @@ export default function EventsPage() {
         message.success(result.message);
         loadEvents();
       } else {
-        message.error(result.message || '删除活动失败');
+        message.error(result.message || "删除活动失败");
       }
     } catch {
-      message.error('删除失败，请重试');
+      message.error("删除失败，请重试");
     }
   };
-
 
   return (
     <div className={`${styles.container} nav-t-top`}>
@@ -230,13 +242,20 @@ export default function EventsPage() {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.titleSection}>
-            <h1 className={styles.title}>精彩活动</h1>
-            <p className={styles.subtitle}>发现精彩活动，连接志同道合的人</p>
+            <h1 className={styles.title}>
+              <LocalizedText>{"精彩活动"}</LocalizedText>
+            </h1>
+            <p className={styles.subtitle}>
+              <LocalizedText>{"发现精彩活动，连接志同道合的人"}</LocalizedText>
+            </p>
           </div>
-          {permissions.includes('event:write') && (
-            <Link href={`/events/new?event_type=${eventTypeFilter}`} className={styles.createButton}>
+          {permissions.includes("event:write") && (
+            <Link
+              href={`/events/new?event_type=${eventTypeFilter}`}
+              className={styles.createButton}
+            >
               <Plus size={20} />
-              发布活动
+              <LocalizedText>{"发布活动"}</LocalizedText>
             </Link>
           )}
         </div>
@@ -246,14 +265,14 @@ export default function EventsPage() {
       <div className={styles.searchSection}>
         <div className={styles.searchBar}>
           <AntSearch
-            placeholder="搜索活动标题、描述..."
+            placeholder={translateUiText("搜索活动标题、描述...")}
             allowClear
             size="large"
-            enterButton="搜索"
+            enterButton={translateUiText("搜索")}
             value={searchKeyword}
             onChange={(e) => setSearchKeyword(e.target.value)}
             onSearch={handleSearch}
-            onClear={() => handleSearch('')}
+            onClear={() => handleSearch("")}
             loading={loading}
           />
         </div>
@@ -264,27 +283,37 @@ export default function EventsPage() {
             style={{ width: 100 }}
             onChange={handleSortChange}
           >
-            <Option value="desc">最新</Option>
-            <Option value="asc">最早</Option>
+            <Option value="desc">
+              <LocalizedText>{"最新"}</LocalizedText>
+            </Option>
+            <Option value="asc">
+              <LocalizedText>{"最早"}</LocalizedText>
+            </Option>
           </Select>
 
           <Select
             size="large"
-            placeholder="活动形式"
+            placeholder={translateUiText("活动形式")}
             allowClear
             style={{ width: 120 }}
             value={eventModeFilter}
             onChange={handleEventModeFilter}
           >
-            <Option value="">所有</Option>
-            <Option value="线上活动">线上活动</Option>
-            <Option value="线下活动">线下活动</Option>
+            <Option value="">
+              <LocalizedText>{"所有"}</LocalizedText>
+            </Option>
+            <Option value="线上活动">
+              <LocalizedText>{"线上活动"}</LocalizedText>
+            </Option>
+            <Option value="线下活动">
+              <LocalizedText>{"线下活动"}</LocalizedText>
+            </Option>
           </Select>
 
           <div className={styles.locationSearch}>
             <Input
               size="large"
-              placeholder="活动地点"
+              placeholder={translateUiText("活动地点")}
               allowClear
               value={locationKeyword}
               onChange={(e) => setLocationKeyword(e.target.value)}
@@ -292,7 +321,7 @@ export default function EventsPage() {
             />
           </div>
           <Button size="large" onClick={handleClearFilters}>
-            重置
+            <LocalizedText>{"重置"}</LocalizedText>
           </Button>
         </div>
       </div>
@@ -301,18 +330,18 @@ export default function EventsPage() {
       <div className={styles.viewControls}>
         <div className={styles.viewModeToggle}>
           <button
-            className={`${styles.viewModeButton} ${viewMode === 'grid' ? styles.active : ''}`}
-            onClick={() => handleSwitchViewMode('grid')}
+            className={`${styles.viewModeButton} ${viewMode === "grid" ? styles.active : ""}`}
+            onClick={() => handleSwitchViewMode("grid")}
           >
             <LayoutGrid className={styles.viewModeIcon} />
-            卡片视图
+            <LocalizedText>{"卡片视图"}</LocalizedText>
           </button>
           <button
-            className={`${styles.viewModeButton} ${viewMode === 'list' ? styles.active : ''}`}
-            onClick={() => handleSwitchViewMode('list')}
+            className={`${styles.viewModeButton} ${viewMode === "list" ? styles.active : ""}`}
+            onClick={() => handleSwitchViewMode("list")}
           >
             <List className={styles.viewModeIcon} />
-            列表视图
+            <LocalizedText>{"列表视图"}</LocalizedText>
           </button>
         </div>
         <div className={styles.resultsInfo}>
@@ -322,7 +351,9 @@ export default function EventsPage() {
             pageSize={pageSize}
             onChange={handlePageChange}
             showTotal={(total) =>
-              `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`
+              translateUiText(
+                `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`,
+              )
             }
             className={styles.fullPagination}
           />
@@ -337,29 +368,34 @@ export default function EventsPage() {
       ) : events.length === 0 ? (
         <div className={styles.emptyContainer}>
           <div className={styles.emptyIcon}>📅</div>
-          <div className={styles.emptyTitle}>暂无活动</div>
+          <div className={styles.emptyTitle}>
+            <LocalizedText>{"暂无活动"}</LocalizedText>
+          </div>
           <div className={styles.emptyDescription}>
             {searchKeyword ||
-              selectedTag ||
-                        locationKeyword ||
-              eventModeFilter ||
-              eventTypeFilter
-              ? '没有找到符合条件的活动'
-              : '还没有创建任何活动'}
+            selectedTag ||
+            locationKeyword ||
+            eventModeFilter ||
+            eventTypeFilter
+              ? translateUiText("没有找到符合条件的活动")
+              : translateUiText("还没有创建任何活动")}
           </div>
           {!searchKeyword &&
             !selectedTag &&
-                    !locationKeyword &&
+            !locationKeyword &&
             !eventModeFilter &&
             !eventTypeFilter &&
-            permissions.includes('event:write') && (
-              <Link href={`/events/new?event_type=${eventTypeFilter}`} className={styles.createButton}>
+            permissions.includes("event:write") && (
+              <Link
+                href={`/events/new?event_type=${eventTypeFilter}`}
+                className={styles.createButton}
+              >
                 <Plus className={styles.buttonIcon} />
-                创建第一个活动
+                <LocalizedText>{"创建第一个活动"}</LocalizedText>
               </Link>
             )}
         </div>
-      ) : viewMode === 'grid' ? (
+      ) : viewMode === "grid" ? (
         <div className={styles.eventsGrid}>
           {events.map((event) => (
             <Link
@@ -367,7 +403,6 @@ export default function EventsPage() {
               key={event.ID}
               className={styles.cardLink}
             >
-              
               <Card
                 className={styles.eventCard}
                 cover={
@@ -376,23 +411,26 @@ export default function EventsPage() {
                       alt={event.title}
                       src={
                         event.cover_img ||
-                        '/placeholder.svg?height=240&width=400&text=活动封面'
+                        "/placeholder.svg?height=240&width=400&text=活动封面"
                       }
                       className={styles.coverImage}
                       preview={false}
                     />
+
                     <div className={styles.coverOverlay}>
                       <div className={styles.cardActions}>
-                        {status === 'authenticated' &&
-                          permissions.includes('event:write') ? (
+                        {status === "authenticated" &&
+                        permissions.includes("event:write") ? (
                           <Button
                             className={styles.actionIconButton}
                             onClick={(e) => {
                               e.preventDefault();
-                              router.push(`/events/${event.ID}/edit?event_type=${eventTypeFilter}`);
+                              router.push(
+                                `/events/${event.ID}/edit?event_type=${eventTypeFilter}`,
+                              );
                             }}
                             icon={<Edit className={styles.actionIcon} />}
-                            title="编辑活动"
+                            title={translateUiText("编辑活动")}
                           />
                         ) : null}
                         <Button
@@ -400,31 +438,35 @@ export default function EventsPage() {
                           onClick={(e) => {
                             e.preventDefault();
                             navigator.clipboard.writeText(
-                              `${window.location.href}/${event.ID}`
+                              `${window.location.href}/${event.ID}`,
                             );
-                            message.success('链接已复制到剪贴板');
+                            message.success("链接已复制到剪贴板");
                           }}
                           icon={<Share2 className={styles.actionIcon} />}
-                          title="分享活动"
+                          title={translateUiText("分享活动")}
                         />
+
                         <Button
                           className={styles.actionIconButton}
                           onClick={(e) => {
                             e.preventDefault();
                             if (event.twitter) {
-                              window.open(event.twitter, '_blank');
+                              window.open(event.twitter, "_blank");
                             }
                           }}
                           icon={<SiX className={styles.actionIcon} />}
-                          title="查看推文"
+                          title={translateUiText("查看推文")}
                         />
-                        {status === 'authenticated' &&
-                          permissions.includes('event:write') ? (
+
+                        {status === "authenticated" &&
+                        permissions.includes("event:write") ? (
                           <Popconfirm
-                            title="删除活动"
-                            description="你确定删除这个活动吗？"
-                            okText="是"
-                            cancelText="否"
+                            title={translateUiText("删除活动")}
+                            description={translateUiText(
+                              "你确定删除这个活动吗？",
+                            )}
+                            okText={translateUiText("是")}
+                            cancelText={translateUiText("否")}
                             onConfirm={(e) => {
                               e?.preventDefault();
                               handleDeleteEvent(event.ID);
@@ -434,7 +476,7 @@ export default function EventsPage() {
                               className={styles.actionIconButton}
                               danger
                               icon={<Trash2 className={styles.actionIcon} />}
-                              title="删除活动"
+                              title={translateUiText("删除活动")}
                               onClick={(e) => e.preventDefault()}
                             />
                           </Popconfirm>
@@ -443,7 +485,7 @@ export default function EventsPage() {
                     </div>
                   </div>
                 }
-              // variant={false}
+                // variant={false}
               >
                 <div className={styles.cardBody}>
                   <h3 className={styles.eventTitle}>{event.title}</h3>
@@ -454,16 +496,18 @@ export default function EventsPage() {
                       <span>{formatTime(event.start_time)}</span>
                     </div>
                     <div className={styles.metaItem}>
-                      {event.event_mode === '线上活动' ? (
+                      {event.event_mode === "线上活动" ? (
                         <>
                           <Globe className={styles.metaIcon} />
-                          <span className={styles.locationText}>线上活动</span>
+                          <span className={styles.locationText}>
+                            <LocalizedText>{"线上活动"}</LocalizedText>
+                          </span>
                         </>
                       ) : (
                         <>
                           <MapPin className={styles.metaIcon} />
                           <span className={styles.locationText}>
-                            {event.location || '未指定地点'}
+                            {event.location || "未指定地点"}
                           </span>
                         </>
                       )}
@@ -471,7 +515,7 @@ export default function EventsPage() {
                     {event.participants !== 0 && (
                       <div className={styles.metaItem}>
                         <Users className={styles.metaIcon} />
-                        <span>{event.participants || ''}</span>
+                        <span>{event.participants || ""}</span>
                       </div>
                     )}
                   </div>
@@ -504,12 +548,20 @@ export default function EventsPage() {
           <div className={styles.eventsList}>
             <div className={styles.listHeader}>
               <div className={`${styles.listHeaderCell} ${styles.nameColumn}`}>
-                活动名称
+                <LocalizedText>{"活动名称"}</LocalizedText>
               </div>
-              <div className={styles.listHeaderCell}>时间</div>
-              <div className={styles.listHeaderCell}>地点</div>
-              <div className={styles.listHeaderCell}>参与人数</div>
-              <div className={styles.listHeaderCell}>操作</div>
+              <div className={styles.listHeaderCell}>
+                <LocalizedText>{"时间"}</LocalizedText>
+              </div>
+              <div className={styles.listHeaderCell}>
+                <LocalizedText>{"地点"}</LocalizedText>
+              </div>
+              <div className={styles.listHeaderCell}>
+                <LocalizedText>{"参与人数"}</LocalizedText>
+              </div>
+              <div className={styles.listHeaderCell}>
+                <LocalizedText>{"操作"}</LocalizedText>
+              </div>
             </div>
             {currentEvents.map((event) => (
               <div key={event.ID} className={styles.listRow}>
@@ -537,24 +589,26 @@ export default function EventsPage() {
                       <span>{formatTime(event.start_time)}</span>
                     </div>
                     {/* {event.end_time && (
-                      <div className={styles.time}>
-                        至 {formatTime(event.end_time)}
-                      </div>
-                    )} */}
+                  <div className={styles.time}>
+                  至 {formatTime(event.end_time)}
+                  </div>
+                  )} */}
                   </div>
                 </div>
                 <div className={styles.listCell}>
                   <div className={styles.locationInfo}>
-                    {event.event_mode === '线上活动' ? (
+                    {event.event_mode === "线上活动" ? (
                       <>
                         <Globe className={styles.listIcon} />
-                        <span className={styles.locationText}>线上活动</span>
+                        <span className={styles.locationText}>
+                          <LocalizedText>{"线上活动"}</LocalizedText>
+                        </span>
                       </>
                     ) : (
                       <>
                         <MapPin className={styles.listIcon} />
                         <span className={styles.locationText}>
-                          {event.location || '未指定地点'}
+                          {event.location || "未指定地点"}
                         </span>
                       </>
                     )}
@@ -569,19 +623,23 @@ export default function EventsPage() {
                 <div className={styles.listCell}>
                   <div className={styles.listActions}>
                     {/* <Button
-                      type="text"
-                      size="small"
-                      icon={<Eye className={styles.listActionIcon} />}
-                      title="查看详情"
-                    /> */}
-                    {status === 'authenticated' &&
-                      permissions.includes('event:write') ? (
+                  type="text"
+                  size="small"
+                  icon={<Eye className={styles.listActionIcon} />}
+                  title="查看详情"
+                  /> */}
+                    {status === "authenticated" &&
+                    permissions.includes("event:write") ? (
                       <Button
                         type="text"
                         size="small"
                         icon={<Edit className={styles.listActionIcon} />}
-                        title="编辑活动"
-                        onClick={() => router.push(`/events/${event.ID}/edit?event_type=${eventTypeFilter}`)}
+                        title={translateUiText("编辑活动")}
+                        onClick={() =>
+                          router.push(
+                            `/events/${event.ID}/edit?event_type=${eventTypeFilter}`,
+                          )
+                        }
                       />
                     ) : null}
                     <Button
@@ -590,20 +648,21 @@ export default function EventsPage() {
                       onClick={(e) => {
                         e.preventDefault();
                         navigator.clipboard.writeText(
-                          `${window.location.href}/${event.ID}`
+                          `${window.location.href}/${event.ID}`,
                         );
-                        message.success('链接已复制到剪贴板');
+                        message.success("链接已复制到剪贴板");
                       }}
                       icon={<Share2 className={styles.listActionIcon} />}
-                      title="分享活动"
+                      title={translateUiText("分享活动")}
                     />
-                    {status === 'authenticated' &&
-                      permissions.includes('event:write') ? (
+
+                    {status === "authenticated" &&
+                    permissions.includes("event:write") ? (
                       <Popconfirm
-                        title="删除活动"
-                        description="你确定删除这个活动吗？"
-                        okText="是"
-                        cancelText="否"
+                        title={translateUiText("删除活动")}
+                        description={translateUiText("你确定删除这个活动吗？")}
+                        okText={translateUiText("是")}
+                        cancelText={translateUiText("否")}
                         onConfirm={() => handleDeleteEvent(event.ID)}
                       >
                         <Button
@@ -611,7 +670,7 @@ export default function EventsPage() {
                           size="small"
                           danger
                           icon={<Trash2 className={styles.listActionIcon} />}
-                          title="删除活动"
+                          title={translateUiText("删除活动")}
                         />
                       </Popconfirm>
                     ) : null}
@@ -632,7 +691,9 @@ export default function EventsPage() {
             onChange={handlePageChange}
             // showQuickJumper={true}
             showTotal={(total) =>
-              `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`
+              translateUiText(
+                `显示 ${startIndex}-${endIndex} 项，共 ${total} 项`,
+              )
             }
             className={styles.fullPagination}
           />
@@ -650,22 +711,28 @@ export default function EventsPage() {
           <div className={styles.qrCodeSection}>
             <Image
               src=""
-              alt="小助手二维码"
+              alt={translateUiText("小助手二维码")}
               width={200}
               height={200}
               preview={false}
             />
-            <p>扫码加入微信群</p>
+
+            <p>
+              <LocalizedText>{"扫码加入微信群"}</LocalizedText>
+            </p>
           </div>
           <div className={styles.qrCodeSection}>
             <Image
               src=""
-              alt="公众号二维码"
+              alt={translateUiText("公众号二维码")}
               width={200}
               height={200}
               preview={false}
             />
-            <p>扫码关注公众号</p>
+
+            <p>
+              <LocalizedText>{"扫码关注公众号"}</LocalizedText>
+            </p>
           </div>
         </div>
       </Modal>

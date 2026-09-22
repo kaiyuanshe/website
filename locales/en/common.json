@@ -1,4 +1,10 @@
 {
+  "site": {
+    "name": "KaiSource",
+    "legacy_name_note": "KaiYuanShe · 开源社",
+    "description": "KaiSource (KaiYuanShe) is a vendor-neutral, public-interest, non-profit open source community organized by volunteers around contribution, consensus, and co-governance.",
+    "keywords": "KaiSource,KaiYuanShe,open source,China Open Source Conference,open source governance,open source community,open source projects"
+  },
   "navigation": {
     "about_us": "About Us",
     "about": "About Us",
@@ -13,7 +19,7 @@
       "board": "Board of Directors",
       "advisory": "Advisory Committee",
       "legal": "Legal Advisory Committee",
-      "kcc": "KaiYuanShe City Community (KCC)",
+      "kcc": "KaiSource City Community (KCC)",
       "formal_members": "Formal Members",
       "election": "Election",
       "calendar": "Meeting Calendar",
@@ -33,7 +39,7 @@
       "title": "Knowledge",
       "open_source_library": "Open Source Library",
       "cosc": "China Open Source Conference (COSC)",
-      "kcc_library": "KaiYuanShe City Community (KCC)",
+      "kcc_library": "KaiSource City Community (KCC)",
       "reading_club": "Open Source Reading Club",
       "original_articles": "Original Articles",
       "translation_articles": "Translation Articles",
@@ -45,7 +51,7 @@
     },
     "activities": {
       "title": "Activities",
-      "wonderful_activities": "Wonderful Activities",
+      "wonderful_activities": "Featured Events",
       "hosted_activities": "Hosted Activities",
       "activity_calendar": "Activity Calendar",
       "coscon_activities": "Open Source Conference",
@@ -54,9 +60,9 @@
       "open_hackathon_platform": "Open Hackathon Platform",
       "xiaoyuan_qa_bot": "XiaoYuan Q&A Bot"
     },
-    "intro": "KaiYuanShe Introduction",
-    "intro_description": "Learn about KaiYuanShe's history, mission and development",
-    "board_description": "Introduction to KaiYuanShe Board of Directors",
+    "intro": "KaiSource Introduction",
+    "intro_description": "Learn about KaiSource's history, mission, and work",
+    "board_description": "Introduction to KaiSource Board of Directors",
     "advisory_description": "Introduction to Advisory Committee members",
     "legal_description": "Introduction to Legal Advisory Committee",
     "executive": "Executive Committee",
@@ -64,34 +70,34 @@
     "project_committee": "Project Committee",
     "project_committee_description": "Introduction to Project Committee",
     "brand_resources": "Brand Resources",
-    "brand_resources_description": "KaiYuanShe brand resources",
-    "charter": "KaiYuanShe Charter",
-    "charter_description": "KaiYuanShe charter and management system",
+    "brand_resources_description": "KaiSource brand resources",
+    "charter": "KaiSource Charter",
+    "charter_description": "How KaiSource is organized and governed",
     "open_source_manifesto": "Open Source Manifesto",
     "open_source_manifesto_description": "Open Source Manifesto",
-    "code_of_conduct": "KaiYuanShe Code of Conduct",
+    "code_of_conduct": "KaiSource Code of Conduct",
     "code_of_conduct_description": "Community behavioral guidelines and standards",
-    "annual_report_full": "KaiYuanShe Annual Report",
-    "annual_report_description": "View KaiYuanShe's annual work reports and achievements",
+    "annual_report_full": "KaiSource Annual Report",
+    "annual_report_description": "View KaiSource's annual work reports and achievements",
     "community_development": "Community Development",
     "partners_description": "Annual partners, partner media, partner communities",
-    "formal_members_description": "View KaiYuanShe formal members list",
+    "formal_members_description": "View the list of KaiSource members",
     "open_source_star_description": "Open Source Star award winners",
     "annual_volunteer_description": "Annual outstanding volunteer recognition",
     "coscon_star_description": "COSCon conference star",
     "community_cooperation_star_description": "Community cooperation star award winners",
-    "kcc_description": "KaiYuanShe city communities nationwide",
+    "kcc_description": "KaiSource city communities nationwide",
     "china_oss_report_description": "China Open Source Annual Report",
     "china_oss_pioneer_description": "China Open Source Pioneer List",
     "china_oss_power_description": "China Open Source Power List",
     "china_open_source_conference": "China Open Source Conference",
-    "china_open_source_conference_description": "China's largest open source technology annual event",
+    "china_open_source_conference_description": "A major annual open source event in China",
     "cooperation_activities": "Community Cooperation Activities",
     "cooperation_activities_description": "Cooperation projects and activities with other open source communities",
     "activity_calendar_description": "View upcoming open source activities and conferences",
     "blogs_announcements": "Blogs",
     "blogs": "Blogs",
-    "blogs_description": "Read the latest blog information",
+    "blogs_description": "Read the latest stories and ideas",
     "announcements": "Announcements",
     "announcements_description": "Get the latest announcements"
   },
@@ -112,7 +118,7 @@
   },
   "homepage": {
     "hero": {
-      "title": "KaiYuanShe",
+      "title": "KaiSource",
       "subtitle": "Rooted in China, contributing globally.",
       "heroHighlight": "Rooted in China · Contributing globally",
       "heroSubtext": "Advancing open source as a way of life for a new era",
@@ -120,7 +126,7 @@
       "heroKeywordChina": "China",
       "heroKeywordGlobal": "globally",
       "heroMicroline": "ROOTED IN CHINA · CONTRIBUTING GLOBALLY · OPEN SOURCE AS A WAY OF LIFE",
-      "heroCta": "About KaiYuanShe"
+      "heroCta": "About KaiSource"
     },
     "carousel": {
       "viewDetails": "View Details",
@@ -131,7 +137,7 @@
     },
     "events": {
       "title": "Community Events",
-      "description": "Discover exciting events, connect with more open source",
+      "description": "Find open source events and meet people who share your interests",
       "status": {
         "notStarted": "Not Started",
         "inProgress": "In Progress",
@@ -149,7 +155,7 @@
     },
     "articles": {
       "title": "Featured Articles",
-      "description": "In-depth articles, inspiring thoughts, empowering growth",
+      "description": "Ideas and stories from the open source community",
       "categories": {
         "original": "Original",
         "translation": "Translation",
@@ -176,92 +182,92 @@
       "missions": {
         "governance": {
           "title": "Open Source Governance",
-          "description": "Promoting standardized governance and sustainable development of open source projects"
+          "description": "Helping open source projects build clear governance and grow over time"
         },
         "bridge": {
-          "title": "International Bridge",
-          "description": "Building communication bridges between China and global open source communities"
+          "title": "Global Collaboration",
+          "description": "Connecting open source communities in China with communities around the world"
         },
         "community": {
           "title": "Community Development",
-          "description": "Cultivating healthy open source community ecosystem and culture"
+          "description": "Helping open source communities build a healthy and welcoming culture"
         },
         "incubation": {
           "title": "Project Incubation",
-          "description": "Incubating excellent open source projects and innovative technologies"
+          "description": "Helping promising open source projects and new ideas grow"
         }
       },
       "principles": {
         "contribution": {
           "title": "Contribution",
-          "description": "Making valuable contributions to open source projects through code, documentation, design, and other means"
+          "description": "Contributing through code, documentation, design, events, and more"
         },
         "consensus": {
           "title": "Consensus",
-          "description": "Establishing common vision, values, and development goals within the community"
+          "description": "Building a shared vision, shared values, and shared goals"
         },
         "governance": {
           "title": "Co-governance",
-          "description": "Establishing transparent and democratic community governance mechanisms and decision-making processes"
+          "description": "Making community decisions in an open, fair, and transparent way"
         }
       },
       "projects": {
         "covidPlatform": {
           "title": "COVID Aid Platform",
-          "description": "Open source aid and coordination platform during the pandemic"
+          "description": "An open source platform that coordinated aid during the pandemic"
         },
         "officialWebsite": {
-          "title": "KaiYuanShe Official Website",
-          "description": "Official portal and information center of the open source community"
+          "title": "KaiSource Official Website",
+          "description": "The official home for KaiSource news, events, and resources"
         },
         "ossChat": {
           "title": "OSS.Chat",
-          "description": "Intelligent dialogue and collaboration platform for open source projects"
+          "description": "An AI chat and collaboration platform for open source projects"
         },
         "chinaMap": {
           "title": "China Open Source Map",
-          "description": "Panoramic display of China's open source projects and community distribution"
+          "description": "A map of open source projects and communities across China"
         },
         "kToken": {
           "title": "KToken",
-          "description": "Blockchain-based open source contribution incentive system"
+          "description": "A blockchain-based reward system for open source contributions"
         },
         "xiaoyuanBot": {
           "title": "Xiaoyuan Bot",
-          "description": "Intelligent community service and interaction robot"
+          "description": "A community support and Q&A bot"
         },
         "annualReport": {
           "title": "China Open Source Annual Report",
-          "description": "Authoritative analysis report on China's open source development trends"
+          "description": "Research and data on open source trends in China"
         },
         "hackathon": {
           "title": "Open Hackathon",
-          "description": "Open source competition platform promoting innovation and cooperation"
+          "description": "A platform for open source hackathons and collaboration"
         }
       }
     },
     "introduction": {
-      "title": "About KaiYuanShe",
-      "paragraph1": "KaiYuanShe was established in 2014 as an open source community composed of individual volunteers who contribute to the open source cause, organized around the principles of \"Contribution, Consensus, and Co-governance\". KaiYuanShe consistently maintains the philosophy of \"vendor neutrality, public welfare, and non-profit\", with the vision of \"rooted in China, contributing globally, promoting open source as a lifestyle of the new era\", and the mission of \"open source governance, international integration, community development, and project incubation\", aiming to co-create a healthy and sustainable open source ecosystem.",
-      "paragraph2": "KaiYuanShe actively collaborates with open source supporting communities, universities, enterprises, and relevant government units, and is also the first member of the global open source license certification organization - OSI in China.",
-      "paragraph3": "Since 2016, KaiYuanShe has continuously organized the China Open Source Conference (COSCon), continuously published the \"China Open Source Annual Report\", and jointly launched the \"China Open Source Pioneer List\", \"China Open Source Power List\", etc., generating widespread influence both domestically and internationally."
+      "title": "About KaiSource",
+      "paragraph1": "Founded in 2014, KaiSource (KaiYuanShe) is a volunteer-led open source community built on contribution, consensus, and co-governance. We are vendor-neutral, non-profit, and focused on the public good. Our work connects China with the global open source community and helps build a healthy, lasting ecosystem.",
+      "paragraph2": "KaiSource works with open source communities, universities, companies, public organizations, and government teams. We were the first organization from China to join the Open Source Initiative as an affiliate member.",
+      "paragraph3": "Since 2016, we have hosted the China Open Source Conference (COSCon), published the China Open Source Annual Report, and helped launch programs that recognize open source contributors across China."
     },
     "cta": {
-      "title": "Join KaiYuanShe · Witness Your Open Source Growth Journey",
-      "description": "Whether you are a developer passionate about open source or already committed to open source, KaiYuanShe provides you with the most comprehensive resources and platform.",
+      "title": "Join KaiSource and grow with open source",
+      "description": "Whether you are new to open source or already an active contributor, KaiSource gives you a place to learn, connect, and take part.",
       "followGithub": "Follow GitHub",
       "followWeChat": "Follow WeChat",
       "followX": "Follow X"
     }
   },
   "footer": {
-    "title": "KaiYuanShe",
-    "description": "KaiYuanShe is a one-stop plaza that aggregates open source events, communities, articles, and developer data.",
-    "copyright": "© 2025 KaiYuanShe. All rights reserved",
+    "title": "KaiSource",
+    "description": "KaiSource brings together open source events, communities, articles, and resources.",
+    "copyright": "© 2025 KaiSource. All rights reserved",
     "become_volunteer": "Become a Volunteer",
-    "follow_wechat_title": "Follow KaiYuanShe WeChat",
-    "wechat_qr_alt": "KaiYuanShe WeChat QR Code",
-    "wechat_qr_description": "Scan QR code to follow KaiYuanShe WeChat"
+    "follow_wechat_title": "Follow KaiSource WeChat",
+    "wechat_qr_alt": "KaiSource WeChat QR Code",
+    "wechat_qr_description": "Scan QR code to follow KaiSource WeChat"
   },
   "errors": {
     "fetchDapps": "Failed to get DApps list:"

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Users,
   BookOpen,
@@ -6,14 +6,14 @@ import {
   Calendar,
   MessageSquare,
   BarChart3,
-} from 'lucide-react';
-import styles from './index.module.css';
+} from "lucide-react";
+import styles from "./index.module.css";
 import {
   getStatsOverview,
   getAnalyticsData,
   AnalyticsData,
   AnalyticsTrendData,
-} from '../api/stats';
+} from "../api/stats";
 import {
   Eye,
   Users2,
@@ -26,17 +26,17 @@ import {
   Globe,
   Smartphone,
   Monitor,
-} from 'lucide-react';
-import { AnalyticsCard } from '../../components/stats/AnalyticsCard';
-import { StatsCard } from '../../components/stats/StatsCard';
-import { AnalyticsTrendChart } from '../../components/stats/AnalyticsTrendChart';
-import { TrendChart } from '../../components/stats/TrendChart';
-import { PageDetailsModal } from '../../components/stats/PageDetailsModal';
+} from "lucide-react";
+import { AnalyticsCard } from "../../components/stats/AnalyticsCard";
+import { StatsCard } from "../../components/stats/StatsCard";
+import { AnalyticsTrendChart } from "../../components/stats/AnalyticsTrendChart";
+import { TrendChart } from "../../components/stats/TrendChart";
+import { PageDetailsModal } from "../../components/stats/PageDetailsModal";
 import {
   StatsResponse,
   AnalyticsResponse,
   PageData,
-} from '../../components/stats/types';
+} from "../../components/stats/types";
 
 // 保留CalendarPicker组件但暂时不使用
 // function CalendarPicker({ onDateRangeChange }: CalendarPickerProps) {
@@ -48,9 +48,11 @@ import {
 // }
 
 // 计算趋势数据（针对有trend数据的字段）
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 function calculateTrend(
   field: keyof AnalyticsTrendData,
-  analyticsData: AnalyticsResponse | null
+  analyticsData: AnalyticsResponse | null,
 ): number | undefined {
   if (!analyticsData?.trend || analyticsData.trend.length < 2) {
     return undefined;
@@ -77,7 +79,7 @@ function calculateTrend(
 // 计算仅有overview数据字段的趋势
 function calculateTrendForOverviewOnly(
   _field: keyof AnalyticsData,
-  analyticsData: AnalyticsResponse | null
+  analyticsData: AnalyticsResponse | null,
 ): number | undefined {
   if (!analyticsData?.overview) {
     return undefined;
@@ -90,9 +92,10 @@ function calculateTrendForOverviewOnly(
 
 // 主要统计页面组件
 export default function StatsIndex() {
+  const { translateText: translateUiText } = useTranslation();
   const [data, setData] = useState<StatsResponse | null>(null);
   const [analyticsData, setAnalyticsData] = useState<AnalyticsResponse | null>(
-    null
+    null,
   );
   const [loading, setLoading] = useState(true);
   const [analyticsLoading, setAnalyticsLoading] = useState(true);
@@ -105,26 +108,26 @@ export default function StatsIndex() {
   const [showPageDetails, setShowPageDetails] = useState(false);
 
   // 定义接口类型
-interface TopPageData {
-  page: string;
-  pageViews: number;
-}
+  interface TopPageData {
+    page: string;
+    pageViews: number;
+  }
 
-interface DeviceData {
-  device: string;
-  sessions: number;
-}
+  interface DeviceData {
+    device: string;
+    sessions: number;
+  }
 
-interface DemographicsData {
-  devices: DeviceData[];
-}
+  interface DemographicsData {
+    devices: DeviceData[];
+  }
 
-interface AnalyticsDataWithExtensions extends AnalyticsResponse {
-  topPages?: TopPageData[];
-  demographics?: DemographicsData;
-}
+  interface AnalyticsDataWithExtensions extends AnalyticsResponse {
+    topPages?: TopPageData[];
+    demographics?: DemographicsData;
+  }
 
-// 从API获取真实页面数据
+  // 从API获取真实页面数据
   const getPageData = (): PageData[] => {
     // 只使用真实的Google Analytics API数据
     const extendedAnalyticsData = analyticsData as AnalyticsDataWithExtensions;
@@ -138,7 +141,7 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
     }
 
     // 如果没有API数据，返回空数组
-    console.log('No page data available from Google Analytics API');
+    console.log("No page data available from Google Analytics API");
     return [];
   };
 
@@ -194,9 +197,9 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
         // startDate.setDate(now.getDate() - 6);
         // setDateRange({ start: startDate, end: now });
       } catch (error) {
-        console.error('Failed to fetch initial data:', error);
-        setError('获取统计数据失败，请重试');
-        setAnalyticsError('获取运营数据失败，请重试');
+        console.error("Failed to fetch initial data:", error);
+        setError("获取统计数据失败，请重试");
+        setAnalyticsError("获取运营数据失败，请重试");
       } finally {
         setLoading(false);
         setAnalyticsLoading(false);
@@ -216,7 +219,9 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
     const topPages = pageData.slice(0, 3);
     return (
       <div className={styles.tooltipContent}>
-        <h4 className={styles.tooltipTitle}>热门页面</h4>
+        <h4 className={styles.tooltipTitle}>
+          <LocalizedText>{"热门页面"}</LocalizedText>
+        </h4>
         <div className={styles.tooltipList}>
           {topPages.map((page, index) => (
             <div key={index} className={styles.tooltipItem}>
@@ -228,7 +233,9 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             </div>
           ))}
         </div>
-        <div className={styles.tooltipFooter}>点击查看所有页面详情</div>
+        <div className={styles.tooltipFooter}>
+          <LocalizedText>{"点击查看所有页面详情"}</LocalizedText>
+        </div>
       </div>
     );
   };
@@ -244,25 +251,27 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
       const devices = extendedAnalyticsData.demographics!.devices;
       return (
         <div className={styles.tooltipContent}>
-          <h4 className={styles.tooltipTitle}>设备类型分布</h4>
+          <h4 className={styles.tooltipTitle}>
+            <LocalizedText>{"设备类型分布"}</LocalizedText>
+          </h4>
           <div className={styles.tooltipList}>
             {devices.map((device: DeviceData, index: number) => (
               <div key={index} className={styles.tooltipItem}>
-                {device.device === 'desktop' && (
+                {device.device === "desktop" && (
                   <Monitor className={styles.tooltipIcon} />
                 )}
-                {device.device === 'mobile' && (
+                {device.device === "mobile" && (
                   <Smartphone className={styles.tooltipIcon} />
                 )}
-                {device.device === 'tablet' && (
+                {device.device === "tablet" && (
                   <Activity className={styles.tooltipIcon} />
                 )}
                 <span className={styles.tooltipPath}>
-                  {device.device === 'desktop'
-                    ? '桌面端'
-                    : device.device === 'mobile'
-                      ? '移动端'
-                      : '平板'}
+                  {device.device === "desktop"
+                    ? translateUiText("桌面端")
+                    : device.device === "mobile"
+                      ? "移动端"
+                      : "平板"}
                 </span>
                 <span className={styles.tooltipValue}>
                   {device.sessions.toLocaleString()}
@@ -282,7 +291,9 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
       <div className={styles.container}>
         <div className={styles.loadingContainer}>
           <div className={styles.spinner}></div>
-          <p className={styles.loadingText}>加载统计数据中...</p>
+          <p className={styles.loadingText}>
+            <LocalizedText>{"加载统计数据中..."}</LocalizedText>
+          </p>
         </div>
       </div>
     );
@@ -297,40 +308,45 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             <div className={styles.titleIcon}>
               <BarChart3 className={styles.titleIconSvg} />
             </div>
-            <h1 className={styles.title}>数据统计中心</h1>
+            <h1 className={styles.title}>
+              <LocalizedText>{"数据统计中心"}</LocalizedText>
+            </h1>
           </div>
-          <p className={styles.subtitle}>开源社 内容数据与运营数据概览</p>
+          <p className={styles.subtitle}>
+            <LocalizedText>{"开源社 内容数据与运营数据概览"}</LocalizedText>
+          </p>
         </div>
 
         {/* 日历选择器和当前选择显示 */}
         {/* <div className={styles.controlSection}>
-                    <div className={styles.controls}>
-                        <CalendarPicker onDateRangeChange={handleDateRangeChange} />
-
-                        {dateRange && (
-                            <div className={styles.dateDisplay}>
-                                <Calendar className={styles.dateIcon} />
-                                <span className={styles.dateText}>当前选择: {formatDateRange()}</span>
-                            </div>
-                        )}
-                    </div>
-                </div> */}
+                       <div className={styles.controls}>
+                           <CalendarPicker onDateRangeChange={handleDateRangeChange} />
+                            {dateRange && (
+                               <div className={styles.dateDisplay}>
+                                   <Calendar className={styles.dateIcon} />
+                                   <span className={styles.dateText}>当前选择: {formatDateRange()}</span>
+                               </div>
+                           )}
+                       </div>
+                   </div> */}
 
         {/* 内容数据统计 */}
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>内容数据统计</h2>
+          <h2 className={styles.sectionTitle}>
+            <LocalizedText>{"内容数据统计"}</LocalizedText>
+          </h2>
         </div>
 
         {error || !data ? (
           <div className={styles.errorContainer}>
             <p className={styles.errorText}>
-              {error || '无法加载内容统计数据'}
+              {error || "无法加载内容统计数据"}
             </p>
           </div>
         ) : (
           <div className={styles.statsGrid}>
             <StatsCard
-              title="用户"
+              title={translateUiText("用户")}
               total={data.overview?.users.total ?? 0}
               newThisWeek={data.overview?.users.new_this_Week ?? 0}
               weeklyGrowth={data.overview?.users.weekly_growth ?? 0}
@@ -339,7 +355,7 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             />
 
             <StatsCard
-              title="博客"
+              title={translateUiText("博客")}
               total={data.overview?.blogs.total ?? 0}
               newThisWeek={data.overview?.blogs.new_this_Week ?? 0}
               weeklyGrowth={data.overview?.blogs.weekly_growth ?? 0}
@@ -348,7 +364,7 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             />
 
             <StatsCard
-              title="教程"
+              title={translateUiText("教程")}
               total={data.overview?.tutorials.total ?? 0}
               newThisWeek={data.overview?.tutorials.new_this_Week ?? 0}
               weeklyGrowth={data.overview?.tutorials.weekly_growth ?? 0}
@@ -357,7 +373,7 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             />
 
             <StatsCard
-              title="活动"
+              title={translateUiText("活动")}
               total={data.overview?.events.total ?? 0}
               newThisWeek={data.overview?.events.new_this_Week ?? 0}
               weeklyGrowth={data.overview?.events.weekly_growth ?? 0}
@@ -366,7 +382,7 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
             />
 
             <StatsCard
-              title="帖子"
+              title={translateUiText("帖子")}
               total={data.overview?.posts.total ?? 0}
               newThisWeek={data.overview?.posts.new_this_Week ?? 0}
               weeklyGrowth={data.overview?.posts.weekly_growth ?? 0}
@@ -385,12 +401,19 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
 
         {/* 运营数据统计 */}
         <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>运营数据统计</h2>
+          <h2 className={styles.sectionTitle}>
+            <LocalizedText>{"运营数据统计"}</LocalizedText>
+          </h2>
           <p className={styles.sectionSubtitle}>
-            基于Google Analytics的网站流量与用户行为数据
+            <LocalizedText>
+              {"基于Google Analytics的网站流量与用户行为数据"}
+            </LocalizedText>
+
             {analyticsData?.overview && (
               <span className={styles.dataSource}>
-                {process.env.NEXT_PUBLIC_GA_ID ? ' • 实时数据' : ' • 示例数据'}
+                {process.env.NEXT_PUBLIC_GA_ID
+                  ? translateUiText(" • 实时数据")
+                  : translateUiText(" • 示例数据")}
               </span>
             )}
           </p>
@@ -399,95 +422,111 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
         {analyticsError || !analyticsData ? (
           <div className={styles.errorContainer}>
             <p className={styles.errorText}>
-              {analyticsError || '无法加载运营数据'}
+              {analyticsError || "无法加载运营数据"}
             </p>
           </div>
         ) : (
           <div className={styles.analyticsGrid}>
             <AnalyticsCard
-              title="页面浏览量"
+              title={translateUiText("页面浏览量")}
               value={analyticsData.overview?.pageViews ?? 0}
               icon={<Eye className={styles.cardIconSvg} />}
               color="#3b82f6"
-              trend={calculateTrend('pageViews', analyticsData)}
+              trend={calculateTrend("pageViews", analyticsData)}
               tooltip={createPageViewsTooltip()}
               showDetails={getPageData().length > 0}
               onDetailsClick={() => setShowPageDetails(true)}
-              description="GA4中的Views指标，统计网站页面或应用屏幕被查看的总次数。包括同一用户的多次重复查看，如用户刷新99次页面将产生100次页面浏览量。是GA4中衡量内容参与度的重要指标。"
+              description={translateUiText(
+                "GA4中的Views指标，统计网站页面或应用屏幕被查看的总次数。包括同一用户的多次重复查看，如用户刷新99次页面将产生100次页面浏览量。是GA4中衡量内容参与度的重要指标。",
+              )}
             />
 
             <AnalyticsCard
-              title="用户交互事件数"
+              title={translateUiText("用户交互事件数")}
               value={analyticsData.overview?.events ?? 0}
               icon={<MousePointer className={styles.cardIconSvg} />}
               color="#10b981"
-              trend={calculateTrend('events', analyticsData)}
+              trend={calculateTrend("events", analyticsData)}
               tooltip={createDeviceTooltip()}
-              description="GA4中的事件指标，统计用户在网站或应用上触发的所有交互事件总数。包括点击链接、视频播放、表单提交等用户指定的交互行为。表示用户的活跃参与程度和内容交互效果。"
+              description={translateUiText(
+                "GA4中的事件指标，统计用户在网站或应用上触发的所有交互事件总数。包括点击链接、视频播放、表单提交等用户指定的交互行为。表示用户的活跃参与程度和内容交互效果。",
+              )}
             />
 
             <AnalyticsCard
-              title="活跃用户"
+              title={translateUiText("活跃用户")}
               value={analyticsData.overview?.users ?? 0}
               icon={<Users2 className={styles.cardIconSvg} />}
               color="#f59e0b"
-              trend={calculateTrend('users', analyticsData)}
-              description="GA4中的活跃用户指标，通过统计估算独特会话 ID 数量来衡量在指定时间段内访问过网站或应用的不同用户数。同一用户的多次访问只计算为一个用户，反映真实受众规模。"
+              trend={calculateTrend("users", analyticsData)}
+              description={translateUiText(
+                "GA4中的活跃用户指标，通过统计估算独特会话 ID 数量来衡量在指定时间段内访问过网站或应用的不同用户数。同一用户的多次访问只计算为一个用户，反映真实受众规模。",
+              )}
             />
 
             <AnalyticsCard
-              title="会话数"
+              title={translateUiText("会话数")}
               value={analyticsData.overview?.sessions ?? 0}
               icon={<Activity className={styles.cardIconSvg} />}
               color="#ef4444"
-              trend={calculateTrend('sessions', analyticsData)}
-              description="GA4中的会话指标，表示用户与网站或应用交互的时间段总数。会话从用户启动活动（如查看页面）开始，在30分钟无活动后超时。通过session_start事件自动记录，反映用户访问频率。"
+              trend={calculateTrend("sessions", analyticsData)}
+              description={translateUiText(
+                "GA4中的会话指标，表示用户与网站或应用交互的时间段总数。会话从用户启动活动（如查看页面）开始，在30分钟无活动后超时。通过session_start事件自动记录，反映用户访问频率。",
+              )}
             />
 
             <AnalyticsCard
-              title="跳出率"
+              title={translateUiText("跳出率")}
               value={analyticsData.overview?.bounceRate ?? 0}
               suffix="%"
               icon={<TrendingUpIcon className={styles.cardIconSvg} />}
               color="var(--primary-500)"
-              trend={calculateTrendForOverviewOnly('bounceRate', analyticsData)}
-              description="GA4中的跳出率指标，计算非参与度会话的百分比，即参与度的反面。非参与会话指持续时间低于10秒、只有一个页面查看且未触发关键事件的会话。低跳出率表示高参与度。"
+              trend={calculateTrendForOverviewOnly("bounceRate", analyticsData)}
+              description={translateUiText(
+                "GA4中的跳出率指标，计算非参与度会话的百分比，即参与度的反面。非参与会话指持续时间低于10秒、只有一个页面查看且未触发关键事件的会话。低跳出率表示高参与度。",
+              )}
             />
 
             <AnalyticsCard
-              title="平均会话时长"
+              title={translateUiText("平均会话时长")}
               value={Math.floor(
-                (analyticsData.overview?.avgSessionDuration ?? 0) / 60
+                (analyticsData.overview?.avgSessionDuration ?? 0) / 60,
               )}
-              suffix="分钟"
+              suffix={translateUiText("分钟")}
               icon={<Clock className={styles.cardIconSvg} />}
               color="#06b6d4"
               trend={calculateTrendForOverviewOnly(
-                'avgSessionDuration',
-                analyticsData
+                "avgSessionDuration",
+                analyticsData,
               )}
-              description="GA4中的平均会话时长指标，计算所有参与度会话的总持续时间（秒）除以总会话数。只统计持续至少10秒的参与度会话，排除短暂访问干扰，更准确反映用户真实参与程度。"
+              description={translateUiText(
+                "GA4中的平均会话时长指标，计算所有参与度会话的总持续时间（秒）除以总会话数。只统计持续至少10秒的参与度会话，排除短暂访问干扰，更准确反映用户真实参与程度。",
+              )}
             />
 
             <AnalyticsCard
-              title="新用户"
+              title={translateUiText("新用户")}
               value={analyticsData.overview?.newUsers ?? 0}
               icon={<UserPlus className={styles.cardIconSvg} />}
               color="#84cc16"
-              trend={calculateTrendForOverviewOnly('newUsers', analyticsData)}
-              description="GA4中的新用户指标，计算首次访问网站或应用的用户数量。通过first_visit和first_open事件识别，反映网站的用户获取能力和市场推广效果。是衡量业务增长和受众拓展的关键指标。"
+              trend={calculateTrendForOverviewOnly("newUsers", analyticsData)}
+              description={translateUiText(
+                "GA4中的新用户指标，计算首次访问网站或应用的用户数量。通过first_visit和first_open事件识别，反映网站的用户获取能力和市场推广效果。是衡量业务增长和受众拓展的关键指标。",
+              )}
             />
 
             <AnalyticsCard
-              title="回访用户"
+              title={translateUiText("回访用户")}
               value={analyticsData.overview?.returningUsers ?? 0}
               icon={<UserCheck className={styles.cardIconSvg} />}
               color="#f97316"
               trend={calculateTrendForOverviewOnly(
-                'returningUsers',
-                analyticsData
+                "returningUsers",
+                analyticsData,
               )}
-              description="GA4中的回访用户指标，计算之前访问过并再次访问的用户数量。在Sessions per User指标中反映为用户平均会话数，表示用户返回频率和内容参与深度。高回访率表明网站粘性和用户忠诚度。"
+              description={translateUiText(
+                "GA4中的回访用户指标，计算之前访问过并再次访问的用户数量。在Sessions per User指标中反映为用户平均会话数，表示用户返回频率和内容参与深度。高回访率表明网站粘性和用户忠诚度。",
+              )}
             />
           </div>
         )}
@@ -510,7 +549,9 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className={styles.modalHeader}>
-                  <h3>页面浏览量详情</h3>
+                  <h3>
+                    <LocalizedText>{"页面浏览量详情"}</LocalizedText>
+                  </h3>
                   <button
                     className={styles.closeButton}
                     onClick={() => setShowPageDetails(false)}
@@ -520,7 +561,11 @@ interface AnalyticsDataWithExtensions extends AnalyticsResponse {
                 </div>
                 <div className={styles.modalBody}>
                   <div className={styles.emptyText}>
-                    暂无页面数据。请配置Google Analytics API以获取真实数据。
+                    <LocalizedText>
+                      {
+                        "暂无页面数据。请配置Google Analytics API以获取真实数据。"
+                      }
+                    </LocalizedText>
                   </div>
                 </div>
               </div>

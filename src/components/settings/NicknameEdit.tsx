@@ -1,6 +1,8 @@
-import { useState } from 'react';
-import { Modal, Input, Button, App as AntdApp } from 'antd';
-import { Edit3 } from 'lucide-react';
+import { useState } from "react";
+import { Modal, Input, Button, App as AntdApp } from "antd";
+import { Edit3 } from "lucide-react";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface NicknameEditProps {
   currentNickname?: string;
@@ -11,24 +13,25 @@ export default function NicknameEdit({
   currentNickname,
   onSave,
 }: NicknameEditProps) {
+  const { translateText: translateUiText } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [nickname, setNickname] = useState(currentNickname || '');
+  const [nickname, setNickname] = useState(currentNickname || "");
   const [saving, setSaving] = useState(false);
   const { message } = AntdApp.useApp();
 
   const handleSave = async () => {
     if (!nickname.trim()) {
-      message.error('昵称不能为空');
+      message.error("昵称不能为空");
       return;
     }
 
     if (nickname.trim().length < 2) {
-      message.error('昵称至少需要2个字符');
+      message.error("昵称至少需要2个字符");
       return;
     }
 
     if (nickname.trim().length > 20) {
-      message.error('昵称不能超过20个字符');
+      message.error("昵称不能超过20个字符");
       return;
     }
 
@@ -38,7 +41,7 @@ export default function NicknameEdit({
 
       setIsModalVisible(false);
     } catch {
-      console.error('昵称修改失败');
+      console.error("昵称修改失败");
     } finally {
       setSaving(false);
     }
@@ -46,11 +49,11 @@ export default function NicknameEdit({
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setNickname(currentNickname || '');
+    setNickname(currentNickname || "");
   };
 
   const handleOpenModal = () => {
-    setNickname(currentNickname || '');
+    setNickname(currentNickname || "");
     setIsModalVisible(true);
   };
 
@@ -59,42 +62,42 @@ export default function NicknameEdit({
       <div
         onClick={handleOpenModal}
         style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          cursor: 'pointer',
-          padding: '4px 8px',
-          borderRadius: '6px',
-          transition: 'all 0.2s ease',
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          display: "inline-flex",
+          alignItems: "center",
+          gap: "8px",
+          cursor: "pointer",
+          padding: "4px 8px",
+          borderRadius: "6px",
+          transition: "all 0.2s ease",
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.2)';
+          e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)";
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+          e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.1)";
         }}
       >
         <span
           style={{
-            color: 'white',
-            fontSize: '32px',
+            color: "white",
+            fontSize: "32px",
             fontWeight: 600,
             lineHeight: 1,
           }}
         >
-          {currentNickname || '未设置昵称'}
+          {currentNickname || "未设置昵称"}
         </span>
         <Edit3 size={16} color="rgba(255, 255, 255, 0.8)" />
       </div>
 
       <Modal
-        title="修改昵称"
+        title={translateUiText("修改昵称")}
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
           <Button key="cancel" onClick={handleCancel}>
-            取消
+            <LocalizedText>{"取消"}</LocalizedText>
           </Button>,
           <Button
             key="save"
@@ -102,28 +105,27 @@ export default function NicknameEdit({
             loading={saving}
             onClick={handleSave}
           >
-            保存
+            <LocalizedText>{"保存"}</LocalizedText>
           </Button>,
         ]}
         width={400}
       >
-        <div style={{ padding: '20px 0' }}>
+        <div style={{ padding: "20px 0" }}>
           <div style={{ marginBottom: 16 }}>
             <label
               style={{
-                display: 'block',
+                display: "block",
                 marginBottom: 8,
                 fontWeight: 500,
-                color: '#262626',
+                color: "#262626",
               }}
             >
-
-              新昵称
+              <LocalizedText>{"新昵称"}</LocalizedText>
             </label>
             <Input
               value={nickname}
               onChange={(e) => setNickname(e.target.value)}
-              placeholder="请输入新昵称"
+              placeholder={translateUiText("请输入新昵称")}
               maxLength={20}
               showCount
               autoFocus
@@ -133,13 +135,19 @@ export default function NicknameEdit({
 
           <div
             style={{
-              fontSize: '12px',
-              color: '#999',
+              fontSize: "12px",
+              color: "#999",
               lineHeight: 1.5,
             }}
           >
-            <div>• 昵称长度：2-20个字符</div>
-            <div>• 支持中文、英文、数字和常用符号</div>
+            <div>
+              <LocalizedText>{"• 昵称长度：2-20个字符"}</LocalizedText>
+            </div>
+            <div>
+              <LocalizedText>
+                {"• 支持中文、英文、数字和常用符号"}
+              </LocalizedText>
+            </div>
           </div>
         </div>
       </Modal>

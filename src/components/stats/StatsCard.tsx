@@ -1,6 +1,7 @@
-import { TrendingUp, TrendingDown } from 'lucide-react';
-import { StatsCardProps } from './types';
-import styles from '../../pages/stats/index.module.css';
+import { TrendingUp, TrendingDown } from "lucide-react";
+import { StatsCardProps } from "./types";
+import styles from "../../pages/stats/index.module.css";
+import LocalizedText from "@/components/LocalizedText";
 
 export function StatsCard({
   title,
@@ -23,12 +24,16 @@ export function StatsCard({
 
       <div className={styles.cardTotal}>
         <p className={styles.totalNumber}>{total.toLocaleString()}</p>
-        <p className={styles.totalLabel}>总数</p>
+        <p className={styles.totalLabel}>
+          <LocalizedText>{"总数"}</LocalizedText>
+        </p>
       </div>
 
       <div className={styles.cardNew}>
         <p className={styles.newNumber}>+{newThisWeek.toLocaleString()}</p>
-        <p className={styles.newLabel}>本周新增</p>
+        <p className={styles.newLabel}>
+          <LocalizedText>{"本周新增"}</LocalizedText>
+        </p>
       </div>
 
       <div className={styles.cardGrowth}>
@@ -40,10 +45,12 @@ export function StatsCard({
         <span
           className={`${styles.growthText} ${isPositiveGrowth ? styles.positive : styles.negative}`}
         >
-          {isPositiveGrowth ? '+' : ''}
+          {isPositiveGrowth ? "+" : ""}
           {weeklyGrowth.toFixed(1)}%
         </span>
-        <span className={styles.growthLabel}>vs 上周</span>
+        <span className={styles.growthLabel}>
+          <LocalizedText>{"vs 上周"}</LocalizedText>
+        </span>
       </div>
     </div>
   );

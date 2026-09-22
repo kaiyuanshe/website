@@ -2,7 +2,7 @@ import styles from './index.module.css'
 
 import Hero from '@/components/home/hero/Hero'
 import MissionSection from '@/components/home/mission/Mission'
-import EventSection from '@/components/home/events/Events'
+import EventSection, { EventSectionHeader } from '@/components/home/events/Events'
 import ArticleSection from '@/components/home/article/Article'
 import CarouselSession from '@/components/home/carousel/Carousel'
 import PartnersSection from '@/components/home/partners/Partners'
@@ -47,6 +47,7 @@ export default function Home() {
         }}
       >
         <Hero />
+        <EventSectionHeader />
         <CarouselSession
           events={eventsState.data}
           articles={articlesState.data}

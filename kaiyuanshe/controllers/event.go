@@ -46,6 +46,8 @@ func CreateEvent(c *gin.Context) {
 		RegistrationLink:     req.RegistrationLink,
 		TopicCollectionLink:  req.TopicCollectionLink,
 		CoursewareSubmitLink: req.CoursewareSubmitLink,
+		Locale:               normalizeContentLocale(req.Locale),
+		TranslationOf:        req.TranslationOf,
 	}
 
 	uid, ok := c.Get("uid")
@@ -89,7 +91,13 @@ func GetEvent(c *gin.Context) {
 	var event models.Event
 	event.ID = uint(id)
 
-	if err = event.GetByID(uint(id)); err != nil {
+	locale := c.Query("locale")
+	if locale != "" {
+		err = event.GetLocalizedByID(uint(id), normalizeContentLocale(locale))
+	} else {
+		err = event.GetByID(uint(id))
+	}
+	if err != nil {
 		utils.ErrorResponse(c, http.StatusBadRequest, "Invalid Event", nil)
 		return
 	}
@@ -113,6 +121,7 @@ func QueryEvents(c *gin.Context) {
 	status, _ := strconv.Atoi(c.DefaultQuery("status", "0"))
 
 	publishStatus, _ := strconv.Atoi(c.DefaultQuery("publish_status", "0"))
+	locale := normalizeContentLocale(c.DefaultQuery("locale", "zh-CN"))
 
 	filter := models.EventFilter{
 		Keyword:       keyword,
@@ -125,6 +134,7 @@ func QueryEvents(c *gin.Context) {
 		PageSize:      pageSize,
 		Status:        status,
 		PublishStatus: publishStatus,
+		Locale:        locale,
 	}
 
 	var start, end time.Time
@@ -217,6 +227,8 @@ func UpdateEvent(c *gin.Context) {
 	event.RegistrationLink = req.RegistrationLink
 	event.TopicCollectionLink = req.TopicCollectionLink
 	event.CoursewareSubmitLink = req.CoursewareSubmitLink
+	event.Locale = normalizeContentLocale(req.Locale)
+	event.TranslationOf = req.TranslationOf
 
 	if err := event.Update(); err != nil {
 		utils.ErrorResponse(c, http.StatusInternalServerError, "Failed to update event", nil)
