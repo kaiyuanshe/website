@@ -896,7 +896,7 @@ export default function Header() {
 
               {/* 移动端语言切换器 */}
               <div className={styles.mobileMenuSection}>
-                <LanguageSwitcher />
+                <LanguageSwitcher onChange={() => setMobileMenuOpen(false)} />
               </div>
 
               {/* 移动端用户认证区域 */}

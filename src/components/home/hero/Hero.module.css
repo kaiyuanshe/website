@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   min-height: min(55svh, 620px);
-  padding: 96px 1rem 72px;
+  padding: 64px 1rem 48px;
   overflow: hidden;
   display: flex;
   align-items: center;

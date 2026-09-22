@@ -22,6 +22,21 @@ type EventSectionProps = {
   onRetry: () => void;
 };
 
+export function EventSectionHeader() {
+  const { t } = useTranslation();
+
+  return (
+    <div className={styles.sectionHeader}>
+      <h2 id="community-events-title" className={styles.sectionTitle}>
+        {t("homepage.events.title")}
+      </h2>
+      <p className={styles.sectionDescription}>
+        {t("homepage.events.description")}
+      </p>
+    </div>
+  );
+}
+
 export default function EventSection({
   events,
   status,
@@ -30,14 +45,11 @@ export default function EventSection({
   const { t, locale } = useTranslation();
 
   return (
-    <section className={styles.activities}>
+    <section
+      className={styles.activities}
+      aria-labelledby="community-events-title"
+    >
       <div className={styles.container}>
-        <div className={styles.sectionHeader}>
-          <h2 className={styles.sectionTitle}>{t("homepage.events.title")}</h2>
-          <p className={styles.sectionDescription}>
-            {t("homepage.events.description")}
-          </p>
-        </div>
         <div className={styles.activitiesGrid}>
           {status === "loading" && (
             <ContentCardSkeleton label={t("common.loading")} />

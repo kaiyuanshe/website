@@ -3,9 +3,16 @@ import { Dropdown } from "antd";
 import { useTranslation } from "../hooks/useTranslation";
 import styles from "../styles/LanguageSwitcher.module.css";
 
-export default function LanguageSwitcher() {
+export default function LanguageSwitcher({
+  onChange,
+}: { onChange?: () => void } = {}) {
   const { translateText: translateUiText } = useTranslation();
   const { t, locale, changeLanguage } = useTranslation();
+
+  const selectLanguage = (newLocale: string) => {
+    onChange?.();
+    if (newLocale !== locale) changeLanguage(newLocale);
+  };
 
   const languageItems = [
     {
@@ -21,7 +28,7 @@ export default function LanguageSwitcher() {
         </div>
       ),
 
-      onClick: () => changeLanguage("zh-CN"),
+      onClick: () => selectLanguage("zh-CN"),
     },
     {
       key: "zh-TW",
@@ -36,7 +43,7 @@ export default function LanguageSwitcher() {
         </div>
       ),
 
-      onClick: () => changeLanguage("zh-TW"),
+      onClick: () => selectLanguage("zh-TW"),
     },
     {
       key: "en",
@@ -47,7 +54,7 @@ export default function LanguageSwitcher() {
         </div>
       ),
 
-      onClick: () => changeLanguage("en"),
+      onClick: () => selectLanguage("en"),
     },
   ];
 
@@ -56,12 +63,13 @@ export default function LanguageSwitcher() {
       menu={{ items: languageItems }}
       placement="bottomRight"
       trigger={["hover", "click"]}
+      overlayClassName={styles.languageDropdown}
       arrow
     >
-      <div
+      <button
+        type="button"
         className={styles.languageSwitcher}
         title={t("language.switch")}
-        onClick={(e) => e.preventDefault()}
       >
         <Globe className={styles.globeIcon} />
         <span className={styles.currentLanguage}>
@@ -71,7 +79,7 @@ export default function LanguageSwitcher() {
               ? "简"
               : "EN"}
         </span>
-      </div>
+      </button>
     </Dropdown>
   );
 }
