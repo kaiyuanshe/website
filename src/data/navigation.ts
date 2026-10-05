@@ -158,6 +158,14 @@ export const mainNavItems: MenuItem[] = [
         group: 'cooperation'
       },
       {
+        key: 'open-source-ecosystem-60qa',
+        labelKey: 'navigation.open_source_ecosystem_60qa',
+        href: 'https://60qa.kaiyuanshe.cn/',
+        descriptionKey: 'navigation.open_source_ecosystem_60qa_description',
+        group: 'cooperation',
+        target: '_blank'
+      },
+      {
         key: 'china-oss-report',
         labelKey: 'navigation.knowledge.china_open_source_annual_report',
         href: '/osreports',
@@ -230,11 +238,5 @@ export const mainNavItems: MenuItem[] = [
         group: 'brand'
       }
     ]
-  },
-  {
-    key: 'open-source-ecosystem-60qa',
-    labelKey: 'navigation.open_source_ecosystem_60qa',
-    href: 'https://60qa.kaiyuanshe.cn/',
-    target: '_blank'
   }
 ]
