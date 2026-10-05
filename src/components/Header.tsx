@@ -710,9 +710,23 @@ export default function Header() {
 
           {/* 桌面导航菜单 */}
           <nav className={styles.nav}>
-            {translatedNavItems.map(item => (
-              <NavDropdown key={item.key} item={item} />
-            ))}
+            {translatedNavItems.map(item =>
+              item.children ? (
+                <NavDropdown key={item.key} item={item} />
+              ) : (
+                <Link
+                  key={item.key}
+                  href={item.href || '/'}
+                  className={styles.navItem}
+                  target={item.target}
+                  rel={
+                    item.target === '_blank' ? 'noopener noreferrer' : undefined
+                  }
+                >
+                  {item.label}
+                </Link>
+              )
+            )}
           </nav>
 
           {/* 右侧操作区 */}
@@ -946,9 +960,23 @@ export default function Header() {
 
               {translatedNavItems.map(item => (
                 <div key={item.key} className={styles.mobileMenuSection}>
-                  <div className={styles.mobileMenuSectionTitle}>
-                    {item.label}
-                  </div>
+                  {item.children ? (
+                    <div className={styles.mobileMenuSectionTitle}>
+                      {item.label}
+                    </div>
+                  ) : (
+                    <Link
+                      href={item.href || '/'}
+                      className={styles.mobileMenuItem}
+                      target={item.target}
+                      rel={
+                        item.target === '_blank' ? 'noopener noreferrer' : undefined
+                      }
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
                   {item.children && (
                     <div className={styles.mobileMenuItems}>
                       {item.children.map(

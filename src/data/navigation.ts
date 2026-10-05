@@ -230,5 +230,11 @@ export const mainNavItems: MenuItem[] = [
         group: 'brand'
       }
     ]
+  },
+  {
+    key: 'open-source-ecosystem-60qa',
+    labelKey: 'navigation.open_source_ecosystem_60qa',
+    href: 'https://60qa.kaiyuanshe.cn/',
+    target: '_blank'
   }
 ]
