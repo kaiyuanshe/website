@@ -27,11 +27,13 @@ func CreatCommunity(c *gin.Context) {
 	}
 
 	var community = models.Community{
-		City:         req.City,
-		Intro:        req.Intro,
-		Cover:        req.Cover,
-		StartDate:    &startD,
-		RegisterLink: req.RegisterLink,
+		City:          req.City,
+		Intro:         req.Intro,
+		Cover:         req.Cover,
+		StartDate:     &startD,
+		RegisterLink:  req.RegisterLink,
+		Locale:        normalizeContentLocale(req.Locale),
+		TranslationOf: req.TranslationOf,
 	}
 
 	uid, ok := c.Get("uid")
@@ -67,7 +69,13 @@ func GetCommunity(c *gin.Context) {
 	var community models.Community
 	community.ID = uint(id)
 
-	if err = community.GetByID(uint(id)); err != nil {
+	locale := c.Query("locale")
+	if locale != "" {
+		err = community.GetLocalizedByID(uint(id), normalizeContentLocale(locale))
+	} else {
+		err = community.GetByID(uint(id))
+	}
+	if err != nil {
 		utils.ErrorResponse(c, http.StatusBadRequest, "Invalid Community", nil)
 		return
 	}
@@ -81,6 +89,7 @@ func QueryCommunity(c *gin.Context) {
 	order := c.DefaultQuery("order", "desc")
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("page_size", "6"))
+	locale := normalizeContentLocale(c.DefaultQuery("locale", "zh-CN"))
 
 	filter := models.CommunityFilter{
 		Keyword:   keyword,
@@ -88,6 +97,7 @@ func QueryCommunity(c *gin.Context) {
 		OrderDesc: order == "desc",
 		Page:      page,
 		PageSize:  pageSize,
+		Locale:    locale,
 	}
 
 	communities, total, err := models.QueryCommunitys(filter)
@@ -154,6 +164,8 @@ func UpdateCommunity(c *gin.Context) {
 	community.Intro = req.Intro
 	community.Cover = req.Cover
 	community.RegisterLink = req.RegisterLink
+	community.Locale = normalizeContentLocale(req.Locale)
+	community.TranslationOf = req.TranslationOf
 
 	startD, err := utils.ParseTime(req.StartDate)
 	if err != nil {

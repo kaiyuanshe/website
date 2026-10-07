@@ -1,5 +1,5 @@
-import type React from 'react'
-import { Button, Popconfirm, Spin, message } from 'antd'
+import type React from "react";
+import { Button, Popconfirm, Spin, message } from "antd";
 import {
   MapPin,
   Users,
@@ -10,156 +10,161 @@ import {
   Plus,
   Edit,
   Trash2,
-} from 'lucide-react'
-import { useState, useEffect, useCallback, useMemo } from 'react'
-import { useRouter } from 'next/router'
-import styles from './index.module.css'
-import { getCommunities, Community, deleteCommunity } from '../api/comunity'
-import { useAuth } from '@/contexts/AuthContext'
+} from "lucide-react";
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useRouter } from "next/router";
+import styles from "./index.module.css";
+import { getCommunities, Community, deleteCommunity } from "../api/comunity";
+import { useAuth } from "@/contexts/AuthContext";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const CommunityPage: React.FC = () => {
-  const router = useRouter()
-  const [cities, setCities] = useState<Community[]>([])
-  const [loading, setLoading] = useState(true)
+  const { translateText: translateUiText } = useTranslation();
+  const router = useRouter();
+  const [cities, setCities] = useState<Community[]>([]);
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     cityCount: 0,
     developerCount: 0,
-    projectCount: 0
-  })
+    projectCount: 0,
+  });
 
   // 使用统一的认证上下文
-  const { session, status } = useAuth()
+  const { session, status } = useAuth();
 
   const permissions = useMemo(
     () => session?.user?.permissions || [],
-    [session?.user?.permissions]
-  )
+    [session?.user?.permissions],
+  );
 
   // 加载社区数据
   const loadCommunities = useCallback(
     async (params?: {
-      city?: string
-      page?: number
-      page_size?: number
-      order_by?: 'created_at' | 'start_date'
-      order?: 'asc' | 'desc'
+      city?: string;
+      page?: number;
+      page_size?: number;
+      order_by?: "created_at" | "start_date";
+      order?: "asc" | "desc";
     }) => {
       try {
-        setLoading(true)
+        setLoading(true);
 
         const queryParams = {
-          city: params?.city ?? '',
+          city: params?.city ?? "",
           page: params?.page ?? 1,
           page_size: params?.page_size ?? 50,
-          order_by: params?.order_by ?? 'created_at',
-          order: params?.order ?? 'desc'
-        }
+          order_by: params?.order_by ?? "created_at",
+          order: params?.order ?? "desc",
+        };
 
-        const result = await getCommunities(queryParams)
+        const result = await getCommunities(queryParams);
 
         if (result.success && result.data) {
           // 使用接口返回的真实数据
-          const communitiesData = result.data.communities || []
-          console.log('社区数据:', communitiesData)
+          const communitiesData = result.data.communities || [];
+          console.log("社区数据:", communitiesData);
 
           if (communitiesData.length === 0) {
-            message.info('暂无社区数据')
-            setCities([])
+            message.info("暂无社区数据");
+            setCities([]);
             setStats({
               cityCount: 0,
               developerCount: 0,
-              projectCount: 0
-            })
-            return
+              projectCount: 0,
+            });
+            return;
           }
 
-          setCities(communitiesData)
+          setCities(communitiesData);
 
           // 更新统计数据 - 使用真实数据计算
-          const totalCities = communitiesData.length
+          const totalCities = communitiesData.length;
           setStats({
             cityCount: totalCities,
             developerCount: totalCities * 150,
-            projectCount: totalCities * 25
-          })
+            projectCount: totalCities * 25,
+          });
         } else {
-          console.error('获取社区列表失败:', result.message)
-          message.warning(result.message || '获取社区数据失败')
+          console.error("获取社区列表失败:", result.message);
+          message.warning(result.message || "获取社区数据失败");
 
           // 可以在这里设置默认数据作为fallback
-          setCities([])
+          setCities([]);
           setStats({
             cityCount: 0,
             developerCount: 0,
-            projectCount: 0
-          })
+            projectCount: 0,
+          });
         }
       } catch (error: unknown) {
-        console.error('加载社区列表异常:', error)
-        message.error('获取社区数据失败')
-        setCities([])
+        console.error("加载社区列表异常:", error);
+        message.error("获取社区数据失败");
+        setCities([]);
         setStats({
           cityCount: 0,
           developerCount: 0,
-          projectCount: 0
-        })
+          projectCount: 0,
+        });
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     },
-    []
-  )
+    [],
+  );
   // 编辑城市
   const handleEditCity = (city: any) => {
-    router.push(`/community/${city.ID}/edit`)
-  }
+    router.push(`/community/${city.ID}/edit`);
+  };
 
   // 删除城市
   const handleDeleteCity = async (city: any) => {
     try {
       // 调用删除 API
-      const result = await deleteCommunity(city.ID)
+      const result = await deleteCommunity(city.ID);
       if (result.success) {
-        message.success('删除成功')
+        message.success("删除成功");
         // 重新加载数据或从列表中移除
-          loadCommunities()
+        loadCommunities();
       } else {
-        message.error(result.message || '删除失败')
+        message.error(result.message || "删除失败");
       }
     } catch (error) {
-      message.error('删除失败')
+      message.error("删除失败");
     }
-  }
+  };
 
   // 从接口获取社区数据
   useEffect(() => {
-    loadCommunities()
-  }, [loadCommunities])
+    loadCommunities();
+  }, [loadCommunities]);
 
   const handleCreateCommunity = () => {
     window.open(
-      'https://kaiyuanshe.feishu.cn/share/base/form/shrcnogj5LPzlaiUkFaKpVbxNXe',
-      '_blank'
-    )
-  }
+      "https://kaiyuanshe.feishu.cn/share/base/form/shrcnogj5LPzlaiUkFaKpVbxNXe",
+      "_blank",
+    );
+  };
 
   const handleCityClick = (city: Community) => {
-    console.log('点击城市:', city)
+    console.log("点击城市:", city);
     // 跳转到社区详情页
-    router.push(`/community/${city.ID}`)
-  }
+    router.push(`/community/${city.ID}`);
+  };
 
   const handleAddCommunity = () => {
-    router.push('/community/new')
-  }
+    router.push("/community/new");
+  };
 
   if (loading) {
     return (
       <div className={styles.loadingContainer}>
         <Spin size="large" />
-        <div className={styles.loadingText}>加载社区数据中...</div>
+        <div className={styles.loadingText}>
+          <LocalizedText>{"加载社区数据中..."}</LocalizedText>
+        </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -172,61 +177,79 @@ const CommunityPage: React.FC = () => {
         </div>
         <div className={styles.titleSection}>
           <div className={styles.titleContainer}>
-            <h1 className={styles.title}>开源社城市社区</h1>
+            <h1 className={styles.title}>
+              <LocalizedText>{"开源社城市社区"}</LocalizedText>
+            </h1>
             <div className={styles.titleBadge}>KCC</div>
           </div>
           <div className={styles.subtitle}>
             <Users size={18} />
-            <span>连接全球开源开发者，共建技术未来</span>
+            <span>
+              <LocalizedText>
+                {"连接全球开源开发者，共建技术未来"}
+              </LocalizedText>
+            </span>
           </div>
           <div className={styles.statsBar}>
             <div className={styles.stat}>
               <span className={styles.statNumber}>{stats.cityCount}+</span>
-              <span className={styles.statLabel}>活跃城市</span>
+              <span className={styles.statLabel}>
+                <LocalizedText>{"活跃城市"}</LocalizedText>
+              </span>
             </div>
             <div className={styles.statDivider}></div>
             <div className={styles.stat}>
               <span className={styles.statNumber}>{stats.developerCount}+</span>
-              <span className={styles.statLabel}>开发者</span>
+              <span className={styles.statLabel}>
+                <LocalizedText>{"开发者"}</LocalizedText>
+              </span>
             </div>
             <div className={styles.statDivider}></div>
             <div className={styles.stat}>
               <span className={styles.statNumber}>{stats.projectCount}+</span>
-              <span className={styles.statLabel}>项目</span>
+              <span className={styles.statLabel}>
+                <LocalizedText>{"项目"}</LocalizedText>
+              </span>
             </div>
           </div>
         </div>
-
       </div>
 
       <div className={styles.content}>
         <div className={styles.citiesSection}>
           <div className={styles.sectionHeader}>
-
             <h2 className={styles.sectionTitle}>
               <Building2 size={24} />
-              <span>社区分布</span>
+              <span>
+                <LocalizedText>{"社区分布"}</LocalizedText>
+              </span>
             </h2>
-            {status === 'authenticated' && permissions.includes('event:write') && (
-              <div className={styles.addCommunity}>
-                <Button
-                  type="primary"
-                  className={styles.addCommunityButton}
-                  onClick={handleAddCommunity}
-                >
-                  <Plus size={18} />
-                  添加社区
-                </Button>
-              </div>
-            )}
+            {status === "authenticated" &&
+              permissions.includes("event:write") && (
+                <div className={styles.addCommunity}>
+                  <Button
+                    type="primary"
+                    className={styles.addCommunityButton}
+                    onClick={handleAddCommunity}
+                  >
+                    <Plus size={18} />
+                    <LocalizedText>{"添加社区"}</LocalizedText>
+                  </Button>
+                </div>
+              )}
           </div>
 
           {cities.length === 0 ? (
             <div className={styles.emptyState}>
               <Building2 size={48} />
-              <h3>暂无社区数据</h3>
-              <p>还没有社区创建，快来创建第一个社区吧！</p>
-
+              <h3>
+                <LocalizedText>{"暂无社区数据"}</LocalizedText>
+              </h3>
+              <p>
+                <LocalizedText>
+                  {"还没有社区创建，快来创建第一个社区吧！"}
+                </LocalizedText>
+              </p>
             </div>
           ) : (
             <div className={styles.citiesGrid}>
@@ -240,42 +263,46 @@ const CommunityPage: React.FC = () => {
                   <div className={styles.cardGlow}></div>
 
                   {/* 编辑和删除按钮 */}
-                  {status === 'authenticated' && permissions.includes('event:write') && (
-
-                    <div className={styles.cardActions}>
-                      <Button
-                        type="text"
-                        icon={<Edit size={14} />}
-                        className={styles.editBtn}
-                        onClick={(e) => {
-                          e.stopPropagation()
-                          handleEditCity(city)
-                        }}
-                        title="编辑"
-                      />
-                      <Popconfirm
-                        title="删除社区"
-                        description={`确定要删除 ${city.city} 社区吗？此操作不可恢复。`}
-                        onConfirm={(e) => {
-                          e?.stopPropagation()
-                          handleDeleteCity(city)
-                        }}
-                        onCancel={(e) => {
-                          e?.stopPropagation()
-                        }}
-                        okText="确认删除"
-                        cancelText="取消"
-                        okType="danger"
-                      >
+                  {status === "authenticated" &&
+                    permissions.includes("event:write") && (
+                      <div className={styles.cardActions}>
                         <Button
                           type="text"
-                          icon={<Trash2 size={14} />}
-                          className={styles.deleteBtn}
-                          onClick={(e) => e.stopPropagation()}
-                          title="删除"
+                          icon={<Edit size={14} />}
+                          className={styles.editBtn}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditCity(city);
+                          }}
+                          title={translateUiText("编辑")}
                         />
-                      </Popconfirm>
-                    </div>)}
+
+                        <Popconfirm
+                          title={translateUiText("删除社区")}
+                          description={translateUiText(
+                            `确定要删除 ${city.city} 社区吗？此操作不可恢复。`,
+                          )}
+                          onConfirm={(e) => {
+                            e?.stopPropagation();
+                            handleDeleteCity(city);
+                          }}
+                          onCancel={(e) => {
+                            e?.stopPropagation();
+                          }}
+                          okText={translateUiText("确认删除")}
+                          cancelText={translateUiText("取消")}
+                          okType="danger"
+                        >
+                          <Button
+                            type="text"
+                            icon={<Trash2 size={14} />}
+                            className={styles.deleteBtn}
+                            onClick={(e) => e.stopPropagation()}
+                            title={translateUiText("删除")}
+                          />
+                        </Popconfirm>
+                      </div>
+                    )}
                   <div className={styles.cityLogo}>
                     <div className={styles.coverLogo}>
                       {city.cover ? (
@@ -283,18 +310,18 @@ const CommunityPage: React.FC = () => {
                           src={city.cover}
                           alt={city.city}
                           className={styles.coverImage}
-                          onError={e => {
+                          onError={(e) => {
                             // 图片加载失败时显示默认图标
-                            e.currentTarget.style.display = 'none'
+                            e.currentTarget.style.display = "none";
                             e.currentTarget.nextElementSibling?.classList.remove(
-                              styles.hidden
-                            )
+                              styles.hidden,
+                            );
                           }}
                         />
                       ) : null}
                       {/* 默认图标 */}
                       <div
-                        className={`${styles.standardLogo} ${city.cover ? styles.hidden : ''}`}
+                        className={`${styles.standardLogo} ${city.cover ? styles.hidden : ""}`}
                       >
                         <div className={styles.logoPattern}>
                           <div className={styles.logoLines}>
@@ -313,7 +340,9 @@ const CommunityPage: React.FC = () => {
                       <span>{city.city}</span>
                       <Globe size={14} className={styles.internationalIcon} />
                     </div>
-                    <div className={styles.cityStatus}>活跃社区</div>
+                    <div className={styles.cityStatus}>
+                      <LocalizedText>{"活跃社区"}</LocalizedText>
+                    </div>
                     {city.intro && (
                       <div className={styles.cityIntro}>{city.intro}</div>
                     )}
@@ -333,22 +362,34 @@ const CommunityPage: React.FC = () => {
             <div className={styles.actionIcon}>
               <Sparkles size={32} />
             </div>
-            <h3 className={styles.actionTitle}>加入我们的开源社区</h3>
+            <h3 className={styles.actionTitle}>
+              <LocalizedText>{"加入我们的开源社区"}</LocalizedText>
+            </h3>
             <p className={styles.actionDescription}>
-              与全球顶尖开发者一起构建更好的开源生态系统，分享知识，共同成长
+              <LocalizedText>
+                {
+                  "与全球顶尖开发者一起构建更好的开源生态系统，分享知识，共同成长"
+                }
+              </LocalizedText>
             </p>
             <div className={styles.actionFeatures}>
               <div className={styles.feature}>
                 <Users size={16} />
-                <span>技术交流</span>
+                <span>
+                  <LocalizedText>{"技术交流"}</LocalizedText>
+                </span>
               </div>
               <div className={styles.feature}>
                 <Building2 size={16} />
-                <span>项目协作</span>
+                <span>
+                  <LocalizedText>{"项目协作"}</LocalizedText>
+                </span>
               </div>
               <div className={styles.feature}>
                 <Globe size={16} />
-                <span>全球网络</span>
+                <span>
+                  <LocalizedText>{"全球网络"}</LocalizedText>
+                </span>
               </div>
             </div>
             <Button
@@ -358,14 +399,15 @@ const CommunityPage: React.FC = () => {
               onClick={handleCreateCommunity}
             >
               <Sparkles size={18} />
-              KCC 社区创建申请
+              <LocalizedText>{"KCC 社区创建申请"}</LocalizedText>
+
               <ArrowRight size={18} />
             </Button>
           </div>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CommunityPage
+export default CommunityPage;

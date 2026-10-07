@@ -1,60 +1,73 @@
-import React, { useState, useMemo } from 'react'
-import { Dropdown, type MenuProps } from 'antd'
-import { ChevronDown } from 'lucide-react'
-import VolunteerProfile from '../../../components/volunteer/VolunteerProfile'
-import { volunteers } from '../../../data/volunteers'
-import styles from './index.module.css'
+import React, { useState, useMemo } from "react";
+import { Dropdown, type MenuProps } from "antd";
+import { ChevronDown } from "lucide-react";
+import VolunteerProfile from "../../../components/volunteer/VolunteerProfile";
+import { volunteers } from "../../../data/volunteers";
+import styles from "./index.module.css";
+import LocalizedText from "@/components/LocalizedText";
 
 export default function VolunteerPage() {
   const availableYears = useMemo(() => {
-    const years = Array.from(new Set(volunteers.map(v => v.awardDate.substring(0, 4))))
-    return years.sort((a, b) => parseInt(b) - parseInt(a))
-  }, [])
+    const years = Array.from(
+      new Set(volunteers.map((v) => v.awardDate.substring(0, 4))),
+    );
+    return years.sort((a, b) => parseInt(b) - parseInt(a));
+  }, []);
 
-  const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || '2024')
+  const [selectedYear, setSelectedYear] = useState<string>(
+    availableYears[0] || "2024",
+  );
 
-  const yearMenuItems: MenuProps['items'] = availableYears.map(year => ({
+  const yearMenuItems: MenuProps["items"] = availableYears.map((year) => ({
     key: year,
     label: year,
-    onClick: () => setSelectedYear(year)
-  }))
+    onClick: () => setSelectedYear(year),
+  }));
 
   const filteredVolunteers = useMemo(() => {
-    return volunteers.filter(v => v.awardDate.startsWith(selectedYear))
-  }, [selectedYear])
+    return volunteers.filter((v) => v.awardDate.startsWith(selectedYear));
+  }, [selectedYear]);
 
   return (
     <div className={styles.container}>
       <div className={styles.contentWrapper}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>年度优秀志愿者</h1>
+          <h1 className={styles.title}>
+            <LocalizedText>{"年度优秀志愿者"}</LocalizedText>
+          </h1>
           <p className={styles.subtitle}>
-            致敬那些为开源社区无私奉献的优秀志愿者们，他们的付出推动着开源精神的传承与发展
+            <LocalizedText>
+              {
+                "致敬那些为开源社区无私奉献的优秀志愿者们，他们的付出推动着开源精神的传承与发展"
+              }
+            </LocalizedText>
           </p>
         </div>
 
         <div className={styles.statsBar}>
           <div className={styles.statItem}>
             <div className={styles.statNumber}>{filteredVolunteers.length}</div>
-            <div className={styles.statLabel}>优秀志愿者</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"优秀志愿者"}</LocalizedText>
+            </div>
           </div>
           <div className={styles.statItem}>
-            <Dropdown 
+            <Dropdown
               menu={{ items: yearMenuItems }}
-              trigger={['click','hover']}
+              trigger={["click", "hover"]}
             >
               <div className={styles.yearSelect}>
                 <span>{selectedYear}</span>
                 <ChevronDown size={28} />
               </div>
             </Dropdown>
-            <div className={styles.statLabel}>年度表彰</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"年度表彰"}</LocalizedText>
+            </div>
           </div>
-         
         </div>
 
         <div className={styles.volunteersSection}>
-         
           <div className={styles.volunteersGrid}>
             {filteredVolunteers.map((volunteer, index) => (
               <VolunteerProfile
@@ -69,5 +82,5 @@ export default function VolunteerPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

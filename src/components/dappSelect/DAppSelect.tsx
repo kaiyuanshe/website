@@ -1,6 +1,7 @@
-import { Select } from 'antd';
-import { DAppOption } from './DAppOption';
-import { useDAppSearch } from './hooks/useDAppSearch';
+import { Select } from "antd";
+import { DAppOption } from "./DAppOption";
+import { useDAppSearch } from "./hooks/useDAppSearch";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { Option } = Select;
 
@@ -23,12 +24,9 @@ export default function DAppSelect({
   loading = false,
   className,
 }: DAppSelectProps) {
-  const {
-    dappList,
-    dappLoading,
-    dappSearchKeyword,
-    handleDappSearch,
-  } = useDAppSearch();
+  const { translateText: translateUiText } = useTranslation();
+  const { dappList, dappLoading, dappSearchKeyword, handleDappSearch } =
+    useDAppSearch();
 
   return (
     <Select
@@ -42,16 +40,16 @@ export default function DAppSelect({
       placeholder={placeholder}
       notFoundContent={
         dappLoading
-          ? '加载中...'
+          ? translateUiText("加载中...")
           : dappSearchKeyword
             ? `未找到包含"${dappSearchKeyword}"的DApp`
-            : '暂无数据'
+            : "暂无数据"
       }
       loading={dappLoading || loading}
       disabled={disabled}
       defaultActiveFirstOption={false}
       optionLabelProp="label"
-      styles={{ popup: { root: { maxHeight: '300px' } } }}
+      styles={{ popup: { root: { maxHeight: "300px" } } }}
       className={className}
     >
       {dappList.map((dapp) => (

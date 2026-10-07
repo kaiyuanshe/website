@@ -9,6 +9,7 @@ import {
   ImageOff,
 } from "lucide-react";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import styles from "./Carousel.module.css";
 import { useTranslation } from "../../../hooks/useTranslation";
 import AsyncContentState from "@/components/base/AsyncContentState";
@@ -26,6 +27,7 @@ type ArticleItem = {
   ID: number;
   title?: string;
   cover_img?: string;
+  source_link?: string;
 };
 
 type CarouselImage = {
@@ -36,6 +38,8 @@ type CarouselImage = {
 };
 
 const CLOUDINARY_HOSTNAME = "res.cloudinary.com";
+const COSCON_26_SOURCE_LINK =
+  "https://mp.weixin.qq.com/s/CeQvvigdYl94Nav8TU5fbA";
 
 function getCloudinaryImageUrl(src: string, transformation: string) {
   try {
@@ -75,6 +79,7 @@ export default function Carousel({
   onRetry: () => void;
 }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const [selectedImage, setSelectedImage] = useState<CarouselImage | null>(
     null,
   );
@@ -100,10 +105,21 @@ export default function Carousel({
         alt: article.title,
         detailUrl: `/blogs/${article.ID}`,
         openInNewTab: false,
+        sourceLink: article.source_link,
       }))
       .filter((image) => Boolean(image.src));
 
-    return [...eventImages, ...articleImages];
+    const featuredArticle = articleImages.find(
+      (image) => image.sourceLink === COSCON_26_SOURCE_LINK,
+    );
+
+    return featuredArticle
+      ? [
+          featuredArticle,
+          ...eventImages,
+          ...articleImages.filter((image) => image !== featuredArticle),
+        ]
+      : [...eventImages, ...articleImages];
   }, [events, articles]);
 
   const checkScrollPosition = () => {
@@ -207,7 +223,7 @@ export default function Carousel({
       if (selectedImage.openInNewTab) {
         window.open(selectedImage.detailUrl, "_blank");
       } else {
-        window.location.href = selectedImage.detailUrl;
+        void router.push(selectedImage.detailUrl);
       }
     }
   };

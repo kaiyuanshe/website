@@ -26,6 +26,8 @@ type CreateEventRequest struct {
 	TopicCollectionLink  string   `json:"topic_collection_link"`
 	CoursewareSubmitLink string   `json:"courseware_submit_link"`
 	RegistrationLink     string   `json:"registration_link"`
+	Locale               string   `json:"locale"`
+	TranslationOf        *uint    `json:"translation_of"`
 }
 
 type QueryEventsResponse struct {
@@ -53,6 +55,8 @@ type UpdateEventRequest struct {
 	TopicCollectionLink  string   `json:"topic_collection_link"`
 	CoursewareSubmitLink string   `json:"courseware_submit_link"`
 	RegistrationLink     string   `json:"registration_link"`
+	Locale               string   `json:"locale"`
+	TranslationOf        *uint    `json:"translation_of"`
 }
 
 type UpdateEventPublishStatusRequest struct {
@@ -168,18 +172,20 @@ type GetUserResponseV2 struct {
 
 // article
 type CreateArticleRequest struct {
-	Title      string   `json:"title" binding:"required"`
-	Desc       string   `json:"desc" binding:"required"`
-	Content    string   `json:"content" binding:"required"`
-	Category   string   `json:"category" binding:"required"`
-	License    string   `json:"license"`
-	SourceLink string   `json:"source_link"`
-	SourceType string   `json:"source_type"`
-	CoverImg   string   `json:"cover_img" binding:"required"`
-	Tags       []string `json:"tags"`
-	Author     string   `json:"author" binding:"required"`
-	Translator string   `json:"translator"`
-	Editor     string   `json:"editor"`
+	Title         string   `json:"title" binding:"required"`
+	Desc          string   `json:"desc" binding:"required"`
+	Content       string   `json:"content" binding:"required"`
+	Category      string   `json:"category" binding:"required"`
+	License       string   `json:"license"`
+	SourceLink    string   `json:"source_link"`
+	SourceType    string   `json:"source_type"`
+	CoverImg      string   `json:"cover_img" binding:"required"`
+	Tags          []string `json:"tags"`
+	Author        string   `json:"author" binding:"required"`
+	Translator    string   `json:"translator"`
+	Editor        string   `json:"editor"`
+	Locale        string   `json:"locale"`
+	TranslationOf *uint    `json:"translation_of"`
 }
 
 type QueryArticlesResponse struct {
@@ -197,17 +203,19 @@ type QueryBlogsResponse struct {
 }
 
 type UpdateArticleRequest struct {
-	Title      string   `json:"title" binding:"required"`
-	Desc       string   `json:"desc" binding:"required"`
-	Content    string   `json:"content" binding:"required"`
-	Category   string   `json:"category" binding:"required"`
-	License    string   `json:"license"`
-	SourceLink string   `json:"source_link"`
-	CoverImg   string   `json:"cover_img" binding:"required"`
-	Tags       []string `json:"tags"`
-	Author     string   `json:"author" binding:"required"`
-	Translator string   `json:"translator"`
-	Editor     string   `json:"editor"`
+	Title         string   `json:"title" binding:"required"`
+	Desc          string   `json:"desc" binding:"required"`
+	Content       string   `json:"content" binding:"required"`
+	Category      string   `json:"category" binding:"required"`
+	License       string   `json:"license"`
+	SourceLink    string   `json:"source_link"`
+	CoverImg      string   `json:"cover_img" binding:"required"`
+	Tags          []string `json:"tags"`
+	Author        string   `json:"author" binding:"required"`
+	Translator    string   `json:"translator"`
+	Editor        string   `json:"editor"`
+	Locale        string   `json:"locale"`
+	TranslationOf *uint    `json:"translation_of"`
 }
 
 type UpdateBlogPublishStatusRequest struct {
@@ -381,11 +389,13 @@ type SpeakerRequest struct {
 
 // Community
 type CreateCommunityRequest struct {
-	City         string `json:"city" binding:"required"`
-	Intro        string `json:"intro" binding:"required"`
-	Cover        string `json:"cover" binding:"required"`
-	RegisterLink string `json:"register_link" binging:"required"`
-	StartDate    string `json:"start_date" binging:"required"`
+	City          string `json:"city" binding:"required"`
+	Intro         string `json:"intro" binding:"required"`
+	Cover         string `json:"cover" binding:"required"`
+	RegisterLink  string `json:"register_link" binging:"required"`
+	StartDate     string `json:"start_date" binging:"required"`
+	Locale        string `json:"locale"`
+	TranslationOf *uint  `json:"translation_of"`
 }
 
 type QueryCommunityResponse struct {
@@ -396,11 +406,13 @@ type QueryCommunityResponse struct {
 }
 
 type UpdateCommunityRequest struct {
-	City         string `json:"city" binding:"required"`
-	Intro        string `json:"intro" binding:"required"`
-	Cover        string `json:"cover" binding:"required"`
-	RegisterLink string `json:"register_link" binging:"required"`
-	StartDate    string `json:"start_date" binging:"required"`
+	City          string `json:"city" binding:"required"`
+	Intro         string `json:"intro" binding:"required"`
+	Cover         string `json:"cover" binding:"required"`
+	RegisterLink  string `json:"register_link" binging:"required"`
+	StartDate     string `json:"start_date" binging:"required"`
+	Locale        string `json:"locale"`
+	TranslationOf *uint  `json:"translation_of"`
 }
 
 type CreateMemberRequest struct {

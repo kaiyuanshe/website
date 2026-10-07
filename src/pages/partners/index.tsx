@@ -1,179 +1,203 @@
-import React, { useState, useMemo } from 'react'
-import Image from 'next/image'
-import { Dropdown, type MenuProps } from 'antd'
-import { ChevronDown } from 'lucide-react'
-import styles from './index.module.css'
-import { Partner, partnersRawData, levelOrder, organizePartnersByLevel } from '@/data/partners'
-
+import React, { useState, useMemo } from "react";
+import Image from "next/image";
+import { Dropdown, type MenuProps } from "antd";
+import { ChevronDown } from "lucide-react";
+import styles from "./index.module.css";
+import {
+  Partner,
+  partnersRawData,
+  levelOrder,
+  organizePartnersByLevel,
+} from "@/data/partners";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const PartnersPage: React.FC = () => {
+  const { translateText } = useTranslation();
   // Get available years from data
   const availableYears = useMemo(() => {
-    const years = [...new Set(partnersRawData.map(partner => partner.year))]
-    return years.sort((a, b) => parseInt(b) - parseInt(a)) // Sort descending (newest first)
-  }, [])
+    const years = [...new Set(partnersRawData.map((partner) => partner.year))];
+    return years.sort((a, b) => parseInt(b) - parseInt(a)); // Sort descending (newest first)
+  }, []);
 
   // Set default year to the latest year
-  const [selectedYear, setSelectedYear] = useState<string>(availableYears[0] || '2024')
-  const [selectedLevel, setSelectedLevel] = useState<string>('全部')
+  const [selectedYear, setSelectedYear] = useState<string>(
+    availableYears[0] || "2024",
+  );
+  const [selectedLevel, setSelectedLevel] = useState<string>("全部");
 
   // Filter data by selected year and organize by level
   const yearFilteredData = useMemo(() => {
-    return partnersRawData.filter(partner => partner.year === selectedYear)
-  }, [selectedYear])
+    return partnersRawData.filter((partner) => partner.year === selectedYear);
+  }, [selectedYear]);
 
   const partnersData = useMemo(() => {
-    return organizePartnersByLevel(yearFilteredData)
-  }, [yearFilteredData])
+    return organizePartnersByLevel(yearFilteredData);
+  }, [yearFilteredData]);
 
   const availableLevels = useMemo(() => {
-    return levelOrder.filter(level => partnersData[level] && partnersData[level].length > 0)
-  }, [partnersData])
+    return levelOrder.filter(
+      (level) => partnersData[level] && partnersData[level].length > 0,
+    );
+  }, [partnersData]);
 
-  const levelMenuItems: MenuProps['items'] = [
+  const levelMenuItems: MenuProps["items"] = [
     {
-      key: '全部',
-      label: '全部',
-      onClick: () => setSelectedLevel('全部')
+      key: "全部",
+      label: translateText("全部"),
+      onClick: () => setSelectedLevel("全部"),
     },
-    ...availableLevels.map(level => ({
+    ...availableLevels.map((level) => ({
       key: level,
-      label: level,
-      onClick: () => setSelectedLevel(level)
-    }))
-  ]
+      label: translateText(level),
+      onClick: () => setSelectedLevel(level),
+    })),
+  ];
 
-  const yearMenuItems: MenuProps['items'] = availableYears.map(year => ({
+  const yearMenuItems: MenuProps["items"] = availableYears.map((year) => ({
     key: year,
     label: year,
-    onClick: () => setSelectedYear(year)
-  }))
+    onClick: () => setSelectedYear(year),
+  }));
 
   const filteredPartners = useMemo(() => {
-    if (selectedLevel === '全部') {
-      const allPartners: Partner[] = []
-      levelOrder.forEach(level => {
+    if (selectedLevel === "全部") {
+      const allPartners: Partner[] = [];
+      levelOrder.forEach((level) => {
         if (partnersData[level]) {
-          allPartners.push(...partnersData[level])
+          allPartners.push(...partnersData[level]);
         }
-      })
-      return allPartners
+      });
+      return allPartners;
     } else {
-      return partnersData[selectedLevel] || []
+      return partnersData[selectedLevel] || [];
     }
-  }, [selectedLevel, partnersData])
+  }, [selectedLevel, partnersData]);
 
   const renderPartnerCard = (partner: Partner) => (
-    <div key={partner.title} className={`${styles.partnerCard} ${!partner.tag ? styles.partnerCardNoTag : ''}`}>
+    <div
+      key={partner.title}
+      className={`${styles.partnerCard} ${!partner.tag ? styles.partnerCardNoTag : ""}`}
+    >
       <div className={styles.partnerLogoContainer}>
         {partner.link ? (
-          <a 
-            href={partner.link} 
-            target="_blank" 
+          <a
+            href={partner.link}
+            target="_blank"
             rel="noopener noreferrer"
             className={styles.partnerLink}
           >
-            <Image 
-              src={partner.logo} 
-              alt={partner.organization} 
+            <Image
+              src={partner.logo}
+              alt={partner.organization}
               title={partner.title}
               className={styles.partnerLogo}
               width={100}
               height={80}
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: "contain" }}
             />
           </a>
         ) : (
-          <Image 
-            src={partner.logo} 
-            alt={partner.organization} 
+          <Image
+            src={partner.logo}
+            alt={partner.organization}
             title={partner.title}
             className={styles.partnerLogo}
             width={100}
             height={80}
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: "contain" }}
           />
         )}
       </div>
       {partner.tag && (
-        <div className={styles.partnerTag}>
-          {partner.tag}
-        </div>
+        <div className={styles.partnerTag}>{translateText(partner.tag)}</div>
       )}
-      <div className={styles.partnerTitle}>
-        {partner.title}
-      </div>
+      <div className={styles.partnerTitle}>{translateText(partner.title)}</div>
     </div>
-  )
+  );
 
   const renderPartnerSection = (level: string, partners: Partner[]) => {
-    if (!partners || partners.length === 0) return null
-    
-    const isHighTierSponsor = level === '战略合作' || level === '白金合作'
-    const gridClassName = isHighTierSponsor ? styles.singleRowGrid : styles.partnersGrid
-    
+    if (!partners || partners.length === 0) return null;
+
+    const isHighTierSponsor = level === "战略合作" || level === "白金合作";
+    const gridClassName = isHighTierSponsor
+      ? styles.singleRowGrid
+      : styles.partnersGrid;
+
     return (
       <section key={level} className={styles.partnerSection}>
-        <h3 className={styles.sectionTitle}>{level}</h3>
-        <div className={gridClassName}>
-          {partners.map(renderPartnerCard)}
-        </div>
+        <h3 className={styles.sectionTitle}>{translateText(level)}</h3>
+        <div className={gridClassName}>{partners.map(renderPartnerCard)}</div>
       </section>
-    )
-  }
+    );
+  };
 
   return (
     <div className={`${styles.container} nav-t-top`}>
       <div className={styles.content}>
         <div className={styles.titleSection}>
-          <h1 className={styles.title}>合作伙伴</h1>
+          <h1 className={styles.title}>
+            <LocalizedText>{"合作伙伴"}</LocalizedText>
+          </h1>
           <p className={styles.subtitle}>
-            感谢所有合作伙伴对开源社的大力支持，共同推动开源生态的发展与繁荣
+            <LocalizedText>
+              {
+                "感谢所有合作伙伴对开源社的大力支持，共同推动开源生态的发展与繁荣"
+              }
+            </LocalizedText>
           </p>
         </div>
 
         <div className={styles.statsBar}>
-         
           <div className={styles.statItem}>
-            <Dropdown 
+            <Dropdown
               menu={{ items: yearMenuItems }}
-              trigger={['click','hover']}
+              trigger={["click", "hover"]}
             >
               <div className={styles.levelSelect}>
                 <span>{selectedYear}</span>
                 <ChevronDown size={26} />
               </div>
             </Dropdown>
-            <div className={styles.statLabel}>年份筛选</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"年份筛选"}</LocalizedText>
+            </div>
           </div>
           <div className={styles.statItem}>
-            <Dropdown 
+            <Dropdown
               menu={{ items: levelMenuItems }}
-              trigger={['click','hover']}
+              trigger={["click", "hover"]}
             >
               <div className={styles.levelSelect}>
-                <span>{selectedLevel}</span>
+                <span>{translateText(selectedLevel)}</span>
                 <ChevronDown size={26} />
               </div>
             </Dropdown>
-            <div className={styles.statLabel}>合作级别</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"合作级别"}</LocalizedText>
+            </div>
           </div>
-           <div className={styles.statItem}>
+          <div className={styles.statItem}>
             <div className={styles.statNumber}>{filteredPartners.length}</div>
-            <div className={styles.statLabel}>合作伙伴</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"合作伙伴"}</LocalizedText>
+            </div>
           </div>
           <div className={styles.statItem}>
             <div className={styles.statNumber}>{availableLevels.length}</div>
-            <div className={styles.statLabel}>合作类型</div>
+            <div className={styles.statLabel}>
+              <LocalizedText>{"合作类型"}</LocalizedText>
+            </div>
           </div>
         </div>
 
         <div className={styles.partnersSection}>
-          {selectedLevel === '全部' ? (
+          {selectedLevel === "全部" ? (
             <div className={styles.partnersContainer}>
-              {levelOrder.map(level => {
-                if (!partnersData[level] || partnersData[level].length === 0) return null
-                return renderPartnerSection(level, partnersData[level])
+              {levelOrder.map((level) => {
+                if (!partnersData[level] || partnersData[level].length === 0)
+                  return null;
+                return renderPartnerSection(level, partnersData[level]);
               })}
             </div>
           ) : (
@@ -184,7 +208,7 @@ const PartnersPage: React.FC = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default PartnersPage
+export default PartnersPage;

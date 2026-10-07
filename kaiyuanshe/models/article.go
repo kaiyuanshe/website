@@ -27,6 +27,8 @@ type Article struct {
 	PublishTime   *time.Time     `json:"publish_time"`
 	PublishStatus uint           `gorm:"default:1" json:"publish_status"` // 0:全部 1:待审核 2:已发布
 	ViewCount     uint           `gorm:"default:0" json:"view_count"`
+	Locale        string         `gorm:"size:10;not null;default:zh-CN;index;uniqueIndex:idx_article_translation_locale" json:"locale"`
+	TranslationOf *uint          `gorm:"index;uniqueIndex:idx_article_translation_locale" json:"translation_of,omitempty"`
 }
 
 func (a *Article) Create() error {
@@ -40,6 +42,36 @@ func (a *Article) GetByID(id uint) error {
 
 	// 更新浏览量（+1）
 	// TODO: handle in controller
+	return db.Model(a).Update("view_count", gorm.Expr("view_count + ?", 1)).Error
+}
+
+// GetLocalizedByID resolves a linked translation for locale when one exists.
+// When it does not, the requested record is returned as a clear fallback.
+func (a *Article) GetLocalizedByID(id uint, locale string) error {
+	var original Article
+	if err := db.Preload("Publisher").First(&original, id).Error; err != nil {
+		return err
+	}
+
+	resolved := original
+	if original.Locale != locale {
+		rootID := original.ID
+		if original.TranslationOf != nil {
+			rootID = *original.TranslationOf
+		}
+
+		var translation Article
+		err := db.Preload("Publisher").
+			Where("locale = ? AND (id = ? OR translation_of = ?)", locale, rootID, rootID).
+			First(&translation).Error
+		if err == nil {
+			resolved = translation
+		} else if !errors.Is(err, gorm.ErrRecordNotFound) {
+			return err
+		}
+	}
+
+	*a = resolved
 	return db.Model(a).Update("view_count", gorm.Expr("view_count + ?", 1)).Error
 }
 
@@ -65,6 +97,7 @@ type ArticleFilter struct {
 	OrderDesc     bool   // 是否按发布时间排序
 	PublishStatus int    // 发布状态
 	PublisherId   int
+	Locale        string
 	Page          int // 当前页码，从 1 开始
 	PageSize      int // 每页数量，建议默认 10
 }
@@ -94,6 +127,21 @@ func QueryArticles(filter ArticleFilter) ([]Article, int64, error) {
 
 	if filter.PublisherId != 0 {
 		query = query.Where("publisher_id = ?", filter.PublisherId)
+	}
+
+	if filter.Locale != "" {
+		query = query.Where(
+			`articles.locale = ? OR (
+				articles.translation_of IS NULL AND NOT EXISTS (
+					SELECT 1 FROM articles translations
+					WHERE translations.translation_of = articles.id
+					AND translations.locale = ?
+					AND translations.deleted_at IS NULL
+				)
+			)`,
+			filter.Locale,
+			filter.Locale,
+		)
 	}
 
 	// 统计总数（不加 limit 和 offset）

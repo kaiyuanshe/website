@@ -1,8 +1,10 @@
-import { useState } from 'react';
-import { Modal, Upload, Button,  App as AntdApp, Image } from 'antd';
-import { Camera, Upload as UploadIcon } from 'lucide-react';
-import type { UploadFile, UploadProps } from 'antd';
-import { uploadImgToCloud } from '@/lib/cloudinary';
+import { useState } from "react";
+import { Modal, Upload, Button, App as AntdApp, Image } from "antd";
+import { Camera, Upload as UploadIcon } from "lucide-react";
+import type { UploadFile, UploadProps } from "antd";
+import { uploadImgToCloud } from "@/lib/cloudinary";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AvatarEditProps {
   currentAvatar?: string;
@@ -15,34 +17,35 @@ export default function AvatarEdit({
   userName,
   onSave,
 }: AvatarEditProps) {
-     const { message } = AntdApp.useApp();
+  const { translateText: translateUiText } = useTranslation();
+  const { message } = AntdApp.useApp();
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [previewImage, setPreviewImage] = useState<string>(currentAvatar || '');
+  const [previewImage, setPreviewImage] = useState<string>(currentAvatar || "");
   const [uploading, setUploading] = useState(false);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [currentFile, setCurrentFile] = useState<File | null>(null);
 
-  const handleUploadChange: UploadProps['onChange'] = (info) => {
+  const handleUploadChange: UploadProps["onChange"] = (info) => {
     setFileList(info.fileList);
 
-    if (info.file.status === 'done') {
+    if (info.file.status === "done") {
       // 这里应该设置上传成功后的图片URL
       // setPreviewImage(info.file.response?.url);
-      message.success('图片上传成功');
-    } else if (info.file.status === 'error') {
-      message.error('图片上传失败');
+      message.success("图片上传成功");
+    } else if (info.file.status === "error") {
+      message.error("图片上传失败");
     }
   };
 
   const beforeUpload = (file: File) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+    const isJpgOrPng = file.type === "image/jpeg" || file.type === "image/png";
     if (!isJpgOrPng) {
-      message.error('只能上传 JPG/PNG 格式的图片!');
+      message.error("只能上传 JPG/PNG 格式的图片!");
       return false;
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error('图片大小不能超过 2MB!');
+      message.error("图片大小不能超过 2MB!");
       return false;
     }
 
@@ -61,7 +64,7 @@ export default function AvatarEdit({
 
   const handleSave = async () => {
     if (!previewImage || !currentFile) {
-      message.error('请先选择头像');
+      message.error("请先选择头像");
       return;
     }
 
@@ -75,11 +78,11 @@ export default function AvatarEdit({
       // 保存上传后的 URL
       await onSave(uploadedUrl);
 
-      message.success('头像修改成功');
+      message.success("头像修改成功");
       setIsModalVisible(false);
     } catch (error) {
-      console.error('头像上传失败:', error);
-      message.error('头像修改失败，请重试');
+      console.error("头像上传失败:", error);
+      message.error("头像修改失败，请重试");
     } finally {
       setUploading(false);
     }
@@ -87,7 +90,7 @@ export default function AvatarEdit({
 
   const handleCancel = () => {
     setIsModalVisible(false);
-    setPreviewImage(currentAvatar || '');
+    setPreviewImage(currentAvatar || "");
     setFileList([]);
     setCurrentFile(null);
   };
@@ -97,9 +100,9 @@ export default function AvatarEdit({
       <div
         onClick={() => setIsModalVisible(true)}
         style={{
-          position: 'relative',
-          cursor: 'pointer',
-          display: 'inline-block',
+          position: "relative",
+          cursor: "pointer",
+          display: "inline-block",
         }}
       >
         {currentAvatar ? (
@@ -110,9 +113,9 @@ export default function AvatarEdit({
             height={80}
             preview={false}
             style={{
-              border: '4px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-              borderRadius: '50%',
+              border: "4px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              borderRadius: "50%",
             }}
             referrerPolicy="no-referrer"
           />
@@ -121,37 +124,37 @@ export default function AvatarEdit({
             style={{
               width: 80,
               height: 80,
-              border: '4px solid rgba(255, 255, 255, 0.2)',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.1)',
-              color: 'white',
-              fontSize: '24px',
+              border: "4px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: "rgba(255, 255, 255, 0.1)",
+              color: "white",
+              fontSize: "24px",
               fontWeight: 600,
             }}
           >
-            {userName ? userName.charAt(0).toUpperCase() : 'U'}
+            {userName ? userName.charAt(0).toUpperCase() : "U"}
           </div>
         )}
 
         {/* 相机图标覆盖层 */}
         <div
           style={{
-            position: 'absolute',
+            position: "absolute",
             bottom: 0,
             right: 0,
             width: 24,
             height: 24,
-            backgroundColor: '#667eea',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            border: '2px solid white',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.15)',
+            backgroundColor: "#667eea",
+            borderRadius: "50%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            border: "2px solid white",
+            boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
           }}
         >
           <Camera size={12} color="white" />
@@ -159,12 +162,12 @@ export default function AvatarEdit({
       </div>
 
       <Modal
-        title="修改头像"
+        title={translateUiText("修改头像")}
         open={isModalVisible}
         onCancel={handleCancel}
         footer={[
           <Button key="cancel" onClick={handleCancel}>
-            取消
+            <LocalizedText>{"取消"}</LocalizedText>
           </Button>,
           <Button
             key="save"
@@ -173,24 +176,24 @@ export default function AvatarEdit({
             onClick={handleSave}
             disabled={!previewImage || !currentFile}
           >
-            保存
+            <LocalizedText>{"保存"}</LocalizedText>
           </Button>,
         ]}
         width={400}
       >
-        <div style={{ textAlign: 'center', padding: '20px 0' }}>
+        <div style={{ textAlign: "center", padding: "20px 0" }}>
           {/* 预览区域 */}
           <div style={{ marginBottom: 24 }}>
             {previewImage ? (
               <Image
                 src={previewImage}
-                alt="预览"
+                alt={translateUiText("预览")}
                 width={120}
                 height={120}
                 preview={false}
                 style={{
-                  borderRadius: '50%',
-                  objectFit: 'cover',
+                  borderRadius: "50%",
+                  objectFit: "cover",
                 }}
                 referrerPolicy="no-referrer"
               />
@@ -199,13 +202,13 @@ export default function AvatarEdit({
                 style={{
                   width: 120,
                   height: 120,
-                  borderRadius: '50%',
-                  border: '2px dashed #d9d9d9',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  margin: '0 auto',
-                  color: '#999',
+                  borderRadius: "50%",
+                  border: "2px dashed #d9d9d9",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto",
+                  color: "#999",
                 }}
               >
                 <UploadIcon size={32} />
@@ -223,18 +226,20 @@ export default function AvatarEdit({
             accept="image/*"
           >
             <Button icon={<UploadIcon size={16} />} style={{ marginBottom: 8 }}>
-              选择图片
+              <LocalizedText>{"选择图片"}</LocalizedText>
             </Button>
           </Upload>
 
           <div
             style={{
-              fontSize: '12px',
-              color: '#999',
+              fontSize: "12px",
+              color: "#999",
               marginTop: 8,
             }}
           >
-            支持 JPG、PNG 格式，文件大小不超过 2MB
+            <LocalizedText>
+              {"支持 JPG、PNG 格式，文件大小不超过 2MB"}
+            </LocalizedText>
           </div>
         </div>
       </Modal>

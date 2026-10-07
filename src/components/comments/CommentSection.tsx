@@ -1,38 +1,46 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import Giscus from '@giscus/react';
-import { Loader2 } from 'lucide-react';
-import styles from './CommentSection.module.css';
+import React, { useState } from "react";
+import Giscus from "@giscus/react";
+import { Loader2 } from "lucide-react";
+import styles from "./CommentSection.module.css";
+import LocalizedText from "@/components/LocalizedText";
 
 interface CommentSectionProps {
   repo: `${string}/${string}`;
   repoId: string;
   category?: string;
   categoryId?: string;
-  mapping?: 'pathname' | 'url' | 'title' | 'og:title' | 'number' | 'specific';
+  mapping?: "pathname" | "url" | "title" | "og:title" | "number" | "specific";
   term?: string;
-  reactionsEnabled?: '0' | '1';
-  emitMetadata?: '0' | '1';
-  inputPosition?: 'top' | 'bottom';
-  theme?: 'light' | 'dark' | 'preferred_color_scheme' | 'transparent_dark' | 'cobalt' | 'noborder_light' | 'noborder_dark';
+  reactionsEnabled?: "0" | "1";
+  emitMetadata?: "0" | "1";
+  inputPosition?: "top" | "bottom";
+  theme?:
+    | "light"
+    | "dark"
+    | "preferred_color_scheme"
+    | "transparent_dark"
+    | "cobalt"
+    | "noborder_light"
+    | "noborder_dark";
   lang?: string;
-  loading?: 'lazy' | 'eager';
+  loading?: "lazy" | "eager";
 }
 
 const CommentSection: React.FC<CommentSectionProps> = ({
-  repo = 'kaiyuanshe/website',
-  repoId = 'R_kgDOQHmDoA',
-  category = 'General',
-  categoryId = 'DIC_kwDOQHmDoM4CxYEV',
-  mapping = 'pathname',
+  repo = "kaiyuanshe/website",
+  repoId = "R_kgDOQHmDoA",
+  category = "General",
+  categoryId = "DIC_kwDOQHmDoM4CxYEV",
+  mapping = "pathname",
   term,
-  reactionsEnabled = '1',
-  emitMetadata = '0',
-  inputPosition = 'bottom',
-  theme = 'preferred_color_scheme',
-  lang = 'zh-CN',
-  loading = 'lazy'
+  reactionsEnabled = "1",
+  emitMetadata = "0",
+  inputPosition = "bottom",
+  theme = "preferred_color_scheme",
+  lang = "zh-CN",
+  loading = "lazy",
 }) => {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,18 +50,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({
     }, 2000);
 
     const handleMessage = (event: MessageEvent) => {
-      if (event.origin !== 'https://giscus.app') return;
+      if (event.origin !== "https://giscus.app") return;
       if (event.data.giscus?.discussion) {
         setIsLoading(false);
         clearTimeout(timer);
       }
     };
 
-    window.addEventListener('message', handleMessage);
+    window.addEventListener("message", handleMessage);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('message', handleMessage);
+      window.removeEventListener("message", handleMessage);
     };
   }, []);
 
@@ -62,10 +70,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       {isLoading && (
         <div className={styles.loading}>
           <Loader2 className="w-6 h-6 animate-spin" />
-          <span>正在加载评论...</span>
+          <span>
+            <LocalizedText>{"正在加载评论..."}</LocalizedText>
+          </span>
         </div>
       )}
-      <div style={{ display: isLoading ? 'none' : 'block' }}>
+      <div style={{ display: isLoading ? "none" : "block" }}>
         <Giscus
           repo={repo}
           repoId={repoId}

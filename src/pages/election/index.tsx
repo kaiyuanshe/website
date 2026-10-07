@@ -1,23 +1,43 @@
-import type React from "react"
+import type React from "react";
 
-import { useState, useRef } from "react"
-import { Select, Button, Card, Collapse, Avatar, Space, Typography, Row, Col } from "antd"
-import { Check, X, Calendar, User, Award, FileText, MessageSquare } from "lucide-react"
-import styles from "./index.module.css"
+import { useState, useRef } from "react";
+import {
+  Select,
+  Button,
+  Card,
+  Collapse,
+  Avatar,
+  Space,
+  Typography,
+  Row,
+  Col,
+} from "antd";
+import {
+  Check,
+  X,
+  Calendar,
+  User,
+  Award,
+  FileText,
+  MessageSquare,
+} from "lucide-react";
+import styles from "./index.module.css";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 interface Candidate {
-  id: string
-  name: string
-  date: string
-  avatar: string
-  position: string
-  nominationReason: string
-  previousContributions: string
-  currentPlatform: string
-  recommendations: string
-  voted: boolean | null
+  id: string;
+  name: string;
+  date: string;
+  avatar: string;
+  position: string;
+  nominationReason: string;
+  previousContributions: string;
+  currentPlatform: string;
+  recommendations: string;
+  voted: boolean | null;
 }
 
 const mockBoardCandidates: Candidate[] = [
@@ -57,7 +77,7 @@ const mockBoardCandidates: Candidate[] = [
     recommendations: "视野开阔，具有前瞻性思维",
     voted: null,
   },
-]
+];
 
 const mockOfficialCandidates: Candidate[] = [
   {
@@ -84,7 +104,7 @@ const mockOfficialCandidates: Candidate[] = [
     recommendations: "技术扎实，乐于分享知识",
     voted: null,
   },
-]
+];
 
 const mockGeneralCandidates: Candidate[] = [
   {
@@ -111,64 +131,89 @@ const mockGeneralCandidates: Candidate[] = [
     recommendations: "表达能力强，善于总结经验",
     voted: null,
   },
-]
+];
 
 export default function ElectionPage() {
-  const [selectedYear, setSelectedYear] = useState<number>(2025)
-  const [boardCandidates, setBoardCandidates] = useState<Candidate[]>(mockBoardCandidates)
-  const [officialCandidates, setOfficialCandidates] = useState<Candidate[]>(mockOfficialCandidates)
-  const [generalCandidates, setGeneralCandidates] = useState<Candidate[]>(mockGeneralCandidates)
-  const [activePhase, setActivePhase] = useState<string>("nomination")
+  const { locale, translateText } = useTranslation();
+  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [boardCandidates, setBoardCandidates] =
+    useState<Candidate[]>(mockBoardCandidates);
+  const [officialCandidates, setOfficialCandidates] = useState<Candidate[]>(
+    mockOfficialCandidates,
+  );
+  const [generalCandidates, setGeneralCandidates] = useState<Candidate[]>(
+    mockGeneralCandidates,
+  );
+  const [activePhase, setActivePhase] = useState<string>("nomination");
 
-  const boardSectionRef = useRef<HTMLDivElement>(null)
-  const officialSectionRef = useRef<HTMLDivElement>(null)
-  const generalSectionRef = useRef<HTMLDivElement>(null)
+  const boardSectionRef = useRef<HTMLDivElement>(null);
+  const officialSectionRef = useRef<HTMLDivElement>(null);
+  const generalSectionRef = useRef<HTMLDivElement>(null);
 
-  const handleVote = (candidateId: string, vote: boolean, section: "board" | "official" | "general") => {
+  const handleVote = (
+    candidateId: string,
+    vote: boolean,
+    section: "board" | "official" | "general",
+  ) => {
     if (section === "board") {
       setBoardCandidates((prev) =>
-        prev.map((candidate) => (candidate.id === candidateId ? { ...candidate, voted: vote } : candidate)),
-      )
+        prev.map((candidate) =>
+          candidate.id === candidateId
+            ? { ...candidate, voted: vote }
+            : candidate,
+        ),
+      );
     } else if (section === "official") {
       setOfficialCandidates((prev) =>
-        prev.map((candidate) => (candidate.id === candidateId ? { ...candidate, voted: vote } : candidate)),
-      )
+        prev.map((candidate) =>
+          candidate.id === candidateId
+            ? { ...candidate, voted: vote }
+            : candidate,
+        ),
+      );
     } else {
       setGeneralCandidates((prev) =>
-        prev.map((candidate) => (candidate.id === candidateId ? { ...candidate, voted: vote } : candidate)),
-      )
+        prev.map((candidate) =>
+          candidate.id === candidateId
+            ? { ...candidate, voted: vote }
+            : candidate,
+        ),
+      );
     }
-  }
+  };
 
   const scrollToSection = (phase: string) => {
-    setActivePhase(phase)
-    let targetRef: React.RefObject<HTMLDivElement> | null = null
+    setActivePhase(phase);
+    let targetRef: React.RefObject<HTMLDivElement> | null = null;
 
     switch (phase) {
       case "nomination":
-        targetRef = boardSectionRef
-        break
+        targetRef = boardSectionRef;
+        break;
       case "member":
-        targetRef = officialSectionRef
-        break
+        targetRef = officialSectionRef;
+        break;
       case "voting":
-        targetRef = generalSectionRef
-        break
+        targetRef = generalSectionRef;
+        break;
     }
 
     if (targetRef?.current) {
-      targetRef.current.scrollIntoView({ behavior: "smooth", block: "start" })
+      targetRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
-  }
+  };
 
-  const years = [2023, 2024, 2025, 2026]
+  const years = [2023, 2024, 2025, 2026];
   const phases = [
     { key: "nomination", label: "理事提名", color: "#faad14" },
     { key: "member", label: "正式成员提名", color: "#1890ff" },
     { key: "voting", label: "选举投票", color: "#f5222d" },
-  ]
+  ];
 
-  const renderCandidateCards = (candidates: Candidate[], section: "board" | "official" | "general") => (
+  const renderCandidateCards = (
+    candidates: Candidate[],
+    section: "board" | "official" | "general",
+  ) => (
     <Row gutter={[24, 24]}>
       {candidates.map((candidate) => (
         <Col xs={24} lg={8} key={candidate.id}>
@@ -181,11 +226,17 @@ export default function ElectionPage() {
             </div>
 
             <div className={styles.candidateInfo}>
-              <Avatar size={120} src={candidate.avatar} className={styles.avatar} />
+              <Avatar
+                size={120}
+                src={candidate.avatar}
+                className={styles.avatar}
+              />
               <Title level={3} className={styles.candidateName}>
                 {candidate.name}
               </Title>
-              <Text className={styles.position}>{candidate.position}</Text>
+              <Text className={styles.position}>
+                {translateText(candidate.position)}
+              </Text>
             </div>
 
             <Collapse
@@ -197,40 +248,54 @@ export default function ElectionPage() {
                   label: (
                     <Space>
                       <FileText size={16} />
-                      提名理由
+                      <LocalizedText>{"提名理由"}</LocalizedText>
                     </Space>
                   ),
-                  children: <Text>{candidate.nominationReason}</Text>,
+
+                  children: (
+                    <Text>{translateText(candidate.nominationReason)}</Text>
+                  ),
                 },
                 {
                   key: "contributions",
                   label: (
                     <Space>
                       <Award size={16} />
-                      上届贡献
+                      <LocalizedText>{"上届贡献"}</LocalizedText>
                     </Space>
                   ),
-                  children: <Text>{candidate.previousContributions}</Text>,
+
+                  children: (
+                    <Text>
+                      {translateText(candidate.previousContributions)}
+                    </Text>
+                  ),
                 },
                 {
                   key: "platform",
                   label: (
                     <Space>
                       <User size={16} />
-                      本届主张
+                      <LocalizedText>{"本届主张"}</LocalizedText>
                     </Space>
                   ),
-                  children: <Text>{candidate.currentPlatform}</Text>,
+
+                  children: (
+                    <Text>{translateText(candidate.currentPlatform)}</Text>
+                  ),
                 },
                 {
                   key: "recommendations",
                   label: (
                     <Space>
                       <MessageSquare size={16} />
-                      推荐语
+                      <LocalizedText>{"推荐语"}</LocalizedText>
                     </Space>
                   ),
-                  children: <Text>{candidate.recommendations}</Text>,
+
+                  children: (
+                    <Text>{translateText(candidate.recommendations)}</Text>
+                  ),
                 },
               ]}
             />
@@ -242,7 +307,7 @@ export default function ElectionPage() {
                 onClick={() => handleVote(candidate.id, true, section)}
                 className={`${styles.voteButton} ${styles.approveButton}`}
               >
-                支持
+                <LocalizedText>{"支持"}</LocalizedText>
               </Button>
               <Button
                 color={candidate.voted === false ? "danger" : "default"}
@@ -251,14 +316,14 @@ export default function ElectionPage() {
                 onClick={() => handleVote(candidate.id, false, section)}
                 className={`${styles.voteButton} ${styles.rejectButton}`}
               >
-                反对
+                <LocalizedText>{"反对"}</LocalizedText>
               </Button>
             </div>
           </Card>
         </Col>
       ))}
     </Row>
-  )
+  );
 
   return (
     <div className={styles.container}>
@@ -269,12 +334,16 @@ export default function ElectionPage() {
             onChange={setSelectedYear}
             size="large"
             style={{ width: 120 }}
-            options={years.map((year) => ({ label: `${year}年`, value: year }))}
+            options={years.map((year) => ({
+              label: locale === "en" ? String(year) : `${year}年`,
+              value: year,
+            }))}
           />
         </div>
 
         <Title level={1} className={styles.title}>
-          {selectedYear} 选举
+          {selectedYear}
+          <LocalizedText>{"选举"}</LocalizedText>
         </Title>
 
         <Space size="middle" className={styles.phaseButtons}>
@@ -283,13 +352,14 @@ export default function ElectionPage() {
               key={phase.key}
               type={activePhase === phase.key ? "primary" : "default"}
               style={{
-                backgroundColor: activePhase === phase.key ? phase.color : undefined,
+                backgroundColor:
+                  activePhase === phase.key ? phase.color : undefined,
                 borderColor: phase.color,
                 color: activePhase === phase.key ? "#fff" : phase.color,
               }}
               onClick={() => scrollToSection(phase.key)}
             >
-              {phase.label}
+              {translateText(phase.label)}
             </Button>
           ))}
         </Space>
@@ -297,24 +367,24 @@ export default function ElectionPage() {
 
       <div className={styles.candidatesSection} ref={boardSectionRef}>
         <Title level={2} className={styles.sectionTitle}>
-          理事候选人
+          <LocalizedText>{"理事候选人"}</LocalizedText>
         </Title>
         {renderCandidateCards(boardCandidates, "board")}
       </div>
 
       <div className={styles.candidatesSection} ref={officialSectionRef}>
         <Title level={2} className={styles.sectionTitle}>
-          正式候选人
+          <LocalizedText>{"正式候选人"}</LocalizedText>
         </Title>
         {renderCandidateCards(officialCandidates, "official")}
       </div>
 
       <div className={styles.candidatesSection} ref={generalSectionRef}>
         <Title level={2} className={styles.sectionTitle}>
-          候选人
+          <LocalizedText>{"候选人"}</LocalizedText>
         </Title>
         {renderCandidateCards(generalCandidates, "general")}
       </div>
     </div>
-  )
+  );
 }

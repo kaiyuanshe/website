@@ -1,14 +1,16 @@
-import React from 'react';
-import { Card, Button, Tooltip, Popconfirm } from 'antd';
-import { Edit, Trash2, Heart, Bookmark, Eye, Check, Plus } from 'lucide-react';
-import { SiX } from 'react-icons/si';
-import Image from 'next/image';
-import dayjs from 'dayjs';
-import { PostType } from '@/types/posts';
-import styles from '../../pages/posts/index.module.css';
+import React from "react";
+import { Card, Button, Tooltip, Popconfirm } from "antd";
+import { Edit, Trash2, Heart, Bookmark, Eye, Check, Plus } from "lucide-react";
+import { SiX } from "react-icons/si";
+import Image from "next/image";
+import dayjs from "dayjs";
+import { PostType } from "@/types/posts";
+import styles from "../../pages/posts/index.module.css";
 
-import { parseMd } from '@/utils/posts';
-import Link from 'next/link';
+import { parseMd } from "@/utils/posts";
+import Link from "next/link";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PostCardProps {
   post: PostType;
@@ -45,14 +47,20 @@ export default function PostCard({
   onEdit,
   onDelete,
 }: PostCardProps) {
+  const { translateText: translateUiText } = useTranslation();
   if (!post) {
     return null;
   }
 
   const user =
-    (post.user as { ID?: number; username?: string; name?: string; avatar?: string }) || {};
-  const userName = user.username || user.name || '未知用户';
-  const userAvatar = user.avatar || '/placeholder.svg';
+    (post.user as {
+      ID?: number;
+      username?: string;
+      name?: string;
+      avatar?: string;
+    }) || {};
+  const userName = user.username || user.name || "未知用户";
+  const userAvatar = user.avatar || "/placeholder.svg";
   const userId = user.ID;
 
   return (
@@ -74,28 +82,29 @@ export default function PostCard({
               </Link>
 
               {/* Follow/Unfollow button overlay */}
-              {isAuthenticated &&
-                userId &&
-                currentUserId !== userId && (
-                  <button
-                    className={`${styles.followButtonOverlay} ${followingState ? styles.following : styles.notFollowing
-                      }`}
-                    onClick={(e) => {
-                      e.stopPropagation(); // ✅ 阻止冒泡，避免触发头像的跳转
-                      onFollow(userId, e);
-                    }}
-                    title={followingState ? "取消关注" : "关注用户"}
-                  >
-                    {followingState ? <Check size={12} /> : <Plus size={12} />}
-                  </button>
-                )}
+              {isAuthenticated && userId && currentUserId !== userId && (
+                <button
+                  className={`${styles.followButtonOverlay} ${followingState ? styles.following : styles.notFollowing}`}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ✅ 阻止冒泡，避免触发头像的跳转
+                    onFollow(userId, e);
+                  }}
+                  title={
+                    followingState
+                      ? translateUiText("取消关注")
+                      : translateUiText("关注用户")
+                  }
+                >
+                  {followingState ? <Check size={12} /> : <Plus size={12} />}
+                </button>
+              )}
             </div>
             <div className={styles.authorInfo}>
               <span className={styles.authorName}>{userName}</span>
               <span className={styles.postDate}>
                 {post.CreatedAt
-                  ? dayjs(post.CreatedAt).format('YYYY-MM-DD HH:mm')
-                  : '未知时间'}
+                  ? dayjs(post.CreatedAt).format("YYYY-MM-DD HH:mm")
+                  : translateUiText("未知时间")}
               </span>
             </div>
           </div>
@@ -109,10 +118,12 @@ export default function PostCard({
                 rel="noopener noreferrer"
                 className={styles.twitterLink}
                 onClick={(e) => e.stopPropagation()}
-                title="查看推文"
+                title={translateUiText("查看推文")}
               >
                 <SiX size={14} />
-                <span className={styles.twitterText}>查看推文</span>
+                <span className={styles.twitterText}>
+                  <LocalizedText>{"查看推文"}</LocalizedText>
+                </span>
               </a>
             )}
             {isOwner && (
@@ -127,11 +138,12 @@ export default function PostCard({
                     onEdit(post);
                   }}
                 />
+
                 <Popconfirm
-                  title="确认删除该帖子吗？"
-                  description="删除后将无法恢复"
-                  okText="删除"
-                  cancelText="取消"
+                  title={translateUiText("确认删除该帖子吗？")}
+                  description={translateUiText("删除后将无法恢复")}
+                  okText={translateUiText("删除")}
+                  cancelText={translateUiText("取消")}
                   okButtonProps={{ danger: true }}
                   onConfirm={(e) => {
                     e?.stopPropagation();
@@ -153,13 +165,13 @@ export default function PostCard({
         </div>
 
         {/* 帖子标题 */}
-        <h3 className={styles.postTitle}>{post.title || '无标题'}</h3>
+        <h3 className={styles.postTitle}>{post.title || "无标题"}</h3>
 
         {/* 帖子描述 */}
         <div className={styles.postDescription}>
           <div
             dangerouslySetInnerHTML={{
-              __html: parseMd(post.description || ''),
+              __html: parseMd(post.description || ""),
             }}
           />
         </div>
@@ -182,7 +194,7 @@ export default function PostCard({
           <div className={styles.interactionSection}>
             {/* 浏览量 */}
             {(post.view_count || 0) > 0 && (
-              <Tooltip title="浏览量" placement="top">
+              <Tooltip title={translateUiText("浏览量")} placement="top">
                 <Button
                   type="text"
                   size="small"
@@ -199,10 +211,10 @@ export default function PostCard({
             <Tooltip
               title={
                 !isAuthenticated
-                  ? '登录后可点赞'
+                  ? translateUiText("登录后可点赞")
                   : likeState
-                    ? '取消点赞'
-                    : '点赞'
+                    ? "取消点赞"
+                    : "点赞"
               }
               placement="top"
             >
@@ -210,10 +222,11 @@ export default function PostCard({
                 type="text"
                 size="small"
                 icon={
-                  <Heart size={14} fill={likeState ? 'currentColor' : 'none'} />
+                  <Heart size={14} fill={likeState ? "currentColor" : "none"} />
                 }
-                className={`${styles.interactionBtn} ${likeState ? styles.liked : ''
-                  } ${!isAuthenticated ? styles.guestBtn : ''}`}
+                className={`${styles.interactionBtn} ${likeState ? styles.liked : ""} ${
+                  !isAuthenticated ? styles.guestBtn : ""
+                }`}
                 onClick={(e) => onLike(post.ID, e)}
               >
                 {likeCount > 0 && <span>{likeCount}</span>}
@@ -224,10 +237,10 @@ export default function PostCard({
             <Tooltip
               title={
                 !isAuthenticated
-                  ? '登录后可收藏'
+                  ? translateUiText("登录后可收藏")
                   : bookmarkState
-                    ? '取消收藏'
-                    : '收藏'
+                    ? "取消收藏"
+                    : "收藏"
               }
               placement="top"
             >
@@ -237,11 +250,12 @@ export default function PostCard({
                 icon={
                   <Bookmark
                     size={14}
-                    fill={bookmarkState ? 'currentColor' : 'none'}
+                    fill={bookmarkState ? "currentColor" : "none"}
                   />
                 }
-                className={`${styles.interactionBtn} ${bookmarkState ? styles.bookmarked : ''
-                  } ${!isAuthenticated ? styles.guestBtn : ''}`}
+                className={`${styles.interactionBtn} ${bookmarkState ? styles.bookmarked : ""} ${
+                  !isAuthenticated ? styles.guestBtn : ""
+                }`}
                 onClick={(e) => onBookmark(post.ID, e)}
               >
                 {favoriteCount > 0 && <span>{favoriteCount}</span>}

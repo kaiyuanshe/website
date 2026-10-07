@@ -1,11 +1,12 @@
-import React from 'react';
-import { Modal } from 'antd';
-import { X, Mail } from 'lucide-react';
-import { FaTwitter, FaGithub, FaLinkedin, FaBlog } from 'react-icons/fa';
-import { SiWechat } from 'react-icons/si';
-import Image from 'next/image';
-import { PersonCardProps } from './PersonCard';
-import styles from './BoardMemberDetail.module.css';
+import React from "react";
+import { Modal } from "antd";
+import { X, Mail } from "lucide-react";
+import { FaTwitter, FaGithub, FaLinkedin, FaBlog } from "react-icons/fa";
+import { SiWechat } from "react-icons/si";
+import Image from "next/image";
+import { PersonCardProps } from "./PersonCard";
+import styles from "./BoardMemberDetail.module.css";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface BoardMemberDetailProps {
   member: PersonCardProps | null;
@@ -18,6 +19,7 @@ export default function BoardMemberDetail({
   visible,
   onClose,
 }: BoardMemberDetailProps) {
+  const { translateText } = useTranslation();
   if (!member) return null;
 
   return (
@@ -42,7 +44,7 @@ export default function BoardMemberDetail({
               className={styles.avatar}
             />
           </div>
-          
+
           <div className={styles.basicInfo}>
             <div className={styles.nameSection}>
               <h2 className={styles.name}>{member.name}</h2>
@@ -50,9 +52,11 @@ export default function BoardMemberDetail({
                 <span className={styles.pronouns}>({member.pronouns})</span>
               )}
             </div>
-            
-            <div className={styles.organization}>{member.organization}</div>
-            
+
+            <div className={styles.organization}>
+              {translateText(member.organization)}
+            </div>
+
             {/* Social Links */}
             <div className={styles.socialLinks}>
               {member.email && (
@@ -127,15 +131,15 @@ export default function BoardMemberDetail({
         <div className={styles.content}>
           {member.bio && (
             <div className={styles.bioSection}>
-              <p className={styles.bio}>{member.bio}</p>
+              <p className={styles.bio}>{translateText(member.bio)}</p>
             </div>
           )}
-          
+
           {member.details && member.details.length > 0 && (
             <div className={styles.detailsSection}>
               {member.details.map((detail, index) => (
                 <p key={index} className={styles.detail}>
-                  {detail}
+                  {translateText(detail)}
                 </p>
               ))}
             </div>

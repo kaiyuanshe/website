@@ -1,18 +1,34 @@
 {
+  "site": {
+    "name": "开源社",
+    "description": "开源社是由开源志愿者按照贡献、共识、共治原则组成的厂商中立、公益、非营利开源社区。",
+    "keywords": "开源社,KAIYUANSHE,开源,中国开源年会,开源治理,开源社区,开源项目"
+  },
   "navigation": {
     "open_source_ecosystem_60qa": "开源生态60问",
     "open_source_ecosystem_60qa_description": "通过60个问答了解开源生态",
     "about_us": "关于我们",
+    "about": "关于我们",
+    "annual_report": "年度报告",
+    "merchandise": "周边商店",
     "partners": "合作伙伴",
+    "forum": "社区论坛",
+    "mobile_menu": "导航菜单",
     "governance": {
       "title": "社区治理",
+      "governance_overview": "组织架构全景图",
       "board": "理事会",
       "advisory": "顾问委员会",
       "legal": "法律咨询委员会",
       "kcc": "开源社城市社区(KCC)",
-      "formal_members": "正式成员"
+      "formal_members": "正式成员",
+      "election": "换届选举",
+      "calendar": "会议日历",
+      "suggestion_box": "意见箱",
+      "proposal_library": "提案库"
     },
     "honors": {
+      "title": "社区荣誉",
       "open_source_star": "开源之星",
       "annual_volunteer": "年度优秀志愿者",
       "coscon_star": "COSCon 之星",
@@ -21,11 +37,29 @@
       "china_open_source_power_list": "中国开源码力榜"
     },
     "knowledge": {
-      "china_open_source_annual_report": "中国开源年度报告"
+      "title": "知识资源",
+      "open_source_library": "开源文库",
+      "cosc": "中国开源年会(COSC)",
+      "kcc_library": "开源社城市社区(KCC)",
+      "reading_club": "开源读书会",
+      "original_articles": "原创文章",
+      "translation_articles": "翻译文章",
+      "all_articles": "全部文章",
+      "archived_articles": "归档文章",
+      "china_open_source_annual_report": "中国开源年度报告",
+      "china_open_source_map": "中国开源地图",
+      "china_public_welfare_map": "中国公益地图"
     },
     "activities": {
       "title": "开源活动",
-      "activity_calendar": "活动日历"
+      "wonderful_activities": "精彩活动",
+      "hosted_activities": "主办活动",
+      "activity_calendar": "活动日历",
+      "coscon_activities": "开源年会",
+      "open_source_projects": "开源项目",
+      "open_source_toolbox": "开源百宝箱",
+      "open_hackathon_platform": "开放黑客松平台",
+      "xiaoyuan_qa_bot": "小源问答机器人"
     },
     "intro": "开源社简介",
     "intro_description": "了解开源社的历史、使命和发展历程",
@@ -85,6 +119,8 @@
   },
   "homepage": {
     "hero": {
+      "title": "开源社",
+      "subtitle": "立足中国，贡献全球，推动开源成为新时代生活方式",
       "heroHighlight": "立足中国 · 贡献全球",
       "heroSubtext": "推动开源成为新时代生活方式",
       "heroEmphasis": "开源",
@@ -103,8 +139,14 @@
     "events": {
       "title": "社区活动",
       "description": "发现精彩活动，链接更多开源",
+      "status": {
+        "notStarted": "未开始",
+        "inProgress": "进行中",
+        "ended": "已结束"
+      },
       "mode": {
-        "online": "线上活动"
+        "online": "线上活动",
+        "offline": "线下活动"
       },
       "loadError": "活动加载失败，请稍后重试",
       "retry": "重新加载",
@@ -115,6 +157,11 @@
     "articles": {
       "title": "精彩文章",
       "description": "深度好文，启发思考，助力成长",
+      "categories": {
+        "original": "原创",
+        "translation": "翻译",
+        "archive": "归档"
+      },
       "loadError": "文章加载失败，请稍后重试",
       "retry": "重新加载",
       "empty": "暂无文章",
@@ -124,6 +171,7 @@
       "unknownAuthor": "未知作者"
     },
     "mission": {
+      "title": "我们的使命",
       "blockNumber01": "01",
       "blockNumber02": "02",
       "blockNumber03": "03",
@@ -200,14 +248,29 @@
       }
     },
     "introduction": {
-      "paragraph1": "开源社（英文名称为\"KAIYUANSHE\"）成立于 2014 年，是由志愿贡献于开源事业的个人志愿者，依 \"贡献、共识、共治\" 原则所组成的开源社区。开源社始终维持 \"厂商中立、公益、非营利\" 的理念，以 \"立足中国、贡献全球，推动开源成为新时代的生活方式\" 为愿景，以 \"开源治理、国际接轨、社区发展、项目孵化\" 为使命，旨在共创健康可持续发展的开源生态体系。"
+      "title": "关于开源社",
+      "paragraph1": "开源社（英文名称为\"KAIYUANSHE\"）成立于 2014 年，是由志愿贡献于开源事业的个人志愿者，依 \"贡献、共识、共治\" 原则所组成的开源社区。开源社始终维持 \"厂商中立、公益、非营利\" 的理念，以 \"立足中国、贡献全球，推动开源成为新时代的生活方式\" 为愿景，以 \"开源治理、国际接轨、社区发展、项目孵化\" 为使命，旨在共创健康可持续发展的开源生态体系。",
+      "paragraph2": "开源社积极与支持开源的社区、高校、企业以及政府相关单位紧密合作，同时也是全球开源协议认证组织 - OSI 在中国的首个成员。",
+      "paragraph3": "自2016年起连续举办中国开源年会（COSCon），持续发布《中国开源年度报告》，联合发起了\"中国开源先锋榜\"、\"中国开源码力榜\"等，在海内外产生了广泛的影响力。"
+    },
+    "cta": {
+      "title": "加入开源社 · 见证你的开源成长之路",
+      "description": "无论你是热衷于开源的开发者，还是已经投身开源，开源社都为你提供最全面的资源与舞台。",
+      "followGithub": "关注Github",
+      "followWeChat": "关注公众号",
+      "followX": "关注 X"
     }
   },
   "footer": {
+    "title": "开源社",
+    "description": "开源社是一个聚合开源活动、社区、文章和开发者数据的一站式广场。",
     "copyright": "© 2025 开源社. 保留所有权利",
     "become_volunteer": "成为志愿者",
     "follow_wechat_title": "关注开源社公众号",
     "wechat_qr_alt": "开源社公众号二维码",
     "wechat_qr_description": "扫描二维码关注开源社公众号"
+  },
+  "errors": {
+    "fetchDapps": "获取 DApps 列表失败:"
   }
 }

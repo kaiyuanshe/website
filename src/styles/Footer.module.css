@@ -11,8 +11,6 @@
   padding: 4rem 1rem;
 }
 
- 
-
 /* 移动端 Footer 优化 */
 @media (max-width: 768px) {
   .footer {
@@ -56,6 +54,48 @@
   width: auto !important;
   max-width: 100%;
   height: auto !important;
+}
+
+.englishBrand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.footerBrandSymbol {
+  display: flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 54px;
+  border-radius: 50%;
+  background: white;
+}
+
+.footerBrandSymbol img {
+  width: 48px;
+  height: 48px;
+}
+
+.footerBrandNames {
+  display: flex;
+  flex-direction: column;
+  line-height: 1;
+}
+
+.footerBrandNames strong {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 750;
+}
+
+.footerBrandNames span {
+  margin-top: 0.35rem;
+  color: #dbeafe;
+  font-size: 0.6875rem;
+  white-space: nowrap;
 }
 
 .aboutTitle {
@@ -192,33 +232,33 @@
     flex-direction: column;
     gap: 2rem;
   }
-  
+
   .footerLeft {
     max-width: none;
   }
-  
+
   .aboutTitle {
     text-align: center;
   }
-  
+
   .aboutDescription {
     text-align: center;
   }
-  
+
   .socialLinks {
     justify-content: center;
   }
-  
+
   .volunteerSection {
     text-align: center;
     margin-top: 1rem;
   }
-  
+
   .footerRight {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
-  
+
   .footerLogo {
     max-width: 180px;
   }
@@ -228,30 +268,29 @@
   .footerContent {
     gap: 1.5rem;
   }
-  
+
   .footerRight {
     grid-template-columns: 1fr;
     gap: 1.25rem;
   }
-  
+
   .aboutTitle {
     font-size: 1.1rem;
   }
-  
+
   .aboutDescription {
     font-size: 0.9rem;
   }
-  
+
   .footerLogo {
     max-width: 150px;
   }
-  
+
   .volunteerButton {
     padding: 0.625rem 1.25rem;
     font-size: 0.8rem;
   }
 }
-
 
 .socialButton {
   background: transparent;
@@ -315,4 +354,3 @@
     padding-top: 1.25rem;
   }
 }
-

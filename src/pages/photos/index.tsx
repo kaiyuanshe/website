@@ -1,9 +1,12 @@
-import React, { memo } from 'react'
+import React, { memo } from "react";
+import LocalizedText from "@/components/LocalizedText";
 
 const Photos = memo(() => {
   return (
-    <div>历届活动照片</div>
-  )
-})
+    <div>
+      <LocalizedText>{"历届活动照片"}</LocalizedText>
+    </div>
+  );
+});
 
-export default Photos
+export default Photos;

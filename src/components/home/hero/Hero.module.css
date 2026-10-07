@@ -1,7 +1,7 @@
 .hero {
   position: relative;
   min-height: min(55svh, 620px);
-  padding: 96px 1rem 72px;
+  padding: 64px 1rem 48px;
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -11,32 +11,6 @@
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-}
-
-.heroOrnament {
-  width: 100%;
-  max-width: 960px;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.heroOrnament span {
-  width: 52px;
-  height: 2px;
-  display: block;
-  background: var(--primary-900);
-  opacity: 0.72;
-}
-
-.heroOrnament span:last-child {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--primary-900);
-  border-radius: 50%;
-  background: transparent;
-  opacity: 0.72;
 }
 
 .heroSubtitle {
@@ -139,8 +113,7 @@
   }
 
   .heroTitle,
-  .heroSubtitle,
-  .heroOrnament {
+  .heroSubtitle {
     max-width: 780px;
   }
 }
@@ -153,25 +126,8 @@
   }
 
   .heroTitle,
-  .heroSubtitle,
-  .heroOrnament {
+  .heroSubtitle {
     max-width: 100%;
-  }
-
-  .heroOrnament {
-    margin-bottom: 16px;
-    gap: 10px;
-  }
-
-  .heroOrnament span {
-    width: 36px;
-    height: 1px;
-  }
-
-  .heroOrnament span:last-child {
-    width: 16px;
-    height: 16px;
-    border-width: 1px;
   }
 
   .heroMicroline {
@@ -188,10 +144,6 @@
 @media (max-width: 350px) {
   .hero {
     padding: 28px 12px 24px;
-  }
-
-  .heroOrnament span {
-    width: 24px;
   }
 
   .heroTitle {

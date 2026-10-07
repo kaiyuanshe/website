@@ -1,9 +1,11 @@
-import React from 'react';
-import { Card, Input, Select, DatePicker, Button } from 'antd';
-import { Search, Calendar, RotateCcw } from 'lucide-react';
-import dayjs from 'dayjs';
-import DateButton from '@/components/base/DateButton';
-import styles from '../../pages/posts/index.module.css';
+import React from "react";
+import { Card, Input, Select, DatePicker, Button } from "antd";
+import { Search, Calendar, RotateCcw } from "lucide-react";
+import dayjs from "dayjs";
+import DateButton from "@/components/base/DateButton";
+import styles from "../../pages/posts/index.module.css";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -15,7 +17,7 @@ interface PostFiltersProps {
   onSearchChange: (value: string) => void;
   onSortChange: (value: string) => void;
   onDateRangeChange: (
-    dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null
+    dates: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null,
   ) => void;
   onReset: () => void;
 }
@@ -29,6 +31,7 @@ export default function PostFilters({
   onDateRangeChange,
   onReset,
 }: PostFiltersProps) {
+  const { translateText: translateUiText } = useTranslation();
   const safeDateRange = dateRange || [null, null];
 
   return (
@@ -36,7 +39,7 @@ export default function PostFilters({
       <div className={styles.filters}>
         <div className={styles.searchContainer}>
           <Input
-            placeholder="搜索帖子、作者..."
+            placeholder={translateUiText("搜索帖子、作者...")}
             prefix={<Search className={styles.searchIcon} />}
             value={searchTerm}
             onChange={(e) => onSearchChange(e.target.value)}
@@ -50,50 +53,52 @@ export default function PostFilters({
             prefix={
               <>
                 <DateButton
-                  style={{ marginRight: '4px' }}
+                  style={{ marginRight: "4px" }}
                   size="small"
                   color="primary"
                   variant="filled"
                   dateRange={safeDateRange}
                   handleDateRangeChange={onDateRangeChange}
-                  label="今天"
+                  label={translateUiText("今天")}
                   dates={[dayjs(), dayjs()]}
                   active={
-                    safeDateRange[0]?.format('YYYY-MM-DD') ===
-                      dayjs().format('YYYY-MM-DD') &&
-                    safeDateRange[1]?.format('YYYY-MM-DD') ===
-                      dayjs().format('YYYY-MM-DD')
+                    safeDateRange[0]?.format("YYYY-MM-DD") ===
+                      dayjs().format("YYYY-MM-DD") &&
+                    safeDateRange[1]?.format("YYYY-MM-DD") ===
+                      dayjs().format("YYYY-MM-DD")
                   }
                 />
+
                 <DateButton
-                  style={{ marginRight: '4px' }}
+                  style={{ marginRight: "4px" }}
                   size="small"
                   color="primary"
                   variant="filled"
                   dateRange={safeDateRange}
                   handleDateRangeChange={onDateRangeChange}
-                  label="近一周"
-                  dates={[dayjs().subtract(1, 'week'), dayjs()]}
+                  label={translateUiText("近一周")}
+                  dates={[dayjs().subtract(1, "week"), dayjs()]}
                   active={
-                    safeDateRange[0]?.format('YYYY-MM-DD') ===
-                      dayjs().subtract(1, 'week').format('YYYY-MM-DD') &&
-                    safeDateRange[1]?.format('YYYY-MM-DD') ===
-                      dayjs().format('YYYY-MM-DD')
+                    safeDateRange[0]?.format("YYYY-MM-DD") ===
+                      dayjs().subtract(1, "week").format("YYYY-MM-DD") &&
+                    safeDateRange[1]?.format("YYYY-MM-DD") ===
+                      dayjs().format("YYYY-MM-DD")
                   }
                 />
+
                 <DateButton
                   size="small"
                   color="primary"
                   variant="filled"
                   dateRange={safeDateRange}
                   handleDateRangeChange={onDateRangeChange}
-                  label="全部"
+                  label={translateUiText("全部")}
                   dates={[null, null]}
                   active={!safeDateRange[0] && !safeDateRange[1]}
                 />
               </>
             }
-            placeholder={['开始日期', '结束日期']}
+            placeholder={["开始日期", "结束日期"]}
             value={safeDateRange}
             onChange={onDateRangeChange}
             className={styles.dateRangePicker}
@@ -111,8 +116,12 @@ export default function PostFilters({
             className={styles.sortSelect}
             size="large"
           >
-            <Option value="desc">最新发布</Option>
-            <Option value="asc">最早发布</Option>
+            <Option value="desc">
+              <LocalizedText>{"最新发布"}</LocalizedText>
+            </Option>
+            <Option value="asc">
+              <LocalizedText>{"最早发布"}</LocalizedText>
+            </Option>
           </Select>
         </div>
 
@@ -123,7 +132,7 @@ export default function PostFilters({
             className={styles.resetButton}
             size="large"
           >
-            重置
+            <LocalizedText>{"重置"}</LocalizedText>
           </Button>
         </div>
       </div>

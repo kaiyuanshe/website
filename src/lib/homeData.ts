@@ -10,6 +10,10 @@ type ApiResponse<T> = {
 const HOME_PAGE_SIZE = 3;
 const REQUEST_TIMEOUT_MS = 10000;
 
+function getCurrentLocale() {
+  return document.documentElement.lang || "zh-CN";
+}
+
 async function fetchPublicList<Item>(
   endpoint: string,
   dataKey: string,
@@ -68,6 +72,7 @@ export function fetchHomeEvents(signal?: AbortSignal): Promise<Event[]> {
     order: "desc",
     page: "1",
     page_size: HOME_PAGE_SIZE.toString(),
+    locale: getCurrentLocale(),
   });
 
   return fetchPublicList<Event>(`/events?${query}`, "events", signal);
@@ -80,6 +85,7 @@ export function fetchHomeArticles(signal?: AbortSignal): Promise<Article[]> {
     order: "desc",
     page: "1",
     page_size: HOME_PAGE_SIZE.toString(),
+    locale: getCurrentLocale(),
   });
 
   return fetchPublicList<Article>(`/articles?${query}`, "articles", signal);

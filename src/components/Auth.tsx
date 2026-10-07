@@ -1,16 +1,19 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Dropdown, Button, App as AntdApp } from 'antd';
-import type { MenuProps } from 'antd';
-import { useRouter } from 'next/router';
-import { signIn, signOut } from 'next-auth/react';
-import styles from '../styles/Auth.module.css';
-import Image from 'next/image';
-import AuthManager from '@/lib/authManager';
-import { useAuth } from '@/contexts/AuthContext';
-import GitHubLoginButton from '@/components/GitHubLoginButton';
+import React, { useEffect, useState, useRef } from "react";
+import { Dropdown, Button, App as AntdApp } from "antd";
+import type { MenuProps } from "antd";
+import { useRouter } from "next/router";
+import { signIn, signOut } from "next-auth/react";
+import styles from "../styles/Auth.module.css";
+import Image from "next/image";
+import AuthManager from "@/lib/authManager";
+import { useAuth } from "@/contexts/AuthContext";
+import GitHubLoginButton from "@/components/GitHubLoginButton";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 const Auth: React.FC = () => {
-    const { message } = AntdApp.useApp();
+  const { translateText } = useTranslation();
+  const { message } = AntdApp.useApp();
   // 使用简化的认证上下文，利用 NextAuth 内置缓存机制
   const { session } = useAuth();
   const router = useRouter();
@@ -34,7 +37,7 @@ const Auth: React.FC = () => {
 
         // 使用 AuthManager 确保只有一个登录请求在执行
         const res = await authManager.ensureLogin(async () => {
-          return await signIn('credentials', {
+          return await signIn("credentials", {
             redirect: false,
             code: code as string,
           });
@@ -43,17 +46,17 @@ const Auth: React.FC = () => {
         if (res?.ok) {
           // 防止 React Strict Mode 导致的重复消息显示
           if (authManager.shouldShowSuccessMessage()) {
-            message.success('登录成功');
+            message.success("登录成功");
           }
           // 清除 URL 中的 code 参数，NextAuth 会自动更新 session 状态
           router.replace(router.pathname, undefined, { shallow: true });
         } else {
-          message.warning('登录失败...');
+          message.warning("登录失败...");
           hasTriedLogin.current = false; // 允许重试
         }
       } catch (error) {
-        console.error('Login error:', error);
-        message.error('网络错误...');
+        console.error("Login error:", error);
+        message.error("网络错误...");
         hasTriedLogin.current = false; // 允许重试
       } finally {
         setLoading(false);
@@ -77,27 +80,27 @@ const Auth: React.FC = () => {
 
   const handleLogout = async () => {
     // 执行登出操作，NextAuth 会自动清除会话状态
-    await signOut({ redirect: true, callbackUrl: '/' });
+    await signOut({ redirect: true, callbackUrl: "/" });
   };
 
-  const onClick: MenuProps['onClick'] = ({ key }) => {
-    if (key === 'logout') handleLogout();
-    if (key === 'profile') router.push('/dashboard');
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "logout") handleLogout();
+    if (key === "profile") router.push("/dashboard");
   };
 
-  const items: MenuProps['items'] = [
+  const items: MenuProps["items"] = [
     {
-      key: 'name',
+      key: "name",
       label: <span>{session?.user?.username}</span>,
       disabled: true,
     },
     {
-      key: 'profile',
-      label: '个人页面',
+      key: "profile",
+      label: translateText("个人页面"),
     },
     {
-      key: 'logout',
-      label: '退出登录',
+      key: "logout",
+      label: translateText("退出登录"),
     },
   ];
 
@@ -105,7 +108,7 @@ const Auth: React.FC = () => {
     <div className={styles.auth}>
       {session?.user ? (
         <>
-          <Dropdown menu={{ items, onClick }} trigger={['hover']}>
+          <Dropdown menu={{ items, onClick }} trigger={["hover"]}>
             <div className={styles.userInfo}>
               <Image
                 src={session.user.avatar as string}
@@ -122,38 +125,34 @@ const Auth: React.FC = () => {
           menu={{
             items: [
               {
-                key: 'email',
+                key: "email",
                 label: (
                   <Button
                     type="text"
-                    style={{ width: '100%', textAlign: 'left' }}
+                    style={{ width: "100%", textAlign: "left" }}
                     onClick={handleSignIn}
                     loading={loading}
                   >
-                    邮箱登录
+                    <LocalizedText>{"邮箱登录"}</LocalizedText>
                   </Button>
                 ),
               },
               {
-                key: 'github',
+                key: "github",
                 label: (
-                  <GitHubLoginButton 
+                  <GitHubLoginButton
                     loading={loading}
                     onLoading={setLoading}
                     className={styles.githubBtn}
                   />
                 ),
-              }
-            ]
+              },
+            ],
           }}
-          trigger={['click']}
+          trigger={["click"]}
         >
-          <Button
-            type="primary"
-            className={styles.navButton}
-            loading={loading}
-          >
-            登录 ▼
+          <Button type="primary" className={styles.navButton} loading={loading}>
+            <LocalizedText>{"登录 ▼"}</LocalizedText>
           </Button>
         </Dropdown>
       )}

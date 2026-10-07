@@ -1,58 +1,61 @@
-import { Calendar, User, Eye, ArrowRight, BookOpen } from 'lucide-react'
-import Link from 'next/link'
-import dayjs from 'dayjs'
-import { Tag } from 'antd'
-import styles from './Article.module.css'
-import { useTranslation } from '../../../hooks/useTranslation'
-import type { Article } from '@/pages/api/article'
-import AsyncContentState from '@/components/base/AsyncContentState'
-import ContentCardSkeleton from '@/components/base/ContentCardSkeleton'
-import type { AsyncStatus } from '@/types/async'
+import { Calendar, User, Eye, ArrowRight, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { Tag } from "antd";
+import styles from "./Article.module.css";
+import { useTranslation } from "../../../hooks/useTranslation";
+import type { Article } from "@/pages/api/article";
+import AsyncContentState from "@/components/base/AsyncContentState";
+import ContentCardSkeleton from "@/components/base/ContentCardSkeleton";
+import type { AsyncStatus } from "@/types/async";
 
-export function formatTime(isoTime: string): string {
-  return dayjs(isoTime).format('YYYY年M月D日')
+export function formatTime(isoTime: string, locale = "zh-CN"): string {
+  return new Intl.DateTimeFormat(locale, {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(isoTime));
 }
 
 type ArticleSectionProps = {
-  articles: Article[]
-  status: AsyncStatus
-  onRetry: () => void
-}
+  articles: Article[];
+  status: AsyncStatus;
+  onRetry: () => void;
+};
 
 export default function ArticleSection({
   articles,
   status,
-  onRetry
+  onRetry,
 }: ArticleSectionProps) {
-  const { t } = useTranslation()
+  const { t, locale } = useTranslation();
 
   return (
     <section className={styles.articles}>
       <div className={styles.container}>
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
-            {t('homepage.articles.title')}
+            {t("homepage.articles.title")}
           </h2>
           <p className={styles.sectionDescription}>
-            {t('homepage.articles.description')}
+            {t("homepage.articles.description")}
           </p>
         </div>
         <div className={styles.articlesGrid}>
-          {status === 'loading' && (
-            <ContentCardSkeleton label={t('common.loading')} />
+          {status === "loading" && (
+            <ContentCardSkeleton label={t("common.loading")} />
           )}
 
           <AsyncContentState
             status={status}
             isEmpty={articles.length === 0}
-            emptyDescription={t('homepage.articles.empty')}
-            errorDescription={t('homepage.articles.loadError')}
-            retryLabel={t('homepage.articles.retry')}
+            emptyDescription={t("homepage.articles.empty")}
+            errorDescription={t("homepage.articles.loadError")}
+            retryLabel={t("homepage.articles.retry")}
             onRetry={onRetry}
             icon={<BookOpen />}
           />
 
-          {status === 'success' &&
+          {status === "success" &&
             articles.map((article, index) => {
               return (
                 <div key={article.ID || index} className={styles.articleCard}>
@@ -75,12 +78,12 @@ export default function ArticleSection({
                     <div className={styles.articleInfo}>
                       <div className={styles.articleInfoItem}>
                         <User className={styles.articleIcon} />
-                        {article.author || t('homepage.articles.unknownAuthor')}
+                        {article.author || t("homepage.articles.unknownAuthor")}
                       </div>
 
                       <div className={styles.articleInfoItem}>
                         <Calendar className={styles.articleIcon} />
-                        {formatTime(article.CreatedAt)}
+                        {formatTime(article.CreatedAt, locale)}
                       </div>
                     </div>
                     {article.tags && article.tags.length > 0 && (
@@ -96,24 +99,24 @@ export default function ArticleSection({
                     )}
                     <Link href={`/blogs/${article.ID}`} passHref>
                       <button className={styles.articleButton}>
-                        {t('homepage.articles.readArticle')}
+                        {t("homepage.articles.readArticle")}
                         <ArrowRight className={styles.buttonIcon} />
                       </button>
                     </Link>
                   </div>
                 </div>
-              )
+              );
             })}
         </div>
         <div className={styles.sectionFooter}>
           <Link href="/blogs">
             <button className={styles.moreButton}>
               <BookOpen className={styles.buttonIcon} />
-              {t('homepage.articles.viewMore')}
+              {t("homepage.articles.viewMore")}
             </button>
           </Link>
         </div>
       </div>
     </section>
-  )
+  );
 }

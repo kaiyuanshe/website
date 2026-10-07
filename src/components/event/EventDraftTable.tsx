@@ -1,8 +1,10 @@
-import React, { Fragment } from 'react';
-import { Table, Button } from 'antd';
-import type { TableProps } from 'antd';
-import router from 'next/router';
-import { Edit } from 'lucide-react';
+import React, { Fragment } from "react";
+import { Table, Button } from "antd";
+import type { TableProps } from "antd";
+import router from "next/router";
+import { Edit } from "lucide-react";
+import LocalizedText from "@/components/LocalizedText";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface DataType {
   title: string;
@@ -21,38 +23,54 @@ interface Pagination {
 interface EventDraftTableProps {
   styles?: { [key: string]: string };
   data: DataType[];
-  pagination: Pagination,
+  pagination: Pagination;
   loading: boolean;
 }
 
-const EventDraftTable: React.FC<EventDraftTableProps> = ({ styles, data, loading, pagination }) => {
-  const columns: TableProps<DataType>['columns'] = [
+const EventDraftTable: React.FC<EventDraftTableProps> = ({
+  styles,
+  data,
+  loading,
+  pagination,
+}) => {
+  const { translateText: translateUiText } = useTranslation();
+  const columns: TableProps<DataType>["columns"] = [
     {
-      title: '活动名称',
-      dataIndex: 'title',
-      key: 'title',
+      title: translateUiText("活动名称"),
+      dataIndex: "title",
+      key: "title",
     },
     {
-      title: '操作',
-      key: 'action',
+      title: translateUiText("操作"),
+      key: "action",
       render: (_, record) => {
         return (
           <Button
             type="text"
             size="small"
             icon={<Edit className={styles?.listActionIcon} />}
-            title="编辑活动"
+            title={translateUiText("编辑活动")}
             onClick={() => router.push(`/events/${record.ID}/edit`)}
           />
-        )
-      }
+        );
+      },
     },
   ];
 
-  return <Fragment>
-    <h3>已保存的活动草稿</h3>
-    <Table<DataType> columns={columns} dataSource={data} size="small" loading={loading} pagination={pagination} />
-  </Fragment>;
-}
+  return (
+    <Fragment>
+      <h3>
+        <LocalizedText>{"已保存的活动草稿"}</LocalizedText>
+      </h3>
+      <Table<DataType>
+        columns={columns}
+        dataSource={data}
+        size="small"
+        loading={loading}
+        pagination={pagination}
+      />
+    </Fragment>
+  );
+};
 
 export default EventDraftTable;
