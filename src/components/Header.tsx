@@ -668,6 +668,12 @@ export default function Header() {
                       href={child.href || "/"}
                       className={`${styles.navDropdownItem} ${child.hot ? styles.navDropdownItemHot : ""}`}
                       onClick={() => setActiveDropdown(null)}
+                      target={child.target}
+                      rel={
+                        child.target === "_blank"
+                          ? "noopener noreferrer"
+                          : undefined
+                      }
                     >
                       <div className={styles.dropdownItemContent}>
                         <span className={styles.dropdownItemTitle}>
