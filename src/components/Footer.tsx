@@ -7,119 +7,11 @@ import { useState } from "react";
 import { Modal } from "antd";
 import styles from "../styles/Footer.module.css";
 import LocalizedText from "@/components/LocalizedText";
-
-interface MenuItem {
-  labelKey: string;
-  href: string;
-  target?: string;
-}
-
-interface MenuSection {
-  titleKey: string;
-  items: MenuItem[];
-}
+import { mainNavItems } from "../data/navigation";
 
 export default function Footer() {
   const { t, locale, translateText: translateUiText } = useTranslation();
   const [isWeChatModalOpen, setIsWeChatModalOpen] = useState(false);
-
-  // 基于开源社 Header 组件中的主导航菜单项，使用翻译键
-  const menuSections: MenuSection[] = [
-    {
-      titleKey: "navigation.about_us",
-      items: [
-        { labelKey: "navigation.intro", href: "/about" },
-        { labelKey: "navigation.governance.board", href: "/department/board" },
-        {
-          labelKey: "navigation.governance.advisory",
-          href: "/department/advisory",
-        },
-        { labelKey: "navigation.governance.legal", href: "/department/legal" },
-        { labelKey: "navigation.executive", href: "/department/executive" },
-        {
-          labelKey: "navigation.project_committee",
-          href: "/department/project",
-        },
-        { labelKey: "navigation.brand_resources", href: "/brand" },
-      ],
-    },
-    {
-      titleKey: "navigation.governance.title",
-      items: [
-        { labelKey: "navigation.charter", href: "/charter" },
-        {
-          labelKey: "navigation.open_source_manifesto",
-          href: "/governance/open-source-manifesto",
-        },
-        {
-          labelKey: "navigation.code_of_conduct",
-          href: "/governance/code-of-conduct",
-        },
-        { labelKey: "navigation.annual_report_full", href: "/kysreports" },
-      ],
-    },
-    {
-      titleKey: "navigation.community_development",
-      items: [
-        { labelKey: "navigation.partners", href: "/partners" },
-        {
-          labelKey: "navigation.governance.formal_members",
-          href: "/department/members",
-        },
-        {
-          labelKey: "navigation.honors.open_source_star",
-          href: "/community/star",
-        },
-        {
-          labelKey: "navigation.honors.annual_volunteer",
-          href: "/community/volunteer",
-        },
-        {
-          labelKey: "navigation.honors.coscon_star",
-          href: "/community/coscon",
-        },
-        {
-          labelKey: "navigation.honors.community_cooperation_star",
-          href: "/community/cooperation",
-        },
-        { labelKey: "navigation.governance.kcc", href: "/community" },
-        {
-          labelKey: "navigation.knowledge.china_open_source_annual_report",
-          href: "/osreports",
-        },
-        {
-          labelKey: "navigation.honors.china_open_source_pioneer",
-          href: "/community/pioneer",
-        },
-        {
-          labelKey: "navigation.honors.china_open_source_power_list",
-          href: "https://opensource.win/",
-          target: "_blank",
-        },
-      ],
-    },
-    {
-      titleKey: "navigation.activities.title",
-      items: [
-        {
-          labelKey: "navigation.china_open_source_conference",
-          href: "/events/coscon",
-        },
-        { labelKey: "navigation.cooperation_activities", href: "/events" },
-        {
-          labelKey: "navigation.activities.activity_calendar",
-          href: "/events/calendar",
-        },
-      ],
-    },
-    {
-      titleKey: "navigation.blogs_announcements",
-      items: [
-        { labelKey: "navigation.blogs", href: "/blogs" },
-        { labelKey: "navigation.announcements", href: "/announcement" },
-      ],
-    },
-  ];
 
   return (
     <footer className={styles.footer}>
@@ -231,21 +123,28 @@ export default function Footer() {
 
           {/* Right section with navigation menu */}
           <div className={styles.footerRight}>
-            {menuSections.map((section, index) => (
-              <div key={index} className={styles.menuSection}>
-                <h4 className={styles.menuTitle}>{t(section.titleKey)}</h4>
+            {mainNavItems.map((section) => (
+              <div key={section.key} className={styles.menuSection}>
+                <h4 className={styles.menuTitle}>{t(section.labelKey)}</h4>
                 <ul className={styles.menuList}>
-                  {section.items.map((item, itemIndex) => (
-                    <li key={itemIndex}>
-                      <Link
-                        href={item.href}
-                        className={styles.menuLink}
-                        target={item.target}
-                      >
-                        {t(item.labelKey)}
-                      </Link>
-                    </li>
-                  ))}
+                  {section.children
+                    ?.filter((item) => item.href)
+                    .map((item) => (
+                      <li key={item.key}>
+                        <Link
+                          href={item.href!}
+                          className={styles.menuLink}
+                          target={item.target}
+                          rel={
+                            item.target === "_blank"
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                        >
+                          {t(item.labelKey)}
+                        </Link>
+                      </li>
+                    ))}
                 </ul>
               </div>
             ))}
