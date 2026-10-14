@@ -63,7 +63,7 @@ export default function LanguageSwitcher({
       menu={{ items: languageItems }}
       placement="bottomRight"
       trigger={["hover", "click"]}
-      overlayClassName={styles.languageDropdown}
+      classNames={{ root: styles.languageDropdown }}
       arrow
     >
       <button
