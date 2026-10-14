@@ -83,7 +83,7 @@ const PartnersPage: React.FC = () => {
   }, [selectedLevel, partnersData]);
 
   const renderPartnerCard = (partner: Partner, index: number) => {
-    const partnerLogo = partner.logo ? (
+    const partnerLogo = partner.logo && partner.logo !== "/logo.png" ? (
       <Image
         src={partner.logo}
         alt={partner.sponsor.name}
@@ -95,7 +95,11 @@ const PartnersPage: React.FC = () => {
       />
     ) : (
       <span className={styles.partnerLogoPlaceholder}>
-        {translateText(partner.title)}
+        {translateText(
+          partner.sponsor.type === "person"
+            ? partner.sponsor.name
+            : partner.title,
+        )}
       </span>
     );
 

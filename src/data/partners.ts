@@ -1155,7 +1155,7 @@ export const partnerEntries: PartnerEntry[] = [
         type: "organization",
         name: "NEAR",
       },
-      link: "https://github.com/near\\nhttps://near.org",
+      link: "https://near.org",
       logo: "/logo.png",
     },
     years: {
@@ -1422,7 +1422,7 @@ export const partnerEntries: PartnerEntry[] = [
         name: "微软",
       },
       link: "",
-      logo: "/logo.png",
+      logo: "/img/partners/microsoft.jpg",
     },
     years: {
       "2022": [
@@ -2369,7 +2369,7 @@ export const partnerEntries: PartnerEntry[] = [
   },
   {
     profile: {
-      id: "CCFshanghai",
+      id: "ccfshanghai",
       title: "中国计算机学会上海分会",
       sponsor: {
         type: "organization",
