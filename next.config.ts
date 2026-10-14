@@ -43,6 +43,9 @@ function encodeCloudinaryPath(value: string) {
 
 const nextConfig: NextConfig = {
   /* config options here */
+  allowedDevOrigins: ['127.0.0.1'],
+  // Avoid the Pages Router dev-indicator initialization race in Next.js 16.4.
+  devIndicators: false,
   experimental: {},
   typescript: {
     ignoreBuildErrors: true // 忽略 TypeScript 检查

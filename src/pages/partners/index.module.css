@@ -16,7 +16,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
- 
 }
 
 .titleSection {
@@ -48,11 +47,15 @@
   gap: 60px;
   margin-bottom: 24px;
   padding: 20px 32px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(248, 250, 252, 0.9)
+  );
   backdrop-filter: blur(20px);
   border-radius: 24px;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.08),
     0 1px 0 rgba(255, 255, 255, 0.5) inset,
     0 -1px 0 rgba(0, 0, 0, 0.05) inset;
@@ -61,14 +64,15 @@
 }
 
 .statsBar::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(59, 130, 246, 0.02), 
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.02),
     rgba(139, 92, 246, 0.02),
     rgba(16, 185, 129, 0.02)
   );
@@ -231,7 +235,6 @@
   margin-bottom: 0.8rem;
 }
 
-
 .sectionTitle {
   font-size: 1.5rem;
   font-weight: 500;
@@ -241,7 +244,6 @@
   position: relative;
   padding-bottom: 0.25rem;
 }
-
 
 .partnersGrid {
   display: grid;
@@ -304,8 +306,8 @@
 .partnerLogo {
   max-width: 100px;
   max-height: 80px;
-  width: auto;
-  height: auto;
+  width: 100px;
+  height: 80px;
   object-fit: contain;
   filter: grayscale(20%);
   transition: all 0.3s ease;
@@ -314,6 +316,18 @@
 .partnerLogo:hover {
   filter: grayscale(0%);
   transform: scale(1.05);
+}
+
+.partnerLogoPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 80px;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .partnerTitle {
@@ -425,6 +439,8 @@
   .partnerLogo {
     max-width: 90px;
     max-height: 70px;
+    width: 90px;
+    height: 70px;
   }
 }
 
@@ -487,6 +503,8 @@
   .partnerLogo {
     max-width: 80px;
     max-height: 60px;
+    width: 80px;
+    height: 60px;
   }
 
   .partnerTag {

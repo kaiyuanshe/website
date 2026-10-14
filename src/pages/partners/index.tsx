@@ -1,11 +1,12 @@
-import React, { useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Image from "next/image";
 import { Dropdown, type MenuProps } from "antd";
 import { ChevronDown } from "lucide-react";
 import styles from "./index.module.css";
 import {
   Partner,
-  partnersRawData,
+  PartnerLevel,
+  partnersByYear,
   levelOrder,
   organizePartnersByLevel,
 } from "@/data/partners";
@@ -16,19 +17,20 @@ const PartnersPage: React.FC = () => {
   const { translateText } = useTranslation();
   // Get available years from data
   const availableYears = useMemo(() => {
-    const years = [...new Set(partnersRawData.map((partner) => partner.year))];
-    return years.sort((a, b) => parseInt(b) - parseInt(a)); // Sort descending (newest first)
+    return Object.keys(partnersByYear).sort((a, b) => Number(b) - Number(a));
   }, []);
 
   // Set default year to the latest year
   const [selectedYear, setSelectedYear] = useState<string>(
     availableYears[0] || "2024",
   );
-  const [selectedLevel, setSelectedLevel] = useState<string>("全部");
+  const [selectedLevel, setSelectedLevel] = useState<PartnerLevel | "全部">(
+    "全部",
+  );
 
   // Filter data by selected year and organize by level
   const yearFilteredData = useMemo(() => {
-    return partnersRawData.filter((partner) => partner.year === selectedYear);
+    return partnersByYear[selectedYear] || [];
   }, [selectedYear]);
 
   const partnersData = useMemo(() => {
@@ -40,6 +42,12 @@ const PartnersPage: React.FC = () => {
       (level) => partnersData[level] && partnersData[level].length > 0,
     );
   }, [partnersData]);
+
+  useEffect(() => {
+    if (selectedLevel !== "全部" && !availableLevels.includes(selectedLevel)) {
+      setSelectedLevel("全部");
+    }
+  }, [availableLevels, selectedLevel]);
 
   const levelMenuItems: MenuProps["items"] = [
     {
@@ -74,47 +82,51 @@ const PartnersPage: React.FC = () => {
     }
   }, [selectedLevel, partnersData]);
 
-  const renderPartnerCard = (partner: Partner) => (
-    <div
-      key={partner.title}
-      className={`${styles.partnerCard} ${!partner.tag ? styles.partnerCardNoTag : ""}`}
-    >
-      <div className={styles.partnerLogoContainer}>
-        {partner.link ? (
-          <a
-            href={partner.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.partnerLink}
-          >
-            <Image
-              src={partner.logo}
-              alt={partner.organization}
-              title={partner.title}
-              className={styles.partnerLogo}
-              width={100}
-              height={80}
-              style={{ objectFit: "contain" }}
-            />
-          </a>
-        ) : (
-          <Image
-            src={partner.logo}
-            alt={partner.organization}
-            title={partner.title}
-            className={styles.partnerLogo}
-            width={100}
-            height={80}
-            style={{ objectFit: "contain" }}
-          />
+  const renderPartnerCard = (partner: Partner, index: number) => {
+    const partnerLogo = partner.logo && partner.logo !== "/logo.png" ? (
+      <Image
+        src={partner.logo}
+        alt={partner.sponsor.name}
+        title={partner.title}
+        className={styles.partnerLogo}
+        width={100}
+        height={80}
+        style={{ objectFit: "contain" }}
+      />
+    ) : (
+      <span className={styles.partnerLogoPlaceholder}>
+        {translateText(partner.title)}
+      </span>
+    );
+
+    return (
+      <div
+        key={`${partner.id}-${partner.year}-${partner.level}-${index}`}
+        className={`${styles.partnerCard} ${!partner.tag ? styles.partnerCardNoTag : ""}`}
+      >
+        <div className={styles.partnerLogoContainer}>
+          {partner.link && partner.logo ? (
+            <a
+              href={partner.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.partnerLink}
+            >
+              {partnerLogo}
+            </a>
+          ) : (
+            partnerLogo
+          )}
+        </div>
+        {partner.tag && (
+          <div className={styles.partnerTag}>{translateText(partner.tag)}</div>
         )}
+        <div className={styles.partnerTitle}>
+          {translateText(partner.title)}
+        </div>
       </div>
-      {partner.tag && (
-        <div className={styles.partnerTag}>{translateText(partner.tag)}</div>
-      )}
-      <div className={styles.partnerTitle}>{translateText(partner.title)}</div>
-    </div>
-  );
+    );
+  };
 
   const renderPartnerSection = (level: string, partners: Partner[]) => {
     if (!partners || partners.length === 0) return null;

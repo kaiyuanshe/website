@@ -14,9 +14,16 @@ import { Member } from "@/types/member";
 import styles from "./index.module.css";
 import LocalizedText from "@/components/LocalizedText";
 
+const memberNameCollator = new Intl.Collator("zh-Hans-u-co-pinyin", {
+  sensitivity: "base",
+});
+
 export default function MembersPage() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const sortedMembers = [...members].sort((a, b) =>
+    memberNameCollator.compare(a.name, b.name),
+  );
 
   const handleMemberClick = (member: Member) => {
     setSelectedMember(member);
@@ -28,10 +35,10 @@ export default function MembersPage() {
     setSelectedMember(null);
   };
 
-  const renderMember = (member: Member, index: number) => {
+  const renderMember = (member: Member) => {
     return (
       <div
-        key={index}
+        key={member.id}
         className={styles.memberCard}
         onClick={() => handleMemberClick(member)}
       >
@@ -220,7 +227,7 @@ export default function MembersPage() {
       </div>
 
       <div className={styles.membersGrid}>
-        {members.map((member, index) => renderMember(member, index))}
+        {sortedMembers.map((member) => renderMember(member))}
       </div>
 
       <Modal
