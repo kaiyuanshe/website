@@ -1050,6 +1050,23 @@ export const members: Member[] = [
     nickname: "Max",
     details: [],
   },
+  {
+    id: 91,
+    name: "江波",
+    gender: "女",
+    avatar: "/img/members/91.webp",
+    city: "上海",
+    email: "nadia.jiangbo@gmail.com",
+    alternativeEmail: "nadia@kaiyuanshe.org",
+    github: "https://github.com/jiangbonadia",
+    website: "https://x.com/jiangbonadia",
+    linkedin: "https://www.linkedin.com/in/nadiajiang",
+    position: "市场运营及技术生态负责人",
+    company: "蚂蚁灵波科技",
+    bio: "江波，现任蚂蚁灵波市场运营和技术生态负责人。她于 2024 年加入蚂蚁，任集团开源增长及国际化负责人，2025 年 12 月转入蚂蚁灵波，统筹负责灵波市场传播、技术生态、政府关系等。\n加入蚂蚁之前，她是一位连续创业者，曾任 SegmentFault 思否合伙人，负责市场运营和商业化，期间联合发起的开源项目 Answer 入选 Apache 软件基金会孵化器并毕业成为顶级项目。\n她在市场运营、用户增长、开发者生态等领域有超过 10 年工作经验，和 GitHub、Hugging Face、Linux Foundation、Apache Software Foundation 等众多国际社区和开源组织保持着长期连接，是 Apache 软件基金会正式成员。她曾在众多国际开源顶会发表演讲，2025 年以突出的跨社区贡献入选 GitHub Stars（全球仅 80 位）。",
+    nickname: "Nadia Jiang",
+    details: [],
+  },
 ];
 
 // 工具函数：根据姓名查找成员
