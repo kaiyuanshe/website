@@ -95,11 +95,7 @@ const PartnersPage: React.FC = () => {
       />
     ) : (
       <span className={styles.partnerLogoPlaceholder}>
-        {translateText(
-          partner.sponsor.type === "person"
-            ? partner.sponsor.name
-            : partner.title,
-        )}
+        {translateText(partner.title)}
       </span>
     );
 
