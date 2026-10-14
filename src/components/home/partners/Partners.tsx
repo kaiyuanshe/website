@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { partnersRawData } from "@/data/partners";
+import { partnerProfiles } from "@/data/partners";
 import styles from "./Partners.module.css";
 import { useTranslation } from "../../../hooks/useTranslation";
 
@@ -10,25 +10,14 @@ export default function PartnersSection() {
   const scrollRef1 = useRef<HTMLDivElement>(null);
   const scrollRef2 = useRef<HTMLDivElement>(null);
 
-  // 只显示有logo的合作伙伴，不区分时间和等级，并根据title去重
-  const validPartners = partnersRawData
-    .filter(
-      (partner) =>
-        partner.logo &&
-        partner.logo !== "/logo.png" &&
-        partner.logo.trim() !== "",
-    )
-    .reduce<typeof partnersRawData>((acc, partner) => {
-      // 检查是否已存在相同title的合作伙伴
-      const existingIndex = acc.findIndex(
-        (existing) => existing.title === partner.title,
-      );
-      if (existingIndex === -1) {
-        // 如果不存在，直接添加
-        acc.push(partner);
-      }
-      return acc;
-    }, []);
+  // 首页只展示有有效 Logo 的机构合作伙伴，个人赞助不进入轮播图。
+  const validPartners = partnerProfiles.filter(
+    (partner) =>
+      partner.sponsor.type === "organization" &&
+      partner.logo &&
+      partner.logo !== "/logo.png" &&
+      partner.logo.trim() !== "",
+  );
 
   // 将合作伙伴数组分成两组
   const midIndex = Math.ceil(validPartners.length / 2);
@@ -134,7 +123,7 @@ export default function PartnersSection() {
                 <div className={styles.partnersTrack}>
                   {firstRowPartners.map((partner, index) => (
                     <Link
-                      key={`row1-${partner.organization}-${index}`}
+                      key={`row1-${partner.id}-${index}`}
                       href="/partners"
                       className={styles.partnerCard}
                     >
@@ -159,7 +148,7 @@ export default function PartnersSection() {
                 <div className={styles.partnersTrack}>
                   {secondRowPartners.map((partner, index) => (
                     <Link
-                      key={`row2-${partner.organization}-${index}`}
+                      key={`row2-${partner.id}-${index}`}
                       href="/partners"
                       className={styles.partnerCard}
                     >
