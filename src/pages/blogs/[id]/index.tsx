@@ -1,11 +1,21 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Button, Tag, App as AntdApp, Image } from "antd";
-import { ArrowLeft, Calendar, Edit, Eye, User } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  CheckCircle,
+  Edit,
+  Eye,
+  User,
+} from "lucide-react";
 import Link from "next/link";
 import styles from "./index.module.css";
 import { useAuth } from "@/contexts/AuthContext";
-import { getArticleById } from "@/pages/api/article";
+import {
+  getArticleById,
+  updateArticlePublishStatus,
+} from "@/pages/api/article";
 import dayjs from "dayjs";
 import { sanitizeMarkdown } from "@/lib/markdown";
 import CommentSection from "@/components/comments/CommentSection";
@@ -26,10 +36,13 @@ export default function ArticleDetailPage() {
 
   const [article, setArticle] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isReviewing, setIsReviewing] = useState(false);
   // 使用统一的认证上下文，避免重复调用 useSession
   const { session, status } = useAuth();
 
   const permissions = session?.user?.permissions || [];
+  const canReview =
+    status === "authenticated" && permissions.includes("event:review");
 
   // parseMarkdown将返回的markdown转为html展示
   const [articleContent, setArticleContent] = useState<string>("");
@@ -41,6 +54,25 @@ export default function ArticleDetailPage() {
       });
     }
   }, [article?.content]);
+
+  const handleReview = async () => {
+    if (!canReview || article?.publish_status !== 1 || isReviewing) return;
+
+    setIsReviewing(true);
+    try {
+      const result = await updateArticlePublishStatus(String(article.ID), 2);
+      if (result.success && result.data) {
+        setArticle(result.data);
+        message.success("博客审核通过");
+      } else {
+        message.error(result.message || "审核失败，请重试");
+      }
+    } catch {
+      message.error("审核失败，请重试");
+    } finally {
+      setIsReviewing(false);
+    }
+  };
 
   useEffect(() => {
     if (!router.isReady || !rId) return;
@@ -109,6 +141,17 @@ export default function ArticleDetailPage() {
                 <LocalizedText>{"编辑"}</LocalizedText>
               </Button>
             ) : null}
+            {article.publish_status === 1 && canReview && (
+              <Button
+                type="primary"
+                icon={<CheckCircle size={16} className={styles.actionIcon} />}
+                className={styles.actionButton}
+                loading={isReviewing}
+                onClick={handleReview}
+              >
+                <LocalizedText>{"审核通过"}</LocalizedText>
+              </Button>
+            )}
           </div>
         </div>
       </div>
