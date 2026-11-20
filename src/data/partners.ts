@@ -8,6 +8,7 @@ export const levelOrder = [
   "金牌合作",
   "银牌合作",
   "铜牌合作",
+  "开源之夜支持",
   "星牌合作",
   "个人赞助",
   "亮点赞助",
@@ -78,7 +79,7 @@ export const partnerEntries: PartnerEntry[] = [
       logo: "/img/partners/ant.jpg",
     },
     years: {
-      "2026": [{ level: "白金合作", tag: "累计合作4届" }],
+      "2026": [{ level: "银牌合作", tag: "累计合作4届" }],
       "2025": [{ level: "白金合作", tag: "累计合作3届" }],
       "2024": [{ level: "银牌合作" }],
       "2023": [{ level: "银牌合作" }],
@@ -95,6 +96,42 @@ export const partnerEntries: PartnerEntry[] = [
     years: {
       "2026": [{ level: "金牌合作", tag: "累计合作2届" }],
       "2025": [{ level: "金牌合作" }],
+    },
+  },
+  {
+    profile: {
+      id: "infinigence",
+      title: "无问芯穹",
+      sponsor: { type: "organization", name: "无问芯穹" },
+      link: "https://www.infinigence-ai.com/",
+      logo: "/img/partners/infinigence.png",
+    },
+    years: {
+      "2026": [{ level: "金牌合作" }],
+    },
+  },
+  {
+    profile: {
+      id: "modelscope",
+      title: "魔搭社区",
+      sponsor: { type: "organization", name: "魔搭社区" },
+      link: "https://www.modelscope.cn/",
+      logo: "/img/partners/modelscope.jpg",
+    },
+    years: {
+      "2026": [{ level: "开源之夜支持" }],
+    },
+  },
+  {
+    profile: {
+      id: "openbmb",
+      title: "OpenBMB",
+      sponsor: { type: "organization", name: "OpenBMB" },
+      link: "https://openbmb.cn/",
+      logo: "/img/partners/openbmb.svg",
+    },
+    years: {
+      "2026": [{ level: "星牌合作" }],
     },
   },
   {
@@ -183,6 +220,42 @@ export const partnerEntries: PartnerEntry[] = [
   },
   {
     profile: {
+      id: "qiniu",
+      title: "七牛云",
+      sponsor: { type: "organization", name: "七牛云" },
+      link: "https://www.qiniu.com/",
+      logo: "/img/partners/qiniu.png",
+    },
+    years: {
+      "2026": [{ level: "银牌合作" }],
+    },
+  },
+  {
+    profile: {
+      id: "gcc",
+      title: "GCC",
+      sponsor: { type: "organization", name: "GCC" },
+      link: "https://www.gccofficial.org/",
+      logo: "/img/partners/gcc.png",
+    },
+    years: {
+      "2026": [{ level: "银牌合作" }],
+    },
+  },
+  {
+    profile: {
+      id: "kong",
+      title: "Kong",
+      sponsor: { type: "organization", name: "Kong" },
+      link: "https://konghq.com/",
+      logo: "/img/partners/kong.png",
+    },
+    years: {
+      "2026": [{ level: "银牌合作" }],
+    },
+  },
+  {
+    profile: {
       id: "oceanbase",
       title: "OceanBase",
       sponsor: { type: "organization", name: "OceanBase" },
@@ -223,6 +296,7 @@ export const partnerEntries: PartnerEntry[] = [
       logo: "/img/partners/seafile.svg",
     },
     years: {
+      "2026": [{ level: "星牌合作", tag: "累计合作5届" }],
       "2025": [{ level: "星牌合作", tag: "累计合作4届" }],
       "2024": [{ level: "星牌合作" }],
       "2023": [{ level: "铜牌合作" }],
@@ -565,22 +639,15 @@ export const partnerEntries: PartnerEntry[] = [
     profile: {
       id: "near",
       title: "NEAR",
-<<<<<<< Updated upstream
-      sponsor: {
-        type: "organization",
-        name: "NEAR",
-      },
-      link: "https://near.org",
-=======
       sponsor: { type: "organization", name: "NEAR" },
-      link: "https://github.com/near\\nhttps://near.org",
->>>>>>> Stashed changes
-      logo: "/logo.png",
+      link: "https://near.foundation/",
+      logo: "/img/partners/near-color.svg",
     },
     years: {
-      "2023": [{ level: "银牌合作" }],
-      "2022": [{ level: "银牌合作" }],
-      "2021": [{ level: "银牌合作" }],
+      "2026": [{ level: "星牌合作" }],
+      "2023": [{ level: "银牌合作", logo: "/logo.png" }],
+      "2022": [{ level: "银牌合作", logo: "/logo.png" }],
+      "2021": [{ level: "银牌合作", logo: "/logo.png" }],
     },
   },
   {
@@ -868,12 +935,12 @@ export const partnerEntries: PartnerEntry[] = [
       title: "滴滴",
       sponsor: { type: "organization", name: "滴滴" },
       link: "https://opensource.didiglobal.com/home",
-      logo: "/img/partners/didi.svg",
+      logo: "/img/partners/didi-latest.jpg",
     },
     years: {
       "2026": [{ level: "白金合作", tag: "累计合作3届" }],
-      "2020": [{ level: "白金合作" }],
-      "2019": [{ level: "银牌合作" }],
+      "2020": [{ level: "白金合作", logo: "/img/partners/didi.svg" }],
+      "2019": [{ level: "银牌合作", logo: "/img/partners/didi.svg" }],
     },
   },
   {
